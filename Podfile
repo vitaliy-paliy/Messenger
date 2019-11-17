@@ -7,4 +7,10 @@ target 'mChat' do
 
   # Pods for mChat
 
+pod 'Firebase/Analytics'
+pod 'Firebase/Auth'
+pod 'Firebase/Firestore'
+pod 'Firebase/Core'
+pod 'Firebase/Storage'
+
 end
