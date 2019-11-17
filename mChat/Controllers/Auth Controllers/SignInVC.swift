@@ -128,9 +128,9 @@ class SignInVC: UIViewController {
     }
     
     @objc func loginButtonPressed(_ sender: UIButton) {
-        if emailTextField.text != nil {
-            print(emailTextField.text!)
-        }
+        let controller = ChatTabBar()
+        controller.modalPresentationStyle = .fullScreen
+        show(controller, sender: nil)
     }
     
     @objc func registerButtonPressed(_ sender: UIButton){
