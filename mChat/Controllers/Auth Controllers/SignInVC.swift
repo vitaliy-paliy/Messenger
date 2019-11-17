@@ -7,12 +7,13 @@
 //
 
 import UIKit
+import Firebase
 
 class SignInVC: UIViewController {
     
     var logo = UIImageView(image: UIImage(named: "logo"))
-    var loginButton = UIButton()
-    var registerButton = UIButton()
+    var loginButton = UIButton(type: .system)
+    var registerButton = UIButton(type: .system)
     var registerLabel = UILabel()
     var emailTextField = UITextField()
     var passwordTextField = UITextField()
@@ -57,7 +58,7 @@ class SignInVC: UIViewController {
         loginButton.titleLabel?.font = UIFont(name: "Optima", size: 20)
         registerButton.titleLabel?.font = UIFont(name: "Optima", size: 12)
         registerButton.setTitleColor(.systemBlue, for: .normal)
-        loginButton.backgroundColor = UIColor(displayP3Red: 71/255, green: 94/255, blue: 208/255, alpha: 1)
+        loginButton.backgroundColor = Constants.Colors.appColor
         loginButton.addTarget(self, action: #selector(loginButtonPressed(_:)), for: .touchUpInside)
         registerButton.addTarget(self, action: #selector(registerButtonPressed(_:)), for: .touchUpInside)
         let constraints = [
@@ -128,6 +129,37 @@ class SignInVC: UIViewController {
     }
     
     @objc func loginButtonPressed(_ sender: UIButton) {
+        let validation = validateTF()
+        if validation != nil {
+            showAlert(title: "Error", message: validation!)
+            return
+        }
+        let password = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        let email = emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        Auth.auth().signIn(withEmail: email, password: password) { (dataResult, error) in
+            if let error = error {
+                self.showAlert(title: "Error", message: error.localizedDescription)
+                return
+            }else{
+                self.nextController()
+            }
+        }
+    }
+    
+    func validateTF() -> String?{
+        if emailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" || passwordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == ""{
+            return "Make sure you fill in all fields."
+        }
+        
+        let password = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        if password.count < 6 {
+            return "Password should be at least 6 characters long."
+        }
+        
+        return nil
+    }
+    
+    func nextController(){
         let controller = ChatTabBar()
         controller.modalPresentationStyle = .fullScreen
         show(controller, sender: nil)

@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		AB84247D3884D7F997D67FD0 /* Pods_mChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E1467D72B76AF7D9B11C55A /* Pods_mChat.framework */; };
+		CB2717382381E775003A4D46 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2717372381E775003A4D46 /* Helpers.swift */; };
+		CB27173B2381ECB1003A4D46 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB27173A2381ECB1003A4D46 /* Constants.swift */; };
+		CB27173D2381EFFA003A4D46 /* SelectProfileImageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB27173C2381EFFA003A4D46 /* SelectProfileImageVC.swift */; };
 		CB9525992380D5BB0006A76A /* SignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9525982380D5BB0006A76A /* SignUpVC.swift */; };
 		CBAB592C2381E49700078B7D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CBAB592B2381E49600078B7D /* GoogleService-Info.plist */; };
 		CBF644F12381C204004830C6 /* ChatTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF644F02381C204004830C6 /* ChatTabBar.swift */; };
@@ -26,6 +29,9 @@
 		1E1467D72B76AF7D9B11C55A /* Pods_mChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_mChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		48926AE7A16A24E1AD9C9C6B /* Pods-mChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mChat.release.xcconfig"; path = "Target Support Files/Pods-mChat/Pods-mChat.release.xcconfig"; sourceTree = "<group>"; };
 		AF45AF9736070E7C6E1CC18D /* Pods-mChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mChat.debug.xcconfig"; path = "Target Support Files/Pods-mChat/Pods-mChat.debug.xcconfig"; sourceTree = "<group>"; };
+		CB2717372381E775003A4D46 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
+		CB27173A2381ECB1003A4D46 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		CB27173C2381EFFA003A4D46 /* SelectProfileImageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectProfileImageVC.swift; sourceTree = "<group>"; };
 		CB9525982380D5BB0006A76A /* SignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVC.swift; sourceTree = "<group>"; };
 		CBAB592B2381E49600078B7D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CBF644F02381C204004830C6 /* ChatTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTabBar.swift; sourceTree = "<group>"; };
@@ -71,11 +77,21 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		CB2717392381E789003A4D46 /* Helper Tools */ = {
+			isa = PBXGroup;
+			children = (
+				CB2717372381E775003A4D46 /* Helpers.swift */,
+				CB27173A2381ECB1003A4D46 /* Constants.swift */,
+			);
+			path = "Helper Tools";
+			sourceTree = "<group>";
+		};
 		CBF644F22381C216004830C6 /* Auth Controllers */ = {
 			isa = PBXGroup;
 			children = (
 				CBF907FD2380B8CE00EF8925 /* SignInVC.swift */,
 				CB9525982380D5BB0006A76A /* SignUpVC.swift */,
+				CB27173C2381EFFA003A4D46 /* SelectProfileImageVC.swift */,
 			);
 			path = "Auth Controllers";
 			sourceTree = "<group>";
@@ -126,6 +142,7 @@
 		CBF907E82380B83500EF8925 /* mChat */ = {
 			isa = PBXGroup;
 			children = (
+				CB2717392381E789003A4D46 /* Helper Tools */,
 				CBF907E92380B83500EF8925 /* AppDelegate.swift */,
 				CBF907EB2380B83500EF8925 /* SceneDelegate.swift */,
 				CBF907F72380B83600EF8925 /* Info.plist */,
@@ -273,9 +290,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				CB9525992380D5BB0006A76A /* SignUpVC.swift in Sources */,
+				CB27173B2381ECB1003A4D46 /* Constants.swift in Sources */,
 				CBF907EA2380B83500EF8925 /* AppDelegate.swift in Sources */,
 				CBF644F12381C204004830C6 /* ChatTabBar.swift in Sources */,
+				CB2717382381E775003A4D46 /* Helpers.swift in Sources */,
 				CBF907EC2380B83500EF8925 /* SceneDelegate.swift in Sources */,
+				CB27173D2381EFFA003A4D46 /* SelectProfileImageVC.swift in Sources */,
 				CBF644F72381C26B004830C6 /* ChatsVC.swift in Sources */,
 				CBF644FD2381D384004830C6 /* ContactsCell.swift in Sources */,
 				CBF644FB2381C28D004830C6 /* SettingsVC.swift in Sources */,

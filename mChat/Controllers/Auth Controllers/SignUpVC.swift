@@ -13,6 +13,7 @@ class SignUpVC: UIViewController {
     var logo = UIImageView(image: UIImage(named: "logo"))
     var signUpButton = UIButton()
     var backButton = UIButton()
+    var emailTF = UITextField()
     var nameTF = UITextField()
     var passwordTF = UITextField()
     var confirmTF = UITextField()
@@ -66,13 +67,13 @@ class SignUpVC: UIViewController {
         signUpButton.setTitle("Sign Up", for: .normal)
         signUpButton.setTitleColor(.white, for: .normal)
         signUpButton.layer.cornerRadius = 16
-        signUpButton.backgroundColor = UIColor(displayP3Red: 71/255, green: 94/255, blue: 208/255, alpha: 1)
+        signUpButton.backgroundColor = Constants.Colors.appColor
         signUpButton.titleLabel?.font = UIFont(name: "Optima", size: 20)
         signUpButton.addTarget(self, action: #selector(signUpButtonPressed(_:)), for: .touchUpInside)
         
         backButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
         backButton.layer.cornerRadius = 20
-        backButton.backgroundColor = UIColor(displayP3Red: 71/255, green: 94/255, blue: 208/255, alpha: 1)
+        backButton.backgroundColor = Constants.Colors.appColor
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
         backButton.tintColor = .white
         
@@ -93,6 +94,7 @@ class SignUpVC: UIViewController {
         view.addSubview(nameTF)
         view.addSubview(passwordTF)
         view.addSubview(confirmTF)
+        view.addSubview(emailTF)
         nameTF.translatesAutoresizingMaskIntoConstraints = false
         nameTF.placeholder = "Enter your name"
         let namePaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 35))
@@ -101,6 +103,16 @@ class SignUpVC: UIViewController {
         nameTF.leftViewMode = .always
         nameTF.borderStyle = .none
         nameTF.layer.cornerRadius = 16
+        
+        emailTF.translatesAutoresizingMaskIntoConstraints = false
+        emailTF.placeholder = "Enter your Email"
+        let emailPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 35))
+        emailTF.leftView = emailPaddingView
+        emailTF.leftViewMode = .always
+        emailTF.backgroundColor = UIColor(displayP3Red: 245/255, green: 244/255, blue: 249/255, alpha: 1)
+        emailTF.borderStyle = .none
+        emailTF.layer.cornerRadius = 16
+        emailTF.autocapitalizationType = .none
         
         passwordTF.translatesAutoresizingMaskIntoConstraints = false
         passwordTF.placeholder = "Enter your password"
@@ -127,7 +139,11 @@ class SignUpVC: UIViewController {
             nameTF.heightAnchor.constraint(equalToConstant: 35),
             nameTF.widthAnchor.constraint(equalToConstant: 200),
             nameTF.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            passwordTF.topAnchor.constraint(equalTo: nameTF.topAnchor, constant: 45),
+            emailTF.topAnchor.constraint(equalTo: nameTF.topAnchor, constant: 45),
+            emailTF.heightAnchor.constraint(equalToConstant: 35),
+            emailTF.widthAnchor.constraint(equalToConstant: 200),
+            emailTF.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            passwordTF.topAnchor.constraint(equalTo: emailTF.topAnchor, constant: 45),
             passwordTF.heightAnchor.constraint(equalToConstant: 35),
             passwordTF.widthAnchor.constraint(equalToConstant: 200),
             passwordTF.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -140,7 +156,36 @@ class SignUpVC: UIViewController {
     }
     
     @objc func signUpButtonPressed(_ sender: UIButton){
-        print("hi")
+        let validation = validateTF()
+        if validation != nil {
+            showAlert(title: "Error", message: validation)
+        }
+        guard let name = nameTF.text, let password = passwordTF.text, let email = emailTF.text else { return }
+        let controller = SelectProfileImageVC()
+        controller.email = email
+        controller.name = name
+        controller.password = password
+        controller.modalPresentationStyle = .fullScreen
+        show(controller, sender: nil)
+    }
+    
+    func validateTF() -> String?{
+        if nameTF.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" || emailTF.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" || passwordTF.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" || confirmTF.text?.trimmingCharacters(in: .whitespacesAndNewlines) == ""{
+            return "Make sure you fill in all fields."
+        }
+        
+        let password = passwordTF.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        let confirm  = confirmTF.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        if password.count < 6 {
+            return "Password should be at least 6 characters long."
+        }
+        
+        if password != confirm {
+            return "Your passwords should match"
+        }
+        
+        return nil
     }
     
     @objc func backButtonPressed(_ sender: UIButton) {
