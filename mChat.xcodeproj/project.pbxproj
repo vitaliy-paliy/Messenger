@@ -7,21 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AB84247D3884D7F997D67FD0 /* Pods_mChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E1467D72B76AF7D9B11C55A /* Pods_mChat.framework */; };
+		CB9525992380D5BB0006A76A /* SignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9525982380D5BB0006A76A /* SignUpVC.swift */; };
 		CBF907EA2380B83500EF8925 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF907E92380B83500EF8925 /* AppDelegate.swift */; };
 		CBF907EC2380B83500EF8925 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF907EB2380B83500EF8925 /* SceneDelegate.swift */; };
 		CBF907F32380B83600EF8925 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBF907F22380B83600EF8925 /* Assets.xcassets */; };
 		CBF907F62380B83600EF8925 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBF907F42380B83600EF8925 /* LaunchScreen.storyboard */; };
-		CBF907FE2380B8CE00EF8925 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF907FD2380B8CE00EF8925 /* LoginVC.swift */; };
+		CBF907FE2380B8CE00EF8925 /* SignInVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF907FD2380B8CE00EF8925 /* SignInVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1E1467D72B76AF7D9B11C55A /* Pods_mChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_mChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		48926AE7A16A24E1AD9C9C6B /* Pods-mChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mChat.release.xcconfig"; path = "Target Support Files/Pods-mChat/Pods-mChat.release.xcconfig"; sourceTree = "<group>"; };
+		AF45AF9736070E7C6E1CC18D /* Pods-mChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mChat.debug.xcconfig"; path = "Target Support Files/Pods-mChat/Pods-mChat.debug.xcconfig"; sourceTree = "<group>"; };
+		CB9525982380D5BB0006A76A /* SignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVC.swift; sourceTree = "<group>"; };
 		CBF907E62380B83500EF8925 /* mChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBF907E92380B83500EF8925 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CBF907EB2380B83500EF8925 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		CBF907F22380B83600EF8925 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CBF907F52380B83600EF8925 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		CBF907F72380B83600EF8925 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		CBF907FD2380B8CE00EF8925 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
+		CBF907FD2380B8CE00EF8925 /* SignInVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -29,17 +35,37 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB84247D3884D7F997D67FD0 /* Pods_mChat.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3E3C28DF1F79901364A287B5 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				AF45AF9736070E7C6E1CC18D /* Pods-mChat.debug.xcconfig */,
+				48926AE7A16A24E1AD9C9C6B /* Pods-mChat.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		7CBB701A277C65DACB4D718C /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1E1467D72B76AF7D9B11C55A /* Pods_mChat.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		CBF907DD2380B83500EF8925 = {
 			isa = PBXGroup;
 			children = (
 				CBF907E82380B83500EF8925 /* mChat */,
 				CBF907E72380B83500EF8925 /* Products */,
+				3E3C28DF1F79901364A287B5 /* Pods */,
+				7CBB701A277C65DACB4D718C /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -56,12 +82,29 @@
 			children = (
 				CBF907E92380B83500EF8925 /* AppDelegate.swift */,
 				CBF907EB2380B83500EF8925 /* SceneDelegate.swift */,
-				CBF907F22380B83600EF8925 /* Assets.xcassets */,
-				CBF907F42380B83600EF8925 /* LaunchScreen.storyboard */,
 				CBF907F72380B83600EF8925 /* Info.plist */,
-				CBF907FD2380B8CE00EF8925 /* LoginVC.swift */,
+				CBF908002380C56100EF8925 /* Assets */,
+				CBF907FF2380C55100EF8925 /* Controllers */,
 			);
 			path = mChat;
+			sourceTree = "<group>";
+		};
+		CBF907FF2380C55100EF8925 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				CBF907FD2380B8CE00EF8925 /* SignInVC.swift */,
+				CB9525982380D5BB0006A76A /* SignUpVC.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
+		CBF908002380C56100EF8925 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				CBF907F22380B83600EF8925 /* Assets.xcassets */,
+				CBF907F42380B83600EF8925 /* LaunchScreen.storyboard */,
+			);
+			path = Assets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -71,6 +114,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = CBF907FA2380B83600EF8925 /* Build configuration list for PBXNativeTarget "mChat" */;
 			buildPhases = (
+				ED36E258FA32CB3AD29DB7E7 /* [CP] Check Pods Manifest.lock */,
 				CBF907E22380B83500EF8925 /* Sources */,
 				CBF907E32380B83500EF8925 /* Frameworks */,
 				CBF907E42380B83500EF8925 /* Resources */,
@@ -129,14 +173,40 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		ED36E258FA32CB3AD29DB7E7 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-mChat-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		CBF907E22380B83500EF8925 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CB9525992380D5BB0006A76A /* SignUpVC.swift in Sources */,
 				CBF907EA2380B83500EF8925 /* AppDelegate.swift in Sources */,
 				CBF907EC2380B83500EF8925 /* SceneDelegate.swift in Sources */,
-				CBF907FE2380B8CE00EF8925 /* LoginVC.swift in Sources */,
+				CBF907FE2380B8CE00EF8925 /* SignInVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,6 +340,7 @@
 		};
 		CBF907FB2380B83600EF8925 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = AF45AF9736070E7C6E1CC18D /* Pods-mChat.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -288,6 +359,7 @@
 		};
 		CBF907FC2380B83600EF8925 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 48926AE7A16A24E1AD9C9C6B /* Pods-mChat.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
