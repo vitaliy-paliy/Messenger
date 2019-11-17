@@ -13,6 +13,7 @@
 		CBF644F42381C23A004830C6 /* ContactsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF644F32381C23A004830C6 /* ContactsVC.swift */; };
 		CBF644F72381C26B004830C6 /* ChatsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF644F62381C26B004830C6 /* ChatsVC.swift */; };
 		CBF644FB2381C28D004830C6 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF644FA2381C28D004830C6 /* SettingsVC.swift */; };
+		CBF644FD2381D384004830C6 /* ContactsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF644FC2381D384004830C6 /* ContactsCell.swift */; };
 		CBF907EA2380B83500EF8925 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF907E92380B83500EF8925 /* AppDelegate.swift */; };
 		CBF907EC2380B83500EF8925 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF907EB2380B83500EF8925 /* SceneDelegate.swift */; };
 		CBF907F32380B83600EF8925 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CBF907F22380B83600EF8925 /* Assets.xcassets */; };
@@ -29,6 +30,7 @@
 		CBF644F32381C23A004830C6 /* ContactsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsVC.swift; sourceTree = "<group>"; };
 		CBF644F62381C26B004830C6 /* ChatsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatsVC.swift; sourceTree = "<group>"; };
 		CBF644FA2381C28D004830C6 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
+		CBF644FC2381D384004830C6 /* ContactsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsCell.swift; sourceTree = "<group>"; };
 		CBF907E62380B83500EF8925 /* mChat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = mChat.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CBF907E92380B83500EF8925 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CBF907EB2380B83500EF8925 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -80,6 +82,7 @@
 			isa = PBXGroup;
 			children = (
 				CBF644F32381C23A004830C6 /* ContactsVC.swift */,
+				CBF644FC2381D384004830C6 /* ContactsCell.swift */,
 			);
 			path = Contacts;
 			sourceTree = "<group>";
@@ -252,6 +255,7 @@
 				CBF644F12381C204004830C6 /* ChatTabBar.swift in Sources */,
 				CBF907EC2380B83500EF8925 /* SceneDelegate.swift in Sources */,
 				CBF644F72381C26B004830C6 /* ChatsVC.swift in Sources */,
+				CBF644FD2381D384004830C6 /* ContactsCell.swift in Sources */,
 				CBF644FB2381C28D004830C6 /* SettingsVC.swift in Sources */,
 				CBF907FE2380B8CE00EF8925 /* SignInVC.swift in Sources */,
 				CBF644F42381C23A004830C6 /* ContactsVC.swift in Sources */,
