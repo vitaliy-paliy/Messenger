@@ -10,6 +10,8 @@ import UIKit
 
 class ContactsVC: UIViewController {
     
+    var friendsList: [FriendInfo] = []
+    
     var tableView = UITableView()
     
     override func viewDidLoad() {
@@ -41,14 +43,15 @@ class ContactsVC: UIViewController {
 extension ContactsVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return friendsList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ContactsCell") as! ContactsCell
-        cell.profileImage.image = UIImage(named: "logo")
-        cell.friendName.text = "mChat"
-        cell.friendEmail.text = "vit@gmail.com"
+        let friend = friendsList[indexPath.row]
+        cell.profileImage.loadImage(url: friend.profileImage)
+        cell.friendName.text = friend.name
+        cell.friendEmail.text = friend.email
         return cell
     }
     

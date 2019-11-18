@@ -7,14 +7,16 @@
 //
 
 import UIKit
+import Firebase
 
-class ChatTabBar: UITabBarController {
-
+class ChatTabBar: UITabBarController{
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         setupVC()
+        
     }
-
+    
     func setupVC(){
         let chats = UINavigationController(rootViewController: ChatsVC())
         let contacts = UINavigationController(rootViewController: ContactsVC())

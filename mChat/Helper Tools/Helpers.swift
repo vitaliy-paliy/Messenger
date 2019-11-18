@@ -7,10 +7,10 @@
 //
 
 import UIKit
+import Firebase
 
 // Caches the images
 let imgCache = NSCache<AnyObject, AnyObject>()
-
 
 extension UIViewController {
     

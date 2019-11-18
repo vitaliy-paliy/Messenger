@@ -111,9 +111,18 @@ class SignInVC: UIViewController {
     }
     
     func nextController(){
-        let controller = ChatTabBar()
-        controller.modalPresentationStyle = .fullScreen
-        show(controller, sender: nil)
+        let uid = Auth.auth().currentUser?.uid
+        Constants.db.reference().child("users").child(uid!).observeSingleEvent(of: .value) { (snapshot) in
+            guard let snap = snapshot.value as? [String: AnyObject] else { return }
+            CurrentUser.name = snap["name"] as? String
+            CurrentUser.email = snap["email"] as? String
+            CurrentUser.profileImage = snap["profileImage"] as? String
+            CurrentUser.uid = uid
+            print("finished")
+            let controller = ChatTabBar()
+            controller.modalPresentationStyle = .fullScreen
+            self.show(controller, sender: nil)
+        }
     }
     
     @objc func registerButtonPressed(_ sender: UIButton){

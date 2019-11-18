@@ -15,6 +15,7 @@
 		CB65C64C2383326300F2B5A3 /* ProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB65C64B2383326300F2B5A3 /* ProfileCell.swift */; };
 		CB9525992380D5BB0006A76A /* SignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9525982380D5BB0006A76A /* SignUpVC.swift */; };
 		CBAB592C2381E49700078B7D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CBAB592B2381E49600078B7D /* GoogleService-Info.plist */; };
+		CBBDE7AE238353A40040A296 /* FriendInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDE7AD238353A40040A296 /* FriendInfo.swift */; };
 		CBF644F12381C204004830C6 /* ChatTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF644F02381C204004830C6 /* ChatTabBar.swift */; };
 		CBF644F42381C23A004830C6 /* ContactsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF644F32381C23A004830C6 /* ContactsVC.swift */; };
 		CBF644F72381C26B004830C6 /* ChatsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF644F62381C26B004830C6 /* ChatsVC.swift */; };
@@ -38,6 +39,7 @@
 		CB65C64B2383326300F2B5A3 /* ProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCell.swift; sourceTree = "<group>"; };
 		CB9525982380D5BB0006A76A /* SignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVC.swift; sourceTree = "<group>"; };
 		CBAB592B2381E49600078B7D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		CBBDE7AD238353A40040A296 /* FriendInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendInfo.swift; sourceTree = "<group>"; };
 		CBF644F02381C204004830C6 /* ChatTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTabBar.swift; sourceTree = "<group>"; };
 		CBF644F32381C23A004830C6 /* ContactsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsVC.swift; sourceTree = "<group>"; };
 		CBF644F62381C26B004830C6 /* ChatsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatsVC.swift; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 			isa = PBXGroup;
 			children = (
 				CB65C64623831EA300F2B5A3 /* CurrentUser.swift */,
+				CBBDE7AD238353A40040A296 /* FriendInfo.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -317,6 +320,7 @@
 				CBF644F42381C23A004830C6 /* ContactsVC.swift in Sources */,
 				CB65C64723831EA300F2B5A3 /* CurrentUser.swift in Sources */,
 				CB65C64C2383326300F2B5A3 /* ProfileCell.swift in Sources */,
+				CBBDE7AE238353A40040A296 /* FriendInfo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
