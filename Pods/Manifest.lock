@@ -1,10 +1,4 @@
 PODS:
-  - BoringSSL-GRPC (0.0.3):
-    - BoringSSL-GRPC/Implementation (= 0.0.3)
-    - BoringSSL-GRPC/Interface (= 0.0.3)
-  - BoringSSL-GRPC/Implementation (0.0.3):
-    - BoringSSL-GRPC/Interface (= 0.0.3)
-  - BoringSSL-GRPC/Interface (0.0.3)
   - Firebase/Analytics (6.11.0):
     - Firebase/Core
   - Firebase/Auth (6.11.0):
@@ -15,9 +9,9 @@ PODS:
     - FirebaseAnalytics (= 6.1.3)
   - Firebase/CoreOnly (6.11.0):
     - FirebaseCore (= 6.3.2)
-  - Firebase/Firestore (6.11.0):
+  - Firebase/Database (6.11.0):
     - Firebase/CoreOnly
-    - FirebaseFirestore (~> 1.6.1)
+    - FirebaseDatabase (~> 6.1.1)
   - Firebase/Storage (6.11.0):
     - Firebase/CoreOnly
     - FirebaseStorage (~> 3.4.1)
@@ -49,21 +43,10 @@ PODS:
     - GoogleUtilities/Logger (~> 6.2)
     - nanopb (~> 0.3.901)
   - FirebaseCoreDiagnosticsInterop (1.0.0)
-  - FirebaseFirestore (1.6.1):
+  - FirebaseDatabase (6.1.1):
     - FirebaseAuthInterop (~> 1.0)
-    - FirebaseCore (~> 6.2)
-    - FirebaseFirestore/abseil-cpp (= 1.6.1)
-    - "gRPC-C++ (= 0.0.9)"
+    - FirebaseCore (~> 6.0)
     - leveldb-library (~> 1.22)
-    - nanopb (~> 0.3.901)
-    - Protobuf (>= 3.9.2, ~> 3.9)
-  - FirebaseFirestore/abseil-cpp (1.6.1):
-    - FirebaseAuthInterop (~> 1.0)
-    - FirebaseCore (~> 6.2)
-    - "gRPC-C++ (= 0.0.9)"
-    - leveldb-library (~> 1.22)
-    - nanopb (~> 0.3.901)
-    - Protobuf (>= 3.9.2, ~> 3.9)
   - FirebaseInstanceID (4.2.6):
     - FirebaseCore (~> 6.0)
     - GoogleUtilities/Environment (~> 6.0)
@@ -100,22 +83,6 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (6.3.1):
     - GoogleUtilities/Logger
-  - "gRPC-C++ (0.0.9)":
-    - "gRPC-C++/Implementation (= 0.0.9)"
-    - "gRPC-C++/Interface (= 0.0.9)"
-  - "gRPC-C++/Implementation (0.0.9)":
-    - "gRPC-C++/Interface (= 0.0.9)"
-    - gRPC-Core (= 1.21.0)
-    - nanopb (~> 0.3)
-  - "gRPC-C++/Interface (0.0.9)"
-  - gRPC-Core (1.21.0):
-    - gRPC-Core/Implementation (= 1.21.0)
-    - gRPC-Core/Interface (= 1.21.0)
-  - gRPC-Core/Implementation (1.21.0):
-    - BoringSSL-GRPC (= 0.0.3)
-    - gRPC-Core/Interface (= 1.21.0)
-    - nanopb (~> 0.3)
-  - gRPC-Core/Interface (1.21.0)
   - GTMSessionFetcher/Core (1.3.0)
   - leveldb-library (1.22)
   - nanopb (0.3.9011):
@@ -123,18 +90,16 @@ PODS:
     - nanopb/encode (= 0.3.9011)
   - nanopb/decode (0.3.9011)
   - nanopb/encode (0.3.9011)
-  - Protobuf (3.10.0)
 
 DEPENDENCIES:
   - Firebase/Analytics
   - Firebase/Auth
   - Firebase/Core
-  - Firebase/Firestore
+  - Firebase/Database
   - Firebase/Storage
 
 SPEC REPOS:
   trunk:
-    - BoringSSL-GRPC
     - Firebase
     - FirebaseAnalytics
     - FirebaseAuth
@@ -142,22 +107,18 @@ SPEC REPOS:
     - FirebaseCore
     - FirebaseCoreDiagnostics
     - FirebaseCoreDiagnosticsInterop
-    - FirebaseFirestore
+    - FirebaseDatabase
     - FirebaseInstanceID
     - FirebaseStorage
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleDataTransportCCTSupport
     - GoogleUtilities
-    - "gRPC-C++"
-    - gRPC-Core
     - GTMSessionFetcher
     - leveldb-library
     - nanopb
-    - Protobuf
 
 SPEC CHECKSUMS:
-  BoringSSL-GRPC: db8764df3204ccea016e1c8dd15d9a9ad63ff318
   Firebase: bc9cfc7a96c73268656d5aaab453ff1b4b530e0e
   FirebaseAnalytics: 0e3ecff2c5d86070f7d4325e21f1edabfbd558dc
   FirebaseAuth: b401a012cc33b04df3b52bb308b04e8766f2693e
@@ -165,20 +126,17 @@ SPEC CHECKSUMS:
   FirebaseCore: beeff42c07c30ea94702471d99db2089b594fbbd
   FirebaseCoreDiagnostics: af29e43048607588c050889d19204f4d7b758c9f
   FirebaseCoreDiagnosticsInterop: 6829da2b8d1fc795ff1bd99df751d3788035d2cb
-  FirebaseFirestore: bb8315fa13a15ea8977e940496b74ba6ad9071f2
+  FirebaseDatabase: 524802f7694268c79d34aeac3d67997593e1a0c9
   FirebaseInstanceID: d0eafcd8bdbd3447cd694594734078c3e3e77d8b
   FirebaseStorage: b7c6d00997bc21d4465453bdcc5cc65513110fed
   GoogleAppMeasurement: 434cc7be25e71dc04b8d0e3079125127b330e84a
   GoogleDataTransport: 166f9b9f82cbf60a204e8fe2daa9db3e3ec1fb15
   GoogleDataTransportCCTSupport: f6ab1962e9dc05ab1fb938b795e5b310209edeec
   GoogleUtilities: f895fde57977df4e0233edda0dbeac490e3703b6
-  "gRPC-C++": 9dfe7b44821e7b3e44aacad2af29d2c21f7cde83
-  gRPC-Core: c9aef9a261a1247e881b18059b84d597293c9947
   GTMSessionFetcher: 43b8b64263023d4f32caa0b40f4c8bfa3c5f36d8
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
-  Protobuf: a4dc852ad69c027ca2166ed287b856697814375b
 
-PODFILE CHECKSUM: dc49d50906589866a2827e6262ec030e0ccaea88
+PODFILE CHECKSUM: 98299f2685f973e6ca525a959c5c5774bf39e9ea
 
 COCOAPODS: 1.8.4

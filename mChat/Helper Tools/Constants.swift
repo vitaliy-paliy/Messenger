@@ -11,9 +11,7 @@ import Firebase
 
 class Constants {
     
-    struct Firebase {
-        static let firestore = Firestore.firestore()
-    }
+    static let db = Database.database()
     
     struct Colors {
         static let appColor = UIColor(displayP3Red: 71/255, green: 94/255, blue: 208/255, alpha: 1)
