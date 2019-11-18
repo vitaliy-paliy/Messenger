@@ -79,6 +79,7 @@ class SignUpVC: UIViewController {
         let namePaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 35))
         setupTextField(nameTF, "Enter your name", namePaddingView)
         let emailPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 35))
+        emailTF.autocapitalizationType = .none
         setupTextField(emailTF, "Enter your Email", emailPaddingView)
         let passwordPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 35))
         setupTextField(passwordTF, "Enter your password", passwordPaddingView)

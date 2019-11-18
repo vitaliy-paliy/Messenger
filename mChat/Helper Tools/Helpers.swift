@@ -8,6 +8,10 @@
 
 import UIKit
 
+// Caches the images
+let imgCache = NSCache<AnyObject, AnyObject>()
+
+
 extension UIViewController {
     
     func showAlert(title: String?, message: String?){
@@ -69,4 +73,32 @@ extension UIViewController {
         ]
     }
     
+}
+
+extension UIImageView {
+    func loadImage(url: String){
+        self.image = nil
+        if let cachedImages = imgCache.object(forKey: url as NSString) as? UIImage {
+            self.image = cachedImages
+            return
+        }
+        let imgUrl = URL(string: url)
+        if imgUrl == nil {
+            print("Error")
+            return
+        }
+        let task = URLSession.shared.dataTask(with: imgUrl!) { (data, response, error) in
+            guard let data = data else {
+                print("Data == nil")
+                return
+            }
+            DispatchQueue.main.async {
+                if let image = UIImage(data: data){
+                    imgCache.setObject(image, forKey: url as NSString)
+                    self.image = image
+                }
+            }
+        }
+        task.resume()
+    }
 }

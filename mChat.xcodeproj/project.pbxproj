@@ -12,6 +12,7 @@
 		CB27173B2381ECB1003A4D46 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB27173A2381ECB1003A4D46 /* Constants.swift */; };
 		CB27173D2381EFFA003A4D46 /* SelectProfileImageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB27173C2381EFFA003A4D46 /* SelectProfileImageVC.swift */; };
 		CB65C64723831EA300F2B5A3 /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB65C64623831EA300F2B5A3 /* CurrentUser.swift */; };
+		CB65C64C2383326300F2B5A3 /* ProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB65C64B2383326300F2B5A3 /* ProfileCell.swift */; };
 		CB9525992380D5BB0006A76A /* SignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9525982380D5BB0006A76A /* SignUpVC.swift */; };
 		CBAB592C2381E49700078B7D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CBAB592B2381E49600078B7D /* GoogleService-Info.plist */; };
 		CBF644F12381C204004830C6 /* ChatTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF644F02381C204004830C6 /* ChatTabBar.swift */; };
@@ -34,6 +35,7 @@
 		CB27173A2381ECB1003A4D46 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CB27173C2381EFFA003A4D46 /* SelectProfileImageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectProfileImageVC.swift; sourceTree = "<group>"; };
 		CB65C64623831EA300F2B5A3 /* CurrentUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
+		CB65C64B2383326300F2B5A3 /* ProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCell.swift; sourceTree = "<group>"; };
 		CB9525982380D5BB0006A76A /* SignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVC.swift; sourceTree = "<group>"; };
 		CBAB592B2381E49600078B7D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CBF644F02381C204004830C6 /* ChatTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTabBar.swift; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 			isa = PBXGroup;
 			children = (
 				CBF644FA2381C28D004830C6 /* SettingsVC.swift */,
+				CB65C64B2383326300F2B5A3 /* ProfileCell.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -313,6 +316,7 @@
 				CBF907FE2380B8CE00EF8925 /* SignInVC.swift in Sources */,
 				CBF644F42381C23A004830C6 /* ContactsVC.swift in Sources */,
 				CB65C64723831EA300F2B5A3 /* CurrentUser.swift in Sources */,
+				CB65C64C2383326300F2B5A3 /* ProfileCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

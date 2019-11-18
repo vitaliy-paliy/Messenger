@@ -70,6 +70,7 @@ class SignInVC: UIViewController {
         view.addSubview(emailTextField)
         view.addSubview(passwordTextField)
         let emailPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 35))
+        emailTextField.autocapitalizationType = .none
         let passwordPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 35))
         setupTextField(emailTextField, "Email", emailPaddingView)
         setupTextField(passwordTextField, "Password", passwordPaddingView)
