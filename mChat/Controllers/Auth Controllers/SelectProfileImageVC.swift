@@ -29,45 +29,16 @@ class SelectProfileImageVC: UIViewController {
     func setupButtons() {
         view.addSubview(selectImageButton)
         view.addSubview(continueButton)
-        
-        selectImageButton.translatesAutoresizingMaskIntoConstraints = false
-        selectImageButton.setTitle("Select Image", for: .normal)
-        selectImageButton.setTitleColor(.white, for: .normal)
-        selectImageButton.layer.cornerRadius = 16
-        selectImageButton.backgroundColor = Constants.Colors.appColor
-     
-        continueButton.translatesAutoresizingMaskIntoConstraints = false
-        continueButton.setTitle("Continue", for: .normal)
-        continueButton.setTitleColor(.white, for: .normal)
-        continueButton.layer.cornerRadius = 16
-        continueButton.backgroundColor = Constants.Colors.appColor
-       
-        let constraints = [
-            selectImageButton.topAnchor.constraint(equalTo: profileImage.bottomAnchor, constant: 50),
-            selectImageButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            selectImageButton.widthAnchor.constraint(equalToConstant: 150),
-            selectImageButton.heightAnchor.constraint(equalToConstant: 40),
-            continueButton.topAnchor.constraint(equalTo: selectImageButton.bottomAnchor, constant: 20),
-            continueButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            continueButton.widthAnchor.constraint(equalToConstant: 150),
-            continueButton.heightAnchor.constraint(equalToConstant: 40),
-        ]
-        NSLayoutConstraint.activate(constraints)
+        setupButton(selectImageButton, "Select Image")
+        setupButton(continueButton, "Continue")
+        NSLayoutConstraint.activate(configureButtonsConstraints(selectImageButton, profileImage, 150, 40, 150))
+        NSLayoutConstraint.activate(configureButtonsConstraints(continueButton, selectImageButton, 50, 40, 150))
     }
     
     func setupProfileImage(){
         view.addSubview(profileImage)
-        profileImage.contentMode = .scaleAspectFill
-        profileImage.translatesAutoresizingMaskIntoConstraints = false
-        profileImage.clipsToBounds = true
-        profileImage.layer.cornerRadius = 50
-        let constraints = [
-            profileImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 150),
-            profileImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            profileImage.widthAnchor.constraint(equalToConstant: 100),
-            profileImage.heightAnchor.constraint(equalToConstant: 100)
-        ]
-        NSLayoutConstraint.activate(constraints)
+        setupImages(profileImage, .scaleAspectFill, 50, true)
+        NSLayoutConstraint.activate(configureImagesConstraints(profileImage, 100, 100, view, 150))
     }
     
 }

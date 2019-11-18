@@ -33,45 +33,22 @@ class SignInVC: UIViewController {
     
     func setupLogo(){
         view.addSubview(logo)
-        logo.translatesAutoresizingMaskIntoConstraints = false
-        logo.contentMode = .scaleAspectFill
-        logo.layer.cornerRadius = 40
-        logo.layer.masksToBounds = true
-        let constraints = [
-            logo.heightAnchor.constraint(equalToConstant: 150),
-            logo.widthAnchor.constraint(equalToConstant: 150),
-            logo.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            logo.topAnchor.constraint(equalTo: view.topAnchor, constant: 100)
-        ]
-        NSLayoutConstraint.activate(constraints)
+        setupImages(logo, .scaleAspectFill, 40, true)
+        NSLayoutConstraint.activate(configureImagesConstraints(logo, 150, 150, view, 100))
     }
     
     func setupButtons(){
         view.addSubview(loginButton)
         view.addSubview(registerButton)
-        loginButton.translatesAutoresizingMaskIntoConstraints = false
+        setupButton(loginButton, "Login")
         registerButton.translatesAutoresizingMaskIntoConstraints = false
-        loginButton.layer.cornerRadius = 16
-        loginButton.setTitle("Sign In", for: .normal)
-        loginButton.setTitleColor(.white, for: .normal)
         registerButton.setTitle("Sign Up", for: .normal)
-        loginButton.titleLabel?.font = UIFont(name: "Optima", size: 20)
         registerButton.titleLabel?.font = UIFont(name: "Optima", size: 12)
         registerButton.setTitleColor(.systemBlue, for: .normal)
-        loginButton.backgroundColor = Constants.Colors.appColor
         loginButton.addTarget(self, action: #selector(loginButtonPressed(_:)), for: .touchUpInside)
         registerButton.addTarget(self, action: #selector(registerButtonPressed(_:)), for: .touchUpInside)
-        let constraints = [
-            loginButton.heightAnchor.constraint(equalToConstant: 40),
-            loginButton.widthAnchor.constraint(equalToConstant: 150),
-            loginButton.topAnchor.constraint(equalTo: passwordTextField.topAnchor, constant: 100),
-            loginButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            registerButton.heightAnchor.constraint(equalToConstant: 20),
-            registerButton.widthAnchor.constraint(equalToConstant: 50),
-            registerButton.topAnchor.constraint(equalTo: loginButton.topAnchor, constant: 40),
-            registerButton.centerXAnchor.constraint(equalTo: view.centerXAnchor, constant: 60)
-        ]
-        NSLayoutConstraint.activate(constraints)
+        NSLayoutConstraint.activate(configureButtonsConstraints(loginButton, passwordTextField, 100, 40, 150))
+        NSLayoutConstraint.activate(configureButtonsConstraints(registerButton, loginButton, 40, 20, 50, 60))
     }
     
     func setupLabels(){
@@ -90,42 +67,15 @@ class SignInVC: UIViewController {
     }
     
     func setupTextFields(){
-        
         view.addSubview(emailTextField)
         view.addSubview(passwordTextField)
-        
-        emailTextField.translatesAutoresizingMaskIntoConstraints = false
-        emailTextField.placeholder = "Email"
         let emailPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 35))
-        emailTextField.leftView = emailPaddingView
-        emailTextField.leftViewMode = .always
-        emailTextField.backgroundColor = UIColor(displayP3Red: 245/255, green: 244/255, blue: 249/255, alpha: 1)
-        emailTextField.layer.cornerRadius = 16
-        emailTextField.borderStyle = .none
-        
-        passwordTextField.translatesAutoresizingMaskIntoConstraints = false
-        passwordTextField.placeholder = "Password"
-        passwordTextField.isSecureTextEntry = true
         let passwordPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 35))
-        passwordTextField.leftView = passwordPaddingView
-        passwordTextField.leftViewMode = .always
-        passwordTextField.backgroundColor = UIColor(displayP3Red: 245/255, green: 244/255, blue: 249/255, alpha: 1)
-        passwordTextField.layer.cornerRadius = 16
-        passwordTextField.borderStyle = .none
-        
-        let constraits = [
-            emailTextField.topAnchor.constraint(equalTo: logo.topAnchor, constant: 170),
-            emailTextField.widthAnchor.constraint(equalToConstant: 200),
-            emailTextField.heightAnchor.constraint(equalToConstant: 35),
-            emailTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            passwordTextField.topAnchor.constraint(equalTo: emailTextField.topAnchor, constant: 45),
-            passwordTextField.widthAnchor.constraint(equalToConstant: 200),
-            passwordTextField.heightAnchor.constraint(equalToConstant: 35),
-            passwordTextField.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        ]
-        
-        NSLayoutConstraint.activate(constraits)
-        
+        setupTextField(emailTextField, "Email", emailPaddingView)
+        setupTextField(passwordTextField, "Password", passwordPaddingView)
+        passwordTextField.isSecureTextEntry = true
+        NSLayoutConstraint.activate(configureTextFieldConstraints(emailTextField, logo, 170))
+        NSLayoutConstraint.activate(configureTextFieldConstraints(passwordTextField, emailTextField, 45))
     }
     
     @objc func loginButtonPressed(_ sender: UIButton) {
