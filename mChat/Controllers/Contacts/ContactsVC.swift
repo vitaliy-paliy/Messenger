@@ -11,14 +11,15 @@ import UIKit
 class ContactsVC: UIViewController {
     
     var friendsList: [FriendInfo] = []
-    
     var tableView = UITableView()
+    var addButton = UIBarButtonItem()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Contacts"
         view.backgroundColor = .white
         setupTableView()
+        setupaddButton()
     }
     
     func setupTableView(){
@@ -38,6 +39,17 @@ class ContactsVC: UIViewController {
         
     }
 
+    func setupaddButton(){
+        addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonPressed))
+        navigationItem.rightBarButtonItem = addButton
+    }
+    
+    @objc func addButtonPressed(){
+        let controller = UsersListVC()
+        controller.modalPresentationStyle = .none
+        show(controller, sender: nil)
+    }
+    
 }
 
 extension ContactsVC: UITableViewDataSource, UITableViewDelegate {
@@ -54,6 +66,5 @@ extension ContactsVC: UITableViewDataSource, UITableViewDelegate {
         cell.friendEmail.text = friend.email
         return cell
     }
-    
-    
+ 
 }
