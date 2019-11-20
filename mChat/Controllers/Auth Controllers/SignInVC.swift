@@ -21,16 +21,12 @@ class SignInVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        setupUI()
-    }
-    
-    func setupUI(){
         setupLogo()
         setupTextFields()
         setupButtons()
         setupLabels()
     }
-    
+  
     func setupLogo(){
         view.addSubview(logo)
         setupImages(logo, .scaleAspectFill, 40, true)
@@ -53,15 +49,12 @@ class SignInVC: UIViewController {
     
     func setupLabels(){
         view.addSubview(registerLabel)
-        registerLabel.translatesAutoresizingMaskIntoConstraints = false
-        registerLabel.text = "Don't have an account?"
-        registerLabel.font = UIFont(name: "Optima", size: 12)
-        registerLabel.textColor = .black
+        configureLabels(registerLabel, "Don't have an Account?", color: .black, size: 12)
         let constraints = [
             registerLabel.heightAnchor.constraint(equalToConstant: 20),
-            registerLabel.widthAnchor.constraint(equalToConstant: 150),
+            registerLabel.widthAnchor.constraint(equalToConstant: 175),
             registerLabel.topAnchor.constraint(equalTo: loginButton.topAnchor, constant: 40),
-            registerLabel.trailingAnchor.constraint(equalTo: registerButton.trailingAnchor, constant: -20),
+            registerLabel.trailingAnchor.constraint(equalTo: registerButton.trailingAnchor, constant: -25),
         ]
         NSLayoutConstraint.activate(constraints)
     }
@@ -118,7 +111,6 @@ class SignInVC: UIViewController {
             CurrentUser.email = snap["email"] as? String
             CurrentUser.profileImage = snap["profileImage"] as? String
             CurrentUser.uid = uid
-            print("finished")
             let controller = ChatTabBar()
             controller.modalPresentationStyle = .fullScreen
             self.show(controller, sender: nil)

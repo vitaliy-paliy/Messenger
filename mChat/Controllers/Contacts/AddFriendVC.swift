@@ -15,6 +15,7 @@ class AddFriendVC: UIViewController, UINavigationBarDelegate{
     var profileImage: String!
     var name: String!
     var email: String!
+    var isFriend = false
     
     var nameLabel = UILabel()
     var emailLabel = UILabel()
@@ -25,13 +26,15 @@ class AddFriendVC: UIViewController, UINavigationBarDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        checkFriend()
         view.backgroundColor = .white
+    }
+    
+    func setupUI(){
         setupContainter()
         setupImage()
         setupLabels()
         setupButtons()
-        
-        print(email!, name!)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -44,7 +47,7 @@ class AddFriendVC: UIViewController, UINavigationBarDelegate{
         tabBarController?.tabBar.isHidden = false
     }
     
-    func setupContainter (){
+    func setupContainter(){
         view.addSubview(container)
         container.backgroundColor = .white
         container.layer.shadowColor = UIColor.black.cgColor
@@ -55,7 +58,7 @@ class AddFriendVC: UIViewController, UINavigationBarDelegate{
         
         container.translatesAutoresizingMaskIntoConstraints = false
         let constraints = [
-            container.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
+            container.topAnchor.constraint(equalTo: view.topAnchor, constant: 150),
             container.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             container.heightAnchor.constraint(equalToConstant: 400),
             container.widthAnchor.constraint(equalToConstant: 300)
@@ -75,30 +78,8 @@ class AddFriendVC: UIViewController, UINavigationBarDelegate{
         view.addSubview(emailLabel)
         configureLabels(nameLabel, name, color: .black, size: 25)
         configureLabels(emailLabel, email, color: .systemGray, size: 18)
-        let constraints = [
-            nameLabel.topAnchor.constraint(equalTo: image.bottomAnchor, constant: 20),
-            nameLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 5),
-            nameLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -5),
-            nameLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 30),
-            emailLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 0),
-            emailLabel.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 5),
-            emailLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -5),
-            emailLabel.heightAnchor.constraint(greaterThanOrEqualToConstant: 30),
-        ]
-        NSLayoutConstraint.activate(constraints)
-    }
-    
-    func configureLabels(_ label: UILabel, _ text: String,  color: UIColor, size: CGFloat){
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont(name: "Helvetica Neue", size: size)
-        label.text = text
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        label.textColor = color
-    }
-    
-    func configureLabelConstraints(){
-        
+        NSLayoutConstraint.activate(configureLabelConstraints(view: container, label: nameLabel, topEqualTo: image, topConst: 20))
+        NSLayoutConstraint.activate(configureLabelConstraints(view: container, label: emailLabel, topEqualTo: nameLabel, topConst: 0))
     }
     
     func setupButtons(){
@@ -125,11 +106,39 @@ class AddFriendVC: UIViewController, UINavigationBarDelegate{
     }
     
     @objc func addButtonPressed(){
-        print("hi")
+        let user = Constants.db.reference().child("friendsList").child(CurrentUser.uid).child(friendId)
+        let friend = Constants.db.reference().child("friendsList").child(friendId).child(CurrentUser.uid)
+        if !isFriend {
+            updateFriendship(user: user, friend: friend, status: !isFriend)
+            self.showAlert(title: "Success", message: "User was successfully added to your friends list")
+        }else{
+            updateFriendship(user: user, friend: friend, status: !isFriend)
+        }
+    }
+    
+    func updateFriendship(user: DatabaseReference, friend: DatabaseReference, status: Bool){
+        print("ho")
+        user.setValue(status)
+        friend.setValue(status)
+        isFriend = status
     }
     
     @objc func backButtonPressed() {
         dismiss(animated: true, completion: nil)
     }
     
+    func checkFriend(){
+        Constants.db.reference().child("friendsList").child(CurrentUser.uid).observe(.value) { (snapshot) in
+            guard let values = snapshot.value as? [String: Any] else { return }
+            let f = values
+            if f[self.friendId] as? Bool != nil && f[self.friendId] as? Bool == true {
+                self.isFriend = true
+            }else{
+                print("false")
+            }
+        }
+        setupUI()
+    }
+    
 }
+

@@ -22,6 +22,16 @@ class ContactsVC: UIViewController {
         setupaddButton()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadFriends()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        friendsList = []
+    }
+    
     func setupTableView(){
         view.addSubview(tableView)
         tableView.delegate = self
@@ -39,6 +49,26 @@ class ContactsVC: UIViewController {
         
     }
 
+    func loadFriends(){
+        Constants.db.reference().child("friendsList").child(CurrentUser.uid).observe(.value) { (snap) in
+            guard let friendKey = snap.value as? [String: Any] else { return }
+            for dict in friendKey {
+                Constants.db.reference().child("users").child(dict.key).observe(.value) { (snap) in
+                    guard let values = snap.value as? [String: Any] else { return }
+                    let friend = FriendInfo()
+                    friend.id = dict.key
+                    friend.email = values["email"] as? String
+                    friend.profileImage = values["profileImage"] as? String
+                    friend.name = values["name"] as? String
+                    self.friendsList.append(friend)
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                    }
+                }
+            }
+        }
+    }
+    
     func setupaddButton(){
         addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonPressed))
         navigationItem.rightBarButtonItem = addButton

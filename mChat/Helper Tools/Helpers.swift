@@ -73,6 +73,25 @@ extension UIViewController {
         ]
     }
     
+    func configureLabels(_ label: UILabel, _ text: String,  color: UIColor, size: CGFloat){
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont(name: "Helvetica Neue", size: size)
+        label.text = text
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        label.textColor = color
+    }
+    
+    func configureLabelConstraints(view: UIView, label: UILabel, topEqualTo: UIView, topConst: CGFloat) -> [NSLayoutConstraint]{
+        return [
+            label.topAnchor.constraint(equalTo: topEqualTo.bottomAnchor, constant: topConst),
+            label.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5),
+            label.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5),
+            label.heightAnchor.constraint(greaterThanOrEqualToConstant: 25)
+        ]
+        
+    }
+    
 }
 
 extension UIImageView {

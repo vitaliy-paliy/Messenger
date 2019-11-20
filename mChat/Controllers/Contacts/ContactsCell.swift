@@ -30,7 +30,7 @@ class ContactsCell: UITableViewCell {
     
     func setupImage(){
         profileImage.contentMode = .scaleAspectFill
-        profileImage.layer.cornerRadius = 10
+        profileImage.layer.cornerRadius = 40
         profileImage.layer.masksToBounds = true
         profileImage.translatesAutoresizingMaskIntoConstraints = false
         let constraints = [
