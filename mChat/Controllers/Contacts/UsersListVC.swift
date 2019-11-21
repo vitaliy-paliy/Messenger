@@ -40,10 +40,13 @@ class UsersListVC: UIViewController {
             user.profileImage = values["profileImage"] as? String
             user.name = values["name"] as? String
             user.id = snapshot.key
-            self.users.append(user)
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
+            if user.id != CurrentUser.uid {
+                self.users.append(user)
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
             }
+            
         }
     }
     
@@ -91,5 +94,5 @@ extension UsersListVC: UITableViewDelegate, UITableViewDataSource {
         controller.modalPresentationStyle = .fullScreen
         present(controller, animated: true, completion: nil)
     }
-    
+
 }

@@ -48,7 +48,7 @@ class ContactsVC: UIViewController {
         NSLayoutConstraint.activate(constraints)
         
     }
-
+    
     func loadFriends(){
         Constants.db.reference().child("friendsList").child(CurrentUser.uid).observe(.value) { (snap) in
             guard let friendKey = snap.value as? [String: Any] else { return }
@@ -96,5 +96,16 @@ extension ContactsVC: UITableViewDataSource, UITableViewDelegate {
         cell.friendEmail.text = friend.email
         return cell
     }
- 
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let friend = friendsList[indexPath.row]
+        let controller = ChatVC()
+        controller.friendEmail = friend.email
+        controller.friendProfileImage = friend.profileImage
+        controller.friendName = friend.name
+        controller.friendId = friend.id
+        show(controller, sender: nil)
+    }
+    
+    
 }

@@ -1,5 +1,5 @@
 //
-//  ChatsVC.swift
+//  ConversationsVC.swift
 //  mChat
 //
 //  Created by Vitaliy Paliy on 11/17/19.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ChatsVC: UIViewController {
+class ConversationsVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()

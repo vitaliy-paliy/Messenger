@@ -18,7 +18,7 @@ class ChatTabBar: UITabBarController{
     }
     
     func setupVC(){
-        let chats = UINavigationController(rootViewController: ChatsVC())
+        let chats = UINavigationController(rootViewController: ConversationsVC())
         let contacts = UINavigationController(rootViewController: ContactsVC())
         let settings = UINavigationController(rootViewController: SettingsVC())
         chats.title = "Chats"
