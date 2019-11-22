@@ -17,4 +17,5 @@ class Constants {
         static let appColor = UIColor(displayP3Red: 71/255, green: 94/255, blue: 208/255, alpha: 1)
     }
     
+    
 }

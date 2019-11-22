@@ -50,10 +50,10 @@ class ContactsVC: UIViewController {
     }
     
     func loadFriends(){
-        Constants.db.reference().child("friendsList").child(CurrentUser.uid).observe(.value) { (snap) in
+        Constants.db.reference().child("friendsList").child(CurrentUser.uid).observeSingleEvent(of: .value) { (snap) in
             guard let friendKey = snap.value as? [String: Any] else { return }
             for dict in friendKey {
-                Constants.db.reference().child("users").child(dict.key).observe(.value) { (snap) in
+                Constants.db.reference().child("users").child(dict.key).observeSingleEvent(of: .value) { (snap) in
                     guard let values = snap.value as? [String: Any] else { return }
                     let friend = FriendInfo()
                     friend.id = dict.key

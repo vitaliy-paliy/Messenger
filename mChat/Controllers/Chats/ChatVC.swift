@@ -127,7 +127,6 @@ class ChatVC: UIViewController, UITextFieldDelegate{
                 print(error.localizedDescription)
                 return
             }
-            print("hi")
             let userMessages = Database.database().reference().child("messagesIds").child(senderId)
             let friendMessages = Database.database().reference().child("messagesIds").child(friendId)
             let messageId = nodeRef.key
@@ -139,19 +138,22 @@ class ChatVC: UIViewController, UITextFieldDelegate{
     }
     
     func getMessages(){
-        let db = Database.database().reference().child("messages")
-        db.observe(.childAdded) { (snap) in
-            guard let values = snap.value as? [String: Any] else { return }
-            let message = Messages()
-            message.sender = values["sender"] as? String
-            message.recipient = values["recipient"] as? String
-            message.message = values["message"] as? String
-            message.time = values["time"] as? NSNumber
-            DispatchQueue.main.async {
-                self.messages.append(message)
-                self.tableView.reloadData()
+        let messagesIds = Database.database().reference().child("messagesIds").child(CurrentUser.uid)
+        messagesIds.observe(.childAdded) { (snap) in
+            Constants.db.reference().child("messages").child(snap.key).observeSingleEvent(of: .value) { (data) in
+                guard let values = data.value as? [String: Any] else {  return }
+                let message = Messages()
+                message.sender = values["sender"] as? String
+                message.recipient = values["recipient"] as? String
+                message.message = values["message"] as? String
+                message.time = values["time"] as? NSNumber
+                if message.determineUser() == self.friendId{
+                    self.messages.append(message)
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                    }
+                }
             }
-            
         }
     }
     

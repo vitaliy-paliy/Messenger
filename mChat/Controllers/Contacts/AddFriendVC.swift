@@ -117,7 +117,6 @@ class AddFriendVC: UIViewController, UINavigationBarDelegate{
     }
     
     func updateFriendship(user: DatabaseReference, friend: DatabaseReference, status: Bool){
-        print("ho")
         user.setValue(status)
         friend.setValue(status)
         isFriend = status
@@ -133,8 +132,6 @@ class AddFriendVC: UIViewController, UINavigationBarDelegate{
             let f = values
             if f[self.friendId] as? Bool != nil && f[self.friendId] as? Bool == true {
                 self.isFriend = true
-            }else{
-                print("false")
             }
         }
         setupUI()

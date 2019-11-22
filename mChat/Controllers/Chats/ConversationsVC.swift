@@ -35,30 +35,38 @@ class ConversationsVC: UIViewController {
     }
     
     func loadMessages(){
-        let ref = Database.database().reference().child("messagesIds").child(CurrentUser.uid)
-        ref.observe(.childAdded) { (snap) in
-            let messagesId = snap.key
-            print("hi")
-            let db = Database.database().reference().child("messages").child(messagesId)
-            db.observeSingleEvent(of: .value) { (data) in
-                guard let values = data.value as? [String: Any] else { return }
-                print(values)
-                let message = Messages()
-                message.sender = values["sender"] as? String
-                message.recipient = values["recipient"] as? String
-                message.message = values["message"] as? String
-                message.time = values["time"] as? NSNumber
-                if let recipient = message.recipient {
-                    self.recentMessages[recipient] = message
-                    self.messages = Array(self.recentMessages.values)
-                }
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
+        Constants.db.reference().child("friendsList").child(CurrentUser.uid).observe(.value) { (snap) in
+            guard let friendKey = snap.value as? [String: Any] else { return }
+            for dict in friendKey {
+                self.loadMessagesHandler(dict.key, value: dict.value)
             }
         }
-        
     }
+    
+   func loadMessagesHandler(_ key: Any, value: Any){
+          let ref = Database.database().reference().child("messagesIds").child(CurrentUser.uid)
+          ref.observe(.childAdded) { (snap) in
+              let messagesId = snap.key
+              let db = Database.database().reference().child("messages").child(messagesId)
+              db.observe(.value) { (data) in
+                  guard let values = data.value as? [String: Any] else { return }
+                  let message = Messages()
+                  message.sender = values["sender"] as? String
+                  message.recipient = values["recipient"] as? String
+                  message.message = values["message"] as? String
+                  message.time = values["time"] as? NSNumber
+                  if let recipient = message.recipient{
+                    if value as? Int == 1 && key as? String == message.recipient{
+                          self.recentMessages[recipient] = message
+                          self.messages = Array(self.recentMessages.values)
+                          DispatchQueue.main.async {
+                              self.tableView.reloadData()
+                          }
+                      }
+                  }
+              }
+          }
+      }
     
     func setupTableView(){
         view.addSubview(tableView)
@@ -75,6 +83,17 @@ class ConversationsVC: UIViewController {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    func nextControllerHandler(usr: FriendInfo){
+        let controller = ChatVC()
+        controller.modalPresentationStyle = .fullScreen
+        controller.friendName = usr.name
+        controller.friendEmail = usr.email
+        controller.friendProfileImage = usr.profileImage
+        controller.friendId = usr.id
+        show(controller, sender: nil)
+    }
+    
 }
 
 extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
@@ -86,33 +105,44 @@ extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ConversationsCell") as! ConversationsCell
         let recent = messages[indexPath.row]
-        let user: String?
-        if recent.sender == CurrentUser.uid {
-            user = recent.recipient
-        }else{
-            user = recent.sender
+        let user = recent.determineUser()
+        let ref = Constants.db.reference().child("users").child(user)
+        ref.observeSingleEvent(of: .value) { (snap) in
+            guard let values = snap.value as? [String: Any] else { return }
+            let friend = FriendInfo()
+            friend.email = values["email"] as? String
+            friend.id = user
+            friend.name = values["name"] as? String
+            friend.profileImage = values["profileImage"] as? String
+            cell.friendName.text = friend.name
+            cell.profileImage.loadImage(url: friend.profileImage)
+            cell.recentMessage.text = recent.message
+            self.friends.append(friend)
         }
-        if let id = user {
-            let ref = Constants.db.reference().child("users").child(id)
-            ref.observeSingleEvent(of: .value) { (snap) in
-                guard let values = snap.value as? [String: Any] else { return }
-                let friend = FriendInfo()
-                friend.email = values["email"] as? String
-                friend.id = id
-                friend.name = values["name"] as? String
-                friend.profileImage = values["profileImage"] as? String
-                cell.friendName.text = friend.name
-                cell.profileImage.loadImage(url: friend.profileImage)
-                self.friends.append(friend)
-            }
-        }
-        cell.recentMessage.text = recent.message
-        print(messages.count)
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        let chat = messages[indexPath.row]
+        var user: String?
+        if chat.recipient == CurrentUser.uid{
+            user = chat.sender
+            for usr in friends {
+                if usr.id == user {
+                    nextControllerHandler(usr: usr)
+                    break
+                }
+            }
+        }else{
+            user = chat.recipient
+            for usr in friends {
+                if usr.id == user {
+                    nextControllerHandler(usr: usr)
+                    break
+                }
+            }
+        }
     }
     
 }

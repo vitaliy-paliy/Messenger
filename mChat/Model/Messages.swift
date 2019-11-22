@@ -7,10 +7,20 @@
 //
 
 import UIKit
+import Firebase
 
 class Messages {
     var message: String!
     var sender: String!
     var recipient: String!
     var time: NSNumber!
+    
+    func determineUser() -> String{
+        if sender == CurrentUser.uid {
+            return recipient
+        }else{
+            return sender
+        }
+    }
+    
 }
