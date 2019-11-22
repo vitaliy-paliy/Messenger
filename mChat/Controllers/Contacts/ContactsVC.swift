@@ -36,7 +36,7 @@ class ContactsVC: UIViewController {
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.rowHeight = 100
+        tableView.rowHeight = 80
         tableView.register(ContactsCell.self, forCellReuseIdentifier: "ContactsCell")
         tableView.translatesAutoresizingMaskIntoConstraints = false
         let constraints = [
@@ -60,7 +60,9 @@ class ContactsVC: UIViewController {
                     friend.email = values["email"] as? String
                     friend.profileImage = values["profileImage"] as? String
                     friend.name = values["name"] as? String
-                    self.friendsList.append(friend)
+                    if dict.value as? Int == 1 {
+                        self.friendsList.append(friend)
+                    }
                     DispatchQueue.main.async {
                         self.tableView.reloadData()
                     }

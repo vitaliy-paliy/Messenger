@@ -1,24 +1,24 @@
 //
-//  ContactsCell.swift
+//  ConversationsVC.swift
 //  mChat
 //
-//  Created by Vitaliy Paliy on 11/17/19.
+//  Created by Vitaliy Paliy on 11/21/19.
 //  Copyright © 2019 PALIY. All rights reserved.
 //
 
 import UIKit
 
-class ContactsCell: UITableViewCell {
-
+class ConversationsCell: UITableViewCell {
+    
     var profileImage = UIImageView()
     var friendName = UILabel()
-    var friendEmail = UILabel()
+    var recentMessage = UILabel()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addSubview(profileImage)
         addSubview(friendName)
-        addSubview(friendEmail)
+        addSubview(recentMessage)
         setupImage()
         setupNameLabel()
         setupEmailLabel()
@@ -43,13 +43,13 @@ class ContactsCell: UITableViewCell {
     }
     
     func setupEmailLabel(){
-        friendEmail.numberOfLines = 0
-        friendEmail.adjustsFontSizeToFitWidth = true
-        friendEmail.textColor = .lightGray
-        friendEmail.translatesAutoresizingMaskIntoConstraints = false
+        recentMessage.numberOfLines = 0
+        recentMessage.adjustsFontSizeToFitWidth = true
+        recentMessage.textColor = .lightGray
+        recentMessage.translatesAutoresizingMaskIntoConstraints = false
         let constraints = [
-            friendEmail.topAnchor.constraint(equalTo: friendName.bottomAnchor, constant: 0),
-            friendEmail.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 15)
+            recentMessage.topAnchor.constraint(equalTo: friendName.bottomAnchor, constant: 0),
+            recentMessage.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 15)
         ]
         NSLayoutConstraint.activate(constraints)
     }
@@ -64,5 +64,4 @@ class ContactsCell: UITableViewCell {
         ]
         NSLayoutConstraint.activate(constraints)
     }
-    
 }

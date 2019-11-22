@@ -122,7 +122,19 @@ class ChatVC: UIViewController, UITextFieldDelegate{
         guard let friendId = friendId else { return }
         guard let senderId = CurrentUser.uid else { return }
         let values = ["message": messageTF.text!, "sender": senderId, "recipient": friendId, "time": Date().timeIntervalSince1970] as [String : Any]
-        nodeRef.updateChildValues(values)
+        nodeRef.updateChildValues(values) { (error, ref) in
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            print("hi")
+            let userMessages = Database.database().reference().child("messagesIds").child(senderId)
+            let friendMessages = Database.database().reference().child("messagesIds").child(friendId)
+            let messageId = nodeRef.key
+            let userValues = [messageId: 1]
+            userMessages.updateChildValues(userValues)
+            friendMessages.updateChildValues(userValues)
+        }
         self.messageTF.text = ""
     }
     

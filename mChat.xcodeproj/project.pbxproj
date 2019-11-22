@@ -31,6 +31,7 @@
 		CBF907F62380B83600EF8925 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CBF907F42380B83600EF8925 /* LaunchScreen.storyboard */; };
 		CBF907FE2380B8CE00EF8925 /* SignInVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF907FD2380B8CE00EF8925 /* SignInVC.swift */; };
 		CBFC53B92387259E00CC4C91 /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFC53B82387259E00CC4C91 /* Messages.swift */; };
+		CBFC53BB23873B5600CC4C91 /* ConverstaionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFC53BA23873B5600CC4C91 /* ConverstaionsCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +63,7 @@
 		CBF907F72380B83600EF8925 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		CBF907FD2380B8CE00EF8925 /* SignInVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInVC.swift; sourceTree = "<group>"; };
 		CBFC53B82387259E00CC4C91 /* Messages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
+		CBFC53BA23873B5600CC4C91 /* ConverstaionsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConverstaionsCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +141,7 @@
 			children = (
 				CBF644F62381C26B004830C6 /* ConversationsVC.swift */,
 				CB08304A238709BD002A1861 /* ChatVC.swift */,
+				CBFC53BA23873B5600CC4C91 /* ConverstaionsCell.swift */,
 			);
 			path = Chats;
 			sourceTree = "<group>";
@@ -326,6 +329,7 @@
 				CB08304B238709BD002A1861 /* ChatVC.swift in Sources */,
 				CBF907EA2380B83500EF8925 /* AppDelegate.swift in Sources */,
 				CBCC30802383634C00E36E39 /* UsersListVC.swift in Sources */,
+				CBFC53BB23873B5600CC4C91 /* ConverstaionsCell.swift in Sources */,
 				CBF644F12381C204004830C6 /* ChatTabBar.swift in Sources */,
 				CB2717382381E775003A4D46 /* Helpers.swift in Sources */,
 				CBF907EC2380B83500EF8925 /* SceneDelegate.swift in Sources */,
