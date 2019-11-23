@@ -36,14 +36,14 @@ class ConversationsVC: UIViewController {
     
     func loadMessages(){
         Constants.db.reference().child("friendsList").child(CurrentUser.uid).observe(.value) { (snap) in
-            guard let friendKey = snap.value as? [String: Any] else { return }
-            for dict in friendKey {
-                self.loadMessagesHandler(dict.key, value: dict.value)
+            guard let friend = snap.value as? [String: Any] else { return }
+            for key in friend.keys{
+                self.loadMessagesHandler(key)
             }
         }
     }
     
-   func loadMessagesHandler(_ key: Any, value: Any){
+   func loadMessagesHandler(_ key: String){
           let ref = Database.database().reference().child("messagesIds").child(CurrentUser.uid)
           ref.observe(.childAdded) { (snap) in
               let messagesId = snap.key
@@ -56,7 +56,7 @@ class ConversationsVC: UIViewController {
                   message.message = values["message"] as? String
                   message.time = values["time"] as? NSNumber
                   if let recipient = message.recipient{
-                    if value as? Int == 1 && key as? String == message.recipient{
+                    if key == message.recipient{
                           self.recentMessages[recipient] = message
                           self.messages = Array(self.recentMessages.values)
                           DispatchQueue.main.async {

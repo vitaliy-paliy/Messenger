@@ -51,19 +51,23 @@ class ContactsVC: UIViewController {
     
     func loadFriends(){
         Constants.db.reference().child("friendsList").child(CurrentUser.uid).observeSingleEvent(of: .value) { (snap) in
-            guard let friendKey = snap.value as? [String: Any] else { return }
-            for dict in friendKey {
-                Constants.db.reference().child("users").child(dict.key).observeSingleEvent(of: .value) { (snap) in
-                    guard let values = snap.value as? [String: Any] else { return }
+            guard let friends = snap.value as? [String: Any] else {
+                self.friendsList = []
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+                return
+            }
+            for dict in friends.keys {
+                Constants.db.reference().child("users").child(dict).observe(.value) { (data) in
+                    guard let values = data.value as? [String: Any] else { return }
                     let friend = FriendInfo()
-                    friend.id = dict.key
+                    friend.id = dict
                     friend.email = values["email"] as? String
                     friend.profileImage = values["profileImage"] as? String
                     friend.name = values["name"] as? String
-                    if dict.value as? Int == 1 {
-                        self.friendsList.append(friend)
-                    }
                     DispatchQueue.main.async {
+                        self.friendsList.append(friend)
                         self.tableView.reloadData()
                     }
                 }

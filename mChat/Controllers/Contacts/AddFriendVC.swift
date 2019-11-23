@@ -39,6 +39,9 @@ class AddFriendVC: UIViewController, UINavigationBarDelegate{
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+//        Constants.db.reference().child("friendsList").child(CurrentUser.uid).observe(.value) { (snap) in
+//            print(snap)
+//        }
         tabBarController?.tabBar.isHidden = true
     }
     
@@ -106,13 +109,15 @@ class AddFriendVC: UIViewController, UINavigationBarDelegate{
     }
     
     @objc func addButtonPressed(){
-        let user = Constants.db.reference().child("friendsList").child(CurrentUser.uid).child(friendId)
-        let friend = Constants.db.reference().child("friendsList").child(friendId).child(CurrentUser.uid)
+        let user = Constants.db.reference().child("friendsList").child(CurrentUser.uid).child(friendId).child(friendId)
+        let friend = Constants.db.reference().child("friendsList").child(friendId).child(CurrentUser.uid).child(CurrentUser.uid)
         if !isFriend {
             updateFriendship(user: user, friend: friend, status: !isFriend)
             self.showAlert(title: "Success", message: "User was successfully added to your friends list")
         }else{
-            updateFriendship(user: user, friend: friend, status: !isFriend)
+            user.removeValue()
+            friend.removeValue()
+            isFriend = false
         }
     }
     
@@ -123,11 +128,12 @@ class AddFriendVC: UIViewController, UINavigationBarDelegate{
     }
     
     @objc func backButtonPressed() {
+
         dismiss(animated: true, completion: nil)
     }
     
     func checkFriend(){
-        Constants.db.reference().child("friendsList").child(CurrentUser.uid).observe(.value) { (snapshot) in
+        Constants.db.reference().child("friendsList").child(CurrentUser.uid).child(friendId).observe(.value) { (snapshot) in
             guard let values = snapshot.value as? [String: Any] else { return }
             let f = values
             if f[self.friendId] as? Bool != nil && f[self.friendId] as? Bool == true {
