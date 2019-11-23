@@ -43,15 +43,21 @@ class ChatVC: UIViewController, UITextFieldDelegate{
         tabBarController?.tabBar.isHidden = false
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    }
+    
     func setupTableView(){
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.rowHeight = 100
+        tableView.separatorStyle = .none
+        tableView.backgroundColor = UIColor(white: 0.95, alpha: 1)
+        tableView.register(ChatCell.self, forCellReuseIdentifier: "ChatCell")
         let constraints = [
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: messageContainer.topAnchor,constant: -1),
+            tableView.bottomAnchor.constraint(equalTo: messageContainer.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ]
@@ -73,7 +79,7 @@ class ChatVC: UIViewController, UITextFieldDelegate{
             messageContainer.heightAnchor.constraint(equalToConstant: 45),
             topLine.leftAnchor.constraint(equalTo: view.leftAnchor),
             topLine.rightAnchor.constraint(equalTo: view.rightAnchor),
-            topLine.heightAnchor.constraint(equalToConstant: 0.3)
+            topLine.heightAnchor.constraint(equalToConstant: 0.5)
         ]
         NSLayoutConstraint.activate(constraints)
     }
@@ -170,11 +176,15 @@ extension ChatVC: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cellId")
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ChatCell") as! ChatCell
         let message = messages[indexPath.row]
-        cell.textLabel?.text = message.message
+        if message.sender == CurrentUser.uid {
+            cell.isIncoming = true
+        }else{
+            cell.isIncoming = false
+        }
+        cell.message.text = message.message
         return cell
     }
-    
     
 }

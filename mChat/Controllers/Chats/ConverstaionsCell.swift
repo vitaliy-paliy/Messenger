@@ -13,15 +13,18 @@ class ConversationsCell: UITableViewCell {
     var profileImage = UIImageView()
     var friendName = UILabel()
     var recentMessage = UILabel()
+    var timeLabel = UILabel()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         addSubview(profileImage)
         addSubview(friendName)
         addSubview(recentMessage)
+        addSubview(timeLabel)
         setupImage()
         setupNameLabel()
         setupEmailLabel()
+        setupTimeLabel()
     }
     
     required init?(coder: NSCoder) {
@@ -43,13 +46,24 @@ class ConversationsCell: UITableViewCell {
     }
     
     func setupEmailLabel(){
-        recentMessage.numberOfLines = 0
-        recentMessage.adjustsFontSizeToFitWidth = true
         recentMessage.textColor = .lightGray
         recentMessage.translatesAutoresizingMaskIntoConstraints = false
         let constraints = [
             recentMessage.topAnchor.constraint(equalTo: friendName.bottomAnchor, constant: 0),
-            recentMessage.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 15)
+            recentMessage.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 15),
+            recentMessage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -100)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    func setupTimeLabel(){
+        timeLabel.textAlignment = .left
+        timeLabel.numberOfLines = 0
+        timeLabel.textColor = .lightGray
+        timeLabel.translatesAutoresizingMaskIntoConstraints = false
+        let constraints = [
+            timeLabel.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            timeLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8)
         ]
         NSLayoutConstraint.activate(constraints)
     }

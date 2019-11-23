@@ -43,30 +43,30 @@ class ConversationsVC: UIViewController {
         }
     }
     
-   func loadMessagesHandler(_ key: String){
-          let ref = Database.database().reference().child("messagesIds").child(CurrentUser.uid)
-          ref.observe(.childAdded) { (snap) in
-              let messagesId = snap.key
-              let db = Database.database().reference().child("messages").child(messagesId)
-              db.observe(.value) { (data) in
-                  guard let values = data.value as? [String: Any] else { return }
-                  let message = Messages()
-                  message.sender = values["sender"] as? String
-                  message.recipient = values["recipient"] as? String
-                  message.message = values["message"] as? String
-                  message.time = values["time"] as? NSNumber
-                  if let recipient = message.recipient{
-                    if key == message.recipient{
-                          self.recentMessages[recipient] = message
-                          self.messages = Array(self.recentMessages.values)
-                          DispatchQueue.main.async {
-                              self.tableView.reloadData()
-                          }
-                      }
-                  }
-              }
-          }
-      }
+    func loadMessagesHandler(_ key: String){
+        let ref = Database.database().reference().child("messagesIds").child(CurrentUser.uid)
+        ref.observe(.childAdded) { (snap) in
+            let messagesId = snap.key
+            let db = Database.database().reference().child("messages").child(messagesId)
+            db.observe(.value) { (data) in
+                guard let values = data.value as? [String: Any] else { return }
+                let message = Messages()
+                message.sender = values["sender"] as? String
+                message.recipient = values["recipient"] as? String
+                message.message = values["message"] as? String
+                message.time = values["time"] as? NSNumber
+                if message.recipient == message.determineUser(){
+                    if key == message.recipient || CurrentUser.uid! == message.recipient{
+                        self.recentMessages[message.recipient] = message
+                        self.messages = Array(self.recentMessages.values)
+                        DispatchQueue.main.async {
+                            self.tableView.reloadData()
+                        }
+                    }
+                }
+            }
+        }
+    }
     
     func setupTableView(){
         view.addSubview(tableView)
@@ -105,6 +105,8 @@ extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ConversationsCell") as! ConversationsCell
         let recent = messages[indexPath.row]
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "hh:mm a"
         let user = recent.determineUser()
         let ref = Constants.db.reference().child("users").child(user)
         ref.observeSingleEvent(of: .value) { (snap) in
@@ -117,6 +119,8 @@ extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
             cell.friendName.text = friend.name
             cell.profileImage.loadImage(url: friend.profileImage)
             cell.recentMessage.text = recent.message
+            let date = NSDate(timeIntervalSince1970: recent.time.doubleValue)
+            cell.timeLabel.text = "\(dateFormatter.string(from: date as Date))"
             self.friends.append(friend)
         }
         return cell

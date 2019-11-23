@@ -14,6 +14,7 @@
 		CB27173D2381EFFA003A4D46 /* SelectProfileImageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB27173C2381EFFA003A4D46 /* SelectProfileImageVC.swift */; };
 		CB65C64723831EA300F2B5A3 /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB65C64623831EA300F2B5A3 /* CurrentUser.swift */; };
 		CB65C64C2383326300F2B5A3 /* ProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB65C64B2383326300F2B5A3 /* ProfileCell.swift */; };
+		CB8DEAAC2388C985001EDF19 /* ChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8DEAAB2388C985001EDF19 /* ChatCell.swift */; };
 		CB9525992380D5BB0006A76A /* SignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9525982380D5BB0006A76A /* SignUpVC.swift */; };
 		CBAB592C2381E49700078B7D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CBAB592B2381E49600078B7D /* GoogleService-Info.plist */; };
 		CBBDE7AE238353A40040A296 /* UserInfo + FriendInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDE7AD238353A40040A296 /* UserInfo + FriendInfo.swift */; };
@@ -44,6 +45,7 @@
 		CB27173C2381EFFA003A4D46 /* SelectProfileImageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectProfileImageVC.swift; sourceTree = "<group>"; };
 		CB65C64623831EA300F2B5A3 /* CurrentUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
 		CB65C64B2383326300F2B5A3 /* ProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCell.swift; sourceTree = "<group>"; };
+		CB8DEAAB2388C985001EDF19 /* ChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCell.swift; sourceTree = "<group>"; };
 		CB9525982380D5BB0006A76A /* SignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVC.swift; sourceTree = "<group>"; };
 		CBAB592B2381E49600078B7D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CBBDE7AD238353A40040A296 /* UserInfo + FriendInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInfo + FriendInfo.swift"; sourceTree = "<group>"; };
@@ -140,8 +142,9 @@
 			isa = PBXGroup;
 			children = (
 				CBF644F62381C26B004830C6 /* ConversationsVC.swift */,
-				CB08304A238709BD002A1861 /* ChatVC.swift */,
 				CBFC53BA23873B5600CC4C91 /* ConverstaionsCell.swift */,
+				CB08304A238709BD002A1861 /* ChatVC.swift */,
+				CB8DEAAB2388C985001EDF19 /* ChatCell.swift */,
 			);
 			path = Chats;
 			sourceTree = "<group>";
@@ -337,6 +340,7 @@
 				CBF644F72381C26B004830C6 /* ConversationsVC.swift in Sources */,
 				CBCC3084238365B500E36E39 /* UsersListCell.swift in Sources */,
 				CBF644FD2381D384004830C6 /* ContactsCell.swift in Sources */,
+				CB8DEAAC2388C985001EDF19 /* ChatCell.swift in Sources */,
 				CBF644FB2381C28D004830C6 /* SettingsVC.swift in Sources */,
 				CBCC30862383722500E36E39 /* AddFriendVC.swift in Sources */,
 				CBF907FE2380B8CE00EF8925 /* SignInVC.swift in Sources */,

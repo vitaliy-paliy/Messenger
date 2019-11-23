@@ -60,6 +60,22 @@ class SettingsVC: UIViewController {
 }
 
 extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
+    
+// TODO: Add Appearence etc.
+//    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+//        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 35))
+//        footerView.backgroundColor = UIColor(white: 0.90, alpha: 1)
+//        return footerView
+//    }
+//
+//    func numberOfSections(in tableView: UITableView) -> Int {
+//        return 3
+//    }
+//
+//    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+//        return 35
+//    }
+//
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
