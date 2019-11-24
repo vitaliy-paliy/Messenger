@@ -20,8 +20,8 @@ class ChatCell: UITableViewCell {
             message.textColor = isIncoming ? .white : .black
             messageBackground.backgroundColor = isIncoming ? UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1) : .white
             if isIncoming {
-                incomingConstraint.isActive = true
                 outcomingConstraint.isActive = false
+                incomingConstraint.isActive = true
             }else{
                 incomingConstraint.isActive = false
                 outcomingConstraint.isActive = true
@@ -67,7 +67,6 @@ class ChatCell: UITableViewCell {
         ]
         outcomingConstraint = message.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24)
         incomingConstraint = message.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24)
-        incomingConstraint.isActive = true
         NSLayoutConstraint.activate(constraints)
     }
     
