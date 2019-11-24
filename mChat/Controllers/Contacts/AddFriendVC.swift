@@ -19,7 +19,6 @@ class AddFriendVC: UIViewController, UINavigationBarDelegate{
     
     var nameLabel = UILabel()
     var emailLabel = UILabel()
-    var backButton = UIButton(type: .system)
     var image = UIImageView()
     var addFriendButton = UIButton(type: .system)
     var container = UIView()
@@ -39,9 +38,6 @@ class AddFriendVC: UIViewController, UINavigationBarDelegate{
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        Constants.db.reference().child("friendsList").child(CurrentUser.uid).observe(.value) { (snap) in
-//            print(snap)
-//        }
         tabBarController?.tabBar.isHidden = true
     }
     
@@ -86,26 +82,10 @@ class AddFriendVC: UIViewController, UINavigationBarDelegate{
     }
     
     func setupButtons(){
-        view.addSubview(backButton)
         view.addSubview(addFriendButton)
-        backButton.translatesAutoresizingMaskIntoConstraints = false
-        backButton.setImage(UIImage(systemName: "chevron.left"), for: .normal)
-        backButton.layer.cornerRadius = 20
-        backButton.backgroundColor = Constants.Colors.appColor
-        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
-        backButton.tintColor = .white
-        
         setupButton(addFriendButton, "Add Friend")
         NSLayoutConstraint.activate(configureButtonsConstraints(addFriendButton, emailLabel, 50, 40, 150))
         addFriendButton.addTarget(self, action: #selector(addButtonPressed), for: .touchUpInside)
-        
-        let constraints = [
-            backButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 45),
-            backButton.heightAnchor.constraint(equalToConstant: 40),
-            backButton.widthAnchor.constraint(equalToConstant: 40),
-            backButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20)
-        ]
-        NSLayoutConstraint.activate(constraints)
     }
     
     @objc func addButtonPressed(){
@@ -125,11 +105,6 @@ class AddFriendVC: UIViewController, UINavigationBarDelegate{
         user.setValue(status)
         friend.setValue(status)
         isFriend = status
-    }
-    
-    @objc func backButtonPressed() {
-
-        dismiss(animated: true, completion: nil)
     }
     
     func checkFriend(){

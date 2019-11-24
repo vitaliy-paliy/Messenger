@@ -92,7 +92,7 @@ extension UsersListVC: UITableViewDelegate, UITableViewDataSource {
         controller.friendId = selectedUser.id
         controller.profileImage = selectedUser.profileImage
         controller.modalPresentationStyle = .fullScreen
-        present(controller, animated: true, completion: nil)
+        show(controller, sender: nil)
     }
 
 }

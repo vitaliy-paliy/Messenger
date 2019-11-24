@@ -59,15 +59,14 @@ class ChatCell: UITableViewCell {
     func setupMessageLabel() {
         message.numberOfLines = 0
         message.translatesAutoresizingMaskIntoConstraints = false
-        var constraints = [NSLayoutConstraint]()
-        constraints = [
+
+        let constraints = [
             message.topAnchor.constraint(equalTo: topAnchor, constant: 24),
             message.widthAnchor.constraint(lessThanOrEqualToConstant: 250),
             message.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16)
         ]
         outcomingConstraint = message.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24)
         incomingConstraint = message.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24)
-        outcomingConstraint.isActive = false
         incomingConstraint.isActive = true
         NSLayoutConstraint.activate(constraints)
     }

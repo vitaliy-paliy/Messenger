@@ -81,9 +81,7 @@ class ContactsVC: UIViewController {
     }
     
     @objc func addButtonPressed(){
-        let controller = UsersListVC()
-        controller.modalPresentationStyle = .none
-        show(controller, sender: nil)
+        
     }
     
 }
