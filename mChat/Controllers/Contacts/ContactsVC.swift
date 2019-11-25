@@ -81,7 +81,9 @@ class ContactsVC: UIViewController {
     }
     
     @objc func addButtonPressed(){
-        
+        let controller = UsersListVC()
+        controller.modalPresentationStyle = .fullScreen
+        show(controller, sender: nil)
     }
     
 }

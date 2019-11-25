@@ -68,10 +68,9 @@ class ConversationsVC: UIViewController {
                         self.recentMessages[message.sender] = message
                     }
                     self.messages = Array(self.recentMessages.values)
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                    }
-
+                }
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
                 }
             }
         }

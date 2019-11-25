@@ -11,7 +11,6 @@ import UIKit
 class UsersListVC: UIViewController {
 
     var users: [UserInfo] = []
-    
     var tableView = UITableView()
     
     override func viewDidLoad() {

@@ -26,10 +26,6 @@ class ChatVC: UIViewController, UITextFieldDelegate{
         super.viewDidLoad()
         navigationItem.title = "\(friendName!)"
         view.backgroundColor = .white
-        setupContainer()
-        setupTableView()
-        setupSendButton()
-        setupMessageTF()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -43,8 +39,24 @@ class ChatVC: UIViewController, UITextFieldDelegate{
         tabBarController?.tabBar.isHidden = false
     }
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+    override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+        var containerHeight: CGFloat?
+        var topConst: CGFloat?
+        if view.safeAreaInsets.bottom > 0 {
+            print("iphone 10 and higher")
+            containerHeight = 70
+            topConst = 12
+        }else{
+           print("iphone 8 or lower")
+            containerHeight = 45
+            topConst = 8
+        }
+        setupContainer(height: containerHeight!)
+        setupTableView()
+        setupSendButton(topConst!)
+        setupMessageTF(topConst!)
+        setupProfileImage()
     }
     
     func setupTableView(){
@@ -64,7 +76,27 @@ class ChatVC: UIViewController, UITextFieldDelegate{
         NSLayoutConstraint.activate(constraints)
     }
     
-    func setupContainer(){
+    func setupProfileImage(){
+        let friendImageButton = UIButton(type: .system)
+        let image = UIImageView()
+        image.loadImage(url: friendProfileImage)
+        friendImageButton.addSubview(image)
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.contentMode = .scaleAspectFill
+        image.layer.cornerRadius = 16
+        image.layer.masksToBounds = true
+        let constraints = [
+            image.leadingAnchor.constraint(equalTo: friendImageButton.leadingAnchor),
+            image.centerYAnchor.constraint(equalTo: friendImageButton.centerYAnchor),
+            image.heightAnchor.constraint(equalToConstant: 32),
+            image.widthAnchor.constraint(equalToConstant: 32)
+        ]
+        NSLayoutConstraint.activate(constraints)
+        friendImageButton.addTarget(self, action: #selector(profileImageTapped), for: .touchUpInside)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: friendImageButton)
+    }
+    
+    func setupContainer(height: CGFloat){
         messageContainer.translatesAutoresizingMaskIntoConstraints = false
         messageContainer.backgroundColor = .white
         view.addSubview(messageContainer)
@@ -76,7 +108,7 @@ class ChatVC: UIViewController, UITextFieldDelegate{
             messageContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             messageContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             messageContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            messageContainer.heightAnchor.constraint(equalToConstant: 45),
+            messageContainer.heightAnchor.constraint(equalToConstant: height),
             topLine.leftAnchor.constraint(equalTo: view.leftAnchor),
             topLine.rightAnchor.constraint(equalTo: view.rightAnchor),
             topLine.heightAnchor.constraint(equalToConstant: 0.5)
@@ -84,21 +116,20 @@ class ChatVC: UIViewController, UITextFieldDelegate{
         NSLayoutConstraint.activate(constraints)
     }
     
-    func setupSendButton(){
+    func setupSendButton(_ topConst: CGFloat){
         messageContainer.addSubview(sendButton)
         sendButton.translatesAutoresizingMaskIntoConstraints = false
         sendButton.setTitle("Send", for: .normal)
         let constraints = [
+            sendButton.topAnchor.constraint(equalTo: messageContainer.topAnchor, constant: topConst),
             sendButton.trailingAnchor.constraint(equalTo: messageContainer.trailingAnchor, constant: -8),
-            sendButton.centerYAnchor.constraint(equalTo: messageContainer.centerYAnchor),
             sendButton.widthAnchor.constraint(equalToConstant: 60),
-            sendButton.heightAnchor.constraint(equalTo: messageContainer.heightAnchor)
         ]
         NSLayoutConstraint.activate(constraints)
         sendButton.addTarget(self, action: #selector(sendButtonPressed), for: .touchUpInside)
     }
     
-    func setupMessageTF(){
+    func setupMessageTF(_ topConst: CGFloat){
         messageContainer.addSubview(messageTF)
         messageTF.placeholder = "Write a message..."
         messageTF.layer.cornerRadius = 8
@@ -111,18 +142,20 @@ class ChatVC: UIViewController, UITextFieldDelegate{
         messageTF.layer.borderColor = UIColor.systemGray.cgColor
         messageTF.layer.masksToBounds = true
         messageTF.translatesAutoresizingMaskIntoConstraints = false
-        messageTF.backgroundColor = .white
+        messageTF.backgroundColor = UIColor(white: 0.95, alpha: 1)
         messageTF.delegate = self
         let constraints = [
             messageTF.leadingAnchor.constraint(equalTo: messageContainer.leadingAnchor, constant: 20),
             messageTF.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: 0),
-            messageTF.topAnchor.constraint(equalTo: messageContainer.topAnchor, constant: 8),
-            messageTF.bottomAnchor.constraint(equalTo: messageContainer.bottomAnchor, constant: -8),
+            messageTF.topAnchor.constraint(equalTo: messageContainer.topAnchor, constant: topConst),
+            messageTF.heightAnchor.constraint(equalToConstant: 30),
+            messageTF.centerYAnchor.constraint(equalTo: messageTF.centerYAnchor)
         ]
         NSLayoutConstraint.activate(constraints)
     }
         
     @objc func sendButtonPressed(){
+        guard messageTF.text!.count > 0 else { return }
         let ref = Constants.db.reference().child("messages")
         let nodeRef = ref.childByAutoId()
         guard let friendId = friendId else { return }
@@ -163,6 +196,10 @@ class ChatVC: UIViewController, UITextFieldDelegate{
                 }
             }
         }
+    }
+    
+    @objc func profileImageTapped(){
+        print("Hi")
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

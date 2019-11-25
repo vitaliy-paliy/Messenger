@@ -11,7 +11,7 @@ import Firebase
 
 class SettingsVC: UIViewController {
     
-    var leftBarButton = UIBarButtonItem()
+    var logoutButton = UIButton(type: .system)
     var tableView = UITableView()
     
     override func viewDidLoad() {
@@ -24,8 +24,11 @@ class SettingsVC: UIViewController {
     }
     
     func setupLeftNavButton(){
-        leftBarButton = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(logoutButtonPressed))
-        navigationItem.setLeftBarButton(leftBarButton, animated: true)
+        logoutButton.setTitle("Logout", for: .normal)
+        logoutButton.titleLabel?.font = UIFont(name: "Helvetica Neue", size: 18)
+        logoutButton.setTitleColor(.systemRed, for: .normal)
+        logoutButton.addTarget(self, action: #selector(logoutButtonPressed), for: .touchUpInside)
+        navigationItem.leftBarButtonItem = UIBarButtonItem(customView: logoutButton)
     }
     
     func setupTableView(){
