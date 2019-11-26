@@ -284,6 +284,14 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         return true
     }
     
+    func isIncomingHandler(sender: String) -> Bool{
+        if sender == CurrentUser.uid {
+            return true
+        }else{
+            return false
+        }
+    }
+    
 }
 
 extension ChatVC: UITableViewDataSource, UITableViewDelegate {
@@ -297,17 +305,15 @@ extension ChatVC: UITableViewDataSource, UITableViewDelegate {
         let message = messages[indexPath.row]
         if let image = message.mediaUrl {
             cell.isMediaMessage = true
+            cell.isIncoming = isIncomingHandler(sender: message.sender)
             cell.mediaMessage.loadImage(url: image)
+            return cell
         }else{
             cell.isMediaMessage = false
+            cell.isIncoming = isIncomingHandler(sender: message.sender)
             cell.message.text = message.message
+            return cell
         }
-        if message.sender == CurrentUser.uid {
-            cell.isIncoming = true
-        }else{
-            cell.isIncoming = false
-        }
-        return cell
     }
     
 }
