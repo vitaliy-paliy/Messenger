@@ -11,6 +11,7 @@ import UIKit
 class ContactsVC: UIViewController {
     
     var friendsList: [FriendInfo] = []
+    
     var tableView = UITableView()
     var addButton = UIBarButtonItem()
     
@@ -111,6 +112,7 @@ extension ContactsVC: UITableViewDataSource, UITableViewDelegate {
         controller.friendName = friend.name
         controller.friendId = friend.id
         show(controller, sender: nil)
+        friendsList = []
     }
     
     

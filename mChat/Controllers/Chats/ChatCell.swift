@@ -5,7 +5,6 @@
 //  Created by Vitaliy Paliy on 11/22/19.
 //  Copyright © 2019 PALIY. All rights reserved.
 //
-
 import UIKit
 
 class ChatCell: UITableViewCell {
@@ -14,6 +13,7 @@ class ChatCell: UITableViewCell {
     var messageBackground = UIView()
     var incomingConstraint: NSLayoutConstraint!
     var outcomingConstraint: NSLayoutConstraint!
+    var mediaMessage = UIImageView()
     
     var isIncoming: Bool! {
         didSet{
@@ -22,9 +22,29 @@ class ChatCell: UITableViewCell {
             if isIncoming {
                 outcomingConstraint.isActive = false
                 incomingConstraint.isActive = true
+                
             }else{
                 incomingConstraint.isActive = false
                 outcomingConstraint.isActive = true
+            }
+        }
+    }
+    
+    var isTextMessage: Bool! {
+        didSet{
+            if isTextMessage {
+                
+            }
+        }
+    }
+    
+    var isMediaMessage: Bool! {
+        didSet{
+            if isMediaMessage{
+                setupMediaMessage()
+            }else{
+                setupMessageLabel()
+                setupMessageBackground()
             }
         }
     }
@@ -34,8 +54,7 @@ class ChatCell: UITableViewCell {
         backgroundColor = .clear
         addSubview(messageBackground)
         addSubview(message)
-        setupMessageLabel()
-        setupMessageBackground()
+        addSubview(mediaMessage)
     }
     
     required init?(coder: NSCoder) {
@@ -67,6 +86,22 @@ class ChatCell: UITableViewCell {
         ]
         outcomingConstraint = message.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24)
         incomingConstraint = message.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24)
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    func setupMediaMessage(){
+        mediaMessage.translatesAutoresizingMaskIntoConstraints = false
+        mediaMessage.contentMode = .scaleAspectFill
+        mediaMessage.backgroundColor = .blue
+        mediaMessage.layer.cornerRadius = 16
+        mediaMessage.layer.masksToBounds = true
+        let constraints = [
+            mediaMessage.topAnchor.constraint(equalTo: topAnchor, constant: 24),
+            mediaMessage.widthAnchor.constraint(equalToConstant: 150),
+            mediaMessage.heightAnchor.constraint(equalToConstant: 150),
+        ]
+        outcomingConstraint = mediaMessage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24)
+        incomingConstraint = mediaMessage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24)
         NSLayoutConstraint.activate(constraints)
     }
     

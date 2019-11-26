@@ -9,16 +9,18 @@
 import UIKit
 import Firebase
 
-class ChatVC: UIViewController, UITextFieldDelegate{
+class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     
     var friendId: String!
     var friendName: String!
     var friendEmail: String!
     var friendProfileImage: String!
     var messages = [Messages]()
-
+    var imageToSend: UIImage!
+    
     var tableView = UITableView()
     var messageContainer = UIView()
+    var clipImageButton = UIButton(type: .system)
     var sendButton = UIButton(type: .system)
     var messageTF = UITextField()
     
@@ -44,16 +46,15 @@ class ChatVC: UIViewController, UITextFieldDelegate{
         var containerHeight: CGFloat?
         var topConst: CGFloat?
         if view.safeAreaInsets.bottom > 0 {
-            print("iphone 10 and higher")
             containerHeight = 70
             topConst = 12
         }else{
-           print("iphone 8 or lower")
             containerHeight = 45
             topConst = 8
         }
         setupContainer(height: containerHeight!)
         setupTableView()
+        setupImageClipButton(topConst!)
         setupSendButton(topConst!)
         setupMessageTF(topConst!)
         setupProfileImage()
@@ -116,6 +117,21 @@ class ChatVC: UIViewController, UITextFieldDelegate{
         NSLayoutConstraint.activate(constraints)
     }
     
+    func setupImageClipButton(_ topConst: CGFloat){
+        clipImageButton.setImage(UIImage(systemName: "paperclip"), for: .normal)
+        messageContainer.addSubview(clipImageButton)
+        clipImageButton.contentMode = .scaleAspectFill
+        clipImageButton.addTarget(self, action: #selector(clipImageButtonPressed), for: .touchUpInside)
+        clipImageButton.translatesAutoresizingMaskIntoConstraints = false
+        let constraints = [
+            clipImageButton.leadingAnchor.constraint(equalTo: messageContainer.leadingAnchor, constant: 8),
+            clipImageButton.topAnchor.constraint(equalTo: messageContainer.topAnchor, constant: topConst),
+            clipImageButton.widthAnchor.constraint(equalToConstant: 30),
+            clipImageButton.heightAnchor.constraint(equalToConstant: 30)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
     func setupSendButton(_ topConst: CGFloat){
         messageContainer.addSubview(sendButton)
         sendButton.translatesAutoresizingMaskIntoConstraints = false
@@ -145,7 +161,7 @@ class ChatVC: UIViewController, UITextFieldDelegate{
         messageTF.backgroundColor = UIColor(white: 0.95, alpha: 1)
         messageTF.delegate = self
         let constraints = [
-            messageTF.leadingAnchor.constraint(equalTo: messageContainer.leadingAnchor, constant: 20),
+            messageTF.leadingAnchor.constraint(equalTo: clipImageButton.trailingAnchor, constant: 8),
             messageTF.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: 0),
             messageTF.topAnchor.constraint(equalTo: messageContainer.topAnchor, constant: topConst),
             messageTF.heightAnchor.constraint(equalToConstant: 30),
@@ -153,21 +169,81 @@ class ChatVC: UIViewController, UITextFieldDelegate{
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    @objc func clipImageButtonPressed() {
+        openImagePicker(type: .photoLibrary)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
+            imageToSend = editedImage
+        }else if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+            imageToSend = originalImage
+        }
+        uploadImage(image: imageToSend)
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func openImagePicker(type: UIImagePickerController.SourceType){
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        picker.sourceType = type
+        picker.allowsEditing = true
+        present(picker, animated: true, completion: nil)
+    }
+    
+    func uploadImage(image: UIImage){
+        let mediaName = NSUUID().uuidString
+        let storageRef = Storage.storage().reference().child("message-img").child(mediaName)
+        if let jpegName = self.imageToSend.jpegData(compressionQuality: 0.1) {
+            storageRef.putData(jpegName, metadata: nil) { (metadata, error) in
+                if let error = error {
+                    print(error.localizedDescription)
+                    return
+                }
+                storageRef.downloadURL { (url, error) in
+                    guard let url = url else { return }
+                    self.sendMediaMessage(url: url.absoluteString)
+                }
+            }
+        }
         
-    @objc func sendButtonPressed(){
-        guard messageTF.text!.count > 0 else { return }
-        let ref = Constants.db.reference().child("messages")
-        let nodeRef = ref.childByAutoId()
-        guard let friendId = friendId else { return }
-        guard let senderId = CurrentUser.uid else { return }
-        let values = ["message": messageTF.text!, "sender": senderId, "recipient": friendId, "time": Date().timeIntervalSince1970] as [String : Any]
+    }
+    
+    func sendMediaMessage(url: String){
+        guard let sender = CurrentUser.uid else { return }
+        guard let recipient = friendId else { return }
+        let values = ["mediaUrl": url, "sender": sender, "time": Date().timeIntervalSince1970, "recipient": recipient] as [String: Any]
+        let messageRef = Constants.db.reference().child("messages")
+        let nodeRef = messageRef.childByAutoId()
         nodeRef.updateChildValues(values) { (error, ref) in
             if let error = error {
                 print(error.localizedDescription)
                 return
             }
-            let userMessages = Database.database().reference().child("messagesIds").child(senderId)
-            let friendMessages = Database.database().reference().child("messagesIds").child(friendId)
+            let userMessages = Database.database().reference().child("messagesIds").child(sender)
+            let friendMessages = Database.database().reference().child("messagesIds").child(recipient)
+            let messageId = nodeRef.key
+            let userValues = [messageId: 1]
+            userMessages.updateChildValues(userValues)
+            friendMessages.updateChildValues(userValues)
+        }
+    }
+    
+    @objc func sendButtonPressed(){
+        guard messageTF.text!.count > 1 else { return }
+        let ref = Constants.db.reference().child("messages")
+        let nodeRef = ref.childByAutoId()
+        guard let friend = friendId else { return }
+        guard let sender = CurrentUser.uid else { return }
+        let values = ["message": messageTF.text!, "sender": sender, "recipient": friend, "time": Date().timeIntervalSince1970] as [String : Any]
+        nodeRef.updateChildValues(values) { (error, ref) in
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            let userMessages = Database.database().reference().child("messagesIds").child(sender)
+            let friendMessages = Database.database().reference().child("messagesIds").child(friend)
             let messageId = nodeRef.key
             let userValues = [messageId: 1]
             userMessages.updateChildValues(userValues)
@@ -186,6 +262,7 @@ class ChatVC: UIViewController, UITextFieldDelegate{
                 message.recipient = values["recipient"] as? String
                 message.message = values["message"] as? String
                 message.time = values["time"] as? NSNumber
+                message.mediaUrl = values["mediaUrl"] as? String
                 if message.determineUser() == self.friendId{
                     self.messages.append(message)
                     DispatchQueue.main.async {
@@ -210,6 +287,7 @@ class ChatVC: UIViewController, UITextFieldDelegate{
 }
 
 extension ChatVC: UITableViewDataSource, UITableViewDelegate {
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return messages.count
     }
@@ -217,12 +295,18 @@ extension ChatVC: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ChatCell") as! ChatCell
         let message = messages[indexPath.row]
+        if let image = message.mediaUrl {
+            cell.isMediaMessage = true
+            cell.mediaMessage.loadImage(url: image)
+        }else{
+            cell.isMediaMessage = false
+            cell.message.text = message.message
+        }
         if message.sender == CurrentUser.uid {
             cell.isIncoming = true
         }else{
             cell.isIncoming = false
         }
-        cell.message.text = message.message
         return cell
     }
     

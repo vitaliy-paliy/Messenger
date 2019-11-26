@@ -14,6 +14,7 @@ class Messages {
     var sender: String!
     var recipient: String!
     var time: NSNumber!
+    var mediaUrl: String!
     
     func determineUser() -> String{
         if sender == CurrentUser.uid {
