@@ -15,7 +15,6 @@ class ConversationsVC: UIViewController {
     var recentMessages = [String: Messages]()
     var friends = [FriendInfo]()
     var tableView = UITableView()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Chats"
@@ -35,9 +34,8 @@ class ConversationsVC: UIViewController {
     }
     
     func loadMessages(){
-        Constants.db.reference().child("friendsList").child(CurrentUser.uid).observe(.value) { (snap) in
+        Constants.db.reference().child("friendsList").child(CurrentUser.uid).observeSingleEvent(of: .value) { (snap) in
             guard let friend = snap.value as? [String: Any] else {
-                self.messages = []
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
                 }
@@ -61,12 +59,8 @@ class ConversationsVC: UIViewController {
                 message.recipient = values["recipient"] as? String
                 message.message = values["message"] as? String
                 message.time = values["time"] as? NSNumber
-                if key == message.recipient || key == message.sender {
-                    if message.determineUser() == message.sender {
-                        self.recentMessages[message.recipient] = message
-                    }else{
-                        self.recentMessages[message.sender] = message
-                    }
+                if key == message.determineUser() {
+                    self.recentMessages[message.determineUser()] = message
                     self.messages = Array(self.recentMessages.values)
                 }
                 DispatchQueue.main.async {
@@ -126,7 +120,11 @@ extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
             friend.profileImage = values["profileImage"] as? String
             cell.friendName.text = friend.name
             cell.profileImage.loadImage(url: friend.profileImage)
-            cell.recentMessage.text = recent.message
+            if recent.message != nil {
+                cell.recentMessage.text = recent.message
+            }else{
+                cell.recentMessage.text = "[Media Message]"
+            }
             let date = NSDate(timeIntervalSince1970: recent.time.doubleValue)
             cell.timeLabel.text = "\(dateFormatter.string(from: date as Date))"
             self.friends.append(friend)

@@ -18,7 +18,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     var messages = [Messages]()
     var imageToSend: UIImage!
     
-    var tableView = UITableView()
+    var collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 50, height: 50), collectionViewLayout: UICollectionViewFlowLayout.init())
     var messageContainer = UIView()
     var clipImageButton = UIButton(type: .system)
     var sendButton = UIButton(type: .system)
@@ -53,26 +53,26 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
             topConst = 8
         }
         setupContainer(height: containerHeight!)
-        setupTableView()
+        setupCollectionView()
         setupImageClipButton(topConst!)
         setupSendButton(topConst!)
         setupMessageTF(topConst!)
         setupProfileImage()
     }
     
-    func setupTableView(){
-        view.addSubview(tableView)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.separatorStyle = .none
-        tableView.backgroundColor = UIColor(white: 0.95, alpha: 1)
-        tableView.register(ChatCell.self, forCellReuseIdentifier: "ChatCell")
+    func setupCollectionView(){
+        view.addSubview(collectionView)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.backgroundColor = UIColor(white: 0.95, alpha: 1)
+        collectionView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+        collectionView.register(ChatCell.self, forCellWithReuseIdentifier: "ChatCell")
         let constraints = [
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: messageContainer.topAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: messageContainer.topAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ]
         NSLayoutConstraint.activate(constraints)
     }
@@ -175,9 +175,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
-            imageToSend = editedImage
-        }else if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+        if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             imageToSend = originalImage
         }
         uploadImage(image: imageToSend)
@@ -188,7 +186,6 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         let picker = UIImagePickerController()
         picker.delegate = self
         picker.sourceType = type
-        picker.allowsEditing = true
         present(picker, animated: true, completion: nil)
     }
     
@@ -203,48 +200,38 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
                 }
                 storageRef.downloadURL { (url, error) in
                     guard let url = url else { return }
-                    self.sendMediaMessage(url: url.absoluteString)
+                    self.sendMediaMessage(url: url.absoluteString, image)
                 }
             }
         }
         
     }
     
-    func sendMediaMessage(url: String){
-        guard let sender = CurrentUser.uid else { return }
-        guard let recipient = friendId else { return }
-        let values = ["mediaUrl": url, "sender": sender, "time": Date().timeIntervalSince1970, "recipient": recipient] as [String: Any]
+    func sendMediaMessage(url: String, _ image: UIImage){
+        let values = ["sender": CurrentUser.uid!, "time": Date().timeIntervalSince1970, "recipient": friendId!, "mediaUrl": url] as [String: Any]
         let messageRef = Constants.db.reference().child("messages")
         let nodeRef = messageRef.childByAutoId()
-        nodeRef.updateChildValues(values) { (error, ref) in
-            if let error = error {
-                print(error.localizedDescription)
-                return
-            }
-            let userMessages = Database.database().reference().child("messagesIds").child(sender)
-            let friendMessages = Database.database().reference().child("messagesIds").child(recipient)
-            let messageId = nodeRef.key
-            let userValues = [messageId: 1]
-            userMessages.updateChildValues(userValues)
-            friendMessages.updateChildValues(userValues)
-        }
+        sendMessageHandler(ref: nodeRef, values: values)
     }
     
     @objc func sendButtonPressed(){
-        guard messageTF.text!.count > 1 else { return }
+        guard messageTF.text!.count > 0 else { return }
         let ref = Constants.db.reference().child("messages")
         let nodeRef = ref.childByAutoId()
-        guard let friend = friendId else { return }
-        guard let sender = CurrentUser.uid else { return }
-        let values = ["message": messageTF.text!, "sender": sender, "recipient": friend, "time": Date().timeIntervalSince1970] as [String : Any]
-        nodeRef.updateChildValues(values) { (error, ref) in
+        let values = ["message": messageTF.text!, "sender": CurrentUser.uid!, "recipient": friendId!, "time": Date().timeIntervalSince1970] as [String : Any]
+        sendMessageHandler(ref: nodeRef, values: values)
+        self.messageTF.text = ""
+    }
+    
+    func sendMessageHandler(ref: DatabaseReference, values: [String: Any]){
+        ref.updateChildValues(values) { (error, ref) in
             if let error = error {
                 print(error.localizedDescription)
                 return
             }
-            let userMessages = Database.database().reference().child("messagesIds").child(sender)
-            let friendMessages = Database.database().reference().child("messagesIds").child(friend)
-            let messageId = nodeRef.key
+            let userMessages = Database.database().reference().child("messagesIds").child(CurrentUser.uid)
+            let friendMessages = Database.database().reference().child("messagesIds").child(self.friendId)
+            let messageId = ref.key
             let userValues = [messageId: 1]
             userMessages.updateChildValues(userValues)
             friendMessages.updateChildValues(userValues)
@@ -266,9 +253,9 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
                 if message.determineUser() == self.friendId{
                     self.messages.append(message)
                     DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                        let indexPath = IndexPath(row: (self.messages.count - 1), section: 0)
-                        self.tableView.scrollToRow(at: indexPath, at: .bottom, animated: false)
+                        self.collectionView.reloadData()
+                        let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
+                        self.collectionView.scrollToItem(at: indexPath, at: .bottom, animated: true)
                     }
                 }
             }
@@ -286,34 +273,62 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     
     func isIncomingHandler(sender: String) -> Bool{
         if sender == CurrentUser.uid {
-            return true
-        }else{
             return false
+        }else{
+            return true
         }
     }
-    
+
 }
 
-extension ChatVC: UITableViewDataSource, UITableViewDelegate {
+extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        var height: CGFloat = 80
+        let message = messages[indexPath.row]
+        if let message = message.message {
+            height = calculateFrameInText(message: message).height + 10
+        }else if message.mediaUrl != nil{
+            height = 200
+        }
+        return CGSize(width: view.frame.width, height: height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return messages.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ChatCell") as! ChatCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ChatCell", for: indexPath) as! ChatCell
         let message = messages[indexPath.row]
-        if let image = message.mediaUrl {
-            cell.isMediaMessage = true
-            cell.isIncoming = isIncomingHandler(sender: message.sender)
-            cell.mediaMessage.loadImage(url: image)
-            return cell
-        }else{
-            cell.isMediaMessage = false
-            cell.isIncoming = isIncomingHandler(sender: message.sender)
-            cell.message.text = message.message
-            return cell
+        cell.message.text = message.message
+        if let message = message.message {
+            cell.backgroundWidthAnchor.constant = calculateFrameInText(message: message).width + 32
+        }else if message.mediaUrl != nil{
+            cell.backgroundWidthAnchor.constant = 200
         }
+        if let url = message.mediaUrl{
+            cell.mediaMessage.loadImage(url: url)
+            cell.mediaMessage.isHidden = false
+        }else{
+            cell.mediaMessage.isHidden = true
+        }
+        
+        if message.recipient == CurrentUser.uid {
+            cell.messageBackground.backgroundColor = .white
+            cell.message.textColor = .black
+            cell.outcomingMessage.isActive = false
+            cell.incomingMessage.isActive = true
+        }else{
+            cell.messageBackground.backgroundColor = UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1)
+            cell.message.textColor = .white
+            cell.incomingMessage.isActive = false
+            cell.outcomingMessage.isActive = true
+        }
+        return cell
     }
+    
+    
+    
     
 }

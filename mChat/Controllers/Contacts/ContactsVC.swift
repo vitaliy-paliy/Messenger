@@ -12,6 +12,7 @@ class ContactsVC: UIViewController {
     
     var friendsList: [FriendInfo] = []
     
+    var timer = Timer()
     var tableView = UITableView()
     var addButton = UIBarButtonItem()
     
@@ -67,12 +68,17 @@ class ContactsVC: UIViewController {
                     friend.email = values["email"] as? String
                     friend.profileImage = values["profileImage"] as? String
                     friend.name = values["name"] as? String
-                    DispatchQueue.main.async {
-                        self.friendsList.append(friend)
-                        self.tableView.reloadData()
-                    }
+                    self.friendsList.append(friend)
+                    self.timer.invalidate()
+                    self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReload), userInfo: nil, repeats: false)
                 }
             }
+        }
+    }
+    
+    @objc func handleReload(){
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
         }
     }
     

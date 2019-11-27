@@ -7,101 +7,72 @@
 //
 import UIKit
 
-class ChatCell: UITableViewCell {
-
+class ChatCell: UICollectionViewCell {
+    
     var message = UILabel()
     var messageBackground = UIView()
-    var incomingConstraint: NSLayoutConstraint!
-    var outcomingConstraint: NSLayoutConstraint!
-    var mediaMessage = UIImageView(image: UIImage(named: "DefaultUserImage"))
+    var mediaMessage = UIImageView()
+    var backgroundWidthAnchor: NSLayoutConstraint!
+    var outcomingMessage: NSLayoutConstraint!
+    var incomingMessage: NSLayoutConstraint!
     
-    var isIncoming: Bool! {
-        didSet{
-            message.textColor = isIncoming ? .white : .black
-            messageBackground.backgroundColor = isIncoming ? UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1) : .white
-            if isIncoming {
-                outcomingConstraint.isActive = false
-                incomingConstraint.isActive = true
-                
-            }else{
-                incomingConstraint.isActive = false
-                outcomingConstraint.isActive = true
-            }
-        }
-    }
-        
-    var isMediaMessage: Bool! {
-        didSet{
-            if isMediaMessage{
-                message.removeFromSuperview()
-                messageBackground.removeFromSuperview()
-                addSubview(mediaMessage)
-                setupMediaMessage()
-            }else{
-                mediaMessage.removeFromSuperview()
-                addSubview(messageBackground)
-                addSubview(message)
-                setupMessageLabel()
-                setupMessageBackground()
-            }
-        }
-    }
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        backgroundColor = .clear
-        
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        addSubview(messageBackground)
+        addSubview(message)
+        messageBackground.addSubview(mediaMessage)
+        setupBackgroundView()
+        setupMessage()
+        setupMediaMessage()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupMessageBackground(){
-        
-        messageBackground.backgroundColor = .blue
-        messageBackground.layer.cornerRadius = 16
-        
+    func setupBackgroundView(){
         messageBackground.translatesAutoresizingMaskIntoConstraints = false
+        messageBackground.layer.cornerRadius = 12
+        messageBackground.layer.masksToBounds = true
+        backgroundWidthAnchor = messageBackground.widthAnchor.constraint(equalToConstant: 200)
         let constraints = [
-            messageBackground.topAnchor.constraint(equalTo: message.topAnchor, constant: -6),
-            messageBackground.leadingAnchor.constraint(equalTo: message.leadingAnchor, constant: -16),
-            messageBackground.bottomAnchor.constraint(greaterThanOrEqualTo: message.bottomAnchor, constant: 6),
-            messageBackground.trailingAnchor.constraint(equalTo: message.trailingAnchor, constant: 16),
+            messageBackground.topAnchor.constraint(equalTo: topAnchor),
+            backgroundWidthAnchor!,
+            messageBackground.heightAnchor.constraint(equalTo: heightAnchor)
         ]
+        outcomingMessage = messageBackground.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8)
+        incomingMessage = messageBackground.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8)
+        outcomingMessage.isActive = true
         NSLayoutConstraint.activate(constraints)
     }
     
-    func setupMessageLabel() {
+    func setupMessage(){
         message.numberOfLines = 0
+        message.backgroundColor = .clear
         message.translatesAutoresizingMaskIntoConstraints = false
-
+        message.font = UIFont(name: "Helvetica Neue", size: 16)
         let constraints = [
-            message.topAnchor.constraint(equalTo: topAnchor, constant: 24),
-            message.widthAnchor.constraint(lessThanOrEqualToConstant: 250),
-            message.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16)
+            message.leadingAnchor.constraint(equalTo: messageBackground.leadingAnchor, constant: 16),
+            message.topAnchor.constraint(equalTo: topAnchor),
+            message.trailingAnchor.constraint(equalTo: messageBackground.trailingAnchor, constant: -8),
+            message.heightAnchor.constraint(equalTo: heightAnchor)
         ]
-        outcomingConstraint = message.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24)
-        incomingConstraint = message.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24)
         NSLayoutConstraint.activate(constraints)
     }
     
     func setupMediaMessage(){
-        
         mediaMessage.translatesAutoresizingMaskIntoConstraints = false
-        mediaMessage.contentMode = .scaleAspectFill
-        mediaMessage.backgroundColor = .lightGray
         mediaMessage.layer.cornerRadius = 16
         mediaMessage.layer.masksToBounds = true
+        mediaMessage.contentMode = .scaleAspectFill
         let constraints = [
-            mediaMessage.topAnchor.constraint(equalTo: topAnchor, constant: 24),
-            mediaMessage.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -24),
-            mediaMessage.widthAnchor.constraint(equalToConstant: 200),
-            mediaMessage.heightAnchor.constraint(equalToConstant: 200)
+            mediaMessage.leadingAnchor.constraint(equalTo: leadingAnchor),
+            mediaMessage.topAnchor.constraint(equalTo: topAnchor),
+            mediaMessage.widthAnchor.constraint(equalTo: widthAnchor),
+            mediaMessage.heightAnchor.constraint(equalTo: heightAnchor)
         ]
-        outcomingConstraint = mediaMessage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24)
-        incomingConstraint = mediaMessage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24)
         NSLayoutConstraint.activate(constraints)
     }
-    
+   
 }

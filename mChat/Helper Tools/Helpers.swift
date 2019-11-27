@@ -89,7 +89,10 @@ extension UIViewController {
             label.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5),
             label.heightAnchor.constraint(greaterThanOrEqualToConstant: 25)
         ]
-        
+    }
+    
+    func calculateFrameInText(message: String) -> CGRect{
+        return NSString(string: message).boundingRect(with: CGSize(width: 200, height: 9999999), options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSAttributedString.Key.font:UIFont(name: "Helvetica Neue", size: 16)!], context: nil)
     }
     
 }
