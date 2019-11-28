@@ -17,6 +17,9 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     var friendProfileImage: String!
     var messages = [Messages]()
     var imageToSend: UIImage!
+    var imgFrame: CGRect?
+    var imgBackground: UIView!
+    var imageClickedView: UIImageView!
     
     var collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 50, height: 50), collectionViewLayout: UICollectionViewFlowLayout.init())
     var messageContainer = UIView()
@@ -278,7 +281,73 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
             return true
         }
     }
+    
+    func zoomImageHandler(image: UIImageView){
+        imgFrame = image.superview?.convert(image.frame, to: nil)
+        let photoView = UIImageView(frame: imgFrame!)
+        photoView.isUserInteractionEnabled = true
+        let slideUp = UISwipeGestureRecognizer(target: self, action: #selector(imageSlideUpDownHandler(tap:)))
+        let slideDown = UISwipeGestureRecognizer(target: self, action: #selector(imageSlideUpDownHandler(tap:)))
+        slideUp.direction = .up
+        slideDown.direction = .down
+        photoView.addGestureRecognizer(slideUp)
+        photoView.addGestureRecognizer(slideDown)
+        photoView.backgroundColor = .red
+        photoView.image = image.image
+        let keyWindow = UIApplication.shared.windows[0]
+        imgBackground = UIView(frame: keyWindow.frame)
+        imgBackground.backgroundColor = .black
+        imgBackground.alpha = 0
+        keyWindow.addSubview(imgBackground)
+        keyWindow.addSubview(photoView)
+        let closeImageButton = UIButton(type: .system)
+        imgBackground.addSubview(closeImageButton)
+        imageClickedView = photoView
+        closeImageButton.translatesAutoresizingMaskIntoConstraints = false
+        closeImageButton.tintColor = .white
+        closeImageButton.addTarget(self, action: #selector(closeImageButtonPressed), for: .touchUpInside)
+        closeImageButton.setImage(UIImage(systemName: "xmark"), for: .normal)
+        
+        var tAnchor = closeImageButton.topAnchor.constraint(equalTo: imgBackground.topAnchor, constant: 20)
+        if imgBackground.safeAreaInsets.top > 25 {
+            tAnchor = closeImageButton.topAnchor.constraint(equalTo: imgBackground.topAnchor, constant: 45)
+        }
+        let constraints = [
+            closeImageButton.trailingAnchor.constraint(equalTo: imgBackground.trailingAnchor, constant: -16),
+            tAnchor
+        ]
+        NSLayoutConstraint.activate(constraints)
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.imgBackground.alpha = 1
+            let height = self.imgFrame!.height / self.imgFrame!.width * keyWindow.frame.width
+            photoView.frame = CGRect(x: 0, y: 0, width: keyWindow.frame.width, height: height)
+            photoView.center = keyWindow.center
+        }, completion: nil)
+    }
 
+    @objc func imageSlideUpDownHandler(tap: UISwipeGestureRecognizer){
+        if let slideView = tap.view {
+            UIView.animate(withDuration: 0.8, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+                slideView.frame = self.imgFrame!
+                slideView.alpha = 0
+                self.imgBackground.alpha = 0
+            }) { (true) in
+                slideView.removeFromSuperview()
+            }
+        }
+    }
+    
+    @objc func closeImageButtonPressed(){
+        let slideView = imageClickedView
+        UIView.animate(withDuration: 0.8, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            slideView?.frame = self.imgFrame!
+            slideView?.alpha = 0
+            self.imgBackground.alpha = 0
+        }) { (true) in
+            slideView?.removeFromSuperview()
+        }
+    }
+    
 }
 
 extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -301,11 +370,13 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ChatCell", for: indexPath) as! ChatCell
         let message = messages[indexPath.row]
+        cell.chatVC = self
         cell.message.text = message.message
         if let message = message.message {
             cell.backgroundWidthAnchor.constant = calculateFrameInText(message: message).width + 32
         }else if message.mediaUrl != nil{
             cell.backgroundWidthAnchor.constant = 200
+            cell.messageBackground.backgroundColor = .clear
         }
         if let url = message.mediaUrl{
             cell.mediaMessage.loadImage(url: url)
@@ -314,20 +385,23 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             cell.mediaMessage.isHidden = true
         }
         
-        if message.recipient == CurrentUser.uid {
-            cell.messageBackground.backgroundColor = .white
+        if message.recipient == CurrentUser.uid{
+            if message.mediaUrl == nil{
+                cell.messageBackground.backgroundColor = .white
+            }
             cell.message.textColor = .black
             cell.outcomingMessage.isActive = false
             cell.incomingMessage.isActive = true
         }else{
-            cell.messageBackground.backgroundColor = UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1)
+            if message.mediaUrl == nil{
+                cell.messageBackground.backgroundColor = UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1)
+            }
             cell.message.textColor = .white
             cell.incomingMessage.isActive = false
             cell.outcomingMessage.isActive = true
         }
         return cell
     }
-    
     
     
     

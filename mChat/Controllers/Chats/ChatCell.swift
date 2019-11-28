@@ -9,9 +9,14 @@ import UIKit
 
 class ChatCell: UICollectionViewCell {
     
+    
     var message = UILabel()
     var messageBackground = UIView()
     var mediaMessage = UIImageView()
+    var viewImage = UIView()
+    var viewImageLabel = UILabel()
+    
+    var chatVC: ChatVC!
     var backgroundWidthAnchor: NSLayoutConstraint!
     var outcomingMessage: NSLayoutConstraint!
     var incomingMessage: NSLayoutConstraint!
@@ -22,6 +27,7 @@ class ChatCell: UICollectionViewCell {
         addSubview(messageBackground)
         addSubview(message)
         messageBackground.addSubview(mediaMessage)
+        mediaMessage.addSubview(viewImage)
         setupBackgroundView()
         setupMessage()
         setupMediaMessage()
@@ -66,13 +72,42 @@ class ChatCell: UICollectionViewCell {
         mediaMessage.layer.cornerRadius = 16
         mediaMessage.layer.masksToBounds = true
         mediaMessage.contentMode = .scaleAspectFill
+        let imageTapped = UITapGestureRecognizer(target: self, action: #selector(imageTappedHandler(tap:)))
+        mediaMessage.addGestureRecognizer(imageTapped)
+        mediaMessage.isUserInteractionEnabled = true
         let constraints = [
-            mediaMessage.leadingAnchor.constraint(equalTo: leadingAnchor),
             mediaMessage.topAnchor.constraint(equalTo: topAnchor),
-            mediaMessage.widthAnchor.constraint(equalTo: widthAnchor),
-            mediaMessage.heightAnchor.constraint(equalTo: heightAnchor)
+            mediaMessage.centerYAnchor.constraint(equalTo: messageBackground.centerYAnchor),
+            mediaMessage.widthAnchor.constraint(equalTo: messageBackground.widthAnchor),
+            mediaMessage.heightAnchor.constraint(equalTo: messageBackground.heightAnchor)
+        ]
+        NSLayoutConstraint.activate(constraints)
+        setupViewImage()
+    }
+
+    func setupViewImage(){
+        viewImage.translatesAutoresizingMaskIntoConstraints = false
+        viewImage.backgroundColor = .black
+        viewImage.alpha = 0.5
+        viewImage.addSubview(viewImageLabel)
+        viewImageLabel.translatesAutoresizingMaskIntoConstraints = false
+        viewImageLabel.text = "View"
+        viewImageLabel.textColor = .white
+        viewImageLabel.textAlignment = .center
+        viewImageLabel.font = UIFont(name: "Helvetica Neue", size: 16)
+        let constraints = [
+            viewImage.bottomAnchor.constraint(equalTo: bottomAnchor),
+            viewImage.heightAnchor.constraint(equalToConstant: 25),
+            viewImage.widthAnchor.constraint(equalTo: widthAnchor),
+            viewImageLabel.centerXAnchor.constraint(equalTo: messageBackground.centerXAnchor),
+        
         ]
         NSLayoutConstraint.activate(constraints)
     }
-   
+
+    @objc func imageTappedHandler(tap: UITapGestureRecognizer){
+        let imageView = tap.view as? UIImageView
+        chatVC.zoomImageHandler(image: imageView!)
+    }
+    
 }

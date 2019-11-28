@@ -15,6 +15,7 @@ class ConversationsVC: UIViewController {
     var recentMessages = [String: Messages]()
     var friends = [FriendInfo]()
     var tableView = UITableView()
+    var timer = Timer()
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Chats"
@@ -34,6 +35,7 @@ class ConversationsVC: UIViewController {
     }
     
     func loadMessages(){
+        recentMessages = [:]
         Constants.db.reference().child("friendsList").child(CurrentUser.uid).observeSingleEvent(of: .value) { (snap) in
             guard let friend = snap.value as? [String: Any] else {
                 DispatchQueue.main.async {
@@ -62,11 +64,21 @@ class ConversationsVC: UIViewController {
                 if key == message.determineUser() {
                     self.recentMessages[message.determineUser()] = message
                     self.messages = Array(self.recentMessages.values)
-                }
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
+                    self.messages.sort { (message1, message2) -> Bool in
+                        return message1.time.intValue > message2.time.intValue
+                    }
+                    self.timer.invalidate()
+                    self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReload), userInfo: nil, repeats: false)
+                    self.handleReload()
                 }
             }
+        }
+        
+    }
+    
+    @objc func handleReload(){
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
         }
     }
     

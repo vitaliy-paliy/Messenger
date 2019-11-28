@@ -69,6 +69,9 @@ class ContactsVC: UIViewController {
                     friend.profileImage = values["profileImage"] as? String
                     friend.name = values["name"] as? String
                     self.friendsList.append(friend)
+                    self.friendsList.sort { (friend1, friend2) -> Bool in
+                        return friend1.name < friend2.name
+                    }
                     self.timer.invalidate()
                     self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReload), userInfo: nil, repeats: false)
                 }
