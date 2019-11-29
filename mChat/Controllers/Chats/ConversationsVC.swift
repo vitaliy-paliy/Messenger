@@ -88,6 +88,9 @@ class ConversationsVC: UIViewController {
         tableView.rowHeight = 80
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.layer.cornerRadius = 16
+        tableView.layer.masksToBounds = true
+        tableView.tableFooterView = UIView(frame: .zero)
         tableView.register(ConversationsCell.self, forCellReuseIdentifier: "ConversationsCell")
         let constraints = [
             tableView.topAnchor.constraint(equalTo: view.topAnchor),

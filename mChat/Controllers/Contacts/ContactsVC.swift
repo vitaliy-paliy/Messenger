@@ -11,7 +11,7 @@ import UIKit
 class ContactsVC: UIViewController {
     
     var friendsList: [FriendInfo] = []
-    
+    var backgroundImage = UIImageView()
     var timer = Timer()
     var tableView = UITableView()
     var addButton = UIBarButtonItem()
@@ -20,6 +20,8 @@ class ContactsVC: UIViewController {
         super.viewDidLoad()
         navigationItem.title = "Contacts"
         view.backgroundColor = .white
+        setupBackgroundImage()
+        setupBlur()
         setupTableView()
         setupaddButton()
     }
@@ -34,11 +36,35 @@ class ContactsVC: UIViewController {
         friendsList = []
     }
     
+    func setupBlur(){
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.alpha = 0.6
+        blurEffectView.frame = view.bounds
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        view.addSubview(blurEffectView)
+    }
+    
+    func setupBackgroundImage(){
+        view.addSubview(backgroundImage)
+        backgroundImage.translatesAutoresizingMaskIntoConstraints = false
+        let constraints = [
+            backgroundImage.topAnchor.constraint(equalTo: view.topAnchor),
+            backgroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            backgroundImage.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            backgroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
     func setupTableView(){
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.rowHeight = 80
+        tableView.rowHeight = 90
+        tableView.contentInset = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
+        tableView.separatorStyle = .none
+        tableView.backgroundColor = .clear
         tableView.register(ContactsCell.self, forCellReuseIdentifier: "ContactsCell")
         tableView.translatesAutoresizingMaskIntoConstraints = false
         let constraints = [
@@ -106,6 +132,7 @@ extension ContactsVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ContactsCell") as! ContactsCell
+        cell.selectionStyle = .none
         let friend = friendsList[indexPath.row]
         cell.profileImage.loadImage(url: friend.profileImage)
         cell.friendName.text = friend.name
@@ -123,6 +150,5 @@ extension ContactsVC: UITableViewDataSource, UITableViewDelegate {
         show(controller, sender: nil)
         friendsList = []
     }
-    
-    
+   
 }

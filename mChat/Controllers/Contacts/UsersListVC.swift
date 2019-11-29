@@ -55,6 +55,7 @@ class UsersListVC: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.rowHeight = 100
+        tableView.tableFooterView = UIView(frame: .zero)
         tableView.register(UsersListCell.self, forCellReuseIdentifier: "UsersListCell")
         let constraints = [
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
