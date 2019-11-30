@@ -15,6 +15,7 @@ class ContactsVC: UIViewController {
     var timer = Timer()
     var tableView = UITableView()
     var addButton = UIBarButtonItem()
+    let animationView = UIView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +29,7 @@ class ContactsVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        animationView.isHidden = true
         loadFriends()
     }
     
@@ -112,16 +114,38 @@ class ContactsVC: UIViewController {
     }
     
     func setupaddButton(){
-        addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonPressed))
+        let buttonView = UIButton(type: .system)
+        buttonView.backgroundColor = UIColor(white: 0.955, alpha: 1)
+//        buttonView.layer.shadowOpacity = 0.2
+//        buttonView.layer.shadowRadius = 10
+        buttonView.layer.cornerRadius = 15
+        buttonView.layer.masksToBounds = true
+        buttonView.setImage(UIImage(systemName: "person.badge.plus"), for: .normal)
+        buttonView.setTitle("Add Friend", for: .normal)
+        buttonView.setTitleColor(.black, for: .normal)
+        buttonView.tintColor = .black
+        buttonView.titleLabel?.font = UIFont(name: "Helvetica Neue", size: 12)
+        buttonView.frame = CGRect(x: 0, y: 0, width: 100, height: 30)
+        buttonView.addTarget(self, action: #selector(addButtonPressed), for: .touchUpInside)
+        addButton = UIBarButtonItem(customView: buttonView)
         navigationItem.rightBarButtonItem = addButton
     }
     
     @objc func addButtonPressed(){
         let controller = UsersListVC()
         controller.modalPresentationStyle = .fullScreen
-        show(controller, sender: nil)
+        self.show(controller, sender: nil)
     }
     
+    func animateAddButtonHandler(){
+        
+        addButton.customView?.transform = CGAffineTransform(rotationAngle: 1.8)
+        UIView.animate(withDuration: 0.5, animations: {
+            self.addButton.customView?.transform = .identity
+        }) { (true) in
+            
+        }
+    }
 }
 
 extension ContactsVC: UITableViewDataSource, UITableViewDelegate {
@@ -150,5 +174,5 @@ extension ContactsVC: UITableViewDataSource, UITableViewDelegate {
         show(controller, sender: nil)
         friendsList = []
     }
-   
+    
 }

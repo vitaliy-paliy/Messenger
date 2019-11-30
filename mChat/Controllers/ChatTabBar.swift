@@ -12,14 +12,15 @@ import Firebase
 class ChatTabBar: UITabBarController{
     
     var itemBackgroundView = UIView()
+    var contactsImage = UIImage(systemName: "person.fill")
+    var chatsImage = UIImage(systemName: "message.fill")
+    var settingsImage = UIImage(systemName: "gear")
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTabBar()
         setupVC()
     }
-    
-    var direction: CGFloat = 0
     
     func setupTabBar(){
         tabBar.layer.cornerRadius = 12
@@ -57,19 +58,22 @@ class ChatTabBar: UITabBarController{
         let index = -(tabBar.items?.firstIndex(of: item)?.distance(to: 0))!
         let frame = frameForTabAtIndex(index: index)
         let completedFrame = frame.origin.x + frame.width/2
-        var dirNum = 1
-        if direction > completedFrame {
-            dirNum = -1
-        }else if direction < completedFrame{
-            dirNum = 1
+        let icon = tabBar.subviews[index+1].subviews.first as! UIImageView
+        itemBackgroundView.transform = CGAffineTransform(scaleX: 0.3, y: 2)
+        if icon.image == settingsImage {
+            icon.transform = CGAffineTransform(rotationAngle: 2)
+        }else if icon.image == contactsImage{
+            icon.transform = CGAffineTransform(scaleX: 0.5, y: 1)
         }else{
-            dirNum = 0
+            icon.transform = CGAffineTransform(scaleX: 1.3, y: 1.3)
         }
-        direction = completedFrame
-        UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
-            self.itemBackgroundView.center.x = completedFrame + CGFloat(10 * dirNum)
-        }) { (true) in
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0, options: .curveEaseOut, animations: {
             self.itemBackgroundView.center.x = completedFrame
+            self.itemBackgroundView.alpha = 0.5
+            self.itemBackgroundView.transform = .identity
+            icon.transform = .identity
+        }) { (true) in
+            self.itemBackgroundView.alpha = 1
         }
     }
     
@@ -96,10 +100,14 @@ class ChatTabBar: UITabBarController{
         let chats = UINavigationController(rootViewController: ConversationsVC())
         let contacts = UINavigationController(rootViewController: ContactsVC())
         let settings = UINavigationController(rootViewController: SettingsVC())
-        chats.tabBarItem.image = UIImage(systemName: "message.fill")
-        contacts.tabBarItem.image = UIImage(systemName: "person.fill")
-        settings.tabBarItem.image = UIImage(systemName: "gear")
-        viewControllers = [contacts,chats,settings]
+        let images = [contactsImage, chatsImage, settingsImage]
+        let controllers = [contacts, chats, settings]
+        
+        for c in 0..<controllers.count{
+            controllers[c].navigationBar.barTintColor = .white
+            controllers[c].tabBarItem.image = images[c]
+        }
+        viewControllers = controllers
     }
     
 }

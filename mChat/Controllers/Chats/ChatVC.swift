@@ -327,7 +327,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
 
     @objc func imageSlideUpDownHandler(tap: UISwipeGestureRecognizer){
         if let slideView = tap.view {
-            UIView.animate(withDuration: 0.8, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
                 slideView.frame = self.imgFrame!
                 slideView.alpha = 0
                 self.imgBackground.alpha = 0
@@ -339,7 +339,8 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     
     @objc func closeImageButtonPressed(){
         let slideView = imageClickedView
-        UIView.animate(withDuration: 0.8, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+        
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
             slideView?.frame = self.imgFrame!
             slideView?.alpha = 0
             self.imgBackground.alpha = 0
