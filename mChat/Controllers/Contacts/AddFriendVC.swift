@@ -26,6 +26,7 @@ class AddFriendVC: UIViewController, UINavigationBarDelegate{
     override func viewDidLoad() {
         super.viewDidLoad()
         checkFriend()
+        navigationController?.navigationBar.tintColor = .black
         view.backgroundColor = .white
     }
     

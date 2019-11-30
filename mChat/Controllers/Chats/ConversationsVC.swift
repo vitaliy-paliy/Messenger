@@ -90,6 +90,7 @@ class ConversationsVC: UIViewController {
         tableView.dataSource = self
         tableView.layer.cornerRadius = 16
         tableView.layer.masksToBounds = true
+        tableView.backgroundColor = .clear
         tableView.tableFooterView = UIView(frame: .zero)
         tableView.register(ConversationsCell.self, forCellReuseIdentifier: "ConversationsCell")
         let constraints = [

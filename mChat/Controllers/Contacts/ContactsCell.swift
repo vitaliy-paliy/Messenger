@@ -76,6 +76,7 @@ class ContactsCell: UITableViewCell {
     }
     
     func setupNameLabel(){
+        friendName.textColor = .black
         friendName.numberOfLines = 0
         friendName.adjustsFontSizeToFitWidth = true
         friendName.translatesAutoresizingMaskIntoConstraints = false

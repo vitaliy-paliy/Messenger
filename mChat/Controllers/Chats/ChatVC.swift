@@ -29,6 +29,8 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        getMessages()
+        navigationController?.navigationBar.tintColor = .black
         navigationItem.title = "\(friendName!)"
         view.backgroundColor = .white
     }
@@ -36,7 +38,6 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = true
-        getMessages()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -68,6 +69,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.backgroundColor = .clear
         collectionView.backgroundColor = UIColor(white: 0.95, alpha: 1)
         collectionView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         collectionView.register(ChatCell.self, forCellWithReuseIdentifier: "ChatCell")
@@ -150,11 +152,12 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     
     func setupMessageTF(_ topConst: CGFloat){
         messageContainer.addSubview(messageTF)
-        messageTF.placeholder = "Write a message..."
+        messageTF.attributedPlaceholder = NSAttributedString(string: "Write a message...", attributes: [NSAttributedString.Key.foregroundColor : UIColor.gray])
         messageTF.layer.cornerRadius = 8
         let textPadding = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 35))
         messageTF.font = UIFont(name: "Helvetica Neue", size: 15)
         messageTF.leftView = textPadding
+        messageTF.textColor = .black
         messageTF.leftViewMode = .always
         messageTF.autocapitalizationType = .none
         messageTF.layer.borderWidth = 0.1

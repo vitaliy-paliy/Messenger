@@ -16,6 +16,7 @@ class UsersListVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
+        navigationController?.navigationBar.tintColor = .black
         setupTableView()
     }
     
@@ -55,6 +56,7 @@ class UsersListVC: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.rowHeight = 100
+        tableView.backgroundColor = .clear
         tableView.tableFooterView = UIView(frame: .zero)
         tableView.register(UsersListCell.self, forCellReuseIdentifier: "UsersListCell")
         let constraints = [

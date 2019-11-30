@@ -21,8 +21,6 @@ class ContactsVC: UIViewController {
         super.viewDidLoad()
         navigationItem.title = "Contacts"
         view.backgroundColor = .white
-        setupBackgroundImage()
-        setupBlur()
         setupTableView()
         setupaddButton()
     }
@@ -37,28 +35,7 @@ class ContactsVC: UIViewController {
         super.viewWillDisappear(animated)
         friendsList = []
     }
-    
-    func setupBlur(){
-        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
-        let blurEffectView = UIVisualEffectView(effect: blurEffect)
-        blurEffectView.alpha = 0.6
-        blurEffectView.frame = view.bounds
-        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        view.addSubview(blurEffectView)
-    }
-    
-    func setupBackgroundImage(){
-        view.addSubview(backgroundImage)
-        backgroundImage.translatesAutoresizingMaskIntoConstraints = false
-        let constraints = [
-            backgroundImage.topAnchor.constraint(equalTo: view.topAnchor),
-            backgroundImage.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            backgroundImage.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            backgroundImage.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ]
-        NSLayoutConstraint.activate(constraints)
-    }
-    
+
     func setupTableView(){
         view.addSubview(tableView)
         tableView.delegate = self
@@ -115,9 +92,11 @@ class ContactsVC: UIViewController {
     
     func setupaddButton(){
         let buttonView = UIButton(type: .system)
-        buttonView.backgroundColor = UIColor(white: 0.955, alpha: 1)
-//        buttonView.layer.shadowOpacity = 0.2
+        buttonView.backgroundColor = UIColor(white: 0.932, alpha: 1)
+//        TODO: Shadow Navigation bug fix
 //        buttonView.layer.shadowRadius = 10
+//        buttonView.layer.shadowOffset = CGSize(width: 0, height: 1.0)
+//        buttonView.layer.shadowOpacity = 0.3
         buttonView.layer.cornerRadius = 15
         buttonView.layer.masksToBounds = true
         buttonView.setImage(UIImage(systemName: "person.badge.plus"), for: .normal)
@@ -136,16 +115,7 @@ class ContactsVC: UIViewController {
         controller.modalPresentationStyle = .fullScreen
         self.show(controller, sender: nil)
     }
-    
-    func animateAddButtonHandler(){
-        
-        addButton.customView?.transform = CGAffineTransform(rotationAngle: 1.8)
-        UIView.animate(withDuration: 0.5, animations: {
-            self.addButton.customView?.transform = .identity
-        }) { (true) in
-            
-        }
-    }
+   
 }
 
 extension ContactsVC: UITableViewDataSource, UITableViewDelegate {

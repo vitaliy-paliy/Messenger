@@ -18,17 +18,17 @@ class ChatTabBar: UITabBarController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupTabBar()
         setupVC()
+        tabBar.barTintColor = UIColor(displayP3Red: 247/255, green: 247/255, blue: 247/255, alpha: 1)
+        tabBar.tintColor = .black
     }
     
-    func setupTabBar(){
-        tabBar.layer.cornerRadius = 12
-        tabBar.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
-        tabBar.layer.masksToBounds = true
-        tabBar.backgroundColor = .white
-        tabBar.barTintColor = .black
-        tabBar.tintColor = .white
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let index = -(tabBar.items?.firstIndex(of: tabBar.selectedItem!)?.distance(to: 0))!
+        let frame = frameForTabAtIndex(index: index)
+        itemBackgroundView.center.x = frame.origin.x + frame.width/2
+        itemBackgroundView.alpha = 1
     }
     
     override func viewSafeAreaInsetsDidChange() {
@@ -40,18 +40,10 @@ class ChatTabBar: UITabBarController{
             yValue = 40
         }
         itemBackgroundView = UIView(frame: CGRect(x: tabBarItemSize.width / 2, y: yValue, width: 6, height: 6))
-        itemBackgroundView.backgroundColor = .white
+        itemBackgroundView.backgroundColor = .black
         itemBackgroundView.layer.cornerRadius = 3
         itemBackgroundView.alpha = 0
         tabBar.addSubview(itemBackgroundView)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        let index = -(tabBar.items?.firstIndex(of: tabBar.selectedItem!)?.distance(to: 0))!
-        let frame = frameForTabAtIndex(index: index)
-        itemBackgroundView.center.x = frame.origin.x + frame.width/2
-        itemBackgroundView.alpha = 1
     }
     
     override func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
@@ -102,9 +94,10 @@ class ChatTabBar: UITabBarController{
         let settings = UINavigationController(rootViewController: SettingsVC())
         let images = [contactsImage, chatsImage, settingsImage]
         let controllers = [contacts, chats, settings]
-        
         for c in 0..<controllers.count{
-            controllers[c].navigationBar.barTintColor = .white
+            let navBar = controllers[c].navigationBar
+            navBar.barTintColor = UIColor(displayP3Red: 244/255, green: 244/255, blue: 244/255, alpha: 1)
+            navBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
             controllers[c].tabBarItem.image = images[c]
         }
         viewControllers = controllers

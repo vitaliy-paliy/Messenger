@@ -17,6 +17,7 @@ class ConversationsCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        backgroundColor = .white
         addSubview(profileImage)
         addSubview(friendName)
         addSubview(recentMessage)
@@ -69,6 +70,7 @@ class ConversationsCell: UITableViewCell {
     }
     
     func setupNameLabel(){
+        friendName.textColor = .black
         friendName.numberOfLines = 0
         friendName.adjustsFontSizeToFitWidth = true
         friendName.translatesAutoresizingMaskIntoConstraints = false

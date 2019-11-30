@@ -31,8 +31,9 @@ extension UIViewController {
     
     func setupTextField(_ textField: UITextField, _ placeholder: String, _ leftView: UIView){
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.placeholder = placeholder
+        textField.attributedPlaceholder = NSAttributedString(string: placeholder, attributes: [NSAttributedString.Key.foregroundColor : UIColor.gray])
         textField.leftView = leftView
+        textField.textColor = .black
         textField.leftViewMode = .always
         textField.backgroundColor = UIColor(displayP3Red: 245/255, green: 244/255, blue: 249/255, alpha: 1)
         textField.layer.cornerRadius = 16

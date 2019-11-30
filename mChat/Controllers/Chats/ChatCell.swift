@@ -65,6 +65,7 @@ class ChatCell: UICollectionViewCell {
     }
     
     func setupMediaMessage(){
+        mediaMessage.backgroundColor = .lightGray
         mediaMessage.translatesAutoresizingMaskIntoConstraints = false
         mediaMessage.layer.cornerRadius = 16
         mediaMessage.layer.masksToBounds = true

@@ -16,6 +16,7 @@ class ProfileCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        backgroundColor = .white
         addSubview(profileImage)
         addSubview(nameLabel)
         addSubview(emailLabel)
@@ -55,6 +56,7 @@ class ProfileCell: UITableViewCell {
     }
     
     func setupNameLabel(){
+        nameLabel.textColor = .black
         nameLabel.numberOfLines = 0
         nameLabel.adjustsFontSizeToFitWidth = true
         nameLabel.translatesAutoresizingMaskIntoConstraints = false

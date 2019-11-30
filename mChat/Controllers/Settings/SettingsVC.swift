@@ -38,6 +38,7 @@ class SettingsVC: UIViewController {
         tableView.dataSource = self
         tableView.rowHeight = 100
         tableView.tableFooterView = UIView(frame: .zero)
+        tableView.backgroundColor = .clear
         tableView.register(ProfileCell.self, forCellReuseIdentifier: "ProfileCell")
         let constraints = [
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
