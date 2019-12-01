@@ -16,10 +16,13 @@ class ConversationsVC: UIViewController {
     var friends = [FriendInfo]()
     var tableView = UITableView()
     var timer = Timer()
+    var newConversationButton = UIBarButtonItem()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Chats"
         view.backgroundColor = .white
+        setupNewConversationButton()
         setupTableView()
     }
     
@@ -34,6 +37,36 @@ class ConversationsVC: UIViewController {
         friends = []
     }
     
+    func setupTableView(){
+        view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.rowHeight = 80
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.backgroundColor = .clear
+        tableView.tableFooterView = UIView(frame: .zero)
+        tableView.register(ConversationsCell.self, forCellReuseIdentifier: "ConversationsCell")
+        let constraints = [
+            tableView.topAnchor.constraint(equalTo: view.topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    func setupNewConversationButton(){
+        newConversationButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(newConversationTapped))
+        newConversationButton.tintColor = .black
+        navigationItem.rightBarButtonItem = newConversationButton
+    }
+    
+    @objc func newConversationTapped(){
+        let controller = NewConversationVC()
+        controller.modalPresentationStyle = .fullScreen
+        show(controller, sender: nil)
+    }
+    
     func loadMessages(){
         recentMessages = [:]
         Constants.db.reference().child("friendsList").child(CurrentUser.uid).observeSingleEvent(of: .value) { (snap) in
@@ -46,6 +79,12 @@ class ConversationsVC: UIViewController {
             for key in friend.keys{
                 self.loadMessagesHandler(key)
             }
+        }
+    }
+    
+    @objc func handleReload(){
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
         }
     }
     
@@ -74,32 +113,6 @@ class ConversationsVC: UIViewController {
             }
         }
         
-    }
-    
-    @objc func handleReload(){
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
-    }
-    
-    func setupTableView(){
-        view.addSubview(tableView)
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.rowHeight = 80
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.layer.cornerRadius = 16
-        tableView.layer.masksToBounds = true
-        tableView.backgroundColor = .clear
-        tableView.tableFooterView = UIView(frame: .zero)
-        tableView.register(ConversationsCell.self, forCellReuseIdentifier: "ConversationsCell")
-        let constraints = [
-            tableView.topAnchor.constraint(equalTo: view.topAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ]
-        NSLayoutConstraint.activate(constraints)
     }
     
     func nextControllerHandler(usr: FriendInfo){
