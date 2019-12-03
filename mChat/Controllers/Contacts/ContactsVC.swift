@@ -15,10 +15,8 @@ class ContactsVC: UIViewController {
     var timer = Timer()
     var tableView = UITableView()
     var addButton = UIBarButtonItem()
-    let animationView = UIView()
     var infoMenu = UIView()
     var blurView = UIVisualEffectView()
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Contacts"
@@ -29,7 +27,6 @@ class ContactsVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        animationView.isHidden = true
         loadFriends()
     }
     
@@ -118,25 +115,22 @@ class ContactsVC: UIViewController {
         self.show(controller, sender: nil)
     }
     
-    func setupFriendInfoMenuAnimation(_ friend: FriendInfo){
+    func setupFriendInfoMenuAnimation(_ friend: FriendInfo, _ cellFrame: CGRect, _ cell: UITableViewCell){
         blurView = setupInfoBlur()
         view.addSubview(blurView)
-        let menuWidth = view.frame.maxX / 1.2
-        let menuHeight = view.frame.maxY / 2
-        infoMenu = setupInfoMenu(menuWidth, menuHeight)
-        let infoImage = setupInfoImage(friend.profileImage, menuWidth)
+        infoMenu = UIView(frame: CGRect(x: 8, y: cellFrame.minY, width: cellFrame.width - 16, height: cellFrame.height))
+        let infoImage = setupInfoImage(friend.profileImage, infoMenu)
         infoMenu.addSubview(infoImage)
         let infoName = setupInfoName(friend.name)
         infoMenu.addSubview(infoName)
         let infoEmail = setupInfoEmail(friend.email)
         infoMenu.addSubview(infoEmail)
-        let exitButton = setupExitButton()
+        let exitButton = setupExitButton(cell, cellFrame)
         infoMenu.addSubview(exitButton)
         let constraints = [
+            infoImage.widthAnchor.constraint(equalToConstant: 60),
+            infoImage.heightAnchor.constraint(equalToConstant: 60),
             infoImage.topAnchor.constraint(equalTo: infoMenu.topAnchor, constant: 15),
-            infoImage.centerXAnchor.constraint(equalTo: infoMenu.centerXAnchor),
-            infoImage.widthAnchor.constraint(equalToConstant: menuWidth / 3),
-            infoImage.heightAnchor.constraint(equalToConstant: menuWidth / 3),
             infoName.topAnchor.constraint(equalTo: infoImage.bottomAnchor, constant: 10),
             infoName.centerXAnchor.constraint(equalTo: infoMenu.centerXAnchor),
             infoName.leadingAnchor.constraint(equalTo: infoMenu.leadingAnchor),
@@ -148,32 +142,57 @@ class ContactsVC: UIViewController {
             infoEmail.trailingAnchor.constraint(equalTo: infoMenu.trailingAnchor),
             infoEmail.heightAnchor.constraint(equalToConstant: 30),
             exitButton.trailingAnchor.constraint(equalTo: infoMenu.trailingAnchor, constant: -10),
-            exitButton.topAnchor.constraint(equalTo: infoMenu.topAnchor, constant: 10),
+            exitButton.topAnchor.constraint(equalTo: infoMenu.topAnchor, constant: 10)
         ]
         NSLayoutConstraint.activate(constraints)
+        infoMenu.backgroundColor = .white
+        infoMenu.layer.cornerRadius = 8
+        infoMenu.layer.shadowRadius = 10
+        infoMenu.layer.shadowOpacity = 0.2
+        infoMenu.alpha = 0
         view.addSubview(infoMenu)
-        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
-            self.blurView.alpha = 0.5
+        cell.alpha = 0
+        self.infoMenu.alpha = 1
+        self.blurView.alpha = 0.6
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+            self.infoMenu.frame = CGRect(x: 40, y: self.view.center.y / 2, width: cellFrame.width - 80, height: cellFrame.height + 200)
+            let movingImageAnimation = CAKeyframeAnimation(keyPath: "position.x")
+            let viewCenterConst = self.infoMenu.center.x - 70
+            movingImageAnimation.values = [0.0, viewCenterConst]
+            movingImageAnimation.duration = 0.17
+            movingImageAnimation.isAdditive = true
+            movingImageAnimation.fillMode = .forwards
+            movingImageAnimation.isRemovedOnCompletion = false
+            infoImage.layer.add(movingImageAnimation, forKey: "MoveToTheCenter")
         }) { (true) in
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-                self.infoMenu.transform = .identity
-                self.infoMenu.center.x = self.view.center.x
-                self.infoMenu.center.y = self.view.center.y - (self.view.frame.maxY / 8)
+            infoName.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+            infoEmail.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+            exitButton.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+                infoName.transform = .identity
+                infoEmail.transform = .identity
+                exitButton.transform = .identity
+                infoName.alpha = 1
+                infoEmail.alpha = 1
+                exitButton.alpha = 1
             })
         }
     }
     
-    func setupExitButton() -> UIButton{
-        let exitButton = UIButton(type: .system)
+    func setupExitButton(_ cell: UITableViewCell, _ cellFrame: CGRect) -> UIButton{
+        let exitButton = contactsAnimationButton(type: .system)
+        exitButton.cell = cell
+        exitButton.cellFrame = cellFrame
         exitButton.translatesAutoresizingMaskIntoConstraints = false
         exitButton.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
         exitButton.tintColor = .black
-        exitButton.addTarget(self, action: #selector(exitMenuHandler), for: .touchUpInside)
+        exitButton.addTarget(self, action: #selector(exitMenuHandler(_:)), for: .touchUpInside)
+        exitButton.alpha = 0
         return exitButton
     }
     
     func setupInfoBlur() -> UIVisualEffectView{
-        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.light)
+        let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.prominent)
         let blurView = UIVisualEffectView(effect: blurEffect)
         blurView.frame = view.bounds
         blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
@@ -181,22 +200,11 @@ class ContactsVC: UIViewController {
         return blurView
     }
     
-    func setupInfoMenu(_ mWidth: CGFloat, _ mHeight: CGFloat) -> UIView{
-        let infoMenu = UIView(frame: CGRect(x: view.center.x, y: 2000, width: mWidth, height: mHeight))
-        infoMenu.transform = CGAffineTransform(rotationAngle: 3.5)
-        infoMenu.backgroundColor = .white
-        infoMenu.layer.shadowColor = UIColor.black.cgColor
-        infoMenu.layer.shadowRadius = 10
-        infoMenu.layer.shadowOpacity = 0.5
-        infoMenu.layer.cornerRadius = 16
-        return infoMenu
-    }
-    
-    func setupInfoImage(_ friendImage: String, _ mWidth: CGFloat) -> UIImageView{
-        let infoImage = UIImageView()
+    func setupInfoImage(_ friendImage: String, _ animationView: UIView) -> UIImageView{
+        let infoImage = UIImageView(frame: CGRect(x: 0, y: 0, width: 60, height: 60))
         infoImage.translatesAutoresizingMaskIntoConstraints = false
         infoImage.loadImage(url: friendImage)
-        infoImage.layer.cornerRadius = (mWidth / 3) / 2
+        infoImage.layer.cornerRadius = infoImage.frame.width / 2
         infoImage.layer.masksToBounds = true
         infoImage.contentMode = .scaleAspectFill
         return infoImage
@@ -209,6 +217,7 @@ class ContactsVC: UIViewController {
         infoName.textAlignment = .center
         infoName.textColor = .black
         infoName.font = UIFont(name: "Helvetica Neue", size: 24)
+        infoName.alpha = 0
         return infoName
     }
     
@@ -219,16 +228,21 @@ class ContactsVC: UIViewController {
         infoEmail.textAlignment = .center
         infoEmail.textColor = .lightGray
         infoEmail.font = UIFont(name: "Helvetica Neue", size: 16)
+        infoEmail.alpha = 0
         return infoEmail
     }
- 
-    @objc func exitMenuHandler(){
+    
+    @objc func exitMenuHandler(_ button: contactsAnimationButton){
         infoMenu.transform = CGAffineTransform(translationX: -3, y: 2)
+        guard let cellFrame = button.cellFrame else { return }
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
-            self.infoMenu.transform = .identity
             self.blurView.alpha = 0
+            self.infoMenu.subviews.forEach { $0.isHidden = true }
+            self.infoMenu.frame = CGRect(x: 8, y: cellFrame.minY, width: cellFrame.width - 16, height: cellFrame.height)
+        }) { (true) in
+            button.cell?.alpha = 1
             self.infoMenu.alpha = 0
-        })
+        }
     }
     
 }
@@ -251,14 +265,10 @@ extension ContactsVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let friend = friendsList[indexPath.row]
-        setupFriendInfoMenuAnimation(friend)
-        //        let controller = ChatVC()
-        //        controller.friendEmail = friend.email
-        //        controller.friendProfileImage = friend.profileImage
-        //        controller.friendName = friend.name
-        //        controller.friendId = friend.id
-        //        show(controller, sender: nil)
-        //        friendsList = []
+        if let cellFrame = tableView.cellForRow(at: indexPath)?.frame, let cell = tableView.cellForRow(at: indexPath){
+            let convertedFrame = tableView.convert(cellFrame, to: tableView.superview)
+            setupFriendInfoMenuAnimation(friend, convertedFrame, cell)
+        }
     }
     
 }

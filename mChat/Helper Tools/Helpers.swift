@@ -125,3 +125,8 @@ extension UIImageView {
         task.resume()
     }
 }
+
+class contactsAnimationButton: UIButton{
+    var cell: UITableViewCell?
+    var cellFrame: CGRect?
+}
