@@ -12,9 +12,9 @@ import Firebase
 class AddFriendVC: UIViewController, UINavigationBarDelegate{
     
     var friendId: String!
-    var profileImage: String!
-    var name: String!
-    var email: String!
+    var friendName: String!
+    var friendEmail: String!
+    var friendProfileImage: String!
     var isFriend = false
     
     var nameLabel = UILabel()
@@ -67,7 +67,7 @@ class AddFriendVC: UIViewController, UINavigationBarDelegate{
     }
     
     func setupImage(){
-        image.loadImage(url: profileImage)
+        image.loadImage(url: friendProfileImage)
         view.addSubview(image)
         setupImages(image, .scaleAspectFill, 50, true)
         NSLayoutConstraint.activate(configureImagesConstraints(image, 100, 100, container, 20))
@@ -76,8 +76,8 @@ class AddFriendVC: UIViewController, UINavigationBarDelegate{
     func setupLabels(){
         view.addSubview(nameLabel)
         view.addSubview(emailLabel)
-        configureLabels(nameLabel, name, color: .black, size: 25)
-        configureLabels(emailLabel, email, color: .systemGray, size: 18)
+        configureLabels(nameLabel, friendName, color: .black, size: 25)
+        configureLabels(emailLabel, friendEmail, color: .systemGray, size: 18)
         NSLayoutConstraint.activate(configureLabelConstraints(view: container, label: nameLabel, topEqualTo: image, topConst: 20))
         NSLayoutConstraint.activate(configureLabelConstraints(view: container, label: emailLabel, topEqualTo: nameLabel, topConst: 0))
     }

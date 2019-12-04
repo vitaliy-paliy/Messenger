@@ -129,4 +129,5 @@ extension UIImageView {
 class contactsAnimationButton: UIButton{
     var cell: UITableViewCell?
     var cellFrame: CGRect?
+    var friendInfo: FriendInfo?
 }

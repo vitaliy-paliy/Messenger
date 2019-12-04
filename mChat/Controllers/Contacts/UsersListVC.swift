@@ -89,10 +89,10 @@ extension UsersListVC: UITableViewDelegate, UITableViewDataSource {
         let selectedUser = users[indexPath.row]
         tableView.deselectRow(at: indexPath, animated: true)
         let controller = AddFriendVC()
-        controller.email = selectedUser.email
-        controller.name = selectedUser.name
+        controller.friendEmail = selectedUser.email
+        controller.friendName = selectedUser.name
         controller.friendId = selectedUser.id
-        controller.profileImage = selectedUser.profileImage
+        controller.friendProfileImage = selectedUser.profileImage
         controller.modalPresentationStyle = .fullScreen
         show(controller, sender: nil)
     }

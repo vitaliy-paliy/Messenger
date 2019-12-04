@@ -14,7 +14,6 @@ class ContactsVC: UIViewController {
     var backgroundImage = UIImageView()
     var timer = Timer()
     var tableView = UITableView()
-    var addButton = UIBarButtonItem()
     var infoMenu = UIView()
     var blurView = UIVisualEffectView()
     override func viewDidLoad() {
@@ -90,20 +89,10 @@ class ContactsVC: UIViewController {
     }
     
     func setupaddButton(){
+        var addButton = UIBarButtonItem()
         let buttonView = UIButton(type: .system)
-        buttonView.backgroundColor = UIColor(white: 0.932, alpha: 1)
-        //        TODO: Shadow Navigation bug fix
-        //        buttonView.layer.shadowRadius = 10
-        //        buttonView.layer.shadowOffset = CGSize(width: 0, height: 1.0)
-        //        buttonView.layer.shadowOpacity = 0.3
-        buttonView.layer.cornerRadius = 15
-        buttonView.layer.masksToBounds = true
-        buttonView.setImage(UIImage(systemName: "person.badge.plus"), for: .normal)
-        buttonView.setTitle("Add Friend", for: .normal)
-        buttonView.setTitleColor(.black, for: .normal)
+        buttonView.setImage(UIImage(systemName: "plus"), for: .normal)
         buttonView.tintColor = .black
-        buttonView.titleLabel?.font = UIFont(name: "Helvetica Neue", size: 12)
-        buttonView.frame = CGRect(x: 0, y: 0, width: 100, height: 30)
         buttonView.addTarget(self, action: #selector(addButtonPressed), for: .touchUpInside)
         addButton = UIBarButtonItem(customView: buttonView)
         navigationItem.rightBarButtonItem = addButton
@@ -117,7 +106,6 @@ class ContactsVC: UIViewController {
     
     func setupFriendInfoMenuAnimation(_ friend: FriendInfo, _ cellFrame: CGRect, _ cell: UITableViewCell){
         blurView = setupInfoBlur()
-        view.addSubview(blurView)
         infoMenu = UIView(frame: CGRect(x: 8, y: cellFrame.minY, width: cellFrame.width - 16, height: cellFrame.height))
         let infoImage = setupInfoImage(friend.profileImage, infoMenu)
         infoMenu.addSubview(infoImage)
@@ -127,7 +115,7 @@ class ContactsVC: UIViewController {
         infoMenu.addSubview(infoEmail)
         let exitButton = setupExitButton(cell, cellFrame)
         infoMenu.addSubview(exitButton)
-        let sv = setupStackView()
+        let sv = setupStackView(friend)
         let constraints = [
             infoImage.widthAnchor.constraint(equalToConstant: 60),
             infoImage.heightAnchor.constraint(equalToConstant: 60), 
@@ -142,9 +130,10 @@ class ContactsVC: UIViewController {
         infoMenu.alpha = 0
         view.addSubview(infoMenu)
         cell.alpha = 0
-        self.infoMenu.alpha = 1
+        infoMenu.alpha = 1
         self.blurView.alpha = 0.6
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+            self.blurView.layer.add(self.blurEffectAnim(), forKey: "Animation")
             self.infoMenu.frame = CGRect(x: 40, y: self.view.center.y / 2, width: cellFrame.width - 80, height: cellFrame.height + 200)
             infoImage.layer.add(self.moveObjectToCenter(xValue: 10, yValue: 0, yConst: 80), forKey: "MoveImageToTheCenter")
             infoName.layer.add(self.moveObjectToCenter(xValue: 60, yValue: 80, yConst: 130), forKey: "MoveNameToTheCenter")
@@ -155,70 +144,15 @@ class ContactsVC: UIViewController {
             UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
                 exitButton.transform = .identity
                 sv.transform = .identity
+                for f in 0..<sv.arrangedSubviews.count {
+                    sv.arrangedSubviews[f].transform = .identity
+                }
                 exitButton.alpha = 1
                 sv.alpha = 1
             })
         }
     }
 
-    func setupStackView() -> UIStackView{
-        let sv = UIStackView()
-        sv.axis = .horizontal
-        sv.alignment = .fill
-        sv.distribution = .equalSpacing
-        let view1 = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-        view1.tintColor = .black
-        view1.setImage(UIImage(systemName: "square.and.pencil"), for: .normal)
-        view1.layer.cornerRadius = view1.frame.size.width / 2
-        view1.layer.shadowOpacity = 0.3
-        view1.layer.shadowRadius = 5
-        view1.backgroundColor = .white
-        sv.addArrangedSubview(view1)
-        let view2 = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-        view2.tintColor = .black
-        view2.setImage(UIImage(systemName: "map"), for: .normal)
-        view2.layer.cornerRadius = view1.frame.size.width / 2
-        view2.layer.shadowOpacity = 0.3
-        view2.layer.shadowRadius = 5
-        view2.backgroundColor = .white
-        sv.addArrangedSubview(view2)
-        let view3 = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-        view3.tintColor = .black
-        view3.setImage(UIImage(systemName: "person.badge.minus"), for: .normal)
-        view3.layer.cornerRadius = view1.frame.size.width / 2
-        view3.layer.shadowOpacity = 0.3
-        view3.layer.shadowRadius = 5
-        view3.backgroundColor = .white
-        sv.addArrangedSubview(view3)
-        sv.translatesAutoresizingMaskIntoConstraints = false
-        infoMenu.addSubview(sv)
-        let constraints = [
-            sv.bottomAnchor.constraint(equalTo: infoMenu.bottomAnchor, constant: -25),
-            sv.leadingAnchor.constraint(equalTo: infoMenu.leadingAnchor, constant: 80),
-            sv.trailingAnchor.constraint(equalTo: infoMenu.trailingAnchor, constant: -80),
-            sv.heightAnchor.constraint(equalToConstant: 40),
-            view1.widthAnchor.constraint(equalToConstant: 40),
-            view2.widthAnchor.constraint(equalToConstant: 40),
-            view3.widthAnchor.constraint(equalToConstant: 40)
-        ]
-        NSLayoutConstraint.activate(constraints)
-        sv.alpha = 0
-        return sv
-    }
-    
-    func moveObjectToCenter(xValue: CGFloat, yValue: CGFloat, yConst: CGFloat) -> CAKeyframeAnimation{
-        let movingImageAnimation = CAKeyframeAnimation(keyPath: "position")
-        let viewCenterConst = self.infoMenu.center.x - 40
-        let path = UIBezierPath()
-        path.move(to: CGPoint(x: xValue, y: yValue))
-        path.addQuadCurve(to: CGPoint(x: viewCenterConst, y: yConst), controlPoint: CGPoint(x: self.infoMenu.frame.width * 1/3, y: 120))
-        movingImageAnimation.path = path.cgPath
-        movingImageAnimation.duration = 0.25
-        movingImageAnimation.fillMode = .forwards
-        movingImageAnimation.isRemovedOnCompletion = false
-        return movingImageAnimation
-    }
-    
     func setupExitButton(_ cell: UITableViewCell, _ cellFrame: CGRect) -> UIButton{
         let exitButton = contactsAnimationButton(type: .system)
         exitButton.cell = cell
@@ -234,8 +168,10 @@ class ContactsVC: UIViewController {
     func setupInfoBlur() -> UIVisualEffectView{
         let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.prominent)
         let blurView = UIVisualEffectView(effect: blurEffect)
-        blurView.frame = view.bounds
-        blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        blurView.frame = CGRect(x: view.center.x, y: view.center.y, width: 40, height: 40)
+        blurView.layer.cornerRadius = blurView.frame.width / 2
+        blurView.layer.masksToBounds = true
+        view.addSubview(blurView)
         blurView.alpha = 0
         return blurView
     }
@@ -275,6 +211,7 @@ class ContactsVC: UIViewController {
         infoMenu.transform = CGAffineTransform(translationX: -3, y: 2)
         guard let cellFrame = button.cellFrame else { return }
         UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
+            self.blurView.transform = .identity
             self.blurView.alpha = 0
             self.infoMenu.subviews.forEach { $0.isHidden = true }
             self.infoMenu.frame = CGRect(x: 8, y: cellFrame.minY, width: cellFrame.width - 16, height: cellFrame.height)
@@ -282,6 +219,102 @@ class ContactsVC: UIViewController {
             button.cell?.alpha = 1
             self.infoMenu.alpha = 0
         }
+    }
+    
+    func blurEffectAnim() -> CABasicAnimation{
+        let anim = CABasicAnimation(keyPath: "transform.scale")
+        anim.fromValue = 1
+        anim.toValue = view.frame.width / 8
+        anim.duration = 0.6
+        anim.fillMode = .forwards
+        anim.isRemovedOnCompletion = false
+        return anim
+    }
+    
+    func moveObjectToCenter(xValue: CGFloat, yValue: CGFloat, yConst: CGFloat) -> CAKeyframeAnimation{
+        let movingImageAnimation = CAKeyframeAnimation(keyPath: "position")
+        let viewCenterConst = self.infoMenu.center.x - 40
+        let path = UIBezierPath()
+        path.move(to: CGPoint(x: xValue, y: yValue))
+        path.addQuadCurve(to: CGPoint(x: viewCenterConst, y: yConst), controlPoint: CGPoint(x: self.infoMenu.frame.width * 1/3, y: 120))
+        movingImageAnimation.path = path.cgPath
+        movingImageAnimation.duration = 0.25
+        movingImageAnimation.fillMode = .forwards
+        movingImageAnimation.isRemovedOnCompletion = false
+        return movingImageAnimation
+    }
+    
+    func setupStackView(_ friend: FriendInfo) -> UIStackView{
+        let sv = UIStackView()
+        sv.axis = .horizontal
+        sv.alignment = .fill
+        sv.distribution = .equalSpacing
+        let view1 = setupInfoMenuButtons(friend,"square.and.pencil", sv)
+        let view2 = setupInfoMenuButtons(friend,"map", sv)
+        let view3 = setupInfoMenuButtons(friend,"person.badge.minus", sv)
+        sv.translatesAutoresizingMaskIntoConstraints = false
+        infoMenu.addSubview(sv)
+        let constraints = [
+            sv.bottomAnchor.constraint(equalTo: infoMenu.bottomAnchor, constant: -25),
+            sv.leadingAnchor.constraint(equalTo: infoMenu.leadingAnchor, constant: 70),
+            sv.trailingAnchor.constraint(equalTo: infoMenu.trailingAnchor, constant: -70),
+            sv.heightAnchor.constraint(equalToConstant: 40),
+            view1.widthAnchor.constraint(equalToConstant: 40),
+            view2.widthAnchor.constraint(equalToConstant: 40),
+            view3.widthAnchor.constraint(equalToConstant: 40)
+        ]
+        NSLayoutConstraint.activate(constraints)
+        sv.alpha = 0
+        return sv
+    }
+    
+    func setupInfoMenuButtons(_ friend: FriendInfo, _ imageName: String, _ sv: UIStackView) -> contactsAnimationButton{
+        let button = contactsAnimationButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        button.friendInfo = friend
+        button.tintColor = .black
+        button.setImage(UIImage(systemName: imageName), for: .normal)
+        button.layer.cornerRadius = button.frame.size.width / 2
+        button.layer.shadowOpacity = 0.3
+        button.layer.shadowRadius = 5
+        button.backgroundColor = .white
+        button.transform = CGAffineTransform(rotationAngle: 2.5)
+        sv.addArrangedSubview(button)
+        if imageName == "square.and.pencil" {
+            button.addTarget(self, action: #selector(writeMessage(_:)), for: .touchUpInside)
+        }else if imageName == "map"{
+            button.addTarget(self, action: #selector(openMap(_:)), for: .touchUpInside)
+        }else{
+            button.addTarget(self, action: #selector(removeFriend(_:)), for: .touchUpInside)
+        }
+        return button
+    }
+    
+    @objc func writeMessage(_ button: contactsAnimationButton){
+        print(button.frame.origin.x)
+        guard let bInfo = button.friendInfo else { return }
+        let controller = ChatVC()
+        controller.modalPresentationStyle = .fullScreen
+        controller.friendId = bInfo.id
+        controller.friendProfileImage = bInfo.profileImage
+        controller.friendName = bInfo.name
+        controller.friendEmail = bInfo.email
+        show(controller, sender: nil)
+    }
+    
+    @objc func openMap(_ button: contactsAnimationButton){
+        print("TODO: Map")
+    }
+    
+    @objc func removeFriend(_ button: contactsAnimationButton){
+        print(button.frame.origin.x)
+        guard let bInfo = button.friendInfo else { return }
+        let controller = AddFriendVC()
+        controller.modalPresentationStyle = .fullScreen
+        controller.friendId = bInfo.id
+        controller.friendProfileImage = bInfo.profileImage
+        controller.friendName = bInfo.name
+        controller.friendEmail = bInfo.email
+        show(controller, sender: nil)
     }
     
 }
