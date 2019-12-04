@@ -127,20 +127,10 @@ class ContactsVC: UIViewController {
         infoMenu.addSubview(infoEmail)
         let exitButton = setupExitButton(cell, cellFrame)
         infoMenu.addSubview(exitButton)
+        let sv = setupStackView()
         let constraints = [
             infoImage.widthAnchor.constraint(equalToConstant: 60),
-            infoImage.heightAnchor.constraint(equalToConstant: 60),
-            infoImage.topAnchor.constraint(equalTo: infoMenu.topAnchor, constant: 15),
-            infoName.topAnchor.constraint(equalTo: infoImage.bottomAnchor, constant: 10),
-            infoName.centerXAnchor.constraint(equalTo: infoMenu.centerXAnchor),
-            infoName.leadingAnchor.constraint(equalTo: infoMenu.leadingAnchor),
-            infoName.trailingAnchor.constraint(equalTo: infoMenu.trailingAnchor),
-            infoName.heightAnchor.constraint(equalToConstant: 25),
-            infoEmail.topAnchor.constraint(equalTo: infoName.bottomAnchor),
-            infoEmail.centerXAnchor.constraint(equalTo: infoMenu.centerXAnchor),
-            infoEmail.leadingAnchor.constraint(equalTo: infoMenu.leadingAnchor),
-            infoEmail.trailingAnchor.constraint(equalTo: infoMenu.trailingAnchor),
-            infoEmail.heightAnchor.constraint(equalToConstant: 30),
+            infoImage.heightAnchor.constraint(equalToConstant: 60), 
             exitButton.trailingAnchor.constraint(equalTo: infoMenu.trailingAnchor, constant: -10),
             exitButton.topAnchor.constraint(equalTo: infoMenu.topAnchor, constant: 10)
         ]
@@ -156,27 +146,77 @@ class ContactsVC: UIViewController {
         self.blurView.alpha = 0.6
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
             self.infoMenu.frame = CGRect(x: 40, y: self.view.center.y / 2, width: cellFrame.width - 80, height: cellFrame.height + 200)
-            let movingImageAnimation = CAKeyframeAnimation(keyPath: "position.x")
-            let viewCenterConst = self.infoMenu.center.x - 70
-            movingImageAnimation.values = [0.0, viewCenterConst]
-            movingImageAnimation.duration = 0.17
-            movingImageAnimation.isAdditive = true
-            movingImageAnimation.fillMode = .forwards
-            movingImageAnimation.isRemovedOnCompletion = false
-            infoImage.layer.add(movingImageAnimation, forKey: "MoveToTheCenter")
+            infoImage.layer.add(self.moveObjectToCenter(xValue: 10, yValue: 0, yConst: 80), forKey: "MoveImageToTheCenter")
+            infoName.layer.add(self.moveObjectToCenter(xValue: 60, yValue: 80, yConst: 130), forKey: "MoveNameToTheCenter")
+            infoEmail.layer.add(self.moveObjectToCenter(xValue: 60, yValue: 130, yConst: 160), forKey: "MoveEmailToTheCenter")
         }) { (true) in
-            infoName.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
-            infoEmail.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
             exitButton.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
+            sv.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
             UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
-                infoName.transform = .identity
-                infoEmail.transform = .identity
                 exitButton.transform = .identity
-                infoName.alpha = 1
-                infoEmail.alpha = 1
+                sv.transform = .identity
                 exitButton.alpha = 1
+                sv.alpha = 1
             })
         }
+    }
+
+    func setupStackView() -> UIStackView{
+        let sv = UIStackView()
+        sv.axis = .horizontal
+        sv.alignment = .fill
+        sv.distribution = .equalSpacing
+        let view1 = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        view1.tintColor = .black
+        view1.setImage(UIImage(systemName: "square.and.pencil"), for: .normal)
+        view1.layer.cornerRadius = view1.frame.size.width / 2
+        view1.layer.shadowOpacity = 0.3
+        view1.layer.shadowRadius = 5
+        view1.backgroundColor = .white
+        sv.addArrangedSubview(view1)
+        let view2 = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        view2.tintColor = .black
+        view2.setImage(UIImage(systemName: "map"), for: .normal)
+        view2.layer.cornerRadius = view1.frame.size.width / 2
+        view2.layer.shadowOpacity = 0.3
+        view2.layer.shadowRadius = 5
+        view2.backgroundColor = .white
+        sv.addArrangedSubview(view2)
+        let view3 = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        view3.tintColor = .black
+        view3.setImage(UIImage(systemName: "person.badge.minus"), for: .normal)
+        view3.layer.cornerRadius = view1.frame.size.width / 2
+        view3.layer.shadowOpacity = 0.3
+        view3.layer.shadowRadius = 5
+        view3.backgroundColor = .white
+        sv.addArrangedSubview(view3)
+        sv.translatesAutoresizingMaskIntoConstraints = false
+        infoMenu.addSubview(sv)
+        let constraints = [
+            sv.bottomAnchor.constraint(equalTo: infoMenu.bottomAnchor, constant: -25),
+            sv.leadingAnchor.constraint(equalTo: infoMenu.leadingAnchor, constant: 80),
+            sv.trailingAnchor.constraint(equalTo: infoMenu.trailingAnchor, constant: -80),
+            sv.heightAnchor.constraint(equalToConstant: 40),
+            view1.widthAnchor.constraint(equalToConstant: 40),
+            view2.widthAnchor.constraint(equalToConstant: 40),
+            view3.widthAnchor.constraint(equalToConstant: 40)
+        ]
+        NSLayoutConstraint.activate(constraints)
+        sv.alpha = 0
+        return sv
+    }
+    
+    func moveObjectToCenter(xValue: CGFloat, yValue: CGFloat, yConst: CGFloat) -> CAKeyframeAnimation{
+        let movingImageAnimation = CAKeyframeAnimation(keyPath: "position")
+        let viewCenterConst = self.infoMenu.center.x - 40
+        let path = UIBezierPath()
+        path.move(to: CGPoint(x: xValue, y: yValue))
+        path.addQuadCurve(to: CGPoint(x: viewCenterConst, y: yConst), controlPoint: CGPoint(x: self.infoMenu.frame.width * 1/3, y: 120))
+        movingImageAnimation.path = path.cgPath
+        movingImageAnimation.duration = 0.25
+        movingImageAnimation.fillMode = .forwards
+        movingImageAnimation.isRemovedOnCompletion = false
+        return movingImageAnimation
     }
     
     func setupExitButton(_ cell: UITableViewCell, _ cellFrame: CGRect) -> UIButton{
@@ -213,11 +253,10 @@ class ContactsVC: UIViewController {
     func setupInfoName(_ friendName: String) -> UILabel{
         let infoName = UILabel()
         infoName.translatesAutoresizingMaskIntoConstraints = false
-        infoName.text = friendName
         infoName.textAlignment = .center
+        infoName.text = friendName
         infoName.textColor = .black
         infoName.font = UIFont(name: "Helvetica Neue", size: 24)
-        infoName.alpha = 0
         return infoName
     }
     
@@ -228,7 +267,7 @@ class ContactsVC: UIViewController {
         infoEmail.textAlignment = .center
         infoEmail.textColor = .lightGray
         infoEmail.font = UIFont(name: "Helvetica Neue", size: 16)
-        infoEmail.alpha = 0
+        infoEmail.alpha = 1
         return infoEmail
     }
     
@@ -272,3 +311,4 @@ extension ContactsVC: UITableViewDataSource, UITableViewDelegate {
     }
     
 }
+
