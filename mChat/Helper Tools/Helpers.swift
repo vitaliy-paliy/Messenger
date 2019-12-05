@@ -12,6 +12,12 @@ import Firebase
 // Caches the images
 let imgCache = NSCache<AnyObject, AnyObject>()
 
+class contactsAnimationButton: UIButton{
+    var cell: UITableViewCell?
+    var cellFrame: CGRect?
+    var friendInfo: FriendInfo?
+}
+
 extension UIViewController {
     
     func showAlert(title: String?, message: String?){
@@ -126,8 +132,12 @@ extension UIImageView {
     }
 }
 
-class contactsAnimationButton: UIButton{
-    var cell: UITableViewCell?
-    var cellFrame: CGRect?
-    var friendInfo: FriendInfo?
+extension UITextView {
+
+    func centerVertically() {
+        let topOffset = frame.height / 2
+        let positiveTopOffset = max(1, topOffset)
+        contentOffset.y = -positiveTopOffset
+    }
+
 }

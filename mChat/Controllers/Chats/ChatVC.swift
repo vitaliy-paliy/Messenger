@@ -21,11 +21,12 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     var imgBackground: UIView!
     var imageClickedView: UIImageView!
     
+    var containerHeight: CGFloat!
     var collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 50, height: 50), collectionViewLayout: UICollectionViewFlowLayout.init())
     var messageContainer = UIView()
     var clipImageButton = UIButton(type: .system)
     var sendButton = UIButton(type: .system)
-    var messageTF = UITextField()
+    var messageTF = UITextView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,7 +48,6 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     
     override func viewSafeAreaInsetsDidChange() {
         super.viewSafeAreaInsetsDidChange()
-        var containerHeight: CGFloat?
         var topConst: CGFloat?
         if view.safeAreaInsets.bottom > 0 {
             containerHeight = 70
@@ -154,26 +154,22 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     
     func setupMessageTF(_ topConst: CGFloat){
         messageContainer.addSubview(messageTF)
-        messageTF.attributedPlaceholder = NSAttributedString(string: "Write a message...", attributes: [NSAttributedString.Key.foregroundColor : UIColor.gray])
-        messageTF.layer.cornerRadius = 8
-        let textPadding = UIView(frame: CGRect(x: 0, y: 0, width: 15, height: 35))
+        messageTF.layer.cornerRadius = 12
         messageTF.font = UIFont(name: "Helvetica Neue", size: 15)
-        messageTF.leftView = textPadding
         messageTF.textColor = .black
-        messageTF.leftViewMode = .always
-        messageTF.autocapitalizationType = .none
+        messageTF.isScrollEnabled = false
         messageTF.layer.borderWidth = 0.1
         messageTF.layer.borderColor = UIColor.systemGray.cgColor
         messageTF.layer.masksToBounds = true
         messageTF.translatesAutoresizingMaskIntoConstraints = false
         messageTF.backgroundColor = UIColor(white: 0.95, alpha: 1)
+        messageTF.centerVertically()
         messageTF.delegate = self
         let constraints = [
             messageTF.leadingAnchor.constraint(equalTo: clipImageButton.trailingAnchor, constant: 8),
             messageTF.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: 0),
             messageTF.topAnchor.constraint(equalTo: messageContainer.topAnchor, constant: topConst),
-            messageTF.heightAnchor.constraint(equalToConstant: 30),
-            messageTF.centerYAnchor.constraint(equalTo: messageTF.centerYAnchor)
+            messageTF.heightAnchor.constraint(equalToConstant: 32)
         ]
         NSLayoutConstraint.activate(constraints)
     }
@@ -223,10 +219,11 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     @objc func sendButtonPressed(){
-        guard messageTF.text!.count > 0 else { return }
+        let trimmedMessage = messageTF.text.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard trimmedMessage.count > 0 else { return }
         let ref = Constants.db.reference().child("messages")
         let nodeRef = ref.childByAutoId()
-        let values = ["message": messageTF.text!, "sender": CurrentUser.uid!, "recipient": friendId!, "time": Date().timeIntervalSince1970] as [String : Any]
+        let values = ["message": trimmedMessage, "sender": CurrentUser.uid!, "recipient": friendId!, "time": Date().timeIntervalSince1970] as [String : Any]
         sendMessageHandler(ref: nodeRef, values: values)
         self.messageTF.text = ""
     }
@@ -245,6 +242,12 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
             friendMessages.updateChildValues(userValues)
         }
         self.messageTF.text = ""
+        messageTF.constraints.forEach { (constraint) in
+            if constraint.firstAttribute == .height {
+                constraint.constant = 32
+                messageContainer.constraints.forEach { (const) in if const.firstAttribute == .height {
+                if sendingIsFinished(tv: messageTF, const: const){ return }}}}
+        }
     }
     
     func getMessages(){
@@ -329,7 +332,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
             photoView.center = keyWindow.center
         }, completion: nil)
     }
-
+    
     @objc func imageSlideUpDownHandler(tap: UISwipeGestureRecognizer){
         if let slideView = tap.view {
             UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
@@ -351,6 +354,34 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
             self.imgBackground.alpha = 0
         }) { (true) in
             slideView?.removeFromSuperview()
+        }
+    }
+    
+    func messageContainerHeightHandler(_ tv: UITextView, _ const: NSLayoutConstraint, _ estSize: CGSize){
+        if sendingIsFinished(tv: tv, const: const) { return }
+        let height = estSize.height
+        if height > 150 { return }
+        if height >= 50{
+            print(height)
+            const.constant = height + 20
+        }
+    }
+    
+    func messageHeightHandler(_ constraint: NSLayoutConstraint, _ estSize: CGSize){
+        if estSize.height > 150 {
+            messageTF.isScrollEnabled = true
+            return
+        }
+        constraint.constant = estSize.height
+    }
+    
+    func sendingIsFinished(tv: UITextView, const: NSLayoutConstraint) -> Bool{
+        if tv.text.count < 40 {
+            messageTF.isScrollEnabled = false
+            const.constant = containerHeight
+            return true
+        }else{
+            return false
         }
     }
     
@@ -409,6 +440,18 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         return cell
     }
     
+}
+
+extension ChatVC: UITextViewDelegate {
     
-    
+    func textViewDidChange(_ textView: UITextView) {
+        let size = CGSize(width: textView.frame.width, height: 200)
+        print(textView.text.count)
+        let estSize = textView.sizeThatFits(size)
+        messageTF.constraints.forEach { (constraint) in
+            if constraint.firstAttribute != .height { return }
+            messageHeightHandler(constraint, estSize)
+            messageContainer.constraints.forEach { (const) in if const.firstAttribute == .height { messageContainerHeightHandler(textView, const, estSize) }}
+        }
+    }
 }
