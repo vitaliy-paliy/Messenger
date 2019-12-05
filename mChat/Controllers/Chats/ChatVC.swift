@@ -125,6 +125,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     func setupImageClipButton(_ topConst: CGFloat){
         clipImageButton.setImage(UIImage(systemName: "paperclip"), for: .normal)
         messageContainer.addSubview(clipImageButton)
+        clipImageButton.tintColor = .black
         clipImageButton.contentMode = .scaleAspectFill
         clipImageButton.addTarget(self, action: #selector(clipImageButtonPressed), for: .touchUpInside)
         clipImageButton.translatesAutoresizingMaskIntoConstraints = false
@@ -141,6 +142,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         messageContainer.addSubview(sendButton)
         sendButton.translatesAutoresizingMaskIntoConstraints = false
         sendButton.setTitle("Send", for: .normal)
+        sendButton.tintColor = .black
         let constraints = [
             sendButton.topAnchor.constraint(equalTo: messageContainer.topAnchor, constant: topConst),
             sendButton.trailingAnchor.constraint(equalTo: messageContainer.trailingAnchor, constant: -8),

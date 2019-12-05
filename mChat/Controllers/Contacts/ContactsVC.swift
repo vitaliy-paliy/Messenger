@@ -16,6 +16,7 @@ class ContactsVC: UIViewController {
     var tableView = UITableView()
     var infoMenu = UIView()
     var blurView = UIVisualEffectView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Contacts"
@@ -105,6 +106,7 @@ class ContactsVC: UIViewController {
     }
     
     func setupFriendInfoMenuAnimation(_ friend: FriendInfo, _ cellFrame: CGRect, _ cell: UITableViewCell){
+        self.tableView.isUserInteractionEnabled = false
         blurView = setupInfoBlur()
         infoMenu = UIView(frame: CGRect(x: 8, y: cellFrame.minY, width: cellFrame.width - 16, height: cellFrame.height))
         let infoImage = setupInfoImage(friend.profileImage, infoMenu)
@@ -141,7 +143,7 @@ class ContactsVC: UIViewController {
         }) { (true) in
             exitButton.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
             sv.transform = CGAffineTransform(scaleX: 0.6, y: 0.6)
-            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+            UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
                 exitButton.transform = .identity
                 sv.transform = .identity
                 for f in 0..<sv.arrangedSubviews.count {
@@ -207,18 +209,75 @@ class ContactsVC: UIViewController {
         return infoEmail
     }
     
+    func setupStackView(_ friend: FriendInfo) -> UIStackView{
+        let sv = UIStackView()
+        sv.axis = .horizontal
+        sv.alignment = .fill
+        sv.distribution = .equalSpacing
+        let view1 = setupInfoMenuButtons(friend,"square.and.pencil", sv)
+        let view2 = setupInfoMenuButtons(friend,"map", sv)
+        let view3 = setupInfoMenuButtons(friend,"person.badge.minus", sv)
+        sv.translatesAutoresizingMaskIntoConstraints = false
+        infoMenu.addSubview(sv)
+        let constraints = [
+            sv.bottomAnchor.constraint(equalTo: infoMenu.bottomAnchor, constant: -25),
+            sv.leadingAnchor.constraint(equalTo: infoMenu.leadingAnchor, constant: 70),
+            sv.trailingAnchor.constraint(equalTo: infoMenu.trailingAnchor, constant: -70),
+            sv.heightAnchor.constraint(equalToConstant: 40),
+            view1.widthAnchor.constraint(equalToConstant: 40),
+            view2.widthAnchor.constraint(equalToConstant: 40),
+            view3.widthAnchor.constraint(equalToConstant: 40)
+        ]
+        NSLayoutConstraint.activate(constraints)
+        sv.alpha = 0
+        return sv
+    }
+    
     @objc func exitMenuHandler(_ button: contactsAnimationButton){
         infoMenu.transform = CGAffineTransform(translationX: -3, y: 2)
+        let infoImage = self.infoMenu.subviews[0]
+        let infoName = self.infoMenu.subviews[1] as? UILabel
+        let infoEmail = self.infoMenu.subviews[2] as? UILabel
         guard let cellFrame = button.cellFrame else { return }
-        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
-            self.blurView.transform = .identity
-            self.blurView.alpha = 0
-            self.infoMenu.subviews.forEach { $0.isHidden = true }
+        infoName?.font = UIFont(name: "Menlo Regular", size: UIFont.systemFontSize)
+        infoEmail?.font = UIFont(name: "Menlo Regular", size: UIFont.systemFontSize)
+        UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseIn, animations: {
+            self.infoMenu.subviews[3].isHidden = true
+            self.infoMenu.subviews[4].isHidden = true
+            let menuWidth = self.infoMenu.frame.width
+            let menuHeight = self.infoMenu.frame.height
+            infoName?.layer.add(self.exitObjectAnimation(
+                startPoint: CGPoint(x: menuWidth/2,
+                y: menuHeight/2),
+                finishPoint: CGPoint(x: 105, y: 25)),
+                forKey: "Animate Name")
+            infoImage.layer.add(self.exitObjectAnimation(
+                startPoint: CGPoint(x: menuWidth/2, y: menuHeight/3),
+                finishPoint: CGPoint(x: 45, y: 45)),
+                forKey: "Animate Image")
+            infoEmail?.layer.add(self.exitObjectAnimation(
+                startPoint: CGPoint(x: menuWidth/2, y: menuHeight/3),
+                finishPoint: CGPoint(x: 155, y: 45)),
+                forKey: "Animate Email")
             self.infoMenu.frame = CGRect(x: 8, y: cellFrame.minY, width: cellFrame.width - 16, height: cellFrame.height)
         }) { (true) in
-            button.cell?.alpha = 1
+            self.blurView.alpha = 0
             self.infoMenu.alpha = 0
+            self.tableView.isUserInteractionEnabled = true
+            button.cell?.alpha = 1
         }
+    }
+    
+    func exitObjectAnimation(startPoint: CGPoint, finishPoint: CGPoint) -> CAKeyframeAnimation{
+        let positionAnim = CAKeyframeAnimation(keyPath: "position")
+        let path = UIBezierPath()
+        path.move(to: startPoint)
+        path.addQuadCurve(to: finishPoint, controlPoint: CGPoint(x: 30, y: 100))
+        positionAnim.path = path.cgPath
+        positionAnim.fillMode = .forwards
+        positionAnim.isRemovedOnCompletion = false
+        positionAnim.duration = 0.2
+        return positionAnim
     }
     
     func blurEffectAnim() -> CABasicAnimation{
@@ -242,30 +301,6 @@ class ContactsVC: UIViewController {
         movingImageAnimation.fillMode = .forwards
         movingImageAnimation.isRemovedOnCompletion = false
         return movingImageAnimation
-    }
-    
-    func setupStackView(_ friend: FriendInfo) -> UIStackView{
-        let sv = UIStackView()
-        sv.axis = .horizontal
-        sv.alignment = .fill
-        sv.distribution = .equalSpacing
-        let view1 = setupInfoMenuButtons(friend,"square.and.pencil", sv)
-        let view2 = setupInfoMenuButtons(friend,"map", sv)
-        let view3 = setupInfoMenuButtons(friend,"person.badge.minus", sv)
-        sv.translatesAutoresizingMaskIntoConstraints = false
-        infoMenu.addSubview(sv)
-        let constraints = [
-            sv.bottomAnchor.constraint(equalTo: infoMenu.bottomAnchor, constant: -25),
-            sv.leadingAnchor.constraint(equalTo: infoMenu.leadingAnchor, constant: 70),
-            sv.trailingAnchor.constraint(equalTo: infoMenu.trailingAnchor, constant: -70),
-            sv.heightAnchor.constraint(equalToConstant: 40),
-            view1.widthAnchor.constraint(equalToConstant: 40),
-            view2.widthAnchor.constraint(equalToConstant: 40),
-            view3.widthAnchor.constraint(equalToConstant: 40)
-        ]
-        NSLayoutConstraint.activate(constraints)
-        sv.alpha = 0
-        return sv
     }
     
     func setupInfoMenuButtons(_ friend: FriendInfo, _ imageName: String, _ sv: UIStackView) -> contactsAnimationButton{
