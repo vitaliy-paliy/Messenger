@@ -155,15 +155,16 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     func setupMessageTF(_ topConst: CGFloat){
         messageContainer.addSubview(messageTF)
         messageTF.layer.cornerRadius = 12
-        messageTF.font = UIFont(name: "Helvetica Neue", size: 15)
+        messageTF.font = UIFont(name: "Helvetica Neue", size: 16)
         messageTF.textColor = .black
         messageTF.isScrollEnabled = false
-        messageTF.layer.borderWidth = 0.1
+        messageTF.layer.borderWidth = 0.2
         messageTF.layer.borderColor = UIColor.systemGray.cgColor
         messageTF.layer.masksToBounds = true
+        messageTF.centerVertically()
         messageTF.translatesAutoresizingMaskIntoConstraints = false
         messageTF.backgroundColor = UIColor(white: 0.95, alpha: 1)
-        messageTF.centerVertically()
+        messageTF.adjustsFontForContentSizeCategory = true
         messageTF.delegate = self
         let constraints = [
             messageTF.leadingAnchor.constraint(equalTo: clipImageButton.trailingAnchor, constant: 8),
@@ -212,7 +213,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     func sendMediaMessage(url: String, _ image: UIImage){
-        let values = ["sender": CurrentUser.uid!, "time": Date().timeIntervalSince1970, "recipient": friendId!, "mediaUrl": url] as [String: Any]
+        let values = ["sender": CurrentUser.uid!, "time": Date().timeIntervalSince1970, "recipient": friendId!, "mediaUrl": url, "width": image.size.width, "height": image.size.height] as [String: Any]
         let messageRef = Constants.db.reference().child("messages")
         let nodeRef = messageRef.childByAutoId()
         sendMessageHandler(ref: nodeRef, values: values)
@@ -261,6 +262,8 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
                 message.message = values["message"] as? String
                 message.time = values["time"] as? NSNumber
                 message.mediaUrl = values["mediaUrl"] as? String
+                message.imageWidth = values["width"] as? NSNumber
+                message.imageHeight = values["height"] as? NSNumber
                 if message.determineUser() == self.friendId{
                     self.messages.append(message)
                     DispatchQueue.main.async {
@@ -363,7 +366,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         if height > 150 { return }
         if height >= 50{
             print(height)
-            const.constant = height + 20
+            const.constant = height + 30
         }
     }
     
@@ -373,10 +376,11 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
             return
         }
         constraint.constant = estSize.height
+        
     }
     
     func sendingIsFinished(tv: UITextView, const: NSLayoutConstraint) -> Bool{
-        if tv.text.count < 40 {
+        if tv.text.count == 0 {
             messageTF.isScrollEnabled = false
             const.constant = containerHeight
             return true
@@ -394,8 +398,8 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         let message = messages[indexPath.row]
         if let message = message.message {
             height = calculateFrameInText(message: message).height + 10
-        }else if message.mediaUrl != nil{
-            height = 200
+        }else if let imageWidth = message.imageWidth?.floatValue, let imageHeight = message.imageHeight?.floatValue  {
+            height = CGFloat(imageHeight / imageWidth * 200)
         }
         return CGSize(width: view.frame.width, height: height)
     }
@@ -418,6 +422,7 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         if let url = message.mediaUrl{
             cell.mediaMessage.loadImage(url: url)
             cell.mediaMessage.isHidden = false
+            cell.backgroundWidthAnchor.constant = 200
         }else{
             cell.mediaMessage.isHidden = true
         }
@@ -446,7 +451,6 @@ extension ChatVC: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
         let size = CGSize(width: textView.frame.width, height: 200)
-        print(textView.text.count)
         let estSize = textView.sizeThatFits(size)
         messageTF.constraints.forEach { (constraint) in
             if constraint.firstAttribute != .height { return }

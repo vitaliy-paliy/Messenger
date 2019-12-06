@@ -87,4 +87,15 @@ class ChatCell: UICollectionViewCell {
         chatVC.zoomImageHandler(image: imageView!)
     }
     
+    func animateCell(_ cell: ChatCell){
+        cell.layer.transform = CATransform3DMakeScale(0.1, 0.1, 1)
+        UIView.animate(withDuration: 0.3, animations: {
+            cell.layer.transform = CATransform3DMakeScale(1.05, 1.05, 1)
+        },completion: { finished in
+            UIView.animate(withDuration: 0.1, animations: {
+                cell.layer.transform = CATransform3DMakeScale(1, 1, 1)
+            })
+        })
+    }
+    
 }

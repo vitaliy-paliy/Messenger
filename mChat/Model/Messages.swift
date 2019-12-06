@@ -10,11 +10,14 @@ import UIKit
 import Firebase
 
 class Messages {
+    
     var message: String!
     var sender: String!
     var recipient: String!
     var time: NSNumber!
     var mediaUrl: String!
+    var imageWidth: NSNumber!
+    var imageHeight: NSNumber!
     
     func determineUser() -> String{
         if sender == CurrentUser.uid {
