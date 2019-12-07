@@ -27,6 +27,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     var clipImageButton = UIButton(type: .system)
     var sendButton = UIButton(type: .system)
     var messageTF = UITextView()
+    var timer = Timer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -161,7 +162,15 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         messageTF.layer.borderWidth = 0.2
         messageTF.layer.borderColor = UIColor.systemGray.cgColor
         messageTF.layer.masksToBounds = true
-        messageTF.centerVertically()
+        let messTFPlaceholder = UILabel()
+        messTFPlaceholder.text = "Message"
+        messTFPlaceholder.font = UIFont(name: "Helvetica Neue", size: 16)
+        messTFPlaceholder.sizeToFit()
+        messageTF.addSubview(messTFPlaceholder)
+        messTFPlaceholder.frame.origin = CGPoint(x: 5, y: (messageTF.font?.pointSize)! / 2)
+        messTFPlaceholder.textColor = .lightGray
+        messTFPlaceholder.isHidden = !messageTF.text.isEmpty
+        messageTF.contentInset = UIEdgeInsets(top: -2, left: 0, bottom: 0, right: 0)
         messageTF.translatesAutoresizingMaskIntoConstraints = false
         messageTF.backgroundColor = UIColor(white: 0.95, alpha: 1)
         messageTF.adjustsFontForContentSizeCategory = true
@@ -266,13 +275,18 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
                 message.imageHeight = values["height"] as? NSNumber
                 if message.determineUser() == self.friendId{
                     self.messages.append(message)
-                    DispatchQueue.main.async {
-                        self.collectionView.reloadData()
-                        let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
-                        self.collectionView.scrollToItem(at: indexPath, at: .bottom, animated: false)
-                    }
+                    self.timer.invalidate()
+                    self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReload), userInfo: nil, repeats: false)
                 }
             }
+        }
+    }
+    
+    @objc func handleReload(){
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+            let indexPath = IndexPath(item: self.messages.count - 1, section: 0)
+            self.collectionView.scrollToItem(at: indexPath, at: .bottom, animated: false)
         }
     }
     
@@ -448,8 +462,9 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
 }
 
 extension ChatVC: UITextViewDelegate {
-    
+        
     func textViewDidChange(_ textView: UITextView) {
+        messageTF.subviews[2].isHidden = !messageTF.text.isEmpty
         let size = CGSize(width: textView.frame.width, height: 200)
         let estSize = textView.sizeThatFits(size)
         messageTF.constraints.forEach { (constraint) in

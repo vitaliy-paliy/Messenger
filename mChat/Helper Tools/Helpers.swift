@@ -131,13 +131,3 @@ extension UIImageView {
         task.resume()
     }
 }
-
-extension UITextView {
-
-    func centerVertically() {
-        let topOffset = frame.height / 2
-        let positiveTopOffset = max(1, topOffset)
-        contentOffset.y = -positiveTopOffset
-    }
-
-}
