@@ -258,7 +258,7 @@ class ContactsVC: UIViewController {
             infoEmail?.layer.add(self.exitObjectAnimation(
                 startPoint: CGPoint(x: menuWidth/2, y: menuHeight/3),
                 finishPoint: CGPoint(x: 155, y: 45)),
-                forKey: "Animate Email")
+                forKey: "Animate Email")            
             self.infoMenu.frame = CGRect(x: 8, y: cellFrame.minY, width: cellFrame.width - 16, height: cellFrame.height)
         }) { (true) in
             self.blurView.alpha = 0
@@ -266,6 +266,14 @@ class ContactsVC: UIViewController {
             self.tableView.isUserInteractionEnabled = true
             button.cell?.alpha = 1
         }
+    }
+    
+    func hideLabels() -> CABasicAnimation{
+        let hideAnim = CABasicAnimation(keyPath: "opacity")
+        hideAnim.fromValue = 1
+        hideAnim.toValue = 0
+        hideAnim.duration = 0.1
+        return hideAnim
     }
     
     func exitObjectAnimation(startPoint: CGPoint, finishPoint: CGPoint) -> CAKeyframeAnimation{

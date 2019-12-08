@@ -31,10 +31,12 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        getMessages()
         navigationController?.navigationBar.tintColor = .black
         navigationItem.title = "\(friendName!)"
         view.backgroundColor = .white
+        getMessages()
+        observeKeyboardChanges()
+        hideKeyboardOnTap(collectionView)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -45,6 +47,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         tabBarController?.tabBar.isHidden = false
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewSafeAreaInsetsDidChange() {
@@ -103,6 +106,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: friendImageButton)
     }
     
+    var containerBottomAnchor = NSLayoutConstraint()
     func setupContainer(height: CGFloat){
         messageContainer.translatesAutoresizingMaskIntoConstraints = false
         messageContainer.backgroundColor = .white
@@ -111,9 +115,10 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         topLine.backgroundColor = UIColor(displayP3Red: 238/255, green: 238/255, blue: 238/255, alpha: 1)
         topLine.translatesAutoresizingMaskIntoConstraints = false
         messageContainer.addSubview(topLine)
+        containerBottomAnchor = messageContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         let constraints = [
             messageContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            messageContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            containerBottomAnchor,
             messageContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             messageContainer.heightAnchor.constraint(equalToConstant: height),
             topLine.leftAnchor.constraint(equalTo: view.leftAnchor),
@@ -167,10 +172,10 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         messTFPlaceholder.font = UIFont(name: "Helvetica Neue", size: 16)
         messTFPlaceholder.sizeToFit()
         messageTF.addSubview(messTFPlaceholder)
-        messTFPlaceholder.frame.origin = CGPoint(x: 5, y: (messageTF.font?.pointSize)! / 2)
+        messTFPlaceholder.frame.origin = CGPoint(x: 10, y: 6)
         messTFPlaceholder.textColor = .lightGray
         messTFPlaceholder.isHidden = !messageTF.text.isEmpty
-        messageTF.contentInset = UIEdgeInsets(top: -2, left: 0, bottom: 0, right: 0)
+        messageTF.textContainerInset = UIEdgeInsets(top: 5, left: 5, bottom: 0, right: 10)
         messageTF.translatesAutoresizingMaskIntoConstraints = false
         messageTF.backgroundColor = UIColor(white: 0.95, alpha: 1)
         messageTF.adjustsFontForContentSizeCategory = true
@@ -256,7 +261,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
             if constraint.firstAttribute == .height {
                 constraint.constant = 32
                 messageContainer.constraints.forEach { (const) in if const.firstAttribute == .height {
-                if sendingIsFinished(tv: messageTF, const: const){ return }}}}
+                if sendingIsFinished(const: const){ return }}}}
         }
     }
     
@@ -308,6 +313,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     func zoomImageHandler(image: UIImageView){
+        view.endEditing(true)
         imgFrame = image.superview?.convert(image.frame, to: nil)
         let photoView = UIImageView(frame: imgFrame!)
         photoView.isUserInteractionEnabled = true
@@ -374,32 +380,75 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         }
     }
     
-    func messageContainerHeightHandler(_ tv: UITextView, _ const: NSLayoutConstraint, _ estSize: CGSize){
-        if sendingIsFinished(tv: tv, const: const) { return }
+    func messageContainerHeightHandler(_ const: NSLayoutConstraint, _ estSize: CGSize){
+        if sendingIsFinished(const: const) { return }
         let height = estSize.height
         if height > 150 { return }
-        if height >= 50{
-            print(height)
-            const.constant = height + 30
+        if messageTF.calculateLines() >= 2 {
+            if containerHeight > 45 {
+                const.constant = height + 35
+            }else{ const.constant = height + 15 }
         }
     }
     
     func messageHeightHandler(_ constraint: NSLayoutConstraint, _ estSize: CGSize){
-        if estSize.height > 150 {
+        if estSize.height > 150{
             messageTF.isScrollEnabled = true
+            return
+        }else if messageTF.calculateLines() < 2 {
+            constraint.constant = 32
+            animateMessageContainer()
             return
         }
         constraint.constant = estSize.height
-        
+        animateMessageContainer()
     }
     
-    func sendingIsFinished(tv: UITextView, const: NSLayoutConstraint) -> Bool{
-        if tv.text.count == 0 {
+    func sendingIsFinished(const: NSLayoutConstraint) -> Bool{
+        if messageTF.calculateLines() < 2 {
             messageTF.isScrollEnabled = false
             const.constant = containerHeight
+            messageTF.subviews[2].isHidden = !messageTF.text.isEmpty
             return true
         }else{
             return false
+        }
+    }
+    
+    func animateMessageContainer(){
+        UIView.animate(withDuration: 0.3, animations: {
+            self.view.layoutIfNeeded()
+        })
+    }
+    
+    func observeKeyboardChanges() {
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+
+    @objc func handleKeyboardWillShow(notification: NSNotification){
+        let kFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
+        let kDuration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double
+        guard let height = kFrame?.height, let duration = kDuration else { return }
+        if containerHeight > 45 {
+            containerBottomAnchor.constant = 13.2
+        }
+        containerBottomAnchor.constant += -height
+        UIView.animate(withDuration: duration) {
+            self.view.layoutIfNeeded()
+        }
+        if messages.count > 0 {
+            let indexPath = IndexPath(item: messages.count - 1, section: 0)
+            collectionView.scrollToItem(at: indexPath, at: .top, animated: false)
+        }
+    }
+    
+    @objc func handleKeyboardWillHide(notification: NSNotification){
+        let kDuration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double
+        guard let duration = kDuration else { return }
+        containerBottomAnchor.constant = 0
+        UIView.animate(withDuration: duration) {
+            self.view.layoutIfNeeded()
         }
     }
     
@@ -409,11 +458,12 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var height: CGFloat = 80
+        let width = view.frame.size.width/2
         let message = messages[indexPath.row]
         if let message = message.message {
             height = calculateFrameInText(message: message).height + 10
         }else if let imageWidth = message.imageWidth?.floatValue, let imageHeight = message.imageHeight?.floatValue  {
-            height = CGFloat(imageHeight / imageWidth * 200)
+            height = CGFloat(imageHeight / imageWidth * Float(width))
         }
         return CGSize(width: view.frame.width, height: height)
     }
@@ -436,7 +486,7 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         if let url = message.mediaUrl{
             cell.mediaMessage.loadImage(url: url)
             cell.mediaMessage.isHidden = false
-            cell.backgroundWidthAnchor.constant = 200
+            cell.backgroundWidthAnchor.constant = view.frame.size.width / 2
         }else{
             cell.mediaMessage.isHidden = true
         }
@@ -464,13 +514,12 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
 extension ChatVC: UITextViewDelegate {
         
     func textViewDidChange(_ textView: UITextView) {
-        messageTF.subviews[2].isHidden = !messageTF.text.isEmpty
-        let size = CGSize(width: textView.frame.width, height: 200)
+        let size = CGSize(width: textView.frame.width, height: 150)
         let estSize = textView.sizeThatFits(size)
         messageTF.constraints.forEach { (constraint) in
             if constraint.firstAttribute != .height { return }
             messageHeightHandler(constraint, estSize)
-            messageContainer.constraints.forEach { (const) in if const.firstAttribute == .height { messageContainerHeightHandler(textView, const, estSize) }}
+            messageContainer.constraints.forEach { (const) in if const.firstAttribute == .height { messageContainerHeightHandler(const, estSize) }}
         }
     }
 }

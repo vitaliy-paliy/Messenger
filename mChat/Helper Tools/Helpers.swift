@@ -102,6 +102,19 @@ extension UIViewController {
         return NSString(string: message).boundingRect(with: CGSize(width: 200, height: 9999999), options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSAttributedString.Key.font:UIFont(name: "Helvetica Neue", size: 16)!], context: nil)
     }
     
+    func hideKeyboardOnTap(_ cView: UICollectionView? = nil){
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        tap.cancelsTouchesInView = false
+        if let cView = cView {
+            cView.addGestureRecognizer(tap)
+        }
+        navigationController?.navigationBar.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(hideKeyboard)))
+    }
+    
+    @objc func hideKeyboard(){
+        view.endEditing(true)
+    }
+    
 }
 
 extension UIImageView {
@@ -129,5 +142,20 @@ extension UIImageView {
             }
         }
         task.resume()
+    }
+}
+
+extension UITextView {
+    func calculateLines() -> Int {
+        let numberOfGlyphs = layoutManager.numberOfGlyphs
+        var index = 0, numberOfLines = 0
+        var lineRange = NSRange(location: NSNotFound, length: 0)
+
+        while index < numberOfGlyphs {
+          layoutManager.lineFragmentRect(forGlyphAt: index, effectiveRange: &lineRange)
+          index = NSMaxRange(lineRange)
+          numberOfLines += 1
+        }
+        return numberOfLines
     }
 }
