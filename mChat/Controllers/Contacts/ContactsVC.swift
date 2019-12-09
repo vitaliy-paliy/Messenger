@@ -105,7 +105,7 @@ class ContactsVC: UIViewController {
         self.show(controller, sender: nil)
     }
     
-    func setupFriendInfoMenuAnimation(_ friend: FriendInfo, _ cellFrame: CGRect, _ cell: UITableViewCell){
+    func setupFriendInfoMenuAnimation(_ friend: FriendInfo, _ cellFrame: CGRect, _ cell: ContactsCell){
         self.tableView.isUserInteractionEnabled = false
         blurView = setupInfoBlur()
         infoMenu = UIView(frame: CGRect(x: 8, y: cellFrame.minY, width: cellFrame.width - 16, height: cellFrame.height))
@@ -155,7 +155,7 @@ class ContactsVC: UIViewController {
         }
     }
 
-    func setupExitButton(_ cell: UITableViewCell, _ cellFrame: CGRect) -> UIButton{
+    func setupExitButton(_ cell: ContactsCell, _ cellFrame: CGRect) -> UIButton{
         let exitButton = contactsAnimationButton(type: .system)
         exitButton.cell = cell
         exitButton.cellFrame = cellFrame
@@ -241,7 +241,7 @@ class ContactsVC: UIViewController {
         guard let cellFrame = button.cellFrame else { return }
         infoName?.font = UIFont(name: "Menlo Regular", size: UIFont.systemFontSize)
         infoEmail?.font = UIFont(name: "Menlo Regular", size: UIFont.systemFontSize)
-        UIView.animate(withDuration: 0.4, delay: 0, options: .curveEaseIn, animations: {
+        UIView.animate(withDuration: 0.3, delay: 0, options: .curveEaseIn, animations: {
             self.infoMenu.subviews[3].isHidden = true
             self.infoMenu.subviews[4].isHidden = true
             let menuWidth = self.infoMenu.frame.width
@@ -249,31 +249,45 @@ class ContactsVC: UIViewController {
             infoName?.layer.add(self.exitObjectAnimation(
                 startPoint: CGPoint(x: menuWidth/2,
                 y: menuHeight/2),
-                finishPoint: CGPoint(x: 105, y: 25)),
+                finishPoint: CGPoint(x: 250, y: 25)),
                 forKey: "Animate Name")
+            infoName?.layer.add(self.fadeOutAnimation(1, 0, durTime: 0.1), forKey: "nameFadeOut")
             infoImage.layer.add(self.exitObjectAnimation(
                 startPoint: CGPoint(x: menuWidth/2, y: menuHeight/3),
                 finishPoint: CGPoint(x: 45, y: 45)),
                 forKey: "Animate Image")
             infoEmail?.layer.add(self.exitObjectAnimation(
                 startPoint: CGPoint(x: menuWidth/2, y: menuHeight/3),
-                finishPoint: CGPoint(x: 155, y: 45)),
-                forKey: "Animate Email")            
+                finishPoint: CGPoint(x: 250, y: 45)),
+                forKey: "Animate Email")
+            infoEmail?.layer.add(self.fadeOutAnimation(1, 0, durTime: 0.1), forKey: "emailFadeOut")
             self.infoMenu.frame = CGRect(x: 8, y: cellFrame.minY, width: cellFrame.width - 16, height: cellFrame.height)
         }) { (true) in
-            self.blurView.alpha = 0
-            self.infoMenu.alpha = 0
-            self.tableView.isUserInteractionEnabled = true
-            button.cell?.alpha = 1
+            self.finalMenuAnimation(button.cell)
         }
     }
     
-    func hideLabels() -> CABasicAnimation{
-        let hideAnim = CABasicAnimation(keyPath: "opacity")
-        hideAnim.fromValue = 1
-        hideAnim.toValue = 0
-        hideAnim.duration = 0.1
-        return hideAnim
+    func finalMenuAnimation(_ cell: ContactsCell?){
+        UIView.animate(withDuration: 0.1, animations: {
+            cell?.alpha = 1
+            self.blurView.alpha = 0
+            self.infoMenu.layer.add(self.fadeOutAnimation(1, 0, durTime: 0.1), forKey: "infoMenuFadeOutAnim")
+        }) { (true) in
+           
+            self.infoMenu.alpha = 0
+            self.tableView.isUserInteractionEnabled = true
+            
+        }
+    }
+    
+    func fadeOutAnimation(_ fromValue: CGFloat, _ toValue: CGFloat, durTime: Double) -> CABasicAnimation{
+        let animation = CABasicAnimation(keyPath: "opacity")
+        animation.duration = durTime
+        animation.fromValue = fromValue
+        animation.toValue = toValue
+        animation.fillMode = .forwards
+        animation.isRemovedOnCompletion = false
+        return animation
     }
     
     func exitObjectAnimation(startPoint: CGPoint, finishPoint: CGPoint) -> CAKeyframeAnimation{
@@ -333,7 +347,6 @@ class ContactsVC: UIViewController {
     }
     
     @objc func writeMessage(_ button: contactsAnimationButton){
-        print(button.frame.origin.x)
         guard let bInfo = button.friendInfo else { return }
         let controller = ChatVC()
         controller.modalPresentationStyle = .fullScreen
@@ -382,7 +395,7 @@ extension ContactsVC: UITableViewDataSource, UITableViewDelegate {
         let friend = friendsList[indexPath.row]
         if let cellFrame = tableView.cellForRow(at: indexPath)?.frame, let cell = tableView.cellForRow(at: indexPath){
             let convertedFrame = tableView.convert(cellFrame, to: tableView.superview)
-            setupFriendInfoMenuAnimation(friend, convertedFrame, cell)
+            setupFriendInfoMenuAnimation(friend, convertedFrame, cell as! ContactsCell)
         }
     }
     

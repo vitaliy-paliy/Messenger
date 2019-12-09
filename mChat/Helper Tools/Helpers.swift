@@ -10,10 +10,10 @@ import UIKit
 import Firebase
 
 // Caches the images
-let imgCache = NSCache<AnyObject, AnyObject>()
+let imgCache = NSCache<NSString, UIImage>()
 
 class contactsAnimationButton: UIButton{
-    var cell: UITableViewCell?
+    var cell: ContactsCell?
     var cellFrame: CGRect?
     var friendInfo: FriendInfo?
 }
@@ -118,10 +118,11 @@ extension UIViewController {
 }
 
 extension UIImageView {
+    
     func loadImage(url: String){
         self.image = nil
-        if let cachedImages = imgCache.object(forKey: url as NSString) as? UIImage {
-            self.image = cachedImages
+        if let img = imgCache.object(forKey: url as NSString) {
+            self.image = img
             return
         }
         let imgUrl = URL(string: url)
@@ -150,12 +151,14 @@ extension UITextView {
         let numberOfGlyphs = layoutManager.numberOfGlyphs
         var index = 0, numberOfLines = 0
         var lineRange = NSRange(location: NSNotFound, length: 0)
-
+        
         while index < numberOfGlyphs {
-          layoutManager.lineFragmentRect(forGlyphAt: index, effectiveRange: &lineRange)
-          index = NSMaxRange(lineRange)
-          numberOfLines += 1
+            layoutManager.lineFragmentRect(forGlyphAt: index, effectiveRange: &lineRange)
+            index = NSMaxRange(lineRange)
+            numberOfLines += 1
         }
+        print(numberOfLines)
         return numberOfLines
     }
 }
+

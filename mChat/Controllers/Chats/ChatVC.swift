@@ -20,12 +20,14 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     var imgFrame: CGRect?
     var imgBackground: UIView!
     var imageClickedView: UIImageView!
+    var startingImageFrame: UIImageView!
     
     var containerHeight: CGFloat!
     var collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 50, height: 50), collectionViewLayout: UICollectionViewFlowLayout.init())
     var messageContainer = UIView()
     var clipImageButton = UIButton(type: .system)
     var sendButton = UIButton(type: .system)
+    var micButton = UIButton(type: .system)
     var messageTF = UITextView()
     var timer = Timer()
     
@@ -35,7 +37,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         navigationItem.title = "\(friendName!)"
         view.backgroundColor = .white
         getMessages()
-        observeKeyboardChanges()
+        notificationCenterHandler()
         hideKeyboardOnTap(collectionView)
     }
     
@@ -52,7 +54,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     
     override func viewSafeAreaInsetsDidChange() {
         super.viewSafeAreaInsetsDidChange()
-        var topConst: CGFloat?
+        var topConst: CGFloat!
         if view.safeAreaInsets.bottom > 0 {
             containerHeight = 70
             topConst = 12
@@ -62,9 +64,10 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         }
         setupContainer(height: containerHeight!)
         setupCollectionView()
-        setupImageClipButton(topConst!)
-        setupSendButton(topConst!)
-        setupMessageTF(topConst!)
+        setupImageClipButton(topConst)
+        setupSendButton(topConst)
+        setupMessageTF(topConst)
+        setupMicrophone(topConst)
         setupProfileImage()
     }
     
@@ -147,15 +150,36 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     func setupSendButton(_ topConst: CGFloat){
         messageContainer.addSubview(sendButton)
         sendButton.translatesAutoresizingMaskIntoConstraints = false
-        sendButton.setTitle("Send", for: .normal)
-        sendButton.tintColor = .black
+        sendButton.alpha = 0
+        sendButton.setImage(UIImage(systemName: "arrow.up"), for: .normal)
+        sendButton.backgroundColor = .black
+        sendButton.layer.cornerRadius = 15
+        sendButton.layer.masksToBounds = true
+        sendButton.tintColor = .white
         let constraints = [
             sendButton.topAnchor.constraint(equalTo: messageContainer.topAnchor, constant: topConst),
             sendButton.trailingAnchor.constraint(equalTo: messageContainer.trailingAnchor, constant: -8),
-            sendButton.widthAnchor.constraint(equalToConstant: 60),
+            sendButton.heightAnchor.constraint(equalToConstant: 30),
+            sendButton.widthAnchor.constraint(equalToConstant: 30),
         ]
         NSLayoutConstraint.activate(constraints)
         sendButton.addTarget(self, action: #selector(sendButtonPressed), for: .touchUpInside)
+    }
+    
+    func setupMicrophone(_ topConst: CGFloat){
+        messageContainer.addSubview(micButton)
+        micButton.translatesAutoresizingMaskIntoConstraints = false
+        micButton.setImage(UIImage(systemName: "mic"), for: .normal)
+        micButton.tintColor = .black
+        micButton.addTarget(self, action: #selector(startAudioRec), for: .touchUpInside)
+        let constraints = [
+            micButton.topAnchor.constraint(equalTo: messageContainer.topAnchor, constant: topConst),
+            micButton.trailingAnchor.constraint(equalTo: messageContainer.trailingAnchor, constant: -8),
+            micButton.heightAnchor.constraint(equalToConstant: 30),
+            micButton.widthAnchor.constraint(equalToConstant: 30),
+        ]
+        NSLayoutConstraint.activate(constraints)
+        micButton.addTarget(self, action: #selector(sendButtonPressed), for: .touchUpInside)
     }
     
     func setupMessageTF(_ topConst: CGFloat){
@@ -182,7 +206,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         messageTF.delegate = self
         let constraints = [
             messageTF.leadingAnchor.constraint(equalTo: clipImageButton.trailingAnchor, constant: 8),
-            messageTF.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: 0),
+            messageTF.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: -8),
             messageTF.topAnchor.constraint(equalTo: messageContainer.topAnchor, constant: topConst),
             messageTF.heightAnchor.constraint(equalToConstant: 32)
         ]
@@ -191,6 +215,10 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     
     @objc func clipImageButtonPressed() {
         openImagePicker(type: .photoLibrary)
+    }
+    
+    @objc func startAudioRec(){
+        print("TODO: Add Audio Rec")
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -261,7 +289,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
             if constraint.firstAttribute == .height {
                 constraint.constant = 32
                 messageContainer.constraints.forEach { (const) in if const.firstAttribute == .height {
-                if sendingIsFinished(const: const){ return }}}}
+                    if sendingIsFinished(const: const){ return }}}}
         }
     }
     
@@ -316,6 +344,8 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         view.endEditing(true)
         imgFrame = image.superview?.convert(image.frame, to: nil)
         let photoView = UIImageView(frame: imgFrame!)
+        startingImageFrame = image
+        startingImageFrame.isHidden = true
         photoView.isUserInteractionEnabled = true
         let slideUp = UISwipeGestureRecognizer(target: self, action: #selector(imageSlideUpDownHandler(tap:)))
         let slideDown = UISwipeGestureRecognizer(target: self, action: #selector(imageSlideUpDownHandler(tap:)))
@@ -332,8 +362,8 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         keyWindow.addSubview(imgBackground)
         keyWindow.addSubview(photoView)
         let closeImageButton = UIButton(type: .system)
-        imgBackground.addSubview(closeImageButton)
         imageClickedView = photoView
+        imgBackground.addSubview(closeImageButton)
         closeImageButton.translatesAutoresizingMaskIntoConstraints = false
         closeImageButton.tintColor = .white
         closeImageButton.addTarget(self, action: #selector(closeImageButtonPressed), for: .touchUpInside)
@@ -348,35 +378,37 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
             tAnchor
         ]
         NSLayoutConstraint.activate(constraints)
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+        UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.imgBackground.alpha = 1
             let height = self.imgFrame!.height / self.imgFrame!.width * keyWindow.frame.width
             photoView.frame = CGRect(x: 0, y: 0, width: keyWindow.frame.width, height: height)
             photoView.center = keyWindow.center
-        }, completion: nil)
+        }) { (true) in
+            
+        }
     }
     
     @objc func imageSlideUpDownHandler(tap: UISwipeGestureRecognizer){
-        if let slideView = tap.view {
-            UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
-                slideView.frame = self.imgFrame!
-                slideView.alpha = 0
-                self.imgBackground.alpha = 0
-            }) { (true) in
-                slideView.removeFromSuperview()
-            }
+        if let slideView = tap.view as? UIImageView {
+            handleZoomOutAnim(slideView: slideView)
         }
     }
     
     @objc func closeImageButtonPressed(){
         let slideView = imageClickedView
-        
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
-            slideView?.frame = self.imgFrame!
-            slideView?.alpha = 0
+        handleZoomOutAnim(slideView: slideView!)
+    }
+    
+    func handleZoomOutAnim(slideView: UIImageView){
+        slideView.layer.cornerRadius = 16
+        slideView.layer.masksToBounds = true
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            slideView.frame = self.imgFrame!
             self.imgBackground.alpha = 0
         }) { (true) in
-            slideView?.removeFromSuperview()
+            slideView.alpha = 0
+            slideView.removeFromSuperview()
+            self.startingImageFrame.isHidden = false
         }
     }
     
@@ -421,11 +453,11 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         })
     }
     
-    func observeKeyboardChanges() {
+    func notificationCenterHandler() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
-
+    
     @objc func handleKeyboardWillShow(notification: NSNotification){
         let kFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
         let kDuration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double
@@ -452,18 +484,35 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         }
     }
     
+    func animateActionButton(){
+        var buttonToAnimate = UIButton()
+        if messageTF.text.count >= 1 {
+            micButton.alpha = 0
+            if sendButton.alpha == 1 { return }
+            sendButton.alpha = 1
+            buttonToAnimate = sendButton
+        }else if messageTF.text.count == 0{
+            micButton.alpha = 1
+            sendButton.alpha = 0
+            buttonToAnimate = micButton
+        }
+        buttonToAnimate.transform = CGAffineTransform(scaleX: 0.2, y: 0.2)
+        UIView.animate(withDuration: 0.55, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+            buttonToAnimate.transform = .identity
+        })
+    }
+    
 }
 
 extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var height: CGFloat = 80
-        let width = view.frame.size.width/2
         let message = messages[indexPath.row]
         if let message = message.message {
             height = calculateFrameInText(message: message).height + 10
         }else if let imageWidth = message.imageWidth?.floatValue, let imageHeight = message.imageHeight?.floatValue  {
-            height = CGFloat(imageHeight / imageWidth * Float(width))
+            height = CGFloat(imageHeight / imageWidth * 200)
         }
         return CGSize(width: view.frame.width, height: height)
     }
@@ -486,7 +535,7 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         if let url = message.mediaUrl{
             cell.mediaMessage.loadImage(url: url)
             cell.mediaMessage.isHidden = false
-            cell.backgroundWidthAnchor.constant = view.frame.size.width / 2
+            cell.backgroundWidthAnchor.constant = 200
         }else{
             cell.mediaMessage.isHidden = true
         }
@@ -508,12 +557,12 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         }
         return cell
     }
-    
 }
 
 extension ChatVC: UITextViewDelegate {
-        
+    
     func textViewDidChange(_ textView: UITextView) {
+        animateActionButton()
         let size = CGSize(width: textView.frame.width, height: 150)
         let estSize = textView.sizeThatFits(size)
         messageTF.constraints.forEach { (constraint) in

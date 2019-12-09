@@ -16,6 +16,7 @@ class ConversationsVC: UIViewController {
     var friends = [FriendInfo]()
     var tableView = UITableView()
     var timer = Timer()
+    let calendar = Calendar(identifier: .gregorian)
     var newConversationButton = UIBarButtonItem()
     
     override func viewDidLoad() {
@@ -136,8 +137,6 @@ extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ConversationsCell") as! ConversationsCell
         let recent = messages[indexPath.row]
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "hh:mm a"
         let user = recent.determineUser()
         let ref = Constants.db.reference().child("users").child(user)
         ref.observeSingleEvent(of: .value) { (snap) in
@@ -155,7 +154,7 @@ extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
                 cell.recentMessage.text = "[Media Message]"
             }
             let date = NSDate(timeIntervalSince1970: recent.time.doubleValue)
-            cell.timeLabel.text = "\(dateFormatter.string(from: date as Date))"
+            cell.timeLabel.text = "\(self.calendar.calculateTimePassed(date: date))"
             self.friends.append(friend)
         }
         return cell
