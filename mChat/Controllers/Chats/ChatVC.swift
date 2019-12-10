@@ -198,7 +198,6 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         messageTF.addSubview(messTFPlaceholder)
         messTFPlaceholder.frame.origin = CGPoint(x: 10, y: 6)
         messTFPlaceholder.textColor = .lightGray
-        messTFPlaceholder.isHidden = !messageTF.text.isEmpty
         messageTF.textContainerInset = UIEdgeInsets(top: 5, left: 5, bottom: 0, right: 10)
         messageTF.translatesAutoresizingMaskIntoConstraints = false
         messageTF.backgroundColor = UIColor(white: 0.95, alpha: 1)
@@ -353,7 +352,6 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         slideDown.direction = .down
         photoView.addGestureRecognizer(slideUp)
         photoView.addGestureRecognizer(slideDown)
-        photoView.backgroundColor = .red
         photoView.image = image.image
         let keyWindow = UIApplication.shared.windows[0]
         imgBackground = UIView(frame: keyWindow.frame)
@@ -437,10 +435,9 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     func sendingIsFinished(const: NSLayoutConstraint) -> Bool{
-        if messageTF.calculateLines() < 2 {
+        if messageTF.text.count == 0 {
             messageTF.isScrollEnabled = false
             const.constant = containerHeight
-            messageTF.subviews[2].isHidden = !messageTF.text.isEmpty
             return true
         }else{
             return false
@@ -563,6 +560,11 @@ extension ChatVC: UITextViewDelegate {
     
     func textViewDidChange(_ textView: UITextView) {
         animateActionButton()
+        if !messageTF.text.isEmpty {
+            messageTF.subviews[2].isHidden = true
+        }else{
+            messageTF.subviews[2].isHidden = false
+        }
         let size = CGSize(width: textView.frame.width, height: 150)
         let estSize = textView.sizeThatFits(size)
         messageTF.constraints.forEach { (constraint) in

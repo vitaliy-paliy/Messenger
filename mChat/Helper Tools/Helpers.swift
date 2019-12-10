@@ -115,9 +115,30 @@ extension UIViewController {
         view.endEditing(true)
     }
     
+    func activityObservers(isOnline: Bool){
+        guard let user = Auth.auth().currentUser else { return }
+        let ref = Database.database().reference()
+        let userRef = ref.child("users").child(user.uid)
+        userRef.child("isOnline").setValue(isOnline)
+    }
+    
 }
 
 extension UIImageView {
+        
+    private var activityIndicator: UIActivityIndicatorView {
+        let activityIndicator = UIActivityIndicatorView()
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.color = .black
+        self.addSubview(activityIndicator)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        let constraints = [
+            activityIndicator.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: self.centerYAnchor)
+        ]
+        NSLayoutConstraint.activate(constraints)
+        return activityIndicator
+    }
     
     func loadImage(url: String){
         self.image = nil
@@ -125,18 +146,26 @@ extension UIImageView {
             self.image = img
             return
         }
+        isUserInteractionEnabled = false
+        backgroundColor = .lightGray
+        let indicator = activityIndicator
+        DispatchQueue.main.async {
+            indicator.startAnimating()
+        }
         let imgUrl = URL(string: url)
         if imgUrl == nil {
-            print("Error")
             return
         }
         let task = URLSession.shared.dataTask(with: imgUrl!) { (data, response, error) in
             guard let data = data else {
-                print("Data == nil")
                 return
             }
             DispatchQueue.main.async {
                 if let image = UIImage(data: data){
+                    self.backgroundColor = .clear
+                    self.isUserInteractionEnabled = true
+                    indicator.stopAnimating()
+                    self.alpha = 1
                     imgCache.setObject(image, forKey: url as NSString)
                     self.image = image
                 }
@@ -147,6 +176,7 @@ extension UIImageView {
 }
 
 extension UITextView {
+    
     func calculateLines() -> Int {
         let numberOfGlyphs = layoutManager.numberOfGlyphs
         var index = 0, numberOfLines = 0
@@ -156,8 +186,10 @@ extension UITextView {
             layoutManager.lineFragmentRect(forGlyphAt: index, effectiveRange: &lineRange)
             index = NSMaxRange(lineRange)
             numberOfLines += 1
+            if text.last == "\n" {
+                numberOfLines += 1
+            }
         }
-        print(numberOfLines)
         return numberOfLines
     }
 }

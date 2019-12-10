@@ -64,8 +64,7 @@ class ChatCell: UICollectionViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
-    func setupMediaMessage(){
-        mediaMessage.backgroundColor = .lightGray
+    func setupMediaMessage(){        
         mediaMessage.translatesAutoresizingMaskIntoConstraints = false
         mediaMessage.layer.cornerRadius = 16
         mediaMessage.layer.masksToBounds = true

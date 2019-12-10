@@ -51,6 +51,7 @@ class SettingsVC: UIViewController {
     
     @objc func logoutButtonPressed(){
         do{
+            activityObservers(isOnline: false)
             try Auth.auth().signOut()
             let controller = SignInVC()
             view.window?.rootViewController = controller

@@ -34,6 +34,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window?.rootViewController = SignInVC()
             window?.makeKeyAndVisible()
         }
+        activityObservers()
+    }
+    
+    func activityObservers(){
+        guard let user = Auth.auth().currentUser else { return }
+        let ref = Database.database().reference()
+        let userRef = ref.child("users").child(user.uid)
+        userRef.child("isOnline").setValue(true)
+        userRef.child("isOnline").onDisconnectSetValue(false)
     }
     
 }
