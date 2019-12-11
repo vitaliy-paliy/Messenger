@@ -43,6 +43,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let userRef = ref.child("users").child(user.uid)
         userRef.child("isOnline").setValue(true)
         userRef.child("isOnline").onDisconnectSetValue(false)
+        userRef.child("lastLogin").setValue(Date().timeIntervalSince1970)
     }
     
 }

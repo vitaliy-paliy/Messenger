@@ -120,6 +120,7 @@ extension UIViewController {
         let ref = Database.database().reference()
         let userRef = ref.child("users").child(user.uid)
         userRef.child("isOnline").setValue(isOnline)
+        userRef.child("lastLogin").setValue(Date().timeIntervalSince1970)
     }
     
 }

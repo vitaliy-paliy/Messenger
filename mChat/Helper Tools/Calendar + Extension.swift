@@ -10,6 +10,7 @@ import Foundation
 
 let calendar = Calendar(identifier: .gregorian)
 extension Calendar {
+    
     func calculateTimePassed(date: NSDate) -> String{
         let now = Date()
         let dataComponents = Calendar.current.dateComponents([.month, .day ,.hour, .minute], from: date as Date, to: now)
@@ -25,4 +26,31 @@ extension Calendar {
             return "just now"
         }
     }
+    
+    func calculateLastLogin(_ date: NSDate) -> String{
+        let now = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        let lastSeenDate = dateFormatter.string(from: date as Date)
+        print(lastSeenDate)
+        let dataComponents = Calendar.current.dateComponents([.month, .day ,.hour, .minute], from: date as Date, to: now)
+        if let month = dataComponents.month, month > 0{
+            return "last seen " + lastSeenDate
+        }else if let day = dataComponents.day, day > 0 {
+            if day == 1{
+                return "last seen \(day)" + " day ago"
+            }else if day <= 7 {
+                return "last seen \(day)" + " days ago"
+            }else{
+                return "last seen " + lastSeenDate
+            }
+        }else if let hour = dataComponents.hour, hour > 0 {
+            return hour == 1 ? "last seen \(hour)" + " hour ago" : "last seen \(hour)" + " hours ago"
+        }else if let minute = dataComponents.minute, minute > 0 {
+            return minute == 1 ? "last seen \(minute)" + " minute ago" : "last seen \(minute)" + " minutes ago"
+        }else{
+            return "just now"
+        }
+    }
+    
 }

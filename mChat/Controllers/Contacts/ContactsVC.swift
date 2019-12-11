@@ -65,13 +65,15 @@ class ContactsVC: UIViewController {
                 return
             }
             for dict in friends.keys {
-                Constants.db.reference().child("users").child(dict).observe(.value) { (data) in
+                Constants.db.reference().child("users").child(dict).observeSingleEvent(of: .value) { (data) in
                     guard let values = data.value as? [String: Any] else { return }
                     let friend = FriendInfo()
                     friend.id = dict
                     friend.email = values["email"] as? String
                     friend.profileImage = values["profileImage"] as? String
                     friend.name = values["name"] as? String
+                    friend.isOnline = values["isOnline"] as? Bool
+                    friend.lastLogin = values["lastLogin"] as? NSNumber
                     self.friendsList.append(friend)
                     self.friendsList.sort { (friend1, friend2) -> Bool in
                         return friend1.name < friend2.name
@@ -154,7 +156,7 @@ class ContactsVC: UIViewController {
             })
         }
     }
-
+    
     func setupExitButton(_ cell: ContactsCell, _ cellFrame: CGRect) -> UIButton{
         let exitButton = contactsAnimationButton(type: .system)
         exitButton.cell = cell
@@ -248,18 +250,18 @@ class ContactsVC: UIViewController {
             let menuHeight = self.infoMenu.frame.height
             infoName?.layer.add(self.exitObjectAnimation(
                 startPoint: CGPoint(x: menuWidth/2,
-                y: menuHeight/2),
+                                    y: menuHeight/2),
                 finishPoint: CGPoint(x: 250, y: 25)),
-                forKey: "Animate Name")
+                                forKey: "Animate Name")
             infoName?.layer.add(self.fadeOutAnimation(1, 0, durTime: 0.1), forKey: "nameFadeOut")
             infoImage.layer.add(self.exitObjectAnimation(
                 startPoint: CGPoint(x: menuWidth/2, y: menuHeight/3),
                 finishPoint: CGPoint(x: 45, y: 45)),
-                forKey: "Animate Image")
+                                forKey: "Animate Image")
             infoEmail?.layer.add(self.exitObjectAnimation(
                 startPoint: CGPoint(x: menuWidth/2, y: menuHeight/3),
                 finishPoint: CGPoint(x: 250, y: 45)),
-                forKey: "Animate Email")
+                                 forKey: "Animate Email")
             infoEmail?.layer.add(self.fadeOutAnimation(1, 0, durTime: 0.1), forKey: "emailFadeOut")
             self.infoMenu.frame = CGRect(x: 8, y: cellFrame.minY, width: cellFrame.width - 16, height: cellFrame.height)
         }) { (true) in
@@ -273,7 +275,7 @@ class ContactsVC: UIViewController {
             self.blurView.alpha = 0
             self.infoMenu.layer.add(self.fadeOutAnimation(1, 0, durTime: 0.1), forKey: "infoMenuFadeOutAnim")
         }) { (true) in
-           
+            
             self.infoMenu.alpha = 0
             self.tableView.isUserInteractionEnabled = true
             
@@ -354,6 +356,8 @@ class ContactsVC: UIViewController {
         controller.friendProfileImage = bInfo.profileImage
         controller.friendName = bInfo.name
         controller.friendEmail = bInfo.email
+        controller.friendIsOnline = bInfo.isOnline
+        controller.friendLastLogin = bInfo.lastLogin
         show(controller, sender: nil)
     }
     
@@ -362,7 +366,6 @@ class ContactsVC: UIViewController {
     }
     
     @objc func removeFriend(_ button: contactsAnimationButton){
-        print(button.frame.origin.x)
         guard let bInfo = button.friendInfo else { return }
         let controller = AddFriendVC()
         controller.modalPresentationStyle = .fullScreen
@@ -388,6 +391,11 @@ extension ContactsVC: UITableViewDataSource, UITableViewDelegate {
         cell.profileImage.loadImage(url: friend.profileImage)
         cell.friendName.text = friend.name
         cell.friendEmail.text = friend.email
+        if friend.isOnline {
+            cell.isOnlineView.isHidden = false
+        }else {
+            cell.isOnlineView.isHidden = true
+        }
         return cell
     }
     

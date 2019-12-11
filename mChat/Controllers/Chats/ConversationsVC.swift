@@ -123,6 +123,8 @@ class ConversationsVC: UIViewController {
         controller.friendEmail = usr.email
         controller.friendProfileImage = usr.profileImage
         controller.friendId = usr.id
+        controller.friendIsOnline = usr.isOnline
+        controller.friendLastLogin = usr.lastLogin
         show(controller, sender: nil)
     }
     
@@ -144,6 +146,8 @@ extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
             let friend = FriendInfo()
             friend.email = values["email"] as? String
             friend.id = user
+            friend.isOnline = values ["isOnline"] as? Bool
+            friend.lastLogin = values["lastLogin"] as? NSNumber
             friend.name = values["name"] as? String
             friend.profileImage = values["profileImage"] as? String
             cell.friendName.text = friend.name
@@ -152,6 +156,11 @@ extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
                 cell.recentMessage.text = recent.message
             }else{
                 cell.recentMessage.text = "[Media Message]"
+            }
+            if friend.isOnline {
+             cell.isOnlineView.isHidden = false
+            }else{
+                cell.isOnlineView.isHidden = true
             }
             let date = NSDate(timeIntervalSince1970: recent.time.doubleValue)
             cell.timeLabel.text = "\(self.calendar.calculateTimePassed(date: date))"

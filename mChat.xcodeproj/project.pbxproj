@@ -24,6 +24,7 @@
 		CBCC30802383634C00E36E39 /* UsersListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCC307F2383634C00E36E39 /* UsersListVC.swift */; };
 		CBCC3084238365B500E36E39 /* UsersListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCC3083238365B500E36E39 /* UsersListCell.swift */; };
 		CBCC30862383722500E36E39 /* AddFriendVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCC30852383722500E36E39 /* AddFriendVC.swift */; };
+		CBF05E4523A086A400EF295F /* NavigationItem + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF05E4423A086A400EF295F /* NavigationItem + Extension.swift */; };
 		CBF644F12381C204004830C6 /* ChatTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF644F02381C204004830C6 /* ChatTabBar.swift */; };
 		CBF644F42381C23A004830C6 /* ContactsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF644F32381C23A004830C6 /* ContactsVC.swift */; };
 		CBF644F72381C26B004830C6 /* ConversationsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF644F62381C26B004830C6 /* ConversationsVC.swift */; };
@@ -58,6 +59,7 @@
 		CBCC307F2383634C00E36E39 /* UsersListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersListVC.swift; sourceTree = "<group>"; };
 		CBCC3083238365B500E36E39 /* UsersListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersListCell.swift; sourceTree = "<group>"; };
 		CBCC30852383722500E36E39 /* AddFriendVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendVC.swift; sourceTree = "<group>"; };
+		CBF05E4423A086A400EF295F /* NavigationItem + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationItem + Extension.swift"; sourceTree = "<group>"; };
 		CBF644F02381C204004830C6 /* ChatTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTabBar.swift; sourceTree = "<group>"; };
 		CBF644F32381C23A004830C6 /* ContactsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsVC.swift; sourceTree = "<group>"; };
 		CBF644F62381C26B004830C6 /* ConversationsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsVC.swift; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 				CB2717372381E775003A4D46 /* Helpers.swift */,
 				CB27173A2381ECB1003A4D46 /* Constants.swift */,
 				CB4CC232239DD71B0086DEA9 /* Calendar + Extension.swift */,
+				CBF05E4423A086A400EF295F /* NavigationItem + Extension.swift */,
 			);
 			path = "Helper Tools";
 			sourceTree = "<group>";
@@ -350,6 +353,7 @@
 				CB08304B238709BD002A1861 /* ChatVC.swift in Sources */,
 				CBF907EA2380B83500EF8925 /* AppDelegate.swift in Sources */,
 				CBCC30802383634C00E36E39 /* UsersListVC.swift in Sources */,
+				CBF05E4523A086A400EF295F /* NavigationItem + Extension.swift in Sources */,
 				CBFC53BB23873B5600CC4C91 /* ConverstaionsCell.swift in Sources */,
 				CBF644F12381C204004830C6 /* ChatTabBar.swift in Sources */,
 				CB2717382381E775003A4D46 /* Helpers.swift in Sources */,

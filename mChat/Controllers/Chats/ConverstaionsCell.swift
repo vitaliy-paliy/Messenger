@@ -14,6 +14,7 @@ class ConversationsCell: UITableViewCell {
     var friendName = UILabel()
     var recentMessage = UILabel()
     var timeLabel = UILabel()
+    var isOnlineView = UIView()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -22,14 +23,32 @@ class ConversationsCell: UITableViewCell {
         addSubview(friendName)
         addSubview(recentMessage)
         addSubview(timeLabel)
+        addSubview(isOnlineView)
         setupImage()
         setupNameLabel()
         setupEmailLabel()
         setupTimeLabel()
+        setupIsOnlineImage()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func setupIsOnlineImage(){
+        isOnlineView.layer.cornerRadius = 8
+        isOnlineView.layer.borderColor = UIColor.white.cgColor
+        isOnlineView.layer.borderWidth = 2.5
+        isOnlineView.layer.masksToBounds = true
+        isOnlineView.backgroundColor = UIColor(displayP3Red: 116/255, green: 195/255, blue: 168/255, alpha: 1)
+        isOnlineView.translatesAutoresizingMaskIntoConstraints = false
+        let constraints = [
+            isOnlineView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 55),
+            isOnlineView.widthAnchor.constraint(equalToConstant: 16),
+            isOnlineView.heightAnchor.constraint(equalToConstant: 16),
+            isOnlineView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -11)
+        ]
+        NSLayoutConstraint.activate(constraints)
     }
     
     func setupImage(){

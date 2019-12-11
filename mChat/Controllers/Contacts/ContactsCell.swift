@@ -14,6 +14,7 @@ class ContactsCell: UITableViewCell {
     var profileImage = UIImageView()
     var friendName = UILabel()
     var friendEmail = UILabel()
+    var isOnlineView = UIView()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -22,10 +23,12 @@ class ContactsCell: UITableViewCell {
         cellBackground.addSubview(profileImage)
         cellBackground.addSubview(friendName)
         cellBackground.addSubview(friendEmail)
+        cellBackground.addSubview(isOnlineView)
         setupCellBackground()
         setupImage()
         setupNameLabel()
         setupEmailLabel()
+        setupIsOnlineImage()
     }
     
     required init?(coder: NSCoder) {
@@ -34,7 +37,7 @@ class ContactsCell: UITableViewCell {
     
     func setupCellBackground(){
         cellBackground.translatesAutoresizingMaskIntoConstraints = false
-        cellBackground.backgroundColor = UIColor(displayP3Red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        cellBackground.backgroundColor = .white
         cellBackground.layer.cornerRadius = 8
         cellBackground.layer.shadowRadius = 10
         cellBackground.layer.shadowOpacity = 0.2
@@ -59,6 +62,22 @@ class ContactsCell: UITableViewCell {
             profileImage.leadingAnchor.constraint(equalTo: cellBackground.leadingAnchor, constant: 12),
             profileImage.heightAnchor.constraint(equalToConstant: 60),
             profileImage.widthAnchor.constraint(equalToConstant: 60)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    func setupIsOnlineImage(){
+        isOnlineView.layer.cornerRadius = 8
+        isOnlineView.layer.borderColor = UIColor.white.cgColor
+        isOnlineView.layer.borderWidth = 2.5
+        isOnlineView.layer.masksToBounds = true
+        isOnlineView.backgroundColor = UIColor(displayP3Red: 116/255, green: 195/255, blue: 168/255, alpha: 1)
+        isOnlineView.translatesAutoresizingMaskIntoConstraints = false
+        let constraints = [
+            isOnlineView.leadingAnchor.constraint(equalTo: cellBackground.leadingAnchor, constant: 55),
+            isOnlineView.widthAnchor.constraint(equalToConstant: 16),
+            isOnlineView.heightAnchor.constraint(equalToConstant: 16),
+            isOnlineView.bottomAnchor.constraint(equalTo: cellBackground.bottomAnchor, constant: -11)
         ]
         NSLayoutConstraint.activate(constraints)
     }

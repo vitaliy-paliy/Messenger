@@ -15,6 +15,8 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     var friendName: String!
     var friendEmail: String!
     var friendProfileImage: String!
+    var friendIsOnline: Bool!
+    var friendLastLogin: NSNumber!
     var messages = [Messages]()
     var imageToSend: UIImage!
     var imgFrame: CGRect?
@@ -30,13 +32,13 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     var micButton = UIButton(type: .system)
     var messageTF = UITextView()
     var timer = Timer()
+    let calendar = Calendar(identifier: .gregorian)
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationBar.tintColor = .black
-        navigationItem.title = "\(friendName!)"
-        view.backgroundColor = .white
+        setupChatNavBar()
         getMessages()
+        setupChatNavBar()
         notificationCenterHandler()
         hideKeyboardOnTap(collectionView)
     }
@@ -69,6 +71,17 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         setupMessageTF(topConst)
         setupMicrophone(topConst)
         setupProfileImage()
+    }
+    
+    func setupChatNavBar(){
+        let loginDate = NSDate(timeIntervalSince1970: friendLastLogin.doubleValue)
+        navigationController?.navigationBar.tintColor = .black
+        if friendIsOnline {
+            navigationItem.setNavTitles(navTitle: friendName, navSubtitle: "Online")
+        }else{
+            navigationItem.setNavTitles(navTitle: friendName, navSubtitle: calendar.calculateLastLogin(loginDate))
+        }
+        view.backgroundColor = .white
     }
     
     func setupCollectionView(){
@@ -267,7 +280,8 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         let nodeRef = ref.childByAutoId()
         let values = ["message": trimmedMessage, "sender": CurrentUser.uid!, "recipient": friendId!, "time": Date().timeIntervalSince1970] as [String : Any]
         sendMessageHandler(ref: nodeRef, values: values)
-        self.messageTF.text = ""
+        messageTF.text = ""
+        messageTF.subviews[2].isHidden = false
     }
     
     func sendMessageHandler(ref: DatabaseReference, values: [String: Any]){

@@ -69,6 +69,8 @@ class NewConversationVC: UIViewController {
                        friend.email = values["email"] as? String
                        friend.profileImage = values["profileImage"] as? String
                        friend.name = values["name"] as? String
+                        friend.isOnline = values["isOnline"] as? Bool
+                        friend.lastLogin = values["lastLogin"] as? NSNumber
                        self.friendsList.append(friend)
                        self.friendsList.sort { (friend1, friend2) -> Bool in
                            return friend1.name < friend2.name
@@ -112,6 +114,8 @@ extension NewConversationVC: UITableViewDelegate, UITableViewDataSource {
         controller.friendProfileImage = friend.profileImage
         controller.friendName = friend.name
         controller.friendId = friend.id
+        controller.friendIsOnline = friend.isOnline
+        controller.friendLastLogin = friend.lastLogin
         show(controller, sender: nil)
     }
     

@@ -20,4 +20,6 @@ class FriendInfo {
     var name: String!
     var profileImage: String!
     var email: String!
+    var isOnline: Bool!
+    var lastLogin: NSNumber!
 }
