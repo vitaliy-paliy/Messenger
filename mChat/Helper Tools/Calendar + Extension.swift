@@ -32,7 +32,6 @@ extension Calendar {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
         let lastSeenDate = dateFormatter.string(from: date as Date)
-        print(lastSeenDate)
         let dataComponents = Calendar.current.dateComponents([.month, .day ,.hour, .minute], from: date as Date, to: now)
         if let month = dataComponents.month, month > 0{
             return "last seen " + lastSeenDate

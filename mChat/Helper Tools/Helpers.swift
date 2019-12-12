@@ -123,10 +123,19 @@ extension UIViewController {
         userRef.child("lastLogin").setValue(Date().timeIntervalSince1970)
     }
     
+    func getFriendData(friend: FriendInfo, dict: String? = nil, values: [String: Any]){
+        friend.id = dict
+        friend.email = values["email"] as? String
+        friend.profileImage = values["profileImage"] as? String
+        friend.name = values["name"] as? String
+        friend.isOnline = values["isOnline"] as? Bool
+        friend.lastLogin = values["lastLogin"] as? NSNumber
+    }
+    
 }
 
 extension UIImageView {
-        
+    
     private var activityIndicator: UIActivityIndicatorView {
         let activityIndicator = UIActivityIndicatorView()
         activityIndicator.hidesWhenStopped = true

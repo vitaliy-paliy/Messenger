@@ -36,6 +36,7 @@ class ConversationsCell: UITableViewCell {
     }
     
     func setupIsOnlineImage(){
+        isOnlineView.isHidden = true
         isOnlineView.layer.cornerRadius = 8
         isOnlineView.layer.borderColor = UIColor.white.cgColor
         isOnlineView.layer.borderWidth = 2.5

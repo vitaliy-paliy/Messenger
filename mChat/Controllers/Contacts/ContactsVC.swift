@@ -68,12 +68,7 @@ class ContactsVC: UIViewController {
                 Constants.db.reference().child("users").child(dict).observeSingleEvent(of: .value) { (data) in
                     guard let values = data.value as? [String: Any] else { return }
                     let friend = FriendInfo()
-                    friend.id = dict
-                    friend.email = values["email"] as? String
-                    friend.profileImage = values["profileImage"] as? String
-                    friend.name = values["name"] as? String
-                    friend.isOnline = values["isOnline"] as? Bool
-                    friend.lastLogin = values["lastLogin"] as? NSNumber
+                    self.getFriendData(friend: friend, dict: dict, values: values)
                     self.friendsList.append(friend)
                     self.friendsList.sort { (friend1, friend2) -> Bool in
                         return friend1.name < friend2.name
