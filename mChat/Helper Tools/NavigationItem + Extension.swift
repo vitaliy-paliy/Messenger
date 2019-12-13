@@ -9,13 +9,15 @@
 import UIKit
 
 extension UINavigationItem {
+    
     func setNavTitles(navTitle: String, navSubtitle: String){
         
         let title = UILabel()
+        let subtitle = UILabel()
+        
         title.text = navTitle
         title.font = UIFont(name: "HelveticaNeue-Medium", size: 18)
         
-        let subtitle = UILabel()
         subtitle.text = navSubtitle
         subtitle.font = UIFont(name: "Helvetica Neue", size: 14)
         subtitle.textColor = .lightGray
@@ -32,5 +34,7 @@ extension UINavigationItem {
         subtitle.sizeToFit()
         
         self.titleView = stackView
+        
     }
+    
 }

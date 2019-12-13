@@ -42,7 +42,6 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         super.viewDidLoad()
         setupChatNavBar()
         getMessages()
-        setupChatNavBar()
         notificationCenterHandler()
         hideKeyboardOnTap(collectionView)
         observeIsUserTyping()
@@ -522,89 +521,90 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     func isTypingHandler(){
-           guard let friendId = friendId else { return }
-           let userRef = Database.database().reference().child("userActions").child(CurrentUser.uid).child(friendId)
-           if messageTF.text.count >= 1 {
-               userRef.setValue(["isTyping": true, "toFriend": friendId])
-           }else{
-               userRef.setValue(["isTyping": false, "toFriend": friendId])
-           }
-       }
-       
-       func observeIsUserTyping(){
-           let db = Database.database().reference().child("userActions").child(friendId).child(CurrentUser.uid)
-           db.observe(.value) { (snap) in
-               guard let data = snap.value as? [String: Any] else { return }
-               let activity = FriendActivity()
-               activity.friendId = data["toFriend"] as? String
-               activity.isTyping = data["isTyping"] as? Bool
-               self.friendActivity = [activity]
-               guard self.friendActivity.count == 1 else { return }
-               let friendActivity = self.friendActivity[0]
-               if friendActivity.friendId == CurrentUser.uid && friendActivity.isTyping {
-                   self.animateTyping(const: 1, isHidden: false)
-                   self.collectionView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 45, right: 0)
-               }else{
-                   self.animateTyping(const: 0, isHidden: true)
-                   self.collectionView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
-               }
-           }
-           
-       }
-       
-       func animateTyping(const: CGFloat, isHidden: Bool){
-           UIView.animate(withDuration: 0.2, animations: {
-               self.isTypingView.alpha = const
-               self.typingAnimation.alpha = const
-           }) { (true) in
-               self.isTypingView.isHidden = isHidden
-               self.typingAnimation.isHidden = isHidden
-           }
-       }
-       
-       func setupUserTypingView(){
-           isTypingView.isHidden = true
-           typingAnimation.isHidden = true
-           isTypingView.backgroundColor = .white
-           isTypingView.layer.cornerRadius = 16
-           isTypingView.layer.masksToBounds = true
-           view.addSubview(isTypingView)
-           isTypingView.translatesAutoresizingMaskIntoConstraints = false
-           isTypingView.addSubview(typingAnimation)
-           typingAnimation.translatesAutoresizingMaskIntoConstraints = false
-           let constraints = [
-               isTypingView.widthAnchor.constraint(equalToConstant: 80),
-               isTypingView.heightAnchor.constraint(equalToConstant: 32),
-               isTypingView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
-               isTypingView.bottomAnchor.constraint(equalTo: messageContainer.topAnchor, constant: -8),
-               typingAnimation.leadingAnchor.constraint(equalTo: isTypingView.leadingAnchor),
-               typingAnimation.bottomAnchor.constraint(equalTo: isTypingView.bottomAnchor),
-               typingAnimation.topAnchor.constraint(equalTo: isTypingView.topAnchor),
-               typingAnimation.trailingAnchor.constraint(equalTo: isTypingView.trailingAnchor)
-           ]
-           NSLayoutConstraint.activate(constraints)
-           startAnimation()
-       }
-       
-       func startAnimation(){
-           typingAnimation.animationSpeed = 1.2
-           typingAnimation.animation = Animation.named("chatTyping")
-           typingAnimation.play()
-           typingAnimation.loopMode = .loop
-       }
-       
-       func scrollToTheBottom(){
-           if messages.count > 0 {
-               let indexPath = IndexPath(item: messages.count - 1, section: 0)
-               collectionView.scrollToItem(at: indexPath, at: .bottom, animated: false)
-           }
-       }
-       
-       func disableIsTyping(){
-           guard let friendId = friendId else { return }
-           let userRef = Database.database().reference().child("userActions").child(CurrentUser.uid).child(friendId)
-           userRef.updateChildValues(["isTyping": false, "toFriend": friendId])
-       }
+        guard let friendId = friendId , let user = CurrentUser.uid else { return }
+        let userRef = Database.database().reference().child("userActions").child(CurrentUser.uid).child(friendId)
+        if messageTF.text.count >= 1 {
+            userRef.setValue(["isTyping": true, "fromFriend": user])
+        }else{
+            userRef.setValue(["isTyping": false, "fromFriend": user])
+        }
+    }
+    
+    func observeIsUserTyping(){
+        let db = Database.database().reference().child("userActions").child(friendId).child(CurrentUser.uid)
+        db.observe(.value) { (snap) in
+            guard let data = snap.value as? [String: Any] else { return }
+            let activity = FriendActivity()
+            activity.friendId = data["fromFriend"] as? String
+            activity.isTyping = data["isTyping"] as? Bool
+            self.friendActivity = [activity]
+            guard self.friendActivity.count == 1 else { return }
+            let friendActivity = self.friendActivity[0]
+            if friendActivity.friendId == self.friendId && friendActivity.isTyping {
+                self.animateTyping(const: 1, isHidden: false)
+                self.collectionView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 45, right: 0)
+                self.scrollToTheBottom()
+            }else{
+                self.animateTyping(const: 0, isHidden: true)
+                self.collectionView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+            }
+        }
+        
+    }
+    
+    func animateTyping(const: CGFloat, isHidden: Bool){
+        UIView.animate(withDuration: 0.2, animations: {
+            self.isTypingView.alpha = const
+            self.typingAnimation.alpha = const
+        }) { (true) in
+            self.isTypingView.isHidden = isHidden
+            self.typingAnimation.isHidden = isHidden
+        }
+    }
+    
+    func setupUserTypingView(){
+        isTypingView.isHidden = true
+        typingAnimation.isHidden = true
+        isTypingView.backgroundColor = .white
+        isTypingView.layer.cornerRadius = 16
+        isTypingView.layer.masksToBounds = true
+        view.addSubview(isTypingView)
+        isTypingView.translatesAutoresizingMaskIntoConstraints = false
+        isTypingView.addSubview(typingAnimation)
+        typingAnimation.translatesAutoresizingMaskIntoConstraints = false
+        let constraints = [
+            isTypingView.widthAnchor.constraint(equalToConstant: 80),
+            isTypingView.heightAnchor.constraint(equalToConstant: 32),
+            isTypingView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
+            isTypingView.bottomAnchor.constraint(equalTo: messageContainer.topAnchor, constant: -8),
+            typingAnimation.leadingAnchor.constraint(equalTo: isTypingView.leadingAnchor),
+            typingAnimation.bottomAnchor.constraint(equalTo: isTypingView.bottomAnchor),
+            typingAnimation.topAnchor.constraint(equalTo: isTypingView.topAnchor),
+            typingAnimation.trailingAnchor.constraint(equalTo: isTypingView.trailingAnchor)
+        ]
+        NSLayoutConstraint.activate(constraints)
+        startAnimation()
+    }
+    
+    func startAnimation(){
+        typingAnimation.animationSpeed = 1.2
+        typingAnimation.animation = Animation.named("chatTyping")
+        typingAnimation.play()
+        typingAnimation.loopMode = .loop
+    }
+    
+    func scrollToTheBottom(){
+        if messages.count > 0 {
+            let indexPath = IndexPath(item: messages.count - 1, section: 0)
+            collectionView.scrollToItem(at: indexPath, at: .bottom, animated: false)
+        }
+    }
+    
+    func disableIsTyping(){
+        guard let friendId = friendId , let user = CurrentUser.uid else { return }
+        let userRef = Database.database().reference().child("userActions").child(CurrentUser.uid).child(friendId)
+        userRef.updateChildValues(["isTyping": false, "fromFriend": user])
+    }
     
 }
 

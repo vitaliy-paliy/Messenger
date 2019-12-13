@@ -133,8 +133,9 @@ class ConversationsVC: UIViewController {
         let db = Database.database().reference().child("userActions").child(friendId).child(CurrentUser.uid)
         db.observe(.value) { (snap) in
             guard let data = snap.value as? [String: Any] else { return }
+            print(friendId)
             let activity = FriendActivity()
-            activity.friendId = data["toFriend"] as? String
+            activity.friendId = data["fromFriend"] as? String
             activity.isTyping = data["isTyping"] as? Bool
             self.friendActivity = [activity]
             guard self.friendActivity.count == 1 else { return }
@@ -142,7 +143,7 @@ class ConversationsVC: UIViewController {
             if cell.typingAnimation.isAnimationPlaying == false {
                 cell.typingAnimation.play()
             }
-            if activity.friendId == CurrentUser.uid && friendActivity.isTyping {
+            if friendId == friendActivity.friendId && friendActivity.isTyping {
                 cell.recentMessage.isHidden = true
                 cell.timeLabel.isHidden = true
                 cell.isTypingView.isHidden = false
@@ -191,8 +192,9 @@ extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
             let date = NSDate(timeIntervalSince1970: recent.time.doubleValue)
             cell.timeLabel.text = "\(self.calendar.calculateTimePassed(date: date))"
             self.friends.append(friend)
+            self.observeIsUserTyping(friendId: friend.id, cell: cell)
         }
-        observeIsUserTyping(friendId: user, cell: cell)
+        
         return cell
         
     }
