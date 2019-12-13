@@ -23,3 +23,8 @@ class FriendInfo {
     var isOnline: Bool!
     var lastLogin: NSNumber!
 }
+
+class FriendActivity{
+    var isTyping: Bool!
+    var friendId: String!
+}

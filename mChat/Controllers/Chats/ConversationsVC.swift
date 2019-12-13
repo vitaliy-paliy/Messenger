@@ -18,6 +18,7 @@ class ConversationsVC: UIViewController {
     var timer = Timer()
     let calendar = Calendar(identifier: .gregorian)
     var newConversationButton = UIBarButtonItem()
+    var friendActivity = [FriendActivity]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -128,6 +129,31 @@ class ConversationsVC: UIViewController {
         show(controller, sender: nil)
     }
     
+    func observeIsUserTyping(friendId: String, cell: ConversationsCell){
+        let db = Database.database().reference().child("userActions").child(friendId).child(CurrentUser.uid)
+        db.observe(.value) { (snap) in
+            guard let data = snap.value as? [String: Any] else { return }
+            let activity = FriendActivity()
+            activity.friendId = data["toFriend"] as? String
+            activity.isTyping = data["isTyping"] as? Bool
+            self.friendActivity = [activity]
+            guard self.friendActivity.count == 1 else { return }
+            let friendActivity = self.friendActivity[0]
+            if cell.typingAnimation.isAnimationPlaying == false {
+                cell.typingAnimation.play()
+            }
+            if activity.friendId == CurrentUser.uid && friendActivity.isTyping {
+                cell.recentMessage.isHidden = true
+                cell.timeLabel.isHidden = true
+                cell.isTypingView.isHidden = false
+            }else{
+                cell.recentMessage.isHidden = false
+                cell.timeLabel.isHidden = false
+                cell.isTypingView.isHidden = true
+            }
+        }
+    }
+    
 }
 
 extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
@@ -158,7 +184,7 @@ extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
                 cell.recentMessage.text = "[Media Message]"
             }
             if friend.isOnline {
-             cell.isOnlineView.isHidden = false
+                cell.isOnlineView.isHidden = false
             }else{
                 cell.isOnlineView.isHidden = true
             }
@@ -166,7 +192,9 @@ extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
             cell.timeLabel.text = "\(self.calendar.calculateTimePassed(date: date))"
             self.friends.append(friend)
         }
+        observeIsUserTyping(friendId: user, cell: cell)
         return cell
+        
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

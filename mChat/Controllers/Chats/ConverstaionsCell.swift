@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import Lottie
+import Firebase
 
 class ConversationsCell: UITableViewCell {
     
@@ -15,6 +17,8 @@ class ConversationsCell: UITableViewCell {
     var recentMessage = UILabel()
     var timeLabel = UILabel()
     var isOnlineView = UIView()
+    var isTypingView = UIView()
+    let typingAnimation = AnimationView()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -29,6 +33,7 @@ class ConversationsCell: UITableViewCell {
         setupEmailLabel()
         setupTimeLabel()
         setupIsOnlineImage()
+        setupUserTypingView()
     }
     
     required init?(coder: NSCoder) {
@@ -100,4 +105,41 @@ class ConversationsCell: UITableViewCell {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    func setupUserTypingView(){
+        isTypingView.isHidden = true
+        let typingText = UILabel()
+        typingText.font = UIFont(name: "Helvetica Neue", size: 16)
+        typingText.textColor = .gray
+        typingText.text = "typing"
+        isTypingView.backgroundColor = .clear
+        isTypingView.layer.cornerRadius = 12.5
+        isTypingView.layer.masksToBounds = true
+        addSubview(isTypingView)
+        isTypingView.addSubview(typingText)
+        isTypingView.addSubview(typingAnimation)
+        isTypingView.translatesAutoresizingMaskIntoConstraints = false
+        typingAnimation.translatesAutoresizingMaskIntoConstraints = false
+        typingText.translatesAutoresizingMaskIntoConstraints = false
+        let constraints = [
+            isTypingView.widthAnchor.constraint(equalToConstant: 100),
+            isTypingView.heightAnchor.constraint(equalToConstant: 25),
+            isTypingView.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 8),
+            isTypingView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 2),
+            typingText.widthAnchor.constraint(equalToConstant: 50),
+            typingText.heightAnchor.constraint(equalToConstant: 25),
+            typingText.centerYAnchor.constraint(equalTo: isTypingView.centerYAnchor, constant: 3),
+            typingText.trailingAnchor.constraint(equalTo: isTypingView.trailingAnchor),
+            typingAnimation.leadingAnchor.constraint(equalTo: isTypingView.leadingAnchor, constant: 0),
+            typingAnimation.bottomAnchor.constraint(equalTo: isTypingView.bottomAnchor),
+            typingAnimation.topAnchor.constraint(equalTo: isTypingView.topAnchor),
+            typingAnimation.trailingAnchor.constraint(equalTo: typingText.leadingAnchor, constant: -2),
+        ]
+        NSLayoutConstraint.activate(constraints)
+        typingAnimation.animationSpeed = 1.5
+        typingAnimation.animation = Animation.named("recentTyping")
+        typingAnimation.play()
+        typingAnimation.loopMode = .loop
+    }
+    
 }

@@ -9,16 +9,13 @@ import UIKit
 
 class ChatCell: UICollectionViewCell {
     
-    
     var message = UILabel()
     var messageBackground = UIView()
     var mediaMessage = UIImageView()
-    
     var chatVC: ChatVC!
     var backgroundWidthAnchor: NSLayoutConstraint!
     var outcomingMessage: NSLayoutConstraint!
     var incomingMessage: NSLayoutConstraint!
-    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
