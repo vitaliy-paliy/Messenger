@@ -37,6 +37,8 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     let typingAnimation = AnimationView()
     var timer = Timer()
     let calendar = Calendar(identifier: .gregorian)
+    var fetchingMore = false
+    var endReached = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -273,35 +275,25 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     
     func sendMediaMessage(url: String, _ image: UIImage){
         let values = ["sender": CurrentUser.uid!, "time": Date().timeIntervalSince1970, "recipient": friendId!, "mediaUrl": url, "width": image.size.width, "height": image.size.height] as [String: Any]
-        let messageRef = Constants.db.reference().child("messages")
-        let nodeRef = messageRef.childByAutoId()
-        sendMessageHandler(ref: nodeRef, values: values)
+        let senderRef = Constants.db.reference().child("messages").child(CurrentUser.uid).childByAutoId()
+        let recipientRef = Constants.db.reference().child("messages").child(friendId).childByAutoId()
+        sendMessageHandler(senderRef: senderRef, recipientNodeRef: recipientRef, values: values)
     }
     
     @objc func sendButtonPressed(){
         let trimmedMessage = messageTF.text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard trimmedMessage.count > 0 else { return }
-        let ref = Constants.db.reference().child("messages")
-        let nodeRef = ref.childByAutoId()
+        let senderRef = Constants.db.reference().child("messages").child(CurrentUser.uid).childByAutoId()
+        let recipientRef = Constants.db.reference().child("messages").child(friendId).childByAutoId()
         let values = ["message": trimmedMessage, "sender": CurrentUser.uid!, "recipient": friendId!, "time": Date().timeIntervalSince1970] as [String : Any]
-        sendMessageHandler(ref: nodeRef, values: values)
+        sendMessageHandler(senderRef: senderRef, recipientNodeRef: recipientRef, values: values)
         messageTF.text = ""
         messageTF.subviews[2].isHidden = false
     }
     
-    func sendMessageHandler(ref: DatabaseReference, values: [String: Any]){
-        ref.updateChildValues(values) { (error, ref) in
-            if let error = error {
-                print(error.localizedDescription)
-                return
-            }
-            let userMessages = Database.database().reference().child("messagesIds").child(CurrentUser.uid)
-            let friendMessages = Database.database().reference().child("messagesIds").child(self.friendId)
-            let messageId = ref.key
-            let userValues = [messageId: 1]
-            userMessages.updateChildValues(userValues)
-            friendMessages.updateChildValues(userValues)
-        }
+    func sendMessageHandler(senderRef: DatabaseReference, recipientNodeRef: DatabaseReference,   values: [String: Any]){
+        senderRef.updateChildValues(values)
+        recipientNodeRef.updateChildValues(values)
         self.messageTF.text = ""
         disableIsTyping()
         messageTF.constraints.forEach { (constraint) in
@@ -313,23 +305,22 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     func getMessages(){
-        let messagesIds = Database.database().reference().child("messagesIds").child(CurrentUser.uid)
-        messagesIds.observe(.childAdded) { (snap) in
-            Constants.db.reference().child("messages").child(snap.key).observeSingleEvent(of: .value) { (data) in
-                guard let values = data.value as? [String: Any] else {  return }
-                let message = Messages()
-                message.sender = values["sender"] as? String
-                message.recipient = values["recipient"] as? String
-                message.message = values["message"] as? String
-                message.time = values["time"] as? NSNumber
-                message.mediaUrl = values["mediaUrl"] as? String
-                message.imageWidth = values["width"] as? NSNumber
-                message.imageHeight = values["height"] as? NSNumber
-                if message.determineUser() == self.friendId{
-                    self.messages.append(message)
-                    self.timer.invalidate()
-                    self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReload), userInfo: nil, repeats: false)
-                }
+        let mRef = Constants.db.reference().child("messages").child(CurrentUser.uid)
+        mRef.observe(.childAdded) { (data) in
+            guard let values = data.value as? [String: Any] else {  return }
+            let message = Messages()
+            message.sender = values["sender"] as? String
+            message.recipient = values["recipient"] as? String
+            message.message = values["message"] as? String
+            message.time = values["time"] as? NSNumber
+            message.mediaUrl = values["mediaUrl"] as? String
+            message.imageWidth = values["width"] as? NSNumber
+            message.imageHeight = values["height"] as? NSNumber
+            if message.determineUser() == self.friendId{
+                self.messages.append(message)
+                self.timer.invalidate()
+                self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReload), userInfo: nil, repeats: false)
+                self.handleReload()
             }
         }
     }
@@ -546,7 +537,9 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
                 self.scrollToTheBottom()
             }else{
                 self.animateTyping(const: 0, isHidden: true)
-                self.collectionView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+                UIView.animate(withDuration: 0.5) {
+                    self.collectionView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+                }
             }
         }
         

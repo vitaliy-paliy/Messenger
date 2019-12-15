@@ -113,9 +113,9 @@
 			isa = PBXGroup;
 			children = (
 				CB2717372381E775003A4D46 /* Helpers.swift */,
+				CBF05E4423A086A400EF295F /* NavigationItem + Extension.swift */,
 				CB27173A2381ECB1003A4D46 /* Constants.swift */,
 				CB4CC232239DD71B0086DEA9 /* Calendar + Extension.swift */,
-				CBF05E4423A086A400EF295F /* NavigationItem + Extension.swift */,
 			);
 			path = "Helper Tools";
 			sourceTree = "<group>";
