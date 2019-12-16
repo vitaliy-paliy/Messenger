@@ -139,6 +139,7 @@ class ConversationsCell: UITableViewCell {
         typingAnimation.animationSpeed = 1.5
         typingAnimation.animation = Animation.named("recentTyping")
         typingAnimation.play()
+        typingAnimation.backgroundBehavior = .pauseAndRestore
         typingAnimation.loopMode = .loop
     }
     

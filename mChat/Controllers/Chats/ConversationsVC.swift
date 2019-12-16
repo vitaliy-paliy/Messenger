@@ -14,31 +14,21 @@ class ConversationsVC: UIViewController {
     var messages = [Messages]()
     var recentMessages = [String: Messages]()
     var friends = [FriendInfo]()
+    var filteredFriends = [String: FriendInfo]()
     var tableView = UITableView()
     var timer = Timer()
     let calendar = Calendar(identifier: .gregorian)
     var newConversationButton = UIBarButtonItem()
-    var friendActivity = [FriendActivity]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Chats"
         view.backgroundColor = .white
+        friendListHandler()
         setupNewConversationButton()
         setupTableView()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        friendListHandler()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        messages = []
-        friends = []
-    }
-    
+        
     func setupTableView(){
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -70,7 +60,7 @@ class ConversationsVC: UIViewController {
     }
     
     func friendListHandler(){
-        Constants.db.reference().child("friendsList").child(CurrentUser.uid).observeSingleEvent(of: .value) { (snap) in
+        Constants.db.reference().child("friendsList").child(CurrentUser.uid).observe(.value) { (snap) in
             guard let friend = snap.value as? [String: Any] else {
                 DispatchQueue.main.async {
                     self.tableView.reloadData()
@@ -91,24 +81,24 @@ class ConversationsVC: UIViewController {
     }
     
     func loadMessagesHandler(_ key: String){
-        let db = Database.database().reference().child("messages").child(CurrentUser.uid)
-        db.observe(.childAdded) { (snap) in
-            guard let values = snap.value as? [String: Any] else { return }
-            let message = Messages()
-            message.sender = values["sender"] as? String
-            message.recipient = values["recipient"] as? String
-            message.message = values["message"] as? String
-            message.time = values["time"] as? NSNumber
-            message.mediaUrl = values["mediaUrl"] as? String
-            if key == message.determineUser() {
-                self.recentMessages[message.determineUser()] = message
-                self.messages = Array(self.recentMessages.values)
-                self.messages.sort { (message1, message2) -> Bool in
-                    return message1.time.intValue > message2.time.intValue
+        let nodeRef = Database.database().reference().child("message-Ids").child(CurrentUser.uid)
+        nodeRef.observe(.childAdded) { (snap) in
+            Database.database().reference().child("messages").child(snap.key).observe(.value) { (snapshot) in
+                guard let values = snapshot.value as? [String: Any] else { return }
+                let message = Messages()
+                message.sender = values["sender"] as? String
+                message.recipient = values["recipient"] as? String
+                message.message = values["message"] as? String
+                message.time = values["time"] as? NSNumber
+                message.mediaUrl = values["mediaUrl"] as? String
+                if key == message.determineUser() {
+                    self.recentMessages[message.determineUser()] = message
+                    self.messages = Array(self.recentMessages.values)
+                    self.messages.sort { (message1, message2) -> Bool in
+                        return message1.time.intValue > message2.time.intValue
+                    }
+                    self.handleReload()
                 }
-                self.timer.invalidate()
-                self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReload), userInfo: nil, repeats: false)
-                self.handleReload()
             }
         }
     }
@@ -125,47 +115,48 @@ class ConversationsVC: UIViewController {
         show(controller, sender: nil)
     }
     
-    func loadFriendsHandler(_ key: String, _ cell: ConversationsCell){
-        let ref = Database.database().reference().child("users").child(key)
-        ref.observeSingleEvent(of: .value) { (snap) in
+    func loadFriendsHandler(_ recent: Messages, _ cell: ConversationsCell, completion: @escaping (_ friend: FriendInfo) -> Void){
+        let ref = Database.database().reference().child("users").child(recent.determineUser())
+        ref.observe(.value) { (snap) in
             guard let data = snap.value as? [String: Any] else { return }
             let friend = FriendInfo()
-            friend.id = key
+            friend.id = snap.key
             friend.name = data["name"] as? String
             friend.email = data["email"] as? String
             friend.isOnline = data["isOnline"] as? Bool
             friend.lastLogin = data["lastLogin"] as? NSNumber
             friend.profileImage = data["profileImage"] as? String
-            cell.friendName.text = friend.name
-            cell.profileImage.loadImage(url: friend.profileImage)
-            self.friends.append(friend)
+            self.filteredFriends[recent.determineUser()] = friend
+            self.friends = Array(self.filteredFriends.values)
+            return completion(friend)
         }
     }
     
     func observeIsUserTyping(friendId: String, cell: ConversationsCell){
+        
         let db = Database.database().reference().child("userActions").child(friendId).child(CurrentUser.uid)
         db.observe(.value) { (snap) in
+            self.hideAnimationViews(cell)
             guard let data = snap.value as? [String: Any] else { return }
             let activity = FriendActivity()
             activity.friendId = data["fromFriend"] as? String
             activity.isTyping = data["isTyping"] as? Bool
-            self.friendActivity = [activity]
-            guard self.friendActivity.count == 1 else { return }
-            let friendActivity = self.friendActivity[0]
-            if cell.typingAnimation.isAnimationPlaying == false {
-                cell.typingAnimation.play()
-            }
-            if friendId == friendActivity.friendId && friendActivity.isTyping {
+            if activity.friendId == friendId && activity.isTyping {
                 cell.recentMessage.isHidden = true
                 cell.timeLabel.isHidden = true
                 cell.isTypingView.isHidden = false
             }else{
-                cell.recentMessage.isHidden = false
-                cell.timeLabel.isHidden = false
-                cell.isTypingView.isHidden = true
+                self.hideAnimationViews(cell)
             }
         }
     }
+    
+    func hideAnimationViews(_ cell: ConversationsCell){
+        cell.isTypingView.isHidden = true
+        cell.recentMessage.isHidden = false
+        cell.timeLabel.isHidden = false
+    }
+    
 }
 
 extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
@@ -178,10 +169,13 @@ extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ConversationsCell") as! ConversationsCell
         cell.selectionStyle = .none
         let recent = messages[indexPath.row]
-        loadFriendsHandler(recent.determineUser(), cell)
+        loadFriendsHandler(recent, cell) { (friend) in
+            cell.friendName.text = friend.name
+            cell.profileImage.loadImage(url: friend.profileImage)
+            self.observeIsUserTyping(friendId: friend.id, cell: cell)
+        }
         let date = NSDate(timeIntervalSince1970: recent.time.doubleValue)
         cell.timeLabel.text = calendar.calculateTimePassed(date: date)
-        self.observeIsUserTyping(friendId: recent.determineUser(), cell: cell)
         if recent.mediaUrl != nil {
             cell.recentMessage.text = "[Media Message]"
         }else{

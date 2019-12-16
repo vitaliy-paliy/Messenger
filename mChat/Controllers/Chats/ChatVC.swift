@@ -35,7 +35,6 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     var messageTF = UITextView()
     var isTypingView = UIView()
     let typingAnimation = AnimationView()
-    var timer = Timer()
     let calendar = Calendar(identifier: .gregorian)
     var fetchingMore = false
     var endReached = false
@@ -275,25 +274,32 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     
     func sendMediaMessage(url: String, _ image: UIImage){
         let values = ["sender": CurrentUser.uid!, "time": Date().timeIntervalSince1970, "recipient": friendId!, "mediaUrl": url, "width": image.size.width, "height": image.size.height] as [String: Any]
-        let senderRef = Constants.db.reference().child("messages").child(CurrentUser.uid).childByAutoId()
-        let recipientRef = Constants.db.reference().child("messages").child(friendId).childByAutoId()
-        sendMessageHandler(senderRef: senderRef, recipientNodeRef: recipientRef, values: values)
+        let senderRef = Constants.db.reference().child("messages").childByAutoId()
+        sendMessageHandler(senderNodeRef: senderRef, values: values)
     }
     
     @objc func sendButtonPressed(){
         let trimmedMessage = messageTF.text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard trimmedMessage.count > 0 else { return }
-        let senderRef = Constants.db.reference().child("messages").child(CurrentUser.uid).childByAutoId()
-        let recipientRef = Constants.db.reference().child("messages").child(friendId).childByAutoId()
+        let senderRef = Constants.db.reference().child("messages").childByAutoId()
         let values = ["message": trimmedMessage, "sender": CurrentUser.uid!, "recipient": friendId!, "time": Date().timeIntervalSince1970] as [String : Any]
-        sendMessageHandler(senderRef: senderRef, recipientNodeRef: recipientRef, values: values)
+        sendMessageHandler(senderNodeRef: senderRef, values: values)
         messageTF.text = ""
         messageTF.subviews[2].isHidden = false
     }
     
-    func sendMessageHandler(senderRef: DatabaseReference, recipientNodeRef: DatabaseReference,   values: [String: Any]){
-        senderRef.updateChildValues(values)
-        recipientNodeRef.updateChildValues(values)
+    func sendMessageHandler(senderNodeRef: DatabaseReference, values: [String: Any]){
+        senderNodeRef.updateChildValues(values) { (error, ref) in
+            if let error = error {
+                self.showAlert(title: "Error", message: error.localizedDescription)
+            }
+            guard let currentUser = CurrentUser.uid, let recipient = self.friendId else { return }
+            let senderMIdRef = Database.database().reference().child("message-Ids").child(currentUser)
+            let id = senderNodeRef.key!
+            senderMIdRef.updateChildValues([id: true])
+            let recipientRef = Database.database().reference().child("message-Ids").child(recipient)
+            recipientRef.updateChildValues([id: true])
+        }
         self.messageTF.text = ""
         disableIsTyping()
         messageTF.constraints.forEach { (constraint) in
@@ -305,22 +311,22 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     func getMessages(){
-        let mRef = Constants.db.reference().child("messages").child(CurrentUser.uid)
-        mRef.observe(.childAdded) { (data) in
-            guard let values = data.value as? [String: Any] else {  return }
-            let message = Messages()
-            message.sender = values["sender"] as? String
-            message.recipient = values["recipient"] as? String
-            message.message = values["message"] as? String
-            message.time = values["time"] as? NSNumber
-            message.mediaUrl = values["mediaUrl"] as? String
-            message.imageWidth = values["width"] as? NSNumber
-            message.imageHeight = values["height"] as? NSNumber
-            if message.determineUser() == self.friendId{
-                self.messages.append(message)
-                self.timer.invalidate()
-                self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReload), userInfo: nil, repeats: false)
-                self.handleReload()
+        let nodeRef = Database.database().reference().child("message-Ids").child(CurrentUser.uid)
+        nodeRef.observe(.childAdded) { (snap) in
+            Database.database().reference().child("messages").child(snap.key).observeSingleEvent(of: .value) { (snapshot) in
+                guard let values = snapshot.value as? [String: Any] else { return }
+                let message = Messages()
+                message.sender = values["sender"] as? String
+                message.recipient = values["recipient"] as? String
+                message.message = values["message"] as? String
+                message.time = values["time"] as? NSNumber
+                message.mediaUrl = values["mediaUrl"] as? String
+                message.imageWidth = values["width"] as? NSNumber
+                message.imageHeight = values["height"] as? NSNumber
+                if message.determineUser() == self.friendId{
+                    self.messages.append(message)
+                    self.handleReload()
+                }
             }
         }
     }
@@ -333,7 +339,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     @objc func profileImageTapped(){
-        print("Hi")
+        print("TODO: Friend Profile")
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -654,6 +660,16 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         }
         return cell
     }
+    
+    //    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    //        let offSetY = scrollView.contentOffset.y
+    //        let contentHeight = scrollView.contentSize.height
+    //        if offSetY > contentHeight - scrollView.frame.size.height * 3 {
+    //            if !fetchingMore && !endReached {
+    //                fethMessages()
+    //            }
+    //        }
+    //    }
     
 }
 
