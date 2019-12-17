@@ -153,7 +153,7 @@ class ContactsVC: UIViewController {
     }
     
     func setupExitButton(_ cell: ContactsCell, _ cellFrame: CGRect) -> UIButton{
-        let exitButton = contactsAnimationButton(type: .system)
+        let exitButton = ContactsAnimationButton(type: .system)
         exitButton.cell = cell
         exitButton.cellFrame = cellFrame
         exitButton.translatesAutoresizingMaskIntoConstraints = false
@@ -230,7 +230,7 @@ class ContactsVC: UIViewController {
         return sv
     }
     
-    @objc func exitMenuHandler(_ button: contactsAnimationButton){
+    @objc func exitMenuHandler(_ button: ContactsAnimationButton){
         infoMenu.transform = CGAffineTransform(translationX: -3, y: 2)
         let infoImage = self.infoMenu.subviews[0]
         let infoName = self.infoMenu.subviews[1] as? UILabel
@@ -322,8 +322,8 @@ class ContactsVC: UIViewController {
         return movingImageAnimation
     }
     
-    func setupInfoMenuButtons(_ friend: FriendInfo, _ imageName: String, _ sv: UIStackView) -> contactsAnimationButton{
-        let button = contactsAnimationButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+    func setupInfoMenuButtons(_ friend: FriendInfo, _ imageName: String, _ sv: UIStackView) -> ContactsAnimationButton{
+        let button = ContactsAnimationButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         button.friendInfo = friend
         button.tintColor = .black
         button.setImage(UIImage(systemName: imageName), for: .normal)
@@ -343,7 +343,7 @@ class ContactsVC: UIViewController {
         return button
     }
     
-    @objc func writeMessage(_ button: contactsAnimationButton){
+    @objc func writeMessage(_ button: ContactsAnimationButton){
         guard let bInfo = button.friendInfo else { return }
         let controller = ChatVC()
         controller.modalPresentationStyle = .fullScreen
@@ -356,11 +356,11 @@ class ContactsVC: UIViewController {
         show(controller, sender: nil)
     }
     
-    @objc func openMap(_ button: contactsAnimationButton){
+    @objc func openMap(_ button: ContactsAnimationButton){
         print("TODO: Map")
     }
     
-    @objc func removeFriend(_ button: contactsAnimationButton){
+    @objc func removeFriend(_ button: ContactsAnimationButton){
         guard let bInfo = button.friendInfo else { return }
         let controller = AddFriendVC()
         controller.modalPresentationStyle = .fullScreen

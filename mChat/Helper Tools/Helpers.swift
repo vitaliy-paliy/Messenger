@@ -12,10 +12,14 @@ import Firebase
 // Caches the images
 let imgCache = NSCache<NSString, UIImage>()
 
-class contactsAnimationButton: UIButton{
+class ContactsAnimationButton: UIButton{
     var cell: ContactsCell?
     var cellFrame: CGRect?
     var friendInfo: FriendInfo?
+}
+
+class RefreshIndicator: UIActivityIndicatorView {
+    var order: Bool!
 }
 
 extension UIViewController {

@@ -18,6 +18,7 @@ class Messages {
     var mediaUrl: String!
     var imageWidth: NSNumber!
     var imageHeight: NSNumber!
+    var id: String!
     
     func determineUser() -> String{
         if sender == CurrentUser.uid {

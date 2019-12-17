@@ -21,10 +21,6 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     var messages = [Messages]()
     var friendActivity = [FriendActivity]()
     var imageToSend: UIImage!
-    var imgFrame: CGRect?
-    var imgBackground: UIView!
-    var imageClickedView: UIImageView!
-    var startingImageFrame: UIImageView!
     
     var containerHeight: CGFloat!
     var collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 50, height: 50), collectionViewLayout: UICollectionViewFlowLayout.init())
@@ -36,13 +32,19 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     var isTypingView = UIView()
     let typingAnimation = AnimationView()
     let calendar = Calendar(identifier: .gregorian)
+    var imgFrame: CGRect?
+    var imgBackground: UIView!
+    var imageClickedView: UIImageView!
+    var startingImageFrame: UIImageView!
     var fetchingMore = false
     var endReached = false
+    var refreshIndicator = RefreshIndicator(style: .medium)
+    var timer = Timer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupChatNavBar()
-        getMessages()
+        fetchMessages()
         notificationCenterHandler()
         hideKeyboardOnTap(collectionView)
         observeIsUserTyping()
@@ -77,6 +79,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         setupMicrophone(topConst)
         setupProfileImage()
         setupUserTypingView()
+        setupLoadMoreIndicator(topConst)
     }
     
     func setupChatNavBar(){
@@ -273,8 +276,9 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     func sendMediaMessage(url: String, _ image: UIImage){
-        let values = ["sender": CurrentUser.uid!, "time": Date().timeIntervalSince1970, "recipient": friendId!, "mediaUrl": url, "width": image.size.width, "height": image.size.height] as [String: Any]
         let senderRef = Constants.db.reference().child("messages").childByAutoId()
+        guard let messageId = senderRef.key else { return }
+        let values = ["sender": CurrentUser.uid!, "time": Date().timeIntervalSince1970, "recipient": friendId!, "mediaUrl": url, "width": image.size.width, "height": image.size.height, "messageId": messageId] as [String: Any]
         sendMessageHandler(senderNodeRef: senderRef, values: values)
     }
     
@@ -282,7 +286,8 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         let trimmedMessage = messageTF.text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard trimmedMessage.count > 0 else { return }
         let senderRef = Constants.db.reference().child("messages").childByAutoId()
-        let values = ["message": trimmedMessage, "sender": CurrentUser.uid!, "recipient": friendId!, "time": Date().timeIntervalSince1970] as [String : Any]
+        guard let messageId = senderRef.key else { return }
+        let values = ["message": trimmedMessage, "sender": CurrentUser.uid!, "recipient": friendId!, "time": Date().timeIntervalSince1970, "messageId": messageId] as [String : Any]
         sendMessageHandler(senderNodeRef: senderRef, values: values)
         messageTF.text = ""
         messageTF.subviews[2].isHidden = false
@@ -294,10 +299,10 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
                 self.showAlert(title: "Error", message: error.localizedDescription)
             }
             guard let currentUser = CurrentUser.uid, let recipient = self.friendId else { return }
-            let senderMIdRef = Database.database().reference().child("message-Ids").child(currentUser)
+            let senderMIdRef = Database.database().reference().child("message-Ids").child(currentUser).child(recipient)
             let id = senderNodeRef.key!
             senderMIdRef.updateChildValues([id: true])
-            let recipientRef = Database.database().reference().child("message-Ids").child(recipient)
+            let recipientRef = Database.database().reference().child("message-Ids").child(recipient).child(currentUser)
             recipientRef.updateChildValues([id: true])
         }
         self.messageTF.text = ""
@@ -310,9 +315,61 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         }
     }
     
-    func getMessages(){
-        let nodeRef = Database.database().reference().child("message-Ids").child(CurrentUser.uid)
+    func setupLoadMoreIndicator(_ const: CGFloat){
+        refreshIndicator.isHidden = true
+        var topConst: CGFloat = 90
+        if const == 8 {
+            topConst = 70
+        }
+        refreshIndicator.color = .black
+        view.addSubview(refreshIndicator)
+        refreshIndicator.translatesAutoresizingMaskIntoConstraints = false
+        self.refreshIndicator.startAnimating()
+        let constraints = [
+            refreshIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            refreshIndicator.topAnchor.constraint(equalTo: view.topAnchor, constant: topConst),
+            refreshIndicator.widthAnchor.constraint(equalToConstant: 25),
+            refreshIndicator.heightAnchor.constraint(equalToConstant: 25)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    func fetchMessages(){
+        fetchingMore = true
+        var position = 0
+        getMessages { (newMessages, order) in
+            self.refreshIndicator.isHidden = false
+            self.timer.invalidate()
+            if order {
+                self.refreshIndicator.order = order
+                self.messages.append(contentsOf: newMessages)
+            }else{
+                self.refreshIndicator.order = order
+                self.messages.insert(contentsOf: newMessages, at: position)
+                position += 1
+            }
+            self.timer = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(self.handleReload), userInfo: nil, repeats: false)
+            self.endReached = newMessages.count == 0
+            self.fetchingMore = false
+        }
+    }
+        
+    func getMessages(completion: @escaping(_ newMessages: [Messages], _ mOrder: Bool) -> Void){
+        var nodeRef: DatabaseQuery
+        var messageOrder: Bool
+        let firstMessage = self.messages.first
+        if firstMessage == nil{
+            nodeRef = Database.database().reference().child("message-Ids").child(CurrentUser.uid).child(friendId).queryOrderedByKey().queryLimited(toLast: 20)
+            messageOrder = true
+        }else{
+            print("hi")
+            let mId = firstMessage!.id
+            print("First message: " + mId!)
+            nodeRef = Database.database().reference().child("message-Ids").child(CurrentUser.uid).child(friendId).queryOrderedByKey().queryEnding(atValue: mId).queryLimited(toLast: 20)
+            messageOrder = false
+        }
         nodeRef.observe(.childAdded) { (snap) in
+            print(snap.key)
             Database.database().reference().child("messages").child(snap.key).observeSingleEvent(of: .value) { (snapshot) in
                 guard let values = snapshot.value as? [String: Any] else { return }
                 let message = Messages()
@@ -323,9 +380,9 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
                 message.mediaUrl = values["mediaUrl"] as? String
                 message.imageWidth = values["width"] as? NSNumber
                 message.imageHeight = values["height"] as? NSNumber
-                if message.determineUser() == self.friendId{
-                    self.messages.append(message)
-                    self.handleReload()
+                message.id = values["messageId"] as? String
+                if snap.key != firstMessage?.id {
+                    return completion([message], messageOrder)
                 }
             }
         }
@@ -334,7 +391,10 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     @objc func handleReload(){
         DispatchQueue.main.async {
             self.collectionView.reloadData()
-            self.scrollToTheBottom()
+            if self.refreshIndicator.order{
+                self.scrollToTheBottom()
+            }
+            self.refreshIndicator.isHidden = true
         }
     }
     
@@ -661,15 +721,13 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         return cell
     }
     
-    //    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-    //        let offSetY = scrollView.contentOffset.y
-    //        let contentHeight = scrollView.contentSize.height
-    //        if offSetY > contentHeight - scrollView.frame.size.height * 3 {
-    //            if !fetchingMore && !endReached {
-    //                fethMessages()
-    //            }
-    //        }
-    //    }
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y + scrollView.adjustedContentInset.top == 0 {
+            if !fetchingMore && !endReached {
+                fetchMessages()
+            }
+        }
+    }
     
 }
 

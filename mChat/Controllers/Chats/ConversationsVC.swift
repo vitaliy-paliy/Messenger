@@ -14,6 +14,7 @@ class ConversationsVC: UIViewController {
     var messages = [Messages]()
     var recentMessages = [String: Messages]()
     var friends = [FriendInfo]()
+    var friendsList = [String]()
     var filteredFriends = [String: FriendInfo]()
     var tableView = UITableView()
     var timer = Timer()
@@ -24,11 +25,22 @@ class ConversationsVC: UIViewController {
         super.viewDidLoad()
         navigationItem.title = "Chats"
         view.backgroundColor = .white
-        friendListHandler()
         setupNewConversationButton()
         setupTableView()
     }
-        
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        loadFriendListHandler()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        friends = []
+        friendsList = []
+        messages = []
+    }
+    
     func setupTableView(){
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -59,7 +71,7 @@ class ConversationsVC: UIViewController {
         show(controller, sender: nil)
     }
     
-    func friendListHandler(){
+    func loadFriendListHandler(){
         Constants.db.reference().child("friendsList").child(CurrentUser.uid).observe(.value) { (snap) in
             guard let friend = snap.value as? [String: Any] else {
                 DispatchQueue.main.async {
@@ -69,37 +81,50 @@ class ConversationsVC: UIViewController {
             }
             self.recentMessages = [:]
             for key in friend.keys{
-                self.loadMessagesHandler(key)
+                self.friendsList.append(key)
             }
+            self.observeNewMessages()
+        }
+    }
+    
+    func observeNewMessages(){
+        let nodeRef = Database.database().reference().child("message-Ids").child(CurrentUser.uid)
+        nodeRef.observe(.childAdded) { (snap) in
+            Database.database().reference().child("message-Ids").child(CurrentUser.uid).child(snap.key).observe(.childAdded) { (messageSnap) in
+                self.messagesReference(messageSnap.key)
+            }
+        }
+    }
+    
+    func messagesReference(_ key: String){
+        Database.database().reference().child("messages").child(key).observe(.value) { (snapshot) in
+            guard let values = snapshot.value as? [String: Any] else { return }
+            self.loadMessagesHandler(values)
+        }
+    }
+    
+    func loadMessagesHandler(_ values: [String: Any]) {
+        let message = Messages()
+        message.sender = values["sender"] as? String
+        message.recipient = values["recipient"] as? String
+        message.message = values["message"] as? String
+        message.time = values["time"] as? NSNumber
+        message.mediaUrl = values["mediaUrl"] as? String
+        let user = message.determineUser()
+        if self.friendsList.contains(user) {
+            self.recentMessages[user] = message
+            self.timer.invalidate()
+            self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReload), userInfo: nil, repeats: false)
         }
     }
     
     @objc func handleReload(){
+        messages = Array(recentMessages.values)
+        messages.sort { (message1, message2) -> Bool in
+            return message1.time.intValue > message2.time.intValue
+        }
         DispatchQueue.main.async {
             self.tableView.reloadData()
-        }
-    }
-    
-    func loadMessagesHandler(_ key: String){
-        let nodeRef = Database.database().reference().child("message-Ids").child(CurrentUser.uid)
-        nodeRef.observe(.childAdded) { (snap) in
-            Database.database().reference().child("messages").child(snap.key).observe(.value) { (snapshot) in
-                guard let values = snapshot.value as? [String: Any] else { return }
-                let message = Messages()
-                message.sender = values["sender"] as? String
-                message.recipient = values["recipient"] as? String
-                message.message = values["message"] as? String
-                message.time = values["time"] as? NSNumber
-                message.mediaUrl = values["mediaUrl"] as? String
-                if key == message.determineUser() {
-                    self.recentMessages[message.determineUser()] = message
-                    self.messages = Array(self.recentMessages.values)
-                    self.messages.sort { (message1, message2) -> Bool in
-                        return message1.time.intValue > message2.time.intValue
-                    }
-                    self.handleReload()
-                }
-            }
         }
     }
     
@@ -116,7 +141,8 @@ class ConversationsVC: UIViewController {
     }
     
     func loadFriendsHandler(_ recent: Messages, _ cell: ConversationsCell, completion: @escaping (_ friend: FriendInfo) -> Void){
-        let ref = Database.database().reference().child("users").child(recent.determineUser())
+        let user = recent.determineUser()
+        let ref = Database.database().reference().child("users").child(user)
         ref.observe(.value) { (snap) in
             guard let data = snap.value as? [String: Any] else { return }
             let friend = FriendInfo()
@@ -126,7 +152,7 @@ class ConversationsVC: UIViewController {
             friend.isOnline = data["isOnline"] as? Bool
             friend.lastLogin = data["lastLogin"] as? NSNumber
             friend.profileImage = data["profileImage"] as? String
-            self.filteredFriends[recent.determineUser()] = friend
+            self.filteredFriends[user] = friend
             self.friends = Array(self.filteredFriends.values)
             return completion(friend)
         }
@@ -173,6 +199,7 @@ extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
             cell.friendName.text = friend.name
             cell.profileImage.loadImage(url: friend.profileImage)
             self.observeIsUserTyping(friendId: friend.id, cell: cell)
+            if friend.isOnline{ cell.isOnlineView.isHidden = false }
         }
         let date = NSDate(timeIntervalSince1970: recent.time.doubleValue)
         cell.timeLabel.text = calendar.calculateTimePassed(date: date)
