@@ -118,15 +118,7 @@ extension UIViewController {
     @objc func hideKeyboard(){
         view.endEditing(true)
     }
-    
-    func activityObservers(isOnline: Bool){
-        guard let user = Auth.auth().currentUser else { return }
-        let ref = Database.database().reference()
-        let userRef = ref.child("users").child(user.uid)
-        userRef.child("isOnline").setValue(isOnline)
-        userRef.child("lastLogin").setValue(Date().timeIntervalSince1970)
-    }
-    
+        
     func getFriendData(friend: FriendInfo, dict: String? = nil, values: [String: Any]){
         friend.id = dict
         friend.email = values["email"] as? String

@@ -34,13 +34,6 @@ class ConversationsVC: UIViewController {
         loadFriendListHandler()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        friends = []
-        friendsList = []
-        messages = []
-    }
-    
     func setupTableView(){
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -73,25 +66,30 @@ class ConversationsVC: UIViewController {
     
     func loadFriendListHandler(){
         Constants.db.reference().child("friendsList").child(CurrentUser.uid).observe(.value) { (snap) in
+            self.recentMessages = [:]
+            self.friends = []
+            self.friendsList = []
             guard let friend = snap.value as? [String: Any] else {
                 DispatchQueue.main.async {
+                    self.messages = []
                     self.tableView.reloadData()
                 }
                 return
             }
-            self.recentMessages = [:]
             for key in friend.keys{
                 self.friendsList.append(key)
             }
-            self.observeNewMessages()
+            self.observeMessageIds()
         }
     }
     
-    func observeNewMessages(){
+    func observeMessageIds(){
         let nodeRef = Database.database().reference().child("message-Ids").child(CurrentUser.uid)
         nodeRef.observe(.childAdded) { (snap) in
-            Database.database().reference().child("message-Ids").child(CurrentUser.uid).child(snap.key).observe(.childAdded) { (messageSnap) in
-                self.messagesReference(messageSnap.key)
+            if !self.friendsList.contains(snap.key) { return }
+            let userMRef = Database.database().reference().child("message-Ids").child(CurrentUser.uid).child(snap.key)
+            userMRef.observe(.childAdded) { (userSnap) in
+                self.messagesReference(userSnap.key)
             }
         }
     }
@@ -111,18 +109,19 @@ class ConversationsVC: UIViewController {
         message.time = values["time"] as? NSNumber
         message.mediaUrl = values["mediaUrl"] as? String
         let user = message.determineUser()
-        if self.friendsList.contains(user) {
-            self.recentMessages[user] = message
-            self.timer.invalidate()
-            self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReload), userInfo: nil, repeats: false)
-        }
-    }
-    
-    @objc func handleReload(){
+        recentMessages[user] = message
         messages = Array(recentMessages.values)
         messages.sort { (message1, message2) -> Bool in
             return message1.time.intValue > message2.time.intValue
         }
+        tableView.reloadData()
+        
+//        self.timer.invalidate()
+//        self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReload), userInfo: nil, repeats: false)
+    }
+    
+    @objc func handleReload(){
+        
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
@@ -159,7 +158,6 @@ class ConversationsVC: UIViewController {
     }
     
     func observeIsUserTyping(friendId: String, cell: ConversationsCell){
-        
         let db = Database.database().reference().child("userActions").child(friendId).child(CurrentUser.uid)
         db.observe(.value) { (snap) in
             self.hideAnimationViews(cell)
@@ -193,13 +191,18 @@ extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ConversationsCell") as! ConversationsCell
+//        print(indexPath.row)
         cell.selectionStyle = .none
         let recent = messages[indexPath.row]
         loadFriendsHandler(recent, cell) { (friend) in
             cell.friendName.text = friend.name
             cell.profileImage.loadImage(url: friend.profileImage)
             self.observeIsUserTyping(friendId: friend.id, cell: cell)
-            if friend.isOnline{ cell.isOnlineView.isHidden = false }
+            if friend.isOnline{
+                cell.isOnlineView.isHidden = false
+            }else{
+                cell.isOnlineView.isHidden = true
+            }
         }
         let date = NSDate(timeIntervalSince1970: recent.time.doubleValue)
         cell.timeLabel.text = calendar.calculateTimePassed(date: date)

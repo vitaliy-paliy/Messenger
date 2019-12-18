@@ -36,8 +36,8 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     var imgBackground: UIView!
     var imageClickedView: UIImageView!
     var startingImageFrame: UIImageView!
-    var fetchingMore = false
-    var endReached = false
+    var loadMore = false
+    var noMoreFetching = false
     var refreshIndicator = RefreshIndicator(style: .medium)
     var timer = Timer()
     
@@ -316,7 +316,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     func setupLoadMoreIndicator(_ const: CGFloat){
-        refreshIndicator.isHidden = true
+        refreshIndicator.hidesWhenStopped = true
         var topConst: CGFloat = 90
         if const == 8 {
             topConst = 70
@@ -324,7 +324,6 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         refreshIndicator.color = .black
         view.addSubview(refreshIndicator)
         refreshIndicator.translatesAutoresizingMaskIntoConstraints = false
-        self.refreshIndicator.startAnimating()
         let constraints = [
             refreshIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             refreshIndicator.topAnchor.constraint(equalTo: view.topAnchor, constant: topConst),
@@ -335,11 +334,11 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     func fetchMessages(){
-        fetchingMore = true
+        loadMore = true
         var position = 0
         getMessages { (newMessages, order) in
-            self.refreshIndicator.isHidden = false
             self.timer.invalidate()
+            self.refreshIndicator.startAnimating()
             if order {
                 self.refreshIndicator.order = order
                 self.messages.append(contentsOf: newMessages)
@@ -349,8 +348,8 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
                 position += 1
             }
             self.timer = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(self.handleReload), userInfo: nil, repeats: false)
-            self.endReached = newMessages.count == 0
-            self.fetchingMore = false
+            self.noMoreFetching = newMessages.count == 0
+            self.loadMore = false
         }
     }
         
@@ -362,14 +361,11 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
             nodeRef = Database.database().reference().child("message-Ids").child(CurrentUser.uid).child(friendId).queryOrderedByKey().queryLimited(toLast: 20)
             messageOrder = true
         }else{
-            print("hi")
             let mId = firstMessage!.id
-            print("First message: " + mId!)
             nodeRef = Database.database().reference().child("message-Ids").child(CurrentUser.uid).child(friendId).queryOrderedByKey().queryEnding(atValue: mId).queryLimited(toLast: 20)
             messageOrder = false
         }
         nodeRef.observe(.childAdded) { (snap) in
-            print(snap.key)
             Database.database().reference().child("messages").child(snap.key).observeSingleEvent(of: .value) { (snapshot) in
                 guard let values = snapshot.value as? [String: Any] else { return }
                 let message = Messages()
@@ -394,7 +390,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
             if self.refreshIndicator.order{
                 self.scrollToTheBottom()
             }
-            self.refreshIndicator.isHidden = true
+            self.refreshIndicator.stopAnimating()
         }
     }
     
@@ -723,7 +719,7 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y + scrollView.adjustedContentInset.top == 0 {
-            if !fetchingMore && !endReached {
+            if !loadMore && !noMoreFetching {
                 fetchMessages()
             }
         }

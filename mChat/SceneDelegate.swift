@@ -46,5 +46,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         userRef.child("lastLogin").setValue(Date().timeIntervalSince1970)
     }
     
+    func sceneDidBecomeActive(_ scene: UIScene) {
+        Constants.activityObservers(isOnline: true)
+    }
+    
+    func sceneDidEnterBackground(_ scene: UIScene) {
+        Constants.activityObservers(isOnline: false)
+    }
+    
 }
 

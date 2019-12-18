@@ -30,11 +30,6 @@ class ContactsVC: UIViewController {
         loadFriends()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        friendsList = []
-    }
-    
     func setupTableView(){
         view.addSubview(tableView)
         tableView.delegate = self
@@ -56,27 +51,27 @@ class ContactsVC: UIViewController {
     }
     
     func loadFriends(){
-        Constants.db.reference().child("friendsList").child(CurrentUser.uid).observeSingleEvent(of: .value) { (snap) in
-            guard let friends = snap.value as? [String: Any] else {
-                self.friendsList = []
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-                return
-            }
+        Constants.db.reference().child("friendsList").child(CurrentUser.uid).observe(.value) { (snap) in
+            self.friendsList = []
+            self.tableView.reloadData()
+            guard let friends = snap.value as? [String: Any] else { return }
             for dict in friends.keys {
-                Constants.db.reference().child("users").child(dict).observeSingleEvent(of: .value) { (data) in
-                    guard let values = data.value as? [String: Any] else { return }
-                    let friend = FriendInfo()
-                    self.getFriendData(friend: friend, dict: dict, values: values)
-                    self.friendsList.append(friend)
-                    self.friendsList.sort { (friend1, friend2) -> Bool in
-                        return friend1.name < friend2.name
-                    }
-                    self.timer.invalidate()
-                    self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReload), userInfo: nil, repeats: false)
-                }
+                self.setupFriendsList(dict)
             }
+        }
+    }
+    
+    func setupFriendsList(_ key: String){
+        Constants.db.reference().child("users").child(key).observeSingleEvent(of: .value) { (data) in
+            guard let values = data.value as? [String: Any] else { return }
+            let friend = FriendInfo()
+            self.getFriendData(friend: friend, dict: key, values: values)
+            self.friendsList.append(friend)
+            self.friendsList.sort { (friend1, friend2) -> Bool in
+                return friend1.name < friend2.name
+            }
+            self.timer.invalidate()
+            self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReload), userInfo: nil, repeats: false)
         }
     }
     

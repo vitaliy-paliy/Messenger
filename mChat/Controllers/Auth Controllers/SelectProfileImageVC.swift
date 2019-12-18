@@ -123,7 +123,7 @@ class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, U
             CurrentUser.email = snap["email"] as? String
             CurrentUser.profileImage = snap["profileImage"] as? String
             CurrentUser.uid = uid
-            self.activityObservers(isOnline: true)
+            Constants.activityObservers(isOnline: true)
             let controller = ChatTabBar()
             controller.modalPresentationStyle = .fullScreen
             self.show(controller, sender: nil)
