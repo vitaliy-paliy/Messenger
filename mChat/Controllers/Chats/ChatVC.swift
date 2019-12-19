@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import Lottie
 
-class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate{
     
     var friendId: String!
     var friendName: String!
@@ -37,9 +37,10 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     var imageClickedView: UIImageView!
     var startingImageFrame: UIImageView!
     var loadMore = false
-    var noMoreFetching = false
+    var scrollToIndex = [Messages]()
     var refreshIndicator = RefreshIndicator(style: .medium)
     var timer = Timer()
+    let blurView = MessagesBlurView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,7 +48,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         fetchMessages()
         notificationCenterHandler()
         hideKeyboardOnTap(collectionView)
-        observeIsUserTyping()
+        setuplongPress()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -334,6 +335,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     func fetchMessages(){
+        scrollToIndex = []
         loadMore = true
         var position = 0
         getMessages { (newMessages, order) in
@@ -346,13 +348,13 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
                 self.refreshIndicator.order = order
                 self.messages.insert(contentsOf: newMessages, at: position)
                 position += 1
+                self.scrollToIndex.append(contentsOf: newMessages)
             }
             self.timer = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(self.handleReload), userInfo: nil, repeats: false)
-            self.noMoreFetching = newMessages.count == 0
             self.loadMore = false
         }
     }
-        
+    
     func getMessages(completion: @escaping(_ newMessages: [Messages], _ mOrder: Bool) -> Void){
         var nodeRef: DatabaseQuery
         var messageOrder: Bool
@@ -366,6 +368,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
             messageOrder = false
         }
         nodeRef.observe(.childAdded) { (snap) in
+            if firstMessage?.id == snap.key { return }
             Database.database().reference().child("messages").child(snap.key).observeSingleEvent(of: .value) { (snapshot) in
                 guard let values = snapshot.value as? [String: Any] else { return }
                 let message = Messages()
@@ -389,6 +392,10 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
             self.collectionView.reloadData()
             if self.refreshIndicator.order{
                 self.scrollToTheBottom()
+            }else{
+                var index = self.scrollToIndex.count
+                if  index > 10 { index = index + 10 }
+                self.collectionView.scrollToItem(at: IndexPath(item: index, section: 0), at: .bottom, animated: false)
             }
             self.refreshIndicator.stopAnimating()
         }
@@ -661,6 +668,89 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         userRef.updateChildValues(["isTyping": false, "fromFriend": user])
     }
     
+    func setuplongPress(){
+        let gesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressGesture(longPress:)))
+        gesture.delegate = self
+        gesture.delaysTouchesBegan = true
+        gesture.minimumPressDuration = 0.5
+        collectionView.addGestureRecognizer(gesture)
+    }
+    
+    @objc func handleLongPressGesture(longPress: UILongPressGestureRecognizer){
+        if longPress.state != UIGestureRecognizer.State.began { return }
+        let point = longPress.location(in: collectionView)
+        guard let indexPath = collectionView.indexPathForItem(at: point) else { return }
+        guard let cell = collectionView.cellForItem(at: indexPath) as? ChatCell else { return }
+        print(cell.messageBackground.frame)
+        let message = messages[indexPath.row]
+        openToolsMenu(message, cell)
+    }
+    
+    func openToolsMenu(_ message: Messages, _ selectedCell: ChatCell){
+        let blurView = setupInfoBlur()
+        selectedCell.isHidden = true
+        let blurTapped = UITapGestureRecognizer(target: self, action: #selector(dismissBlurView(tap:)))
+        blurView.addGestureRecognizer(blurTapped)
+        let cellFrame = collectionView.convert(selectedCell.frame, to: collectionView.superview)
+        let backgroundFrame = collectionView.convert(selectedCell.messageBackground.frame, to: collectionView.superview)
+        let width = selectedCell.messageBackground.frame.size.width
+        let height = selectedCell.messageBackground.frame.size.height
+        let toolsMenu = UIView(frame: CGRect(x: backgroundFrame.origin.x, y: cellFrame.origin.y, width: width, height: height))
+        blurView.cell = selectedCell
+        blurView.toolsMenu = toolsMenu
+        blurView.message = message
+        UIApplication.shared.windows[0].addSubview(toolsMenu)
+        toolsMenu.backgroundColor = selectedCell.messageBackground.backgroundColor
+        toolsMenu.layer.cornerRadius = selectedCell.messageBackground.layer.cornerRadius
+        toolsMenu.layer.masksToBounds = true
+        if message.message != nil {
+            let messageText = UILabel()
+            messageText.text = selectedCell.message.text
+            messageText.textColor = selectedCell.message.textColor
+            toolsMenu.addSubview(messageText)
+            messageText.numberOfLines = 0
+            messageText.backgroundColor = .clear
+            messageText.translatesAutoresizingMaskIntoConstraints = false
+            messageText.font = UIFont(name: "Helvetica Neue", size: 16)
+            let constraints = [
+                messageText.leadingAnchor.constraint(equalTo: toolsMenu.leadingAnchor, constant: 16),
+                messageText.topAnchor.constraint(equalTo: toolsMenu.topAnchor),
+                messageText.trailingAnchor.constraint(equalTo: toolsMenu.trailingAnchor, constant: -8),
+                messageText.heightAnchor.constraint(equalTo: toolsMenu.heightAnchor)
+            ]
+            NSLayoutConstraint.activate(constraints)
+        }else if message.mediaUrl != nil{
+            let mediaMessage = UIImageView()
+            toolsMenu.addSubview(mediaMessage)
+            mediaMessage.loadImage(url: message.mediaUrl)
+            mediaMessage.translatesAutoresizingMaskIntoConstraints = false
+            mediaMessage.layer.cornerRadius = 16
+            mediaMessage.layer.masksToBounds = true
+            mediaMessage.contentMode = .scaleAspectFill
+            let constraints = [
+                mediaMessage.topAnchor.constraint(equalTo: toolsMenu.topAnchor),
+                mediaMessage.centerYAnchor.constraint(equalTo: toolsMenu.centerYAnchor),
+                mediaMessage.widthAnchor.constraint(equalTo: toolsMenu.widthAnchor),
+                mediaMessage.heightAnchor.constraint(equalTo: toolsMenu.heightAnchor)
+            ]
+            NSLayoutConstraint.activate(constraints)
+        }
+    }
+    
+    func setupInfoBlur() -> MessagesBlurView{
+        let blurEffect = UIBlurEffect(style: .dark)
+        blurView.effect = blurEffect
+        blurView.frame = view.frame
+        UIApplication.shared.windows[0].addSubview(blurView)
+        return blurView
+    }
+    
+    @objc func dismissBlurView(tap: UITapGestureRecognizer){
+        blurView.cell.isHidden = false
+        blurView.toolsMenu.removeFromSuperview()
+        blurView.removeFromSuperview()
+    }
+    
 }
 
 extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -691,6 +781,7 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             cell.backgroundWidthAnchor.constant = 200
             cell.messageBackground.backgroundColor = .clear
         }
+        
         if let url = message.mediaUrl{
             cell.mediaMessage.loadImage(url: url)
             cell.mediaMessage.isHidden = false
@@ -701,16 +792,14 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         
         if message.recipient == CurrentUser.uid{
             if message.mediaUrl == nil{
-                cell.messageBackground.backgroundColor = .white
+                cell.isIncoming = true
             }
-            cell.message.textColor = .black
             cell.outcomingMessage.isActive = false
             cell.incomingMessage.isActive = true
         }else{
             if message.mediaUrl == nil{
-                cell.messageBackground.backgroundColor = UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1)
+                cell.isIncoming = false
             }
-            cell.message.textColor = .white
             cell.incomingMessage.isActive = false
             cell.outcomingMessage.isActive = true
         }
@@ -719,8 +808,9 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         if scrollView.contentOffset.y + scrollView.adjustedContentInset.top == 0 {
-            if !loadMore && !noMoreFetching {
+            if !loadMore {
                 fetchMessages()
+                scrollView.contentOffset.y = collectionView.contentOffset.y / 2
             }
         }
     }

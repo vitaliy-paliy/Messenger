@@ -16,6 +16,12 @@ class ChatCell: UICollectionViewCell {
     var backgroundWidthAnchor: NSLayoutConstraint!
     var outcomingMessage: NSLayoutConstraint!
     var incomingMessage: NSLayoutConstraint!
+    var isIncoming: Bool! {
+        didSet{
+            messageBackground.backgroundColor = isIncoming ?  .white  : UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1)
+            message.textColor = isIncoming ? .black : .white
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)

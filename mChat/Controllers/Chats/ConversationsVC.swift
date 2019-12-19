@@ -114,10 +114,8 @@ class ConversationsVC: UIViewController {
         messages.sort { (message1, message2) -> Bool in
             return message1.time.intValue > message2.time.intValue
         }
-        tableView.reloadData()
-        
-//        self.timer.invalidate()
-//        self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReload), userInfo: nil, repeats: false)
+        self.timer.invalidate()
+        self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReload), userInfo: nil, repeats: false)
     }
     
     @objc func handleReload(){

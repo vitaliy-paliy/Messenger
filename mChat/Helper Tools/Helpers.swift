@@ -22,6 +22,12 @@ class RefreshIndicator: UIActivityIndicatorView {
     var order: Bool!
 }
 
+class MessagesBlurView: UIVisualEffectView {
+    var cell: ChatCell!
+    var message: Messages!
+    var toolsMenu: UIView!
+}
+
 extension UIViewController {
     
     func showAlert(title: String?, message: String?){
