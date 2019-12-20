@@ -21,6 +21,7 @@
 		CB8DEAAC2388C985001EDF19 /* ChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8DEAAB2388C985001EDF19 /* ChatCell.swift */; };
 		CB9525992380D5BB0006A76A /* SignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9525982380D5BB0006A76A /* SignUpVC.swift */; };
 		CBAB592C2381E49700078B7D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CBAB592B2381E49600078B7D /* GoogleService-Info.plist */; };
+		CBAC237D23AC4A5200FCBED9 /* ToolsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAC237C23AC4A5200FCBED9 /* ToolsCell.swift */; };
 		CBBDE7AE238353A40040A296 /* UserInfo + FriendInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDE7AD238353A40040A296 /* UserInfo + FriendInfo.swift */; };
 		CBCC30802383634C00E36E39 /* UsersListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCC307F2383634C00E36E39 /* UsersListVC.swift */; };
 		CBCC3084238365B500E36E39 /* UsersListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCC3083238365B500E36E39 /* UsersListCell.swift */; };
@@ -58,6 +59,7 @@
 		CB8DEAAB2388C985001EDF19 /* ChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCell.swift; sourceTree = "<group>"; };
 		CB9525982380D5BB0006A76A /* SignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVC.swift; sourceTree = "<group>"; };
 		CBAB592B2381E49600078B7D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		CBAC237C23AC4A5200FCBED9 /* ToolsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsCell.swift; sourceTree = "<group>"; };
 		CBBDE7AD238353A40040A296 /* UserInfo + FriendInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInfo + FriendInfo.swift"; sourceTree = "<group>"; };
 		CBCC307F2383634C00E36E39 /* UsersListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersListVC.swift; sourceTree = "<group>"; };
 		CBCC3083238365B500E36E39 /* UsersListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersListCell.swift; sourceTree = "<group>"; };
@@ -139,6 +141,14 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		CBAC237B23AC4A1600FCBED9 /* ChatMessageTools */ = {
+			isa = PBXGroup;
+			children = (
+				CBAC237C23AC4A5200FCBED9 /* ToolsCell.swift */,
+			);
+			path = ChatMessageTools;
+			sourceTree = "<group>";
+		};
 		CBD040F023A32B0E005FBD5A /* Animations */ = {
 			isa = PBXGroup;
 			children = (
@@ -177,6 +187,7 @@
 				CBFC53BA23873B5600CC4C91 /* ConverstaionsCell.swift */,
 				CB08304A238709BD002A1861 /* ChatVC.swift */,
 				CB8DEAAB2388C985001EDF19 /* ChatCell.swift */,
+				CBAC237B23AC4A1600FCBED9 /* ChatMessageTools */,
 				CB4CF77C23943D5D00AC2E31 /* NewConversations */,
 			);
 			path = Chats;
@@ -382,6 +393,7 @@
 				CBF644FD2381D384004830C6 /* ContactsCell.swift in Sources */,
 				CB8DEAAC2388C985001EDF19 /* ChatCell.swift in Sources */,
 				CBF644FB2381C28D004830C6 /* SettingsVC.swift in Sources */,
+				CBAC237D23AC4A5200FCBED9 /* ToolsCell.swift in Sources */,
 				CBCC30862383722500E36E39 /* AddFriendVC.swift in Sources */,
 				CBF907FE2380B8CE00EF8925 /* SignInVC.swift in Sources */,
 				CBF644F42381C23A004830C6 /* ContactsVC.swift in Sources */,

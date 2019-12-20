@@ -40,7 +40,9 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     var scrollToIndex = [Messages]()
     var refreshIndicator = RefreshIndicator(style: .medium)
     var timer = Timer()
-    let blurView = MessagesBlurView()
+    var tools = ["Reply", "Forward", "Copy", "Delete"]
+    var toolsImg = ["arrowshape.turn.up.left", "arrowshape.turn.up.right", "doc.on.doc", "trash"]
+    var toolsScrollView = ToolsScrollView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -96,6 +98,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     
     func setupCollectionView(){
         view.addSubview(collectionView)
+        collectionView.scrollsToTop = true
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -351,7 +354,6 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
                 self.scrollToIndex.append(contentsOf: newMessages)
             }
             self.timer = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(self.handleReload), userInfo: nil, repeats: false)
-            self.loadMore = false
         }
     }
     
@@ -397,6 +399,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
                 if  index > 10 { index = index + 10 }
                 self.collectionView.scrollToItem(at: IndexPath(item: index, section: 0), at: .bottom, animated: false)
             }
+            self.loadMore = false
             self.refreshIndicator.stopAnimating()
         }
     }
@@ -681,74 +684,137 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         let point = longPress.location(in: collectionView)
         guard let indexPath = collectionView.indexPathForItem(at: point) else { return }
         guard let cell = collectionView.cellForItem(at: indexPath) as? ChatCell else { return }
-        print(cell.messageBackground.frame)
         let message = messages[indexPath.row]
         openToolsMenu(message, cell)
     }
     
     func openToolsMenu(_ message: Messages, _ selectedCell: ChatCell){
-        let blurView = setupInfoBlur()
+        let window = UIApplication.shared.windows[0]
+        let toolsView = UIView()
         selectedCell.isHidden = true
-        let blurTapped = UITapGestureRecognizer(target: self, action: #selector(dismissBlurView(tap:)))
-        blurView.addGestureRecognizer(blurTapped)
         let cellFrame = collectionView.convert(selectedCell.frame, to: collectionView.superview)
         let backgroundFrame = collectionView.convert(selectedCell.messageBackground.frame, to: collectionView.superview)
         let width = selectedCell.messageBackground.frame.size.width
         let height = selectedCell.messageBackground.frame.size.height
-        let toolsMenu = UIView(frame: CGRect(x: backgroundFrame.origin.x, y: cellFrame.origin.y, width: width, height: height))
-        blurView.cell = selectedCell
-        blurView.toolsMenu = toolsMenu
-        blurView.message = message
-        UIApplication.shared.windows[0].addSubview(toolsMenu)
-        toolsMenu.backgroundColor = selectedCell.messageBackground.backgroundColor
-        toolsMenu.layer.cornerRadius = selectedCell.messageBackground.layer.cornerRadius
-        toolsMenu.layer.masksToBounds = true
+        let selectedCellView = UIView(frame: CGRect(x: backgroundFrame.origin.x, y: cellFrame.origin.y, width: width, height: height))
+        print(height)
+        toolsScrollView = setupScrollView(height)
+        toolsScrollView.backgroundFrame = backgroundFrame
+        toolsScrollView.cellFrame = cellFrame
+        toolsScrollView.cell = selectedCell
+        toolsScrollView.selectedCellView = selectedCellView
+        toolsScrollView.message = message
+        window.addSubview(toolsScrollView)
+        toolsScrollView.addSubview(toolsView)
+        toolsScrollView.addSubview(selectedCellView)
+        let blurTapped = UITapGestureRecognizer(target: self, action: #selector(dismissBlurView(tap:)))
+        toolsScrollView.addGestureRecognizer(blurTapped)
+        selectedCellView.backgroundColor = selectedCell.messageBackground.backgroundColor
+        selectedCellView.layer.cornerRadius = selectedCell.messageBackground.layer.cornerRadius
+        selectedCellView.layer.masksToBounds = true
         if message.message != nil {
             let messageText = UILabel()
             messageText.text = selectedCell.message.text
             messageText.textColor = selectedCell.message.textColor
-            toolsMenu.addSubview(messageText)
+            selectedCellView.addSubview(messageText)
             messageText.numberOfLines = 0
             messageText.backgroundColor = .clear
             messageText.translatesAutoresizingMaskIntoConstraints = false
             messageText.font = UIFont(name: "Helvetica Neue", size: 16)
             let constraints = [
-                messageText.leadingAnchor.constraint(equalTo: toolsMenu.leadingAnchor, constant: 16),
-                messageText.topAnchor.constraint(equalTo: toolsMenu.topAnchor),
-                messageText.trailingAnchor.constraint(equalTo: toolsMenu.trailingAnchor, constant: -8),
-                messageText.heightAnchor.constraint(equalTo: toolsMenu.heightAnchor)
+                messageText.leadingAnchor.constraint(equalTo: selectedCellView.leadingAnchor, constant: 16),
+                messageText.topAnchor.constraint(equalTo: selectedCellView.topAnchor),
+                messageText.trailingAnchor.constraint(equalTo: selectedCellView.trailingAnchor, constant: -8),
+                messageText.heightAnchor.constraint(equalTo: selectedCellView.heightAnchor)
             ]
             NSLayoutConstraint.activate(constraints)
         }else if message.mediaUrl != nil{
             let mediaMessage = UIImageView()
-            toolsMenu.addSubview(mediaMessage)
+            selectedCellView.addSubview(mediaMessage)
             mediaMessage.loadImage(url: message.mediaUrl)
             mediaMessage.translatesAutoresizingMaskIntoConstraints = false
             mediaMessage.layer.cornerRadius = 16
             mediaMessage.layer.masksToBounds = true
             mediaMessage.contentMode = .scaleAspectFill
             let constraints = [
-                mediaMessage.topAnchor.constraint(equalTo: toolsMenu.topAnchor),
-                mediaMessage.centerYAnchor.constraint(equalTo: toolsMenu.centerYAnchor),
-                mediaMessage.widthAnchor.constraint(equalTo: toolsMenu.widthAnchor),
-                mediaMessage.heightAnchor.constraint(equalTo: toolsMenu.heightAnchor)
+                mediaMessage.topAnchor.constraint(equalTo: selectedCellView.topAnchor),
+                mediaMessage.centerYAnchor.constraint(equalTo: selectedCellView.centerYAnchor),
+                mediaMessage.widthAnchor.constraint(equalTo: selectedCellView.widthAnchor),
+                mediaMessage.heightAnchor.constraint(equalTo: selectedCellView.heightAnchor)
             ]
             NSLayoutConstraint.activate(constraints)
         }
+        var xValue: CGFloat = backgroundFrame.origin.x
+        if !selectedCell.isIncoming, backgroundFrame.width < 190 {
+            xValue = backgroundFrame.minX - 150
+            let width = backgroundFrame.width
+            if  width < 190, width > 120 { xValue = backgroundFrame.origin.x - 90 }
+        }
+        toolsView.frame = CGRect(x: xValue, y: cellFrame.maxY + 8, width: 200, height: 200)
+        toolsView.backgroundColor = .white
+        toolsView.layer.cornerRadius = 16
+        toolsView.layer.masksToBounds = true
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            if toolsView.frame.maxY > window.frame.maxY {
+                selectedCellView.frame.origin.y -= 200
+                toolsView.frame.origin.y -= 200
+            }else if selectedCellView.frame.minY < 100 {
+                selectedCellView.frame.origin.y += 200
+                toolsView.frame.origin.y += 200
+            }
+        })
+        
+        let toolsTB = UITableView()
+        toolsView.addSubview(toolsTB)
+        toolsTB.delegate = self
+        toolsTB.dataSource = self
+        toolsTB.isScrollEnabled = false
+        toolsTB.register(ToolsCell.self, forCellReuseIdentifier: "ToolsCell")
+        toolsTB.separatorStyle = .singleLine
+        toolsTB.translatesAutoresizingMaskIntoConstraints = false
+        toolsTB.rowHeight = 50
+        let tableConstraints = [
+            toolsTB.leadingAnchor.constraint(equalTo: toolsView.leadingAnchor, constant: -16),
+            toolsTB.bottomAnchor.constraint(equalTo: toolsView.bottomAnchor),
+            toolsTB.trailingAnchor.constraint(equalTo: toolsView.trailingAnchor, constant: 16),
+            toolsTB.topAnchor.constraint(equalTo: toolsView.topAnchor),
+        ]
+        NSLayoutConstraint.activate(tableConstraints)
+        toolsScrollView.toolView = toolsView
+        toolsView.transform = CGAffineTransform(scaleX: 0.3, y: 0.4)
+        UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            toolsView.transform = .identity
+        })
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.impactOccurred()
+        hideKeyboard()
     }
-    
-    func setupInfoBlur() -> MessagesBlurView{
-        let blurEffect = UIBlurEffect(style: .dark)
-        blurView.effect = blurEffect
-        blurView.frame = view.frame
-        UIApplication.shared.windows[0].addSubview(blurView)
-        return blurView
+        
+    func setupScrollView(_ cellHeigh: CGFloat) -> ToolsScrollView{
+        let sv = ToolsScrollView()
+        sv.frame = view.frame
+        sv.backgroundColor = UIColor(displayP3Red: 1/255, green: 1/255, blue: 1/255, alpha: 0.85)
+        var const: CGFloat = 0
+        if cellHeigh > 300 { const = view.frame.height - cellHeigh}
+        sv.contentSize = CGSize(width: view.frame.width, height: view.frame.height + const)
+        return sv
     }
-    
+        
     @objc func dismissBlurView(tap: UITapGestureRecognizer){
-        blurView.cell.isHidden = false
-        blurView.toolsMenu.removeFromSuperview()
-        blurView.removeFromSuperview()
+        let width = toolsScrollView.backgroundFrame.size.width
+        let height = toolsScrollView.backgroundFrame.size.height
+        let xValue = toolsScrollView.backgroundFrame.origin.x
+        let yValue = toolsScrollView.cellFrame.origin.y
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseIn, animations: {
+            self.toolsScrollView.selectedCellView.frame = CGRect(x: xValue, y: yValue, width: width, height: height)
+//            self.blurView.toolView.transform = CGAffineTransform(scaleX: 0.3, y: 0.3)
+            self.toolsScrollView.toolView.frame = CGRect(x: self.toolsScrollView.backgroundFrame.midX, y: self.toolsScrollView.cellFrame.midY, width: 0, height: 0)
+        }) { (true) in
+            self.toolsScrollView.cell.isHidden = false
+            self.toolsScrollView.selectedCellView.removeFromSuperview()
+            self.toolsScrollView.toolView.removeFromSuperview()
+            self.toolsScrollView.removeFromSuperview()
+        }
     }
     
 }
@@ -807,11 +873,9 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        if scrollView.contentOffset.y + scrollView.adjustedContentInset.top == 0 {
-            if !loadMore {
-                fetchMessages()
-                scrollView.contentOffset.y = collectionView.contentOffset.y / 2
-            }
+        guard let sView = scrollView as? UICollectionView else { return }
+        if sView.contentOffset.y + sView.adjustedContentInset.top == 0 {
+            if !loadMore { fetchMessages() }
         }
     }
     
@@ -839,4 +903,29 @@ extension ChatVC: UITextViewDelegate {
             messageContainer.constraints.forEach { (const) in if const.firstAttribute == .height { messageContainerHeightHandler(const, estSize) }}
         }
     }
+}
+
+extension ChatVC: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return tools.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ToolsCell") as! ToolsCell
+        cell.toolName.text = tools[indexPath.row]
+        cell.toolImg.image = UIImage(systemName: toolsImg[indexPath.row])
+        if tools[indexPath.row] == "Delete" {
+            cell.toolName.textColor = .red
+            cell.toolImg.tintColor =  .red
+        }else{
+            cell.toolImg.tintColor = .black
+            cell.toolName.textColor = .black
+        }
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
 }

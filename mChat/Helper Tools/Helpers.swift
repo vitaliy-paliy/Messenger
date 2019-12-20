@@ -22,10 +22,13 @@ class RefreshIndicator: UIActivityIndicatorView {
     var order: Bool!
 }
 
-class MessagesBlurView: UIVisualEffectView {
+class ToolsScrollView: UIScrollView {
     var cell: ChatCell!
     var message: Messages!
-    var toolsMenu: UIView!
+    var selectedCellView: UIView!
+    var toolView: UIView!
+    var backgroundFrame: CGRect!
+    var cellFrame: CGRect!
 }
 
 extension UIViewController {
