@@ -22,15 +22,6 @@ class RefreshIndicator: UIActivityIndicatorView {
     var order: Bool!
 }
 
-class ToolsScrollView: UIScrollView {
-    var cell: ChatCell!
-    var message: Messages!
-    var selectedCellView: UIView!
-    var toolView: UIView!
-    var backgroundFrame: CGRect!
-    var cellFrame: CGRect!
-}
-
 extension UIViewController {
     
     func showAlert(title: String?, message: String?){

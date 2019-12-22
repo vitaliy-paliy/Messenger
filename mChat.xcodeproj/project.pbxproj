@@ -13,6 +13,10 @@
 		CB27173B2381ECB1003A4D46 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB27173A2381ECB1003A4D46 /* Constants.swift */; };
 		CB27173D2381EFFA003A4D46 /* SelectProfileImageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB27173C2381EFFA003A4D46 /* SelectProfileImageVC.swift */; };
 		CB4CC233239DD71B0086DEA9 /* Calendar + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4CC232239DD71B0086DEA9 /* Calendar + Extension.swift */; };
+		CB4CE15F23AE9800000D2516 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4CE15E23AE9800000D2516 /* MessageView.swift */; };
+		CB4CE16123AE9F92000D2516 /* ToolsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4CE16023AE9F92000D2516 /* ToolsView.swift */; };
+		CB4CE16523AEAA9E000D2516 /* ToolsTB.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4CE16423AEAA9E000D2516 /* ToolsTB.swift */; };
+		CB4CE16723AEB1CA000D2516 /* ToolsBlurView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4CE16623AEB1CA000D2516 /* ToolsBlurView.swift */; };
 		CB4CF77B23943B3600AC2E31 /* NewConversationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4CF77A23943B3600AC2E31 /* NewConversationVC.swift */; };
 		CB4CF77E23943D8100AC2E31 /* NewConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4CF77D23943D8100AC2E31 /* NewConversationCell.swift */; };
 		CB644C2523A2FFC7003094DF /* chatTyping.json in Resources */ = {isa = PBXBuildFile; fileRef = CB644C2323A2FFC7003094DF /* chatTyping.json */; };
@@ -51,6 +55,10 @@
 		CB27173A2381ECB1003A4D46 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CB27173C2381EFFA003A4D46 /* SelectProfileImageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectProfileImageVC.swift; sourceTree = "<group>"; };
 		CB4CC232239DD71B0086DEA9 /* Calendar + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Calendar + Extension.swift"; sourceTree = "<group>"; };
+		CB4CE15E23AE9800000D2516 /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
+		CB4CE16023AE9F92000D2516 /* ToolsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsView.swift; sourceTree = "<group>"; };
+		CB4CE16423AEAA9E000D2516 /* ToolsTB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsTB.swift; sourceTree = "<group>"; };
+		CB4CE16623AEB1CA000D2516 /* ToolsBlurView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsBlurView.swift; sourceTree = "<group>"; };
 		CB4CF77A23943B3600AC2E31 /* NewConversationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationVC.swift; sourceTree = "<group>"; };
 		CB4CF77D23943D8100AC2E31 /* NewConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationCell.swift; sourceTree = "<group>"; };
 		CB644C2323A2FFC7003094DF /* chatTyping.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = chatTyping.json; sourceTree = "<group>"; };
@@ -144,6 +152,10 @@
 		CBAC237B23AC4A1600FCBED9 /* ChatMessageTools */ = {
 			isa = PBXGroup;
 			children = (
+				CB4CE16623AEB1CA000D2516 /* ToolsBlurView.swift */,
+				CB4CE15E23AE9800000D2516 /* MessageView.swift */,
+				CB4CE16023AE9F92000D2516 /* ToolsView.swift */,
+				CB4CE16423AEAA9E000D2516 /* ToolsTB.swift */,
 				CBAC237C23AC4A5200FCBED9 /* ToolsCell.swift */,
 			);
 			path = ChatMessageTools;
@@ -376,6 +388,7 @@
 			files = (
 				CB9525992380D5BB0006A76A /* SignUpVC.swift in Sources */,
 				CB4CF77E23943D8100AC2E31 /* NewConversationCell.swift in Sources */,
+				CB4CE15F23AE9800000D2516 /* MessageView.swift in Sources */,
 				CB27173B2381ECB1003A4D46 /* Constants.swift in Sources */,
 				CB08304B238709BD002A1861 /* ChatVC.swift in Sources */,
 				CBF907EA2380B83500EF8925 /* AppDelegate.swift in Sources */,
@@ -387,15 +400,18 @@
 				CBF907EC2380B83500EF8925 /* SceneDelegate.swift in Sources */,
 				CB4CF77B23943B3600AC2E31 /* NewConversationVC.swift in Sources */,
 				CB27173D2381EFFA003A4D46 /* SelectProfileImageVC.swift in Sources */,
+				CB4CE16723AEB1CA000D2516 /* ToolsBlurView.swift in Sources */,
 				CBF644F72381C26B004830C6 /* ConversationsVC.swift in Sources */,
 				CB4CC233239DD71B0086DEA9 /* Calendar + Extension.swift in Sources */,
 				CBCC3084238365B500E36E39 /* UsersListCell.swift in Sources */,
 				CBF644FD2381D384004830C6 /* ContactsCell.swift in Sources */,
 				CB8DEAAC2388C985001EDF19 /* ChatCell.swift in Sources */,
 				CBF644FB2381C28D004830C6 /* SettingsVC.swift in Sources */,
+				CB4CE16523AEAA9E000D2516 /* ToolsTB.swift in Sources */,
 				CBAC237D23AC4A5200FCBED9 /* ToolsCell.swift in Sources */,
 				CBCC30862383722500E36E39 /* AddFriendVC.swift in Sources */,
 				CBF907FE2380B8CE00EF8925 /* SignInVC.swift in Sources */,
+				CB4CE16123AE9F92000D2516 /* ToolsView.swift in Sources */,
 				CBF644F42381C23A004830C6 /* ContactsVC.swift in Sources */,
 				CB65C64723831EA300F2B5A3 /* CurrentUser.swift in Sources */,
 				CBFC53B92387259E00CC4C91 /* Messages.swift in Sources */,

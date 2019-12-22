@@ -40,9 +40,8 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     var scrollToIndex = [Messages]()
     var refreshIndicator = RefreshIndicator(style: .medium)
     var timer = Timer()
-    var tools = ["Reply", "Forward", "Copy", "Delete"]
-    var toolsImg = ["arrowshape.turn.up.left", "arrowshape.turn.up.right", "doc.on.doc", "trash"]
-    var toolsScrollView = ToolsScrollView()
+    var toolsBlurView = ToolsBlurView()
+    var toolsScrollView = UIScrollView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -689,133 +688,85 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     func openToolsMenu(_ message: Messages, _ selectedCell: ChatCell){
-        let window = UIApplication.shared.windows[0]
-        let toolsView = UIView()
         selectedCell.isHidden = true
-        let cellFrame = collectionView.convert(selectedCell.frame, to: collectionView.superview)
-        let backgroundFrame = collectionView.convert(selectedCell.messageBackground.frame, to: collectionView.superview)
-        let width = selectedCell.messageBackground.frame.size.width
-        let height = selectedCell.messageBackground.frame.size.height
-        let selectedCellView = UIView(frame: CGRect(x: backgroundFrame.origin.x, y: cellFrame.origin.y, width: width, height: height))
-        print(height)
-        toolsScrollView = setupScrollView(height)
-        toolsScrollView.backgroundFrame = backgroundFrame
-        toolsScrollView.cellFrame = cellFrame
-        toolsScrollView.cell = selectedCell
-        toolsScrollView.selectedCellView = selectedCellView
-        toolsScrollView.message = message
+        let window = UIApplication.shared.windows[0]
+        let cF = collectionView.convert(selectedCell.frame, to: collectionView.superview)
+        let bF = collectionView.convert(selectedCell.messageBackground.frame, to: collectionView.superview)
+        let w = selectedCell.messageBackground.frame.size.width
+        let h = selectedCell.messageBackground.frame.size.height
+        toolsScrollView = setupScrollView(h)
+        toolsBlurView = setupBlurView()
         window.addSubview(toolsScrollView)
+        toolsScrollView.addSubview(toolsBlurView)
+        var xValue: CGFloat = bF.origin.x
+        if !selectedCell.isIncoming, bF.width < 190 {
+            xValue = bF.minX - 150
+            let width = bF.width
+            if  width < 190, width > 120 { xValue = bF.origin.x - 90 }
+        }
+        var scrollYValue = cF.maxY + 8
+        var messageYValue = cF.origin.y
+        let noScroll = self.toolsScrollView.contentSize.height == self.view.frame.height
+        if !noScroll {
+            scrollYValue = h
+            messageYValue = toolsScrollView.frame.minY - 8
+            toolsScrollView.setContentOffset(CGPoint(x: 0, y: max(toolsScrollView.contentSize.height - toolsScrollView.bounds.size.height, 0) ), animated: true)
+        }
+        let toolsView = ToolsView(frame: CGRect(x: xValue, y: scrollYValue, width: 200, height: 200))
         toolsScrollView.addSubview(toolsView)
-        toolsScrollView.addSubview(selectedCellView)
-        let blurTapped = UITapGestureRecognizer(target: self, action: #selector(dismissBlurView(tap:)))
-        toolsScrollView.addGestureRecognizer(blurTapped)
-        selectedCellView.backgroundColor = selectedCell.messageBackground.backgroundColor
-        selectedCellView.layer.cornerRadius = selectedCell.messageBackground.layer.cornerRadius
-        selectedCellView.layer.masksToBounds = true
-        if message.message != nil {
-            let messageText = UILabel()
-            messageText.text = selectedCell.message.text
-            messageText.textColor = selectedCell.message.textColor
-            selectedCellView.addSubview(messageText)
-            messageText.numberOfLines = 0
-            messageText.backgroundColor = .clear
-            messageText.translatesAutoresizingMaskIntoConstraints = false
-            messageText.font = UIFont(name: "Helvetica Neue", size: 16)
-            let constraints = [
-                messageText.leadingAnchor.constraint(equalTo: selectedCellView.leadingAnchor, constant: 16),
-                messageText.topAnchor.constraint(equalTo: selectedCellView.topAnchor),
-                messageText.trailingAnchor.constraint(equalTo: selectedCellView.trailingAnchor, constant: -8),
-                messageText.heightAnchor.constraint(equalTo: selectedCellView.heightAnchor)
-            ]
-            NSLayoutConstraint.activate(constraints)
-        }else if message.mediaUrl != nil{
-            let mediaMessage = UIImageView()
-            selectedCellView.addSubview(mediaMessage)
-            mediaMessage.loadImage(url: message.mediaUrl)
-            mediaMessage.translatesAutoresizingMaskIntoConstraints = false
-            mediaMessage.layer.cornerRadius = 16
-            mediaMessage.layer.masksToBounds = true
-            mediaMessage.contentMode = .scaleAspectFill
-            let constraints = [
-                mediaMessage.topAnchor.constraint(equalTo: selectedCellView.topAnchor),
-                mediaMessage.centerYAnchor.constraint(equalTo: selectedCellView.centerYAnchor),
-                mediaMessage.widthAnchor.constraint(equalTo: selectedCellView.widthAnchor),
-                mediaMessage.heightAnchor.constraint(equalTo: selectedCellView.heightAnchor)
-            ]
-            NSLayoutConstraint.activate(constraints)
-        }
-        var xValue: CGFloat = backgroundFrame.origin.x
-        if !selectedCell.isIncoming, backgroundFrame.width < 190 {
-            xValue = backgroundFrame.minX - 150
-            let width = backgroundFrame.width
-            if  width < 190, width > 120 { xValue = backgroundFrame.origin.x - 90 }
-        }
-        toolsView.frame = CGRect(x: xValue, y: cellFrame.maxY + 8, width: 200, height: 200)
-        toolsView.backgroundColor = .white
-        toolsView.layer.cornerRadius = 16
-        toolsView.layer.masksToBounds = true
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            if toolsView.frame.maxY > window.frame.maxY {
-                selectedCellView.frame.origin.y -= 200
-                toolsView.frame.origin.y -= 200
-            }else if selectedCellView.frame.minY < 100 {
-                selectedCellView.frame.origin.y += 200
-                toolsView.frame.origin.y += 200
-            }
-        })
-        
-        let toolsTB = UITableView()
-        toolsView.addSubview(toolsTB)
-        toolsTB.delegate = self
-        toolsTB.dataSource = self
-        toolsTB.isScrollEnabled = false
-        toolsTB.register(ToolsCell.self, forCellReuseIdentifier: "ToolsCell")
-        toolsTB.separatorStyle = .singleLine
-        toolsTB.translatesAutoresizingMaskIntoConstraints = false
-        toolsTB.rowHeight = 50
-        let tableConstraints = [
-            toolsTB.leadingAnchor.constraint(equalTo: toolsView.leadingAnchor, constant: -16),
-            toolsTB.bottomAnchor.constraint(equalTo: toolsView.bottomAnchor),
-            toolsTB.trailingAnchor.constraint(equalTo: toolsView.trailingAnchor, constant: 16),
-            toolsTB.topAnchor.constraint(equalTo: toolsView.topAnchor),
-        ]
-        NSLayoutConstraint.activate(tableConstraints)
-        toolsScrollView.toolView = toolsView
-        toolsView.transform = CGAffineTransform(scaleX: 0.3, y: 0.4)
-        UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            toolsView.transform = .identity
-        })
+        let _ = ToolsTB(frame: toolsView.frame, style: .plain, tV: toolsView, bV: toolsBlurView)
+        let msgViewFrame = CGRect(x: bF.origin.x, y: messageYValue, width: w, height: h)
+        let messageView = MessageView(frame: msgViewFrame, cell: selectedCell, message: message)
+        toolsScrollView.addSubview(messageView)
+        toolMessageAppearance(window.frame, toolsView, messageView, noScroll, h)
+        toolsBlurView.cell = selectedCell
+        toolsBlurView.message = message
+        toolsBlurView.mView = messageView
+        toolsBlurView.tView = toolsView
+        toolsBlurView.backgroundFrame = bF
+        toolsBlurView.cellFrame = cF
+        toolsBlurView.sView = toolsScrollView
+        toolsBlurView.chatCollection = collectionView
+        toolsBlurView.chatView = view
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.impactOccurred()
-        hideKeyboard()
     }
-        
-    func setupScrollView(_ cellHeigh: CGFloat) -> ToolsScrollView{
-        let sv = ToolsScrollView()
-        sv.frame = view.frame
-        sv.backgroundColor = UIColor(displayP3Red: 1/255, green: 1/255, blue: 1/255, alpha: 0.85)
-        var const: CGFloat = 0
-        if cellHeigh > 300 { const = view.frame.height - cellHeigh}
-        sv.contentSize = CGSize(width: view.frame.width, height: view.frame.height + const)
-        return sv
+    
+    func toolMessageAppearance(_ window: CGRect, _ tV: UIView, _ mV: UIView, _ nS: Bool, _ h: CGFloat){
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            if tV.frame.maxY > window.maxY && nS{
+                tV.frame.origin.y = window.maxY - 220
+                mV.frame.origin.y = tV.frame.minY - h - 8
+            }else if mV.frame.minY < 100 && nS{
+                mV.frame.origin.y = window.minY + 40
+                tV.frame.origin.y = mV.frame.maxY + 8
+            }
+        })
     }
-        
-    @objc func dismissBlurView(tap: UITapGestureRecognizer){
-        let width = toolsScrollView.backgroundFrame.size.width
-        let height = toolsScrollView.backgroundFrame.size.height
-        let xValue = toolsScrollView.backgroundFrame.origin.x
-        let yValue = toolsScrollView.cellFrame.origin.y
-        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseIn, animations: {
-            self.toolsScrollView.selectedCellView.frame = CGRect(x: xValue, y: yValue, width: width, height: height)
-//            self.blurView.toolView.transform = CGAffineTransform(scaleX: 0.3, y: 0.3)
-            self.toolsScrollView.toolView.frame = CGRect(x: self.toolsScrollView.backgroundFrame.midX, y: self.toolsScrollView.cellFrame.midY, width: 0, height: 0)
-        }) { (true) in
-            self.toolsScrollView.cell.isHidden = false
-            self.toolsScrollView.selectedCellView.removeFromSuperview()
-            self.toolsScrollView.toolView.removeFromSuperview()
-            self.toolsScrollView.removeFromSuperview()
-        }
+    
+    func setupBlurView() -> ToolsBlurView{
+        let blurView = ToolsBlurView()
+        blurView.effect = UIBlurEffect(style: .dark)
+        let size = toolsScrollView.contentSize
+        blurView.frame = CGRect(x: 0, y: -400, width: size.width, height: size.height + 1000)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(setupExitMenu))
+        blurView.addGestureRecognizer(tapGesture)
+        return blurView
     }
+    
+    func setupScrollView(_ height: CGFloat) -> UIScrollView{
+        let scrollView = UIScrollView()
+        scrollView.frame = view.frame
+        var sHeight: CGFloat
+        if height < view.frame.height - 220 { sHeight = view.frame.height } else { sHeight = height + 230 }
+        scrollView.contentSize = CGSize(width: view.frame.width, height: sHeight)
+        return scrollView
+    }
+    
+    @objc func setupExitMenu(){
+        toolsBlurView.handleViewDismiss()
+    }
+    
     
 }
 
@@ -905,27 +856,3 @@ extension ChatVC: UITextViewDelegate {
     }
 }
 
-extension ChatVC: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tools.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ToolsCell") as! ToolsCell
-        cell.toolName.text = tools[indexPath.row]
-        cell.toolImg.image = UIImage(systemName: toolsImg[indexPath.row])
-        if tools[indexPath.row] == "Delete" {
-            cell.toolName.textColor = .red
-            cell.toolImg.tintColor =  .red
-        }else{
-            cell.toolImg.tintColor = .black
-            cell.toolName.textColor = .black
-        }
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        tableView.deselectRow(at: indexPath, animated: true)
-    }
-    
-}
