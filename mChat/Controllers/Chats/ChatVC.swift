@@ -42,13 +42,15 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     var timer = Timer()
     var toolsBlurView = ToolsBlurView()
     var toolsScrollView = UIScrollView()
+    var messageRemoved = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupChatNavBar()
+        setupChatView()
         fetchMessages()
         notificationCenterHandler()
         hideKeyboardOnTap(collectionView)
+        observeIsUserTyping()
         setuplongPress()
     }
     
@@ -84,7 +86,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         setupLoadMoreIndicator(topConst)
     }
     
-    func setupChatNavBar(){
+    func setupChatView(){
         let loginDate = NSDate(timeIntervalSince1970: friendLastLogin.doubleValue)
         navigationController?.navigationBar.tintColor = .black
         if friendIsOnline {
@@ -92,7 +94,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         }else{
             navigationItem.setNavTitles(navTitle: friendName, navSubtitle: calendar.calculateLastLogin(loginDate))
         }
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(white: 0.95, alpha: 1)
     }
     
     func setupCollectionView(){
@@ -102,7 +104,6 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = .clear
-        collectionView.backgroundColor = UIColor(white: 0.95, alpha: 1)
         collectionView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
         collectionView.register(ChatCell.self, forCellWithReuseIdentifier: "ChatCell")
         let constraints = [
@@ -359,16 +360,19 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     func getMessages(completion: @escaping(_ newMessages: [Messages], _ mOrder: Bool) -> Void){
         var nodeRef: DatabaseQuery
         var messageOrder: Bool
+        var messageCount: UInt = 20
+        if view.frame.height > 1000 { messageCount = 40 }
         let firstMessage = self.messages.first
         if firstMessage == nil{
-            nodeRef = Database.database().reference().child("message-Ids").child(CurrentUser.uid).child(friendId).queryOrderedByKey().queryLimited(toLast: 20)
+            nodeRef = Database.database().reference().child("message-Ids").child(CurrentUser.uid).child(friendId).queryOrderedByKey().queryLimited(toLast: messageCount)
             messageOrder = true
         }else{
             let mId = firstMessage!.id
-            nodeRef = Database.database().reference().child("message-Ids").child(CurrentUser.uid).child(friendId).queryOrderedByKey().queryEnding(atValue: mId).queryLimited(toLast: 20)
+            nodeRef = Database.database().reference().child("message-Ids").child(CurrentUser.uid).child(friendId).queryOrderedByKey().queryEnding(atValue: mId).queryLimited(toLast: messageCount)
             messageOrder = false
         }
         nodeRef.observe(.childAdded) { (snap) in
+            if self.messageRemoved { return }
             if firstMessage?.id == snap.key { return }
             Database.database().reference().child("messages").child(snap.key).observeSingleEvent(of: .value) { (snapshot) in
                 guard let values = snapshot.value as? [String: Any] else { return }
@@ -655,6 +659,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         typingAnimation.animation = Animation.named("chatTyping")
         typingAnimation.play()
         typingAnimation.loopMode = .loop
+        typingAnimation.backgroundBehavior = .pauseAndRestore
     }
     
     func scrollToTheBottom(){
@@ -684,10 +689,12 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         guard let indexPath = collectionView.indexPathForItem(at: point) else { return }
         guard let cell = collectionView.cellForItem(at: indexPath) as? ChatCell else { return }
         let message = messages[indexPath.row]
-        openToolsMenu(message, cell)
+        openToolsMenu(indexPath, message, cell)
     }
     
-    func openToolsMenu(_ message: Messages, _ selectedCell: ChatCell){
+    func openToolsMenu(_ indexPath: IndexPath, _ message: Messages, _ selectedCell: ChatCell){
+        hideKeyboard()
+        messageContainer.alpha = 0
         selectedCell.isHidden = true
         let window = UIApplication.shared.windows[0]
         let cF = collectionView.convert(selectedCell.frame, to: collectionView.superview)
@@ -714,7 +721,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         }
         let toolsView = ToolsView(frame: CGRect(x: xValue, y: scrollYValue, width: 200, height: 200))
         toolsScrollView.addSubview(toolsView)
-        let _ = ToolsTB(frame: toolsView.frame, style: .plain, tV: toolsView, bV: toolsBlurView)
+        let _ = ToolsTB(frame: toolsView.frame, style: .plain, tV: toolsView, bV: toolsBlurView, cV: self, sM: message, i: indexPath)
         let msgViewFrame = CGRect(x: bF.origin.x, y: messageYValue, width: w, height: h)
         let messageView = MessageView(frame: msgViewFrame, cell: selectedCell, message: message)
         toolsScrollView.addSubview(messageView)
@@ -726,8 +733,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         toolsBlurView.backgroundFrame = bF
         toolsBlurView.cellFrame = cF
         toolsBlurView.sView = toolsScrollView
-        toolsBlurView.chatCollection = collectionView
-        toolsBlurView.chatView = view
+        toolsBlurView.chatView = self
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.impactOccurred()
     }
@@ -758,13 +764,14 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         let scrollView = UIScrollView()
         scrollView.frame = view.frame
         var sHeight: CGFloat
+        scrollView.backgroundColor = .clear
         if height < view.frame.height - 220 { sHeight = view.frame.height } else { sHeight = height + 230 }
         scrollView.contentSize = CGSize(width: view.frame.width, height: sHeight)
         return scrollView
     }
     
     @objc func setupExitMenu(){
-        toolsBlurView.handleViewDismiss()
+        toolsBlurView.handleViewDismiss(isDeleted: false)
     }
     
     
@@ -792,34 +799,30 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         let message = messages[indexPath.row]
         cell.chatVC = self
         cell.message.text = message.message
+        
         if let message = message.message {
             cell.backgroundWidthAnchor.constant = calculateFrameInText(message: message).width + 32
-        }else if message.mediaUrl != nil{
-            cell.backgroundWidthAnchor.constant = 200
-            cell.messageBackground.backgroundColor = .clear
         }
         
-        if let url = message.mediaUrl{
-            cell.mediaMessage.loadImage(url: url)
+        if message.recipient == CurrentUser.uid{
+            cell.isIncoming = true
+            cell.outcomingMessage.isActive = false
+            cell.incomingMessage.isActive = true
+        }else{
+            cell.isIncoming = false
+            cell.incomingMessage.isActive = false
+            cell.outcomingMessage.isActive = true
+        }
+        
+        if message.mediaUrl != nil{
+            cell.mediaMessage.loadImage(url: message.mediaUrl)
             cell.mediaMessage.isHidden = false
             cell.backgroundWidthAnchor.constant = 200
+            cell.messageBackground.backgroundColor = .clear
         }else{
             cell.mediaMessage.isHidden = true
         }
         
-        if message.recipient == CurrentUser.uid{
-            if message.mediaUrl == nil{
-                cell.isIncoming = true
-            }
-            cell.outcomingMessage.isActive = false
-            cell.incomingMessage.isActive = true
-        }else{
-            if message.mediaUrl == nil{
-                cell.isIncoming = false
-            }
-            cell.incomingMessage.isActive = false
-            cell.outcomingMessage.isActive = true
-        }
         return cell
     }
     

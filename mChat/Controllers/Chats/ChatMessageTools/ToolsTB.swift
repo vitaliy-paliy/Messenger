@@ -7,16 +7,23 @@
 //
 
 import UIKit
+import Firebase
 
 class ToolsTB: UITableView, UITableViewDelegate, UITableViewDataSource {
     
     var tools = ["Reply", "Forward", "Copy", "Delete"]
     var toolsImg = ["arrowshape.turn.up.left", "arrowshape.turn.up.right", "doc.on.doc", "trash"]
     var blurView: ToolsBlurView!
+    var chatView: ChatVC!
+    var selectedMessage: Messages!
+    var indexPath: IndexPath!
     
-    init(frame: CGRect, style: UITableView.Style, tV: UIView, bV: ToolsBlurView) {
+    init(frame: CGRect, style: UITableView.Style, tV: UIView, bV: ToolsBlurView, cV: ChatVC, sM: Messages, i: IndexPath) {
         super.init(frame: frame, style: style)
-        self.blurView = bV
+        blurView = bV
+        chatView = cV
+        indexPath = i
+        selectedMessage = sM
         delegate = self
         dataSource = self
         register(ToolsCell.self, forCellReuseIdentifier: "ToolsCell")
@@ -59,9 +66,24 @@ class ToolsTB: UITableView, UITableViewDelegate, UITableViewDataSource {
         let tool = tools[indexPath.row]
         tableView.deselectRow(at: indexPath, animated: true)
         if "Delete" == tool {
-            blurView.handleViewDismiss()
+            removeMessageHandler()
         }else{
             print("do nothing")
+        }
+    }
+ 
+    func removeMessageHandler(){
+        for message in chatView.messages{
+            if message.id == selectedMessage.id{
+                self.chatView.messageRemoved = true
+                Database.database().reference().child("message-Ids").child(CurrentUser.uid).child(message.determineUser()).child(selectedMessage.id).removeValue { (error, ref) in
+                    Database.database().reference().child("message-Ids").child(message.determineUser()).child(CurrentUser.uid).child(self.selectedMessage.id).removeValue()
+                    guard error == nil else { return }
+                    self.chatView.messages.remove(at: self.indexPath.row)
+                    self.chatView.collectionView.deleteItems(at: [self.indexPath])
+                    self.blurView.handleViewDismiss(isDeleted: true)
+                }
+            }
         }
     }
     
