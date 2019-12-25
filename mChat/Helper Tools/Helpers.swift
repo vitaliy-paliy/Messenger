@@ -118,7 +118,9 @@ extension UIViewController {
     @objc func hideKeyboard(){
         view.endEditing(true)
     }
-        
+     
+    // NETWORKING
+    
     func getFriendData(friend: FriendInfo, dict: String? = nil, values: [String: Any]){
         friend.id = dict
         friend.email = values["email"] as? String
@@ -126,6 +128,19 @@ extension UIViewController {
         friend.name = values["name"] as? String
         friend.isOnline = values["isOnline"] as? Bool
         friend.lastLogin = values["lastLogin"] as? NSNumber
+    }
+    
+    func setupUserMessage(for values: [String:Any]) -> Messages{
+        let message = Messages()
+        message.sender = values["sender"] as? String
+        message.recipient = values["recipient"] as? String
+        message.message = values["message"] as? String
+        message.time = values["time"] as? NSNumber
+        message.mediaUrl = values["mediaUrl"] as? String
+        message.imageWidth = values["width"] as? NSNumber
+        message.imageHeight = values["height"] as? NSNumber
+        message.id = values["messageId"] as? String
+        return message
     }
     
 }

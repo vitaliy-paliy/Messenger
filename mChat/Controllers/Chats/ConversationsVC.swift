@@ -77,37 +77,23 @@ class ConversationsVC: UIViewController {
                 return
             }
             for key in friend.keys{
-                self.friendsList.append(key)
-            }
-            self.observeMessageIds()
-        }
-    }
-    
-    func observeMessageIds(){
-        let nodeRef = Database.database().reference().child("message-Ids").child(CurrentUser.uid)
-        nodeRef.observe(.childAdded) { (snap) in
-            if !self.friendsList.contains(snap.key) { return }
-            let userMRef = Database.database().reference().child("message-Ids").child(CurrentUser.uid).child(snap.key)
-            userMRef.observe(.childAdded) { (userSnap) in
-                self.messagesReference(userSnap.key)
+                self.messagesReference(key)
             }
         }
     }
     
     func messagesReference(_ key: String){
-        Database.database().reference().child("messages").child(key).observe(.value) { (snapshot) in
-            guard let values = snapshot.value as? [String: Any] else { return }
-            self.loadMessagesHandler(values)
+        Database.database().reference().child("messages").child(CurrentUser.uid).child(key).observe(.value) { (snap) in
+            for child in snap.children {
+                guard let snapshot = child as? DataSnapshot else { return }
+                guard let values = snapshot.value as? [String: Any] else { return }
+                self.loadMessagesHandler(values)
+            }
         }
     }
     
     func loadMessagesHandler(_ values: [String: Any]) {
-        let message = Messages()
-        message.sender = values["sender"] as? String
-        message.recipient = values["recipient"] as? String
-        message.message = values["message"] as? String
-        message.time = values["time"] as? NSNumber
-        message.mediaUrl = values["mediaUrl"] as? String
+        let message = setupUserMessage(for: values)
         let user = message.determineUser()
         recentMessages[user] = message
         messages = Array(recentMessages.values)

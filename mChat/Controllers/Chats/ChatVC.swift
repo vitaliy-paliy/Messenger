@@ -19,6 +19,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     var friendIsOnline: Bool!
     var friendLastLogin: NSNumber!
     var messages = [Messages]()
+    var loadNewMessages = false
     var friendActivity = [FriendActivity]()
     var imageToSend: UIImage!
     
@@ -37,17 +38,18 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     var imageClickedView: UIImageView!
     var startingImageFrame: UIImageView!
     var loadMore = false
+    var lastMessageReached = false
     var scrollToIndex = [Messages]()
     var refreshIndicator = RefreshIndicator(style: .medium)
     var timer = Timer()
     var toolsBlurView = ToolsBlurView()
     var toolsScrollView = UIScrollView()
-    var messageRemoved = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupChatView()
         fetchMessages()
+        observeMessageActions()
         notificationCenterHandler()
         hideKeyboardOnTap(collectionView)
         observeIsUserTyping()
@@ -280,37 +282,35 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     func sendMediaMessage(url: String, _ image: UIImage){
-        let senderRef = Constants.db.reference().child("messages").childByAutoId()
+        let senderRef = Constants.db.reference().child("messages").child(CurrentUser.uid).child(friendId).childByAutoId()
+        let friendRef = Constants.db.reference().child("messages").child(friendId).child(CurrentUser.uid).child(senderRef.key!)
         guard let messageId = senderRef.key else { return }
         let values = ["sender": CurrentUser.uid!, "time": Date().timeIntervalSince1970, "recipient": friendId!, "mediaUrl": url, "width": image.size.width, "height": image.size.height, "messageId": messageId] as [String: Any]
-        sendMessageHandler(senderNodeRef: senderRef, values: values)
+        sendMessageHandler(senderRef: senderRef, friendRef: friendRef,values: values)
     }
     
     @objc func sendButtonPressed(){
         let trimmedMessage = messageTF.text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard trimmedMessage.count > 0 else { return }
-        let senderRef = Constants.db.reference().child("messages").childByAutoId()
+        let senderRef = Constants.db.reference().child("messages").child(CurrentUser.uid).child(friendId).childByAutoId()
+        let friendRef = Constants.db.reference().child("messages").child(friendId).child(CurrentUser.uid).child(senderRef.key!)
         guard let messageId = senderRef.key else { return }
         let values = ["message": trimmedMessage, "sender": CurrentUser.uid!, "recipient": friendId!, "time": Date().timeIntervalSince1970, "messageId": messageId] as [String : Any]
-        sendMessageHandler(senderNodeRef: senderRef, values: values)
+        sendMessageHandler(senderRef: senderRef, friendRef: friendRef, values: values)
         messageTF.text = ""
         messageTF.subviews[2].isHidden = false
     }
     
-    func sendMessageHandler(senderNodeRef: DatabaseReference, values: [String: Any]){
-        senderNodeRef.updateChildValues(values) { (error, ref) in
+    func sendMessageHandler(senderRef: DatabaseReference, friendRef: DatabaseReference,  values: [String: Any]){
+        senderRef.updateChildValues(values) { (error, ref) in
             if let error = error {
                 self.showAlert(title: "Error", message: error.localizedDescription)
             }
-            guard let currentUser = CurrentUser.uid, let recipient = self.friendId else { return }
-            let senderMIdRef = Database.database().reference().child("message-Ids").child(currentUser).child(recipient)
-            let id = senderNodeRef.key!
-            senderMIdRef.updateChildValues([id: true])
-            let recipientRef = Database.database().reference().child("message-Ids").child(recipient).child(currentUser)
-            recipientRef.updateChildValues([id: true])
+            friendRef.updateChildValues(values)
         }
         self.messageTF.text = ""
         disableIsTyping()
+        hideKeyboard()
         messageTF.constraints.forEach { (constraint) in
             if constraint.firstAttribute == .height {
                 constraint.constant = 32
@@ -338,10 +338,12 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     func fetchMessages(){
-        scrollToIndex = []
         loadMore = true
-        var position = 0
+        scrollToIndex = []
         getMessages { (newMessages, order) in
+            self.lastMessageReached = newMessages.count == 0
+            if self.lastMessageReached { return }
+            self.scrollToIndex = newMessages
             self.timer.invalidate()
             self.refreshIndicator.startAnimating()
             if order {
@@ -349,9 +351,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
                 self.messages.append(contentsOf: newMessages)
             }else{
                 self.refreshIndicator.order = order
-                self.messages.insert(contentsOf: newMessages, at: position)
-                position += 1
-                self.scrollToIndex.append(contentsOf: newMessages)
+                self.messages.insert(contentsOf: newMessages, at: 0)
             }
             self.timer = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(self.handleReload), userInfo: nil, repeats: false)
         }
@@ -359,51 +359,77 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     
     func getMessages(completion: @escaping(_ newMessages: [Messages], _ mOrder: Bool) -> Void){
         var nodeRef: DatabaseQuery
-        var messageOrder: Bool
+        var messageOrder = true
+        var newMessages = [Messages]()
         var messageCount: UInt = 20
         if view.frame.height > 1000 { messageCount = 40 }
         let firstMessage = self.messages.first
         if firstMessage == nil{
-            nodeRef = Database.database().reference().child("message-Ids").child(CurrentUser.uid).child(friendId).queryOrderedByKey().queryLimited(toLast: messageCount)
+            nodeRef = Database.database().reference().child("messages").child(CurrentUser.uid).child(friendId).queryOrderedByKey().queryLimited(toLast: messageCount)
             messageOrder = true
         }else{
             let mId = firstMessage!.id
-            nodeRef = Database.database().reference().child("message-Ids").child(CurrentUser.uid).child(friendId).queryOrderedByKey().queryEnding(atValue: mId).queryLimited(toLast: messageCount)
+            nodeRef = Database.database().reference().child("messages").child(CurrentUser.uid).child(friendId).queryOrderedByKey().queryEnding(atValue: mId).queryLimited(toLast: messageCount)
             messageOrder = false
         }
-        nodeRef.observe(.childAdded) { (snap) in
-            if self.messageRemoved { return }
-            if firstMessage?.id == snap.key { return }
-            Database.database().reference().child("messages").child(snap.key).observeSingleEvent(of: .value) { (snapshot) in
-                guard let values = snapshot.value as? [String: Any] else { return }
-                let message = Messages()
-                message.sender = values["sender"] as? String
-                message.recipient = values["recipient"] as? String
-                message.message = values["message"] as? String
-                message.time = values["time"] as? NSNumber
-                message.mediaUrl = values["mediaUrl"] as? String
-                message.imageWidth = values["width"] as? NSNumber
-                message.imageHeight = values["height"] as? NSNumber
-                message.id = values["messageId"] as? String
-                if snap.key != firstMessage?.id {
-                    return completion([message], messageOrder)
+        nodeRef.observeSingleEvent(of: .value) { (snap) in
+            for child in snap.children {
+                guard let snapshot = child as? DataSnapshot else { return }
+                if firstMessage?.id != snapshot.key {
+                    guard let values = snapshot.value as? [String: Any] else { return }
+                    newMessages.append(self.setupUserMessage(for: values))
                 }
             }
+            return completion(newMessages, messageOrder)
         }
     }
     
+    func observeMessageActions(){
+        let ref =  Database.database().reference().child("messages").child(CurrentUser.uid).child(friendId)
+        ref.observe(.childRemoved) { (snap) in
+            self.deletedMessageHandler(for: snap)
+        }
+        ref.observe(.childAdded) { (snap) in
+            self.newMessageHandler(for: snap)
+        }
+    }
+    
+    func deletedMessageHandler(for snap: DataSnapshot){
+        var index = 0
+        for message in self.messages {
+            if message.id == snap.key {
+                self.messages.remove(at: index)
+                self.collectionView.reloadData()
+            }
+            index += 1
+        }
+    }
+    
+    func newMessageHandler(for snap: DataSnapshot){
+        if self.loadNewMessages {
+            let status = self.messages.contains { (message) -> Bool in return message.id == snap.key }
+            if !status {
+                guard let values = snap.value as? [String: Any] else { return }
+                let newMessage = self.setupUserMessage(for: values)
+                self.messages.append(newMessage)
+                self.collectionView.reloadData()
+                if newMessage.sender == CurrentUser.uid { self.scrollToTheBottom() }
+            }
+        }
+    }
+        
     @objc func handleReload(){
         DispatchQueue.main.async {
             self.collectionView.reloadData()
             if self.refreshIndicator.order{
+                print("hi")
                 self.scrollToTheBottom()
             }else{
-                var index = self.scrollToIndex.count
-                if  index > 10 { index = index + 10 }
-                self.collectionView.scrollToItem(at: IndexPath(item: index, section: 0), at: .bottom, animated: false)
+                self.collectionView.scrollToItem(at: IndexPath(item: self.scrollToIndex.count - 1, section: 0), at: .bottom, animated: false)
             }
             self.loadMore = false
             self.refreshIndicator.stopAnimating()
+            self.loadNewMessages = true
         }
     }
     
@@ -556,7 +582,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         UIView.animate(withDuration: duration) {
             self.view.layoutIfNeeded()
         }
-        scrollToTheBottom()
+//        scrollToTheBottom()
     }
     
     @objc func handleKeyboardWillHide(notification: NSNotification){
@@ -609,7 +635,6 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
             if friendActivity.friendId == self.friendId && friendActivity.isTyping {
                 self.animateTyping(const: 1, isHidden: false)
                 self.collectionView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 45, right: 0)
-                self.scrollToTheBottom()
             }else{
                 self.animateTyping(const: 0, isHidden: true)
                 UIView.animate(withDuration: 0.5) {
@@ -617,7 +642,6 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
                 }
             }
         }
-        
     }
     
     func animateTyping(const: CGFloat, isHidden: Bool){
@@ -721,7 +745,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         }
         let toolsView = ToolsView(frame: CGRect(x: xValue, y: scrollYValue, width: 200, height: 200))
         toolsScrollView.addSubview(toolsView)
-        let _ = ToolsTB(frame: toolsView.frame, style: .plain, tV: toolsView, bV: toolsBlurView, cV: self, sM: message, i: indexPath)
+        let _ = ToolsTB(frame: toolsView.frame, style: .plain, tV: toolsView, bV: toolsBlurView, cV: self, sM: message, i: indexPath, m: message)
         let msgViewFrame = CGRect(x: bF.origin.x, y: messageYValue, width: w, height: h)
         let messageView = MessageView(frame: msgViewFrame, cell: selectedCell, message: message)
         toolsScrollView.addSubview(messageView)
@@ -829,7 +853,7 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard let sView = scrollView as? UICollectionView else { return }
         if sView.contentOffset.y + sView.adjustedContentInset.top == 0 {
-            if !loadMore { fetchMessages() }
+            if !loadMore && !lastMessageReached { fetchMessages() }
         }
     }
     

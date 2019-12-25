@@ -17,12 +17,14 @@ class ToolsTB: UITableView, UITableViewDelegate, UITableViewDataSource {
     var chatView: ChatVC!
     var selectedMessage: Messages!
     var indexPath: IndexPath!
+    var message: Messages!
     
-    init(frame: CGRect, style: UITableView.Style, tV: UIView, bV: ToolsBlurView, cV: ChatVC, sM: Messages, i: IndexPath) {
+    init(frame: CGRect, style: UITableView.Style, tV: UIView, bV: ToolsBlurView, cV: ChatVC, sM: Messages, i: IndexPath, m: Messages) {
         super.init(frame: frame, style: style)
         blurView = bV
         chatView = cV
         indexPath = i
+        message = m
         selectedMessage = sM
         delegate = self
         dataSource = self
@@ -50,9 +52,10 @@ class ToolsTB: UITableView, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ToolsCell") as! ToolsCell
-        cell.toolName.text = tools[indexPath.row]
+        let tool = tools[indexPath.row]
+        cell.toolName.text = tool
         cell.toolImg.image = UIImage(systemName: toolsImg[indexPath.row])
-        if tools[indexPath.row] == "Delete" {
+        if tool == "Delete" {
             cell.toolName.textColor = .red
             cell.toolImg.tintColor =  .red
         }else{
@@ -67,23 +70,27 @@ class ToolsTB: UITableView, UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         if "Delete" == tool {
             removeMessageHandler()
+        }else if "Copy" == tool{
+            guard message.mediaUrl == nil else { return }
+            let pasteBoard = UIPasteboard.general
+            pasteBoard.string = message.message
+            self.blurView.handleViewDismiss(isDeleted: false)
         }else{
             print("do nothing")
         }
     }
- 
+    
     func removeMessageHandler(){
         for message in chatView.messages{
-            if message.id == selectedMessage.id{
-                self.chatView.messageRemoved = true
-                Database.database().reference().child("message-Ids").child(CurrentUser.uid).child(message.determineUser()).child(selectedMessage.id).removeValue { (error, ref) in
-                    Database.database().reference().child("message-Ids").child(message.determineUser()).child(CurrentUser.uid).child(self.selectedMessage.id).removeValue()
-                    guard error == nil else { return }
-                    self.chatView.messages.remove(at: self.indexPath.row)
-                    self.chatView.collectionView.deleteItems(at: [self.indexPath])
-                    self.blurView.handleViewDismiss(isDeleted: true)
-                }
-            }
+            if message.id == selectedMessage.id { removeHandler(friend: message.determineUser()) }
+        }
+    }
+    
+    func removeHandler(friend: String){
+        Database.database().reference().child("messages").child(CurrentUser.uid).child(friend).child(selectedMessage.id).removeValue { (error, ref) in
+            Database.database().reference().child("messages").child(friend).child(CurrentUser.uid).child(self.selectedMessage.id).removeValue()
+            guard error == nil else { return }
+            self.blurView.handleViewDismiss(isDeleted: true)
         }
     }
     

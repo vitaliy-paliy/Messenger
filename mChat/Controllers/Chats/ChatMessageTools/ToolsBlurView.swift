@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class ToolsBlurView: UIVisualEffectView {
     
@@ -46,7 +47,6 @@ class ToolsBlurView: UIVisualEffectView {
             self.cell.isHidden = false
             self.mView.removeFromSuperview()
             self.tView.removeFromSuperview()
-            if isDeleted { self.chatView.messageRemoved = false }
         }
     }
     
