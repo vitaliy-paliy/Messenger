@@ -44,6 +44,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     var timer = Timer()
     var toolsBlurView = ToolsBlurView()
     var toolsScrollView = UIScrollView()
+    let vGenerator = UIImpactFeedbackGenerator(style: .medium)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -101,7 +102,6 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     
     func setupCollectionView(){
         view.addSubview(collectionView)
-        collectionView.scrollsToTop = true
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -342,7 +342,10 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         scrollToIndex = []
         getMessages { (newMessages, order) in
             self.lastMessageReached = newMessages.count == 0
-            if self.lastMessageReached { return }
+            if self.lastMessageReached {
+                self.loadNewMessages = true
+                return
+            }
             self.scrollToIndex = newMessages
             self.timer.invalidate()
             self.refreshIndicator.startAnimating()
@@ -413,7 +416,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
                 let newMessage = self.setupUserMessage(for: values)
                 self.messages.append(newMessage)
                 self.collectionView.reloadData()
-                if newMessage.sender == CurrentUser.uid { self.scrollToTheBottom() }
+                self.scrollToTheBottom(animated: true)
             }
         }
     }
@@ -422,10 +425,10 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         DispatchQueue.main.async {
             self.collectionView.reloadData()
             if self.refreshIndicator.order{
-                print("hi")
-                self.scrollToTheBottom()
+                self.scrollToTheBottom(animated: false)
             }else{
-                self.collectionView.scrollToItem(at: IndexPath(item: self.scrollToIndex.count - 1, section: 0), at: .bottom, animated: false)
+                let index = self.scrollToIndex.count - 1
+                self.collectionView.scrollToItem(at: IndexPath(item: index, section: 0), at: .top, animated: false)
             }
             self.loadMore = false
             self.refreshIndicator.stopAnimating()
@@ -577,18 +580,25 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         guard let height = kFrame?.height, let duration = kDuration else { return }
         if containerHeight > 45 {
             containerBottomAnchor.constant = 13.2
+            collectionView.contentOffset.y -= 13.2
         }
-        containerBottomAnchor.constant += -height
+        containerBottomAnchor.constant -= height
+        collectionView.contentOffset.y += height
         UIView.animate(withDuration: duration) {
             self.view.layoutIfNeeded()
         }
-//        scrollToTheBottom()
     }
     
     @objc func handleKeyboardWillHide(notification: NSNotification){
+        let kFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
         let kDuration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double
+        guard let height = kFrame?.height else { return }
         guard let duration = kDuration else { return }
+        if containerHeight > 45 {
+            collectionView.contentOffset.y += 13.2
+        }
         containerBottomAnchor.constant = 0
+        collectionView.contentOffset.y -= height
         UIView.animate(withDuration: duration) {
             self.view.layoutIfNeeded()
         }
@@ -686,10 +696,10 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         typingAnimation.backgroundBehavior = .pauseAndRestore
     }
     
-    func scrollToTheBottom(){
+    func scrollToTheBottom(animated: Bool){
         if messages.count > 0 {
             let indexPath = IndexPath(item: messages.count - 1, section: 0)
-            collectionView.scrollToItem(at: indexPath, at: .bottom, animated: false)
+            collectionView.scrollToItem(at: indexPath, at: .bottom, animated: animated)
         }
     }
     
@@ -758,8 +768,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         toolsBlurView.cellFrame = cF
         toolsBlurView.sView = toolsScrollView
         toolsBlurView.chatView = self
-        let generator = UIImpactFeedbackGenerator(style: .medium)
-        generator.impactOccurred()
+        vGenerator.impactOccurred()
     }
     
     func toolMessageAppearance(_ window: CGRect, _ tV: UIView, _ mV: UIView, _ nS: Bool, _ h: CGFloat){
@@ -820,6 +829,7 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ChatCell", for: indexPath) as! ChatCell
+        
         let message = messages[indexPath.row]
         cell.chatVC = self
         cell.message.text = message.message
@@ -853,7 +863,10 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard let sView = scrollView as? UICollectionView else { return }
         if sView.contentOffset.y + sView.adjustedContentInset.top == 0 {
-            if !loadMore && !lastMessageReached { fetchMessages() }
+            if !loadMore && !lastMessageReached {
+                vGenerator.impactOccurred()
+                fetchMessages()
+            }
         }
     }
     

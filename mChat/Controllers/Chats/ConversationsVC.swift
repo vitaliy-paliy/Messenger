@@ -12,9 +12,7 @@ import Firebase
 class ConversationsVC: UIViewController {
     
     var messages = [Messages]()
-    var recentMessages = [String: Messages]()
     var friends = [FriendInfo]()
-    var friendsList = [String]()
     var filteredFriends = [String: FriendInfo]()
     var tableView = UITableView()
     var timer = Timer()
@@ -66,9 +64,8 @@ class ConversationsVC: UIViewController {
     
     func loadFriendListHandler(){
         Constants.db.reference().child("friendsList").child(CurrentUser.uid).observe(.value) { (snap) in
-            self.recentMessages = [:]
             self.friends = []
-            self.friendsList = []
+            self.messages = []
             guard let friend = snap.value as? [String: Any] else {
                 DispatchQueue.main.async {
                     self.messages = []
@@ -76,27 +73,20 @@ class ConversationsVC: UIViewController {
                 }
                 return
             }
-            for key in friend.keys{
-                self.messagesReference(key)
-            }
+            for key in friend.keys{ self.messagesReference(key) }
         }
     }
     
     func messagesReference(_ key: String){
-        Database.database().reference().child("messages").child(CurrentUser.uid).child(key).observe(.value) { (snap) in
-            for child in snap.children {
-                guard let snapshot = child as? DataSnapshot else { return }
-                guard let values = snapshot.value as? [String: Any] else { return }
-                self.loadMessagesHandler(values)
-            }
+        let ref = Database.database().reference().child("messages").child(CurrentUser.uid).child(key).queryLimited(toLast: 1)
+        ref.observe(.childAdded) { (snap) in
+            guard let values = snap.value as? [String: Any] else { return }
+            self.loadMessagesHandler(values)
         }
     }
     
     func loadMessagesHandler(_ values: [String: Any]) {
-        let message = setupUserMessage(for: values)
-        let user = message.determineUser()
-        recentMessages[user] = message
-        messages = Array(recentMessages.values)
+        messages.append(setupUserMessage(for: values))
         messages.sort { (message1, message2) -> Bool in
             return message1.time.intValue > message2.time.intValue
         }
@@ -105,7 +95,6 @@ class ConversationsVC: UIViewController {
     }
     
     @objc func handleReload(){
-        
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
@@ -175,7 +164,6 @@ extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ConversationsCell") as! ConversationsCell
-//        print(indexPath.row)
         cell.selectionStyle = .none
         let recent = messages[indexPath.row]
         loadFriendsHandler(recent, cell) { (friend) in
