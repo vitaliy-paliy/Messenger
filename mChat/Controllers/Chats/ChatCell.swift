@@ -60,9 +60,9 @@ class ChatCell: UICollectionViewCell {
         message.font = UIFont(name: "Helvetica Neue", size: 16)
         let constraints = [
             message.leadingAnchor.constraint(equalTo: messageBackground.leadingAnchor, constant: 16),
-            message.topAnchor.constraint(equalTo: topAnchor),
+            message.bottomAnchor.constraint(equalTo: messageBackground.bottomAnchor),
             message.trailingAnchor.constraint(equalTo: messageBackground.trailingAnchor, constant: -8),
-            message.heightAnchor.constraint(equalTo: heightAnchor)
+            message.topAnchor.constraint(equalTo: messageBackground.topAnchor)
         ]
         NSLayoutConstraint.activate(constraints)
     }
@@ -87,6 +87,11 @@ class ChatCell: UICollectionViewCell {
     @objc func imageTappedHandler(tap: UITapGestureRecognizer){
         let imageView = tap.view as? UIImageView
         chatVC.zoomImageHandler(image: imageView!)
+    }
+    
+    func setupRepTextMessage(){
+        let line = UIView()
+        line.backgroundColor = UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1)
     }
     
     func animateCell(_ cell: ChatCell){

@@ -7,34 +7,68 @@
 //
 
 import UIKit
+import Lottie
 
 extension UINavigationItem {
     
     func setNavTitles(navTitle: String, navSubtitle: String){
-        
-        let title = UILabel()
+        let title = setupTitleLabel(navTitle)
         let subtitle = UILabel()
-        
-        title.text = navTitle
-        title.font = UIFont(name: "HelveticaNeue-Medium", size: 18)
-        
+
         subtitle.text = navSubtitle
         subtitle.font = UIFont(name: "Helvetica Neue", size: 14)
         subtitle.textColor = .lightGray
         
-        let stackView = UIStackView(arrangedSubviews: [title, subtitle])
-        stackView.distribution = .fill
+        let stackView = setupStackView(view1: title, view2: subtitle)
+        
+        titleView = stackView
+        
+    }
+    
+    func setupTypingNavTitle(navTitle: String){
+        let title = setupTitleLabel(navTitle)
+        let animationView = UIView()
+        let animation = setupAnimationView()
+        animationView.addSubview(animation)
+        animation.translatesAutoresizingMaskIntoConstraints = false
+        let constraints = [
+            animation.widthAnchor.constraint(equalToConstant: 70),
+            animation.heightAnchor.constraint(equalToConstant: 70),
+            animation.centerXAnchor.constraint(equalTo: animationView.centerXAnchor),
+            animation.centerYAnchor.constraint(equalTo: animationView.centerYAnchor),
+        ]
+        NSLayoutConstraint.activate(constraints)
+        let stackView = setupStackView(view1: title, view2: animationView)
+        titleView = stackView
+    }
+    
+    func setupTitleLabel(_ text: String) -> UILabel{
+        let title = UILabel()
+        title.text = text
+        title.font = UIFont(name: "HelveticaNeue-Medium", size: 18)
+        return title
+    }
+    
+    private func setupAnimationView() -> AnimationView{
+        let typingAnimation = AnimationView()
+        typingAnimation.animationSpeed = 1.2
+        typingAnimation.animation = Animation.named("chatTyping")
+        typingAnimation.play()
+        typingAnimation.loopMode = .loop
+        typingAnimation.backgroundBehavior = .pauseAndRestore
+        return typingAnimation
+    }
+    
+    private func setupStackView(view1: UIView, view2: UIView) -> UIStackView{
+        let stackView = UIStackView(arrangedSubviews: [view1, view2])
+        stackView.distribution = .fillEqually
         stackView.axis = .vertical
         stackView.alignment = .center
-        
-        let width = max(title.frame.size.width, subtitle.frame.size.width)
+        let width = max(view1.frame.size.width, view2.frame.size.width)
         stackView.frame = CGRect(x: 0, y: 0, width: width, height: 25)
-        
-        title.sizeToFit()
-        subtitle.sizeToFit()
-        
-        self.titleView = stackView
-        
+        view1.sizeToFit()
+        view2.sizeToFit()
+        return stackView
     }
     
 }

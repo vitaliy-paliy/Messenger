@@ -43,7 +43,7 @@ class ToolsBlurView: UIVisualEffectView {
             self.sView.removeFromSuperview()
             self.removeFromSuperview()
         }) { (true) in
-            UIView.animate(withDuration: 0.3) { self.chatView.messageContainer.alpha = 1 }
+//            UIView.animate(withDuration: 0.3) { self.chatView.messageContainer.alpha = 1 }
             self.cell.isHidden = false
             self.mView.removeFromSuperview()
             self.tView.removeFromSuperview()

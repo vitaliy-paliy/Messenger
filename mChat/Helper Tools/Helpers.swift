@@ -140,6 +140,8 @@ extension UIViewController {
         message.imageWidth = values["width"] as? NSNumber
         message.imageHeight = values["height"] as? NSNumber
         message.id = values["messageId"] as? String
+        message.repMessage = values["repMessage"] as? String
+        message.repMediaMessage = values["repMediaMessage"] as? String
         return message
     }
     

@@ -45,10 +45,13 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     var toolsBlurView = ToolsBlurView()
     var toolsScrollView = UIScrollView()
     let vGenerator = UIImpactFeedbackGenerator(style: .medium)
+    var replyStatus = false
+    var replyMessage: Messages?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupChatView()
+        view.backgroundColor = UIColor(white: 0.95, alpha: 1)
+        setupChatNavBar()
         fetchMessages()
         observeMessageActions()
         notificationCenterHandler()
@@ -73,7 +76,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         var topConst: CGFloat!
         if view.safeAreaInsets.bottom > 0 {
             containerHeight = 70
-            topConst = 12
+            topConst = 28
         }else{
             containerHeight = 45
             topConst = 8
@@ -85,11 +88,10 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         setupMessageTF(topConst)
         setupMicrophone(topConst)
         setupProfileImage()
-        setupUserTypingView()
         setupLoadMoreIndicator(topConst)
     }
     
-    func setupChatView(){
+    func setupChatNavBar(){
         let loginDate = NSDate(timeIntervalSince1970: friendLastLogin.doubleValue)
         navigationController?.navigationBar.tintColor = .black
         if friendIsOnline {
@@ -97,7 +99,6 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         }else{
             navigationItem.setNavTitles(navTitle: friendName, navSubtitle: calendar.calculateLastLogin(loginDate))
         }
-        view.backgroundColor = UIColor(white: 0.95, alpha: 1)
     }
     
     func setupCollectionView(){
@@ -138,6 +139,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     var containerBottomAnchor = NSLayoutConstraint()
+    var containterHAnchor = NSLayoutConstraint()
     func setupContainer(height: CGFloat){
         messageContainer.translatesAutoresizingMaskIntoConstraints = false
         messageContainer.backgroundColor = .white
@@ -147,11 +149,12 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         topLine.translatesAutoresizingMaskIntoConstraints = false
         messageContainer.addSubview(topLine)
         containerBottomAnchor = messageContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        containterHAnchor = messageContainer.heightAnchor.constraint(equalToConstant: height)
         let constraints = [
             messageContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             containerBottomAnchor,
+            containterHAnchor,
             messageContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            messageContainer.heightAnchor.constraint(equalToConstant: height),
             topLine.leftAnchor.constraint(equalTo: view.leftAnchor),
             topLine.rightAnchor.constraint(equalTo: view.rightAnchor),
             topLine.heightAnchor.constraint(equalToConstant: 0.5)
@@ -159,7 +162,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         NSLayoutConstraint.activate(constraints)
     }
     
-    func setupImageClipButton(_ topConst: CGFloat){
+    func setupImageClipButton(_ const: CGFloat){
         clipImageButton.setImage(UIImage(systemName: "paperclip"), for: .normal)
         messageContainer.addSubview(clipImageButton)
         clipImageButton.tintColor = .black
@@ -168,14 +171,15 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         clipImageButton.translatesAutoresizingMaskIntoConstraints = false
         let constraints = [
             clipImageButton.leadingAnchor.constraint(equalTo: messageContainer.leadingAnchor, constant: 8),
-            clipImageButton.topAnchor.constraint(equalTo: messageContainer.topAnchor, constant: topConst),
+            clipImageButton.bottomAnchor.constraint(equalTo: messageContainer.bottomAnchor, constant: -messageContainer.frame.size.height - const),
+//            clipImageButton.topAnchor.constraint(equalTo: messageContainer.topAnchor, constant: -topConst),
             clipImageButton.widthAnchor.constraint(equalToConstant: 30),
             clipImageButton.heightAnchor.constraint(equalToConstant: 30)
         ]
         NSLayoutConstraint.activate(constraints)
     }
     
-    func setupSendButton(_ topConst: CGFloat){
+    func setupSendButton(_ const: CGFloat){
         messageContainer.addSubview(sendButton)
         sendButton.translatesAutoresizingMaskIntoConstraints = false
         sendButton.alpha = 0
@@ -185,7 +189,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         sendButton.layer.masksToBounds = true
         sendButton.tintColor = .white
         let constraints = [
-            sendButton.topAnchor.constraint(equalTo: messageContainer.topAnchor, constant: topConst),
+            sendButton.bottomAnchor.constraint(equalTo: messageContainer.bottomAnchor, constant: -messageContainer.frame.size.height - const),
             sendButton.trailingAnchor.constraint(equalTo: messageContainer.trailingAnchor, constant: -8),
             sendButton.heightAnchor.constraint(equalToConstant: 30),
             sendButton.widthAnchor.constraint(equalToConstant: 30),
@@ -194,14 +198,14 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         sendButton.addTarget(self, action: #selector(sendButtonPressed), for: .touchUpInside)
     }
     
-    func setupMicrophone(_ topConst: CGFloat){
+    func setupMicrophone(_ const: CGFloat){
         messageContainer.addSubview(micButton)
         micButton.translatesAutoresizingMaskIntoConstraints = false
         micButton.setImage(UIImage(systemName: "mic"), for: .normal)
         micButton.tintColor = .black
         micButton.addTarget(self, action: #selector(startAudioRec), for: .touchUpInside)
         let constraints = [
-            micButton.topAnchor.constraint(equalTo: messageContainer.topAnchor, constant: topConst),
+            micButton.bottomAnchor.constraint(equalTo: messageContainer.bottomAnchor, constant: -messageContainer.frame.size.height - const),
             micButton.trailingAnchor.constraint(equalTo: messageContainer.trailingAnchor, constant: -8),
             micButton.heightAnchor.constraint(equalToConstant: 30),
             micButton.widthAnchor.constraint(equalToConstant: 30),
@@ -210,7 +214,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         micButton.addTarget(self, action: #selector(sendButtonPressed), for: .touchUpInside)
     }
     
-    func setupMessageTF(_ topConst: CGFloat){
+    func setupMessageTF(_ const: CGFloat){
         messageContainer.addSubview(messageTF)
         messageTF.layer.cornerRadius = 12
         messageTF.font = UIFont(name: "Helvetica Neue", size: 16)
@@ -234,7 +238,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         let constraints = [
             messageTF.leadingAnchor.constraint(equalTo: clipImageButton.trailingAnchor, constant: 8),
             messageTF.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: -8),
-            messageTF.topAnchor.constraint(equalTo: messageContainer.topAnchor, constant: topConst),
+            messageTF.bottomAnchor.constraint(equalTo: messageContainer.bottomAnchor, constant: -messageContainer.frame.size.height - const),
             messageTF.heightAnchor.constraint(equalToConstant: 32)
         ]
         NSLayoutConstraint.activate(constraints)
@@ -295,7 +299,15 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         let senderRef = Constants.db.reference().child("messages").child(CurrentUser.uid).child(friendId).childByAutoId()
         let friendRef = Constants.db.reference().child("messages").child(friendId).child(CurrentUser.uid).child(senderRef.key!)
         guard let messageId = senderRef.key else { return }
-        let values = ["message": trimmedMessage, "sender": CurrentUser.uid!, "recipient": friendId!, "time": Date().timeIntervalSince1970, "messageId": messageId] as [String : Any]
+        var values = ["message": trimmedMessage, "sender": CurrentUser.uid!, "recipient": friendId!, "time": Date().timeIntervalSince1970, "messageId": messageId] as [String : Any]
+        if replyMessage != nil{
+            if replyMessage?.message != nil {
+                values["repMessage"] = replyMessage!.message
+            }else if replyMessage?.mediaUrl != nil{
+                values["repMediaMessage"] = replyMessage!.mediaUrl
+            }
+            exitReplyButtonPressed()
+        }
         sendMessageHandler(senderRef: senderRef, friendRef: friendRef, values: values)
         messageTF.text = ""
         messageTF.subviews[2].isHidden = false
@@ -316,6 +328,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
                 constraint.constant = 32
                 messageContainer.constraints.forEach { (const) in if const.firstAttribute == .height {
                     if sendingIsFinished(const: const){ return }}}}
+            self.view.layoutIfNeeded()
         }
     }
     
@@ -343,6 +356,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         getMessages { (newMessages, order) in
             self.lastMessageReached = newMessages.count == 0
             if self.lastMessageReached {
+                print("hello?")
                 self.loadNewMessages = true
                 return
             }
@@ -410,6 +424,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     
     func newMessageHandler(for snap: DataSnapshot){
         if self.loadNewMessages {
+            print("GIFDf")
             let status = self.messages.contains { (message) -> Bool in return message.id == snap.key }
             if !status {
                 guard let values = snap.value as? [String: Any] else { return }
@@ -526,7 +541,8 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     
     func messageContainerHeightHandler(_ const: NSLayoutConstraint, _ estSize: CGSize){
         if sendingIsFinished(const: const) { return }
-        let height = estSize.height
+        var height = estSize.height
+        if replyStatus { height = estSize.height + 50 }
         if height > 150 { return }
         if messageTF.calculateLines() >= 2 {
             if containerHeight > 45 {
@@ -536,7 +552,8 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     func messageHeightHandler(_ constraint: NSLayoutConstraint, _ estSize: CGSize){
-        if estSize.height > 150{
+        let height: CGFloat = replyStatus == true ? 100 : 150
+        if estSize.height > height{
             messageTF.isScrollEnabled = true
             return
         }else if messageTF.calculateLines() < 2 {
@@ -549,9 +566,10 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     func sendingIsFinished(const: NSLayoutConstraint) -> Bool{
+        let height: CGFloat = replyStatus == true ? containerHeight + 50 : containerHeight
         if messageTF.text.count == 0 {
             messageTF.isScrollEnabled = false
-            const.constant = containerHeight
+            const.constant = height
             return true
         }else{
             return false
@@ -559,9 +577,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     func animateMessageContainer(){
-        UIView.animate(withDuration: 0.3, animations: {
-            self.view.layoutIfNeeded()
-        })
+        self.view.layoutIfNeeded()
     }
     
     func notificationCenterHandler() {
@@ -582,8 +598,8 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
             containerBottomAnchor.constant = 13.2
             collectionView.contentOffset.y -= 13.2
         }
-        containerBottomAnchor.constant -= height
         collectionView.contentOffset.y += height
+        containerBottomAnchor.constant -= height
         UIView.animate(withDuration: duration) {
             self.view.layoutIfNeeded()
         }
@@ -597,8 +613,8 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         if containerHeight > 45 {
             collectionView.contentOffset.y += 13.2
         }
-        containerBottomAnchor.constant = 0
         collectionView.contentOffset.y -= height
+        containerBottomAnchor.constant = 0
         UIView.animate(withDuration: duration) {
             self.view.layoutIfNeeded()
         }
@@ -644,12 +660,10 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
             let friendActivity = self.friendActivity[0]
             if friendActivity.friendId == self.friendId && friendActivity.isTyping {
                 self.animateTyping(const: 1, isHidden: false)
-                self.collectionView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 45, right: 0)
+                self.navigationItem.setupTypingNavTitle(navTitle: self.friendName)
             }else{
                 self.animateTyping(const: 0, isHidden: true)
-                UIView.animate(withDuration: 0.5) {
-                    self.collectionView.contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
-                }
+                self.setupChatNavBar()
             }
         }
     }
@@ -662,38 +676,6 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
             self.isTypingView.isHidden = isHidden
             self.typingAnimation.isHidden = isHidden
         }
-    }
-    
-    func setupUserTypingView(){
-        isTypingView.isHidden = true
-        typingAnimation.isHidden = true
-        isTypingView.backgroundColor = .white
-        isTypingView.layer.cornerRadius = 16
-        isTypingView.layer.masksToBounds = true
-        view.addSubview(isTypingView)
-        isTypingView.translatesAutoresizingMaskIntoConstraints = false
-        isTypingView.addSubview(typingAnimation)
-        typingAnimation.translatesAutoresizingMaskIntoConstraints = false
-        let constraints = [
-            isTypingView.widthAnchor.constraint(equalToConstant: 80),
-            isTypingView.heightAnchor.constraint(equalToConstant: 32),
-            isTypingView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
-            isTypingView.bottomAnchor.constraint(equalTo: messageContainer.topAnchor, constant: -8),
-            typingAnimation.leadingAnchor.constraint(equalTo: isTypingView.leadingAnchor),
-            typingAnimation.bottomAnchor.constraint(equalTo: isTypingView.bottomAnchor),
-            typingAnimation.topAnchor.constraint(equalTo: isTypingView.topAnchor),
-            typingAnimation.trailingAnchor.constraint(equalTo: isTypingView.trailingAnchor)
-        ]
-        NSLayoutConstraint.activate(constraints)
-        startAnimation()
-    }
-    
-    func startAnimation(){
-        typingAnimation.animationSpeed = 1.2
-        typingAnimation.animation = Animation.named("chatTyping")
-        typingAnimation.play()
-        typingAnimation.loopMode = .loop
-        typingAnimation.backgroundBehavior = .pauseAndRestore
     }
     
     func scrollToTheBottom(animated: Bool){
@@ -728,7 +710,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     
     func openToolsMenu(_ indexPath: IndexPath, _ message: Messages, _ selectedCell: ChatCell){
         hideKeyboard()
-        messageContainer.alpha = 0
+//        messageContainer.alpha = 0
         selectedCell.isHidden = true
         let window = UIApplication.shared.windows[0]
         let cF = collectionView.convert(selectedCell.frame, to: collectionView.superview)
@@ -755,7 +737,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         }
         let toolsView = ToolsView(frame: CGRect(x: xValue, y: scrollYValue, width: 200, height: 200))
         toolsScrollView.addSubview(toolsView)
-        let _ = ToolsTB(frame: toolsView.frame, style: .plain, tV: toolsView, bV: toolsBlurView, cV: self, sM: message, i: indexPath, m: message)
+        let _ = ToolsTB(frame: toolsView.frame, style: .plain, tV: toolsView, bV: toolsBlurView, cV: self, sM: message, i: indexPath, cell: selectedCell)
         let msgViewFrame = CGRect(x: bF.origin.x, y: messageYValue, width: w, height: h)
         let messageView = MessageView(frame: msgViewFrame, cell: selectedCell, message: message)
         toolsScrollView.addSubview(messageView)
@@ -807,6 +789,135 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         toolsBlurView.handleViewDismiss(isDeleted: false)
     }
     
+    func replyButtonPressed(for cell: ChatCell, _ message: Messages){
+        messageTF.becomeFirstResponder()
+        replyStatus = true
+        replyMessage = message
+        containterHAnchor.constant += 50
+        UIView.animate(withDuration: 0.1) {
+            self.view.layoutIfNeeded()
+            self.replyMessageLine(message)
+        }
+    }
+    
+    // Reply outlets
+    
+    let replyLine = UIView()
+    let replyNameLabel = UILabel()
+    var replyNameLabelConstraint: NSLayoutConstraint!
+    let replyMessageLabel = UILabel()
+    let replyMediaMessage = UIImageView()
+    let exitReplyMessage = UIButton(type: .system)
+    
+    func replyMessageLine(_ message: Messages){
+        replyLine.backgroundColor = UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1)
+        replyLine.layer.cornerRadius = 1
+        replyLine.layer.masksToBounds = true
+        messageContainer.addSubview(replyLine)
+        replyLine.translatesAutoresizingMaskIntoConstraints = false
+        let constraints = [
+            replyLine.topAnchor.constraint(equalTo: messageContainer.topAnchor, constant: 8),
+            replyLine.bottomAnchor.constraint(equalTo: messageTF.topAnchor, constant: -8),
+            replyLine.leadingAnchor.constraint(equalTo: messageTF.leadingAnchor, constant: 8),
+            replyLine.widthAnchor.constraint(equalToConstant: 2),
+        ]
+        NSLayoutConstraint.activate(constraints)
+        exitReplyButton()
+        replyMessageName(message)
+    }
+    
+    func exitReplyButton(){
+        messageContainer.addSubview(exitReplyMessage)
+        exitReplyMessage.translatesAutoresizingMaskIntoConstraints = false
+        exitReplyMessage.setImage(UIImage(systemName: "xmark"), for: .normal)
+        exitReplyMessage.tintColor = .black
+        let constraints = [
+            exitReplyMessage.trailingAnchor.constraint(equalTo: messageTF.trailingAnchor, constant: -16),
+            exitReplyMessage.centerYAnchor.constraint(equalTo: replyLine.centerYAnchor),
+            exitReplyMessage.widthAnchor.constraint(equalToConstant: 12),
+            exitReplyMessage.heightAnchor.constraint(equalToConstant: 12)
+        ]
+        exitReplyMessage.addTarget(self, action: #selector(exitReplyButtonPressed), for: .touchUpInside)
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    @objc func exitReplyButtonPressed(){
+        replyStatus = false
+        replyMessage = nil
+        self.containterHAnchor.constant -= 50
+        UIView.animate(withDuration: 0.3){
+            self.replyLine.removeFromSuperview()
+            self.exitReplyMessage.removeFromSuperview()
+            self.replyNameLabel.removeFromSuperview()
+            self.replyMediaMessage.removeFromSuperview()
+            self.replyMessageLabel.removeFromSuperview()
+        }
+        
+    }
+    
+    func replyMessageName(_ message: Messages){
+        messageContainer.addSubview(replyNameLabel)
+        replyNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        replyNameLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 16)
+        replyNameLabel.textColor = UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1)
+        let name = message.determineUser() == friendId ? friendName : CurrentUser.name
+        replyNameLabel.text = name
+        replyNameLabelConstraint = replyNameLabel.leadingAnchor.constraint(equalTo: replyLine.trailingAnchor, constant: 8)
+        let constraints = [
+            replyNameLabelConstraint!,
+            replyNameLabel.trailingAnchor.constraint(equalTo: exitReplyMessage.trailingAnchor, constant: -8),
+            replyNameLabel.topAnchor.constraint(equalTo: replyLine.topAnchor, constant: 4)
+        ]
+        NSLayoutConstraint.activate(constraints)
+        setupReplyMessage(message)
+    }
+    
+    func setupReplyMessage(_ message: Messages){
+        if message.mediaUrl == nil {
+            setupReplyTextM(message)
+        }else{
+            print("hi")
+            setupReplyMediaM(message)
+        }
+    }
+
+    func setupReplyTextM(_ message: Messages){
+        messageContainer.addSubview(replyMessageLabel)
+        replyMessageLabel.translatesAutoresizingMaskIntoConstraints = false
+        replyMessageLabel.font = UIFont(name: "Helvetica Neue", size: 15)
+        replyMessageLabel.textColor = .black
+        replyMessageLabel.text = message.message
+        let constraints = [
+            replyMessageLabel.leadingAnchor.constraint(equalTo: replyLine.trailingAnchor, constant: 8),
+            replyMessageLabel.trailingAnchor.constraint(equalTo: exitReplyMessage.trailingAnchor, constant: -16),
+            replyMessageLabel.topAnchor.constraint(equalTo: replyNameLabel.bottomAnchor, constant: 0),
+            replyMessageLabel.bottomAnchor.constraint(equalTo: messageTF.topAnchor, constant: -16)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    func setupReplyMediaM(_ message: Messages){
+        let replyMediaLabel = UILabel()
+        replyMediaLabel.text = "Image"
+        replyMediaLabel.textColor = .gray
+        replyMediaLabel.font = UIFont(name: "Helvetica Neue", size: 15)
+        messageContainer.addSubview(replyMediaMessage)
+        replyMediaMessage.translatesAutoresizingMaskIntoConstraints = false
+        replyMediaMessage.addSubview(replyMediaLabel)
+        replyMediaLabel.translatesAutoresizingMaskIntoConstraints = false
+        replyMediaMessage.loadImage(url: message.mediaUrl)
+        replyMediaMessage.contentMode = .scaleAspectFill
+        replyNameLabelConstraint.constant += 34
+        let constraints = [
+            replyMediaMessage.topAnchor.constraint(equalTo: messageContainer.topAnchor, constant: 16),
+            replyMediaMessage.widthAnchor.constraint(equalToConstant: 26),
+            replyMediaMessage.heightAnchor.constraint(equalToConstant: 26),
+            replyMediaMessage.leadingAnchor.constraint(equalTo: replyLine.trailingAnchor, constant: 8),
+            replyMediaLabel.centerYAnchor.constraint(equalTo: replyMediaMessage.centerYAnchor, constant: 8),
+            replyMediaLabel.leadingAnchor.constraint(equalTo: replyMediaMessage.trailingAnchor, constant: 8),
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
     
 }
 
@@ -815,8 +926,9 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var height: CGFloat = 80
         let message = messages[indexPath.row]
-        if let message = message.message {
-            height = calculateFrameInText(message: message).height + 10
+        if let msg = message.message {
+            height = calculateFrameInText(message: msg).height + 10
+            if message.repMediaMessage != nil || message.repMessage != nil { height += 50 }
         }else if let imageWidth = message.imageWidth?.floatValue, let imageHeight = message.imageHeight?.floatValue  {
             height = CGFloat(imageHeight / imageWidth * 200)
         }
@@ -855,6 +967,12 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             cell.messageBackground.backgroundColor = .clear
         }else{
             cell.mediaMessage.isHidden = true
+        }
+    
+        if message.repMediaMessage != nil {
+            
+        }else if message.repMessage != nil {
+            cell.setupRepTextMessage()
         }
         
         return cell
@@ -895,4 +1013,3 @@ extension ChatVC: UITextViewDelegate {
         }
     }
 }
-

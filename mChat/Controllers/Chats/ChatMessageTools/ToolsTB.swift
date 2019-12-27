@@ -17,15 +17,15 @@ class ToolsTB: UITableView, UITableViewDelegate, UITableViewDataSource {
     var chatView: ChatVC!
     var selectedMessage: Messages!
     var indexPath: IndexPath!
-    var message: Messages!
+    var selectedCell: ChatCell!
     
-    init(frame: CGRect, style: UITableView.Style, tV: UIView, bV: ToolsBlurView, cV: ChatVC, sM: Messages, i: IndexPath, m: Messages) {
+    init(frame: CGRect, style: UITableView.Style, tV: UIView, bV: ToolsBlurView, cV: ChatVC, sM: Messages, i: IndexPath, cell: ChatCell) {
         super.init(frame: frame, style: style)
         blurView = bV
         chatView = cV
         indexPath = i
-        message = m
         selectedMessage = sM
+        selectedCell = cell
         delegate = self
         dataSource = self
         register(ToolsCell.self, forCellReuseIdentifier: "ToolsCell")
@@ -71,10 +71,13 @@ class ToolsTB: UITableView, UITableViewDelegate, UITableViewDataSource {
         if "Delete" == tool {
             removeMessageHandler()
         }else if "Copy" == tool{
-            guard message.mediaUrl == nil else { return }
+            guard selectedMessage.mediaUrl == nil else { return }
             let pasteBoard = UIPasteboard.general
-            pasteBoard.string = message.message
+            pasteBoard.string = selectedMessage.message
             self.blurView.handleViewDismiss(isDeleted: false)
+        }else if "Reply" == tool{
+            chatView.replyButtonPressed(for: selectedCell, selectedMessage)
+            blurView.handleViewDismiss(isDeleted: false)
         }else{
             print("do nothing")
         }
