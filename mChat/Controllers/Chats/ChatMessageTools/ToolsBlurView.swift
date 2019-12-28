@@ -21,19 +21,20 @@ class ToolsBlurView: UIVisualEffectView {
     var timer = Timer()
     var chatView: ChatVC!
     
-    func handleViewDismiss(isDeleted: Bool){
-        if !isDeleted {
+    func handleViewDismiss(isDeleted: Bool? = nil, isReply: Bool? = nil){
+        if isDeleted == nil {
             mView.removeFromSuperview()
             tView.removeFromSuperview()
-            self.chatView.view.addSubview(self.tView)
-            self.chatView.view.addSubview(self.mView)
+            chatView.view.addSubview(tView)
+            chatView.view.addSubview(mView)
+            chatView.view.insertSubview(chatView.messageContainer, aboveSubview: mView)
         }
         let width = backgroundFrame.size.width
         let height = backgroundFrame.size.height
         let xValue = backgroundFrame.origin.x
         let yValue = cellFrame.origin.y
-        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseOut, animations: {
-            if !isDeleted {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseOut, animations: {
+            if isDeleted == nil {
                 self.mView.frame = CGRect(x: xValue, y: yValue, width: width, height: height)
                 self.tView.frame = CGRect(x: xValue, y: yValue, width: width, height: height)
                 self.tView.transform = CGAffineTransform(scaleX: 0.3, y: 0.3)
@@ -43,10 +44,13 @@ class ToolsBlurView: UIVisualEffectView {
             self.sView.removeFromSuperview()
             self.removeFromSuperview()
         }) { (true) in
-//            UIView.animate(withDuration: 0.3) { self.chatView.messageContainer.alpha = 1 }
+            self.chatView.view.insertSubview(self.chatView.messageContainer, aboveSubview: self.chatView.collectionView)
             self.cell.isHidden = false
             self.mView.removeFromSuperview()
             self.tView.removeFromSuperview()
+            if isReply != nil{
+                self.chatView.replyButtonPressed(for: self.cell, self.message)
+            }
         }
     }
     

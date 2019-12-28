@@ -46,7 +46,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     var toolsScrollView = UIScrollView()
     let vGenerator = UIImpactFeedbackGenerator(style: .medium)
     var replyStatus = false
-    var replyMessage: Messages?
+    var repliedMessage: Messages?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -172,7 +172,6 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         let constraints = [
             clipImageButton.leadingAnchor.constraint(equalTo: messageContainer.leadingAnchor, constant: 8),
             clipImageButton.bottomAnchor.constraint(equalTo: messageContainer.bottomAnchor, constant: -messageContainer.frame.size.height - const),
-//            clipImageButton.topAnchor.constraint(equalTo: messageContainer.topAnchor, constant: -topConst),
             clipImageButton.widthAnchor.constraint(equalToConstant: 30),
             clipImageButton.heightAnchor.constraint(equalToConstant: 30)
         ]
@@ -300,12 +299,13 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         let friendRef = Constants.db.reference().child("messages").child(friendId).child(CurrentUser.uid).child(senderRef.key!)
         guard let messageId = senderRef.key else { return }
         var values = ["message": trimmedMessage, "sender": CurrentUser.uid!, "recipient": friendId!, "time": Date().timeIntervalSince1970, "messageId": messageId] as [String : Any]
-        if replyMessage != nil{
-            if replyMessage?.message != nil {
-                values["repMessage"] = replyMessage!.message
-            }else if replyMessage?.mediaUrl != nil{
-                values["repMediaMessage"] = replyMessage!.mediaUrl
+        if repliedMessage != nil{
+            if repliedMessage?.message != nil {
+                values["repMessage"] = repliedMessage!.message
+            }else if repliedMessage?.mediaUrl != nil{
+                values["repMediaMessage"] = repliedMessage!.mediaUrl
             }
+            values["repMID"] = repliedMessage!.id
             exitReplyButtonPressed()
         }
         sendMessageHandler(senderRef: senderRef, friendRef: friendRef, values: values)
@@ -353,7 +353,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     func fetchMessages(){
         loadMore = true
         scrollToIndex = []
-        getMessages { (newMessages, order) in
+        getMessages{ (newMessages, order) in
             self.lastMessageReached = newMessages.count == 0
             if self.lastMessageReached {
                 print("hello?")
@@ -435,7 +435,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
             }
         }
     }
-        
+    
     @objc func handleReload(){
         DispatchQueue.main.async {
             self.collectionView.reloadData()
@@ -710,7 +710,6 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     
     func openToolsMenu(_ indexPath: IndexPath, _ message: Messages, _ selectedCell: ChatCell){
         hideKeyboard()
-//        messageContainer.alpha = 0
         selectedCell.isHidden = true
         let window = UIApplication.shared.windows[0]
         let cF = collectionView.convert(selectedCell.frame, to: collectionView.superview)
@@ -739,7 +738,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         toolsScrollView.addSubview(toolsView)
         let _ = ToolsTB(frame: toolsView.frame, style: .plain, tV: toolsView, bV: toolsBlurView, cV: self, sM: message, i: indexPath, cell: selectedCell)
         let msgViewFrame = CGRect(x: bF.origin.x, y: messageYValue, width: w, height: h)
-        let messageView = MessageView(frame: msgViewFrame, cell: selectedCell, message: message)
+        let messageView = MessageView(frame: msgViewFrame, cell: selectedCell, message: message, friendName: friendName)
         toolsScrollView.addSubview(messageView)
         toolMessageAppearance(window.frame, toolsView, messageView, noScroll, h)
         toolsBlurView.cell = selectedCell
@@ -786,18 +785,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     @objc func setupExitMenu(){
-        toolsBlurView.handleViewDismiss(isDeleted: false)
-    }
-    
-    func replyButtonPressed(for cell: ChatCell, _ message: Messages){
-        messageTF.becomeFirstResponder()
-        replyStatus = true
-        replyMessage = message
-        containterHAnchor.constant += 50
-        UIView.animate(withDuration: 0.1) {
-            self.view.layoutIfNeeded()
-            self.replyMessageLine(message)
-        }
+        toolsBlurView.handleViewDismiss()
     }
     
     // Reply outlets
@@ -808,6 +796,28 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     let replyMessageLabel = UILabel()
     let replyMediaMessage = UIImageView()
     let exitReplyMessage = UIButton(type: .system)
+    
+    func replyButtonPressed(for cell: ChatCell, _ message: Messages){
+        replyViewChangeAlpha(a: 0)
+        messageTF.becomeFirstResponder()
+        replyStatus = true
+        repliedMessage = message
+        containterHAnchor.constant += 50
+        UIView.animate(withDuration: 0.1, animations: {
+            self.view.layoutIfNeeded()
+            self.replyMessageLine(message)
+        }) { (true) in
+            self.replyViewChangeAlpha(a: 1)
+        }
+    }
+    
+    func replyViewChangeAlpha(a: CGFloat){
+        replyLine.alpha = a
+        replyNameLabel.alpha = a
+        replyMessageLabel.alpha = a
+        replyMediaMessage.alpha = a
+        exitReplyMessage.alpha = a
+    }
     
     func replyMessageLine(_ message: Messages){
         replyLine.backgroundColor = UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1)
@@ -843,7 +853,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     
     @objc func exitReplyButtonPressed(){
         replyStatus = false
-        replyMessage = nil
+        repliedMessage = nil
         self.containterHAnchor.constant -= 50
         UIView.animate(withDuration: 0.3){
             self.replyLine.removeFromSuperview()
@@ -876,11 +886,10 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         if message.mediaUrl == nil {
             setupReplyTextM(message)
         }else{
-            print("hi")
             setupReplyMediaM(message)
         }
     }
-
+    
     func setupReplyTextM(_ message: Messages){
         messageContainer.addSubview(replyMessageLabel)
         replyMessageLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -890,7 +899,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         let constraints = [
             replyMessageLabel.leadingAnchor.constraint(equalTo: replyLine.trailingAnchor, constant: 8),
             replyMessageLabel.trailingAnchor.constraint(equalTo: exitReplyMessage.trailingAnchor, constant: -16),
-            replyMessageLabel.topAnchor.constraint(equalTo: replyNameLabel.bottomAnchor, constant: 0),
+            replyMessageLabel.topAnchor.constraint(equalTo: replyNameLabel.bottomAnchor, constant: -2),
             replyMessageLabel.bottomAnchor.constraint(equalTo: messageTF.topAnchor, constant: -16)
         ]
         NSLayoutConstraint.activate(constraints)
@@ -906,17 +915,40 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         replyMediaMessage.addSubview(replyMediaLabel)
         replyMediaLabel.translatesAutoresizingMaskIntoConstraints = false
         replyMediaMessage.loadImage(url: message.mediaUrl)
-        replyMediaMessage.contentMode = .scaleAspectFill
         replyNameLabelConstraint.constant += 34
         let constraints = [
-            replyMediaMessage.topAnchor.constraint(equalTo: messageContainer.topAnchor, constant: 16),
-            replyMediaMessage.widthAnchor.constraint(equalToConstant: 26),
-            replyMediaMessage.heightAnchor.constraint(equalToConstant: 26),
+            replyMediaMessage.topAnchor.constraint(equalTo: replyLine.topAnchor, constant: 2),
+            replyMediaMessage.bottomAnchor.constraint(equalTo: replyLine.bottomAnchor, constant: -2),
+            replyMediaMessage.widthAnchor.constraint(equalToConstant: 30),
             replyMediaMessage.leadingAnchor.constraint(equalTo: replyLine.trailingAnchor, constant: 8),
             replyMediaLabel.centerYAnchor.constraint(equalTo: replyMediaMessage.centerYAnchor, constant: 8),
-            replyMediaLabel.leadingAnchor.constraint(equalTo: replyMediaMessage.trailingAnchor, constant: 8),
+            replyMediaLabel.leadingAnchor.constraint(equalTo: replyMediaMessage.trailingAnchor, constant: 4),
         ]
         NSLayoutConstraint.activate(constraints)
+    }
+    
+    func showReplyMessageView(cell: ChatCell){
+        //        var index = 0
+        //            for message in self.messages {
+        //                if cell.msg.id == message.id {
+        //                    self.collectionView.scrollToItem(at: IndexPath(item: self.messages.count - index, section: 0), at: .bottom, animated: true)
+        //                    index = 0
+        //                }
+        //                index += 1
+        //            }
+        //        let cellFrame = collectionView.convert(cell.frame, to: collectionView.superview)
+        //        let backgroundFrame = collectionView.convert(cell.replyView.frame, to: collectionView.superview)
+        //        let msgViewFrame = CGRect(x: backgroundFrame.origin.x, y: cellFrame.origin.y + 8, width: backgroundFrame.width, height: backgroundFrame.height)
+        //        let messageView = UIView(frame: msgViewFrame)
+        //        messageView.backgroundColor = .red
+        //        messageView.layer.cornerRadius = 4
+        //        messageView.layer.masksToBounds = true
+        //        view.addSubview(messageView)
+        //        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+        //
+        //        }) { (true) in
+        //            print("fd")
+        //        }
     }
     
 }
@@ -945,7 +977,7 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         let message = messages[indexPath.row]
         cell.chatVC = self
         cell.message.text = message.message
-        
+        cell.msg = message
         if let message = message.message {
             cell.backgroundWidthAnchor.constant = calculateFrameInText(message: message).width + 32
         }
@@ -968,11 +1000,13 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         }else{
             cell.mediaMessage.isHidden = true
         }
-    
+        
         if message.repMediaMessage != nil {
-            
+            cell.setupRepMessageView(for: message, friendName)
         }else if message.repMessage != nil {
-            cell.setupRepTextMessage()
+            cell.setupRepMessageView(for: message, friendName)
+        }else{
+            cell.removeReplyOutlets()
         }
         
         return cell

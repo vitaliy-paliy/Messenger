@@ -74,10 +74,10 @@ class ToolsTB: UITableView, UITableViewDelegate, UITableViewDataSource {
             guard selectedMessage.mediaUrl == nil else { return }
             let pasteBoard = UIPasteboard.general
             pasteBoard.string = selectedMessage.message
-            self.blurView.handleViewDismiss(isDeleted: false)
+            self.blurView.handleViewDismiss()
         }else if "Reply" == tool{
-            chatView.replyButtonPressed(for: selectedCell, selectedMessage)
-            blurView.handleViewDismiss(isDeleted: false)
+            if chatView.repliedMessage != nil { chatView.exitReplyButtonPressed() }
+            blurView.handleViewDismiss(isReply: true)
         }else{
             print("do nothing")
         }
