@@ -22,6 +22,7 @@ class ChatTabBar: UITabBarController{
         tabBar.barTintColor = UIColor(displayP3Red: 247/255, green: 247/255, blue: 247/255, alpha: 1)
         tabBar.tintColor = .black
     }
+
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)

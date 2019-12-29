@@ -21,7 +21,7 @@ class ToolsBlurView: UIVisualEffectView {
     var timer = Timer()
     var chatView: ChatVC!
     
-    func handleViewDismiss(isDeleted: Bool? = nil, isReply: Bool? = nil){
+    func handleViewDismiss(isDeleted: Bool? = nil, isReply: Bool? = nil, isForward: Bool? = nil){
         if isDeleted == nil {
             mView.removeFromSuperview()
             tView.removeFromSuperview()
@@ -50,6 +50,9 @@ class ToolsBlurView: UIVisualEffectView {
             self.tView.removeFromSuperview()
             if isReply != nil{
                 self.chatView.replyButtonPressed(for: self.cell, self.message)
+            }
+            if isForward != nil {
+                self.chatView.forwardButtonPressed(for: self.cell, self.message)
             }
         }
     }

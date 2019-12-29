@@ -108,15 +108,17 @@ extension NewConversationVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let friend = friendsList[indexPath.row]
-        let controller = ChatVC()
-        controller.modalPresentationStyle = .fullScreen
-        controller.friendEmail = friend.email
-        controller.friendProfileImage = friend.profileImage
-        controller.friendName = friend.name
-        controller.friendId = friend.id
-        controller.friendIsOnline = friend.isOnline
-        controller.friendLastLogin = friend.lastLogin
-        show(controller, sender: nil)
+        let chatController = ChatVC()
+        chatController.modalPresentationStyle = .overFullScreen
+        chatController.friendEmail = friend.email
+        chatController.friendProfileImage = friend.profileImage
+        chatController.friendName = friend.name
+        chatController.friendId = friend.id
+        chatController.friendIsOnline = friend.isOnline
+        chatController.friendLastLogin = friend.lastLogin
+        chatController.forwardedMessage = true
     }
+    
+   
     
 }

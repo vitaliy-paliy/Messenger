@@ -21,6 +21,7 @@ class Messages {
     var id: String!
     var repMessage: String!
     var repMediaMessage: String!
+    var repMID: String!
     
     func determineUser() -> String{
         if sender == CurrentUser.uid {

@@ -28,6 +28,7 @@ class ContactsVC: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         loadFriends()
+        tabBarController?.selectedIndex = 1
     }
     
     func setupTableView(){

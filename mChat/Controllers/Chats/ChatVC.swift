@@ -47,6 +47,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     let vGenerator = UIImpactFeedbackGenerator(style: .medium)
     var replyStatus = false
     var repliedMessage: Messages?
+    var forwardedMessage: Bool?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -447,7 +448,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
             }
             self.loadMore = false
             self.refreshIndicator.stopAnimating()
-            self.loadNewMessages = true
+            if self.messages.count >= 1 { self.loadNewMessages = true }
         }
     }
     
@@ -928,27 +929,20 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     func showReplyMessageView(cell: ChatCell){
-        //        var index = 0
-        //            for message in self.messages {
-        //                if cell.msg.id == message.id {
-        //                    self.collectionView.scrollToItem(at: IndexPath(item: self.messages.count - index, section: 0), at: .bottom, animated: true)
-        //                    index = 0
-        //                }
-        //                index += 1
-        //            }
-        //        let cellFrame = collectionView.convert(cell.frame, to: collectionView.superview)
-        //        let backgroundFrame = collectionView.convert(cell.replyView.frame, to: collectionView.superview)
-        //        let msgViewFrame = CGRect(x: backgroundFrame.origin.x, y: cellFrame.origin.y + 8, width: backgroundFrame.width, height: backgroundFrame.height)
-        //        let messageView = UIView(frame: msgViewFrame)
-        //        messageView.backgroundColor = .red
-        //        messageView.layer.cornerRadius = 4
-        //        messageView.layer.masksToBounds = true
-        //        view.addSubview(messageView)
-        //        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
-        //
-        //        }) { (true) in
-        //            print("fd")
-        //        }
+        var index = 0
+        for message in messages {
+            if message.id == cell.msg.repMID {
+                let indexPath = IndexPath(row: index, section: 0)
+                collectionView.scrollToItem(at: indexPath, at: .top, animated: true)
+                break
+            }
+            index += 1
+        }
+    }
+    
+    func forwardButtonPressed(for: ChatCell, _ message: Messages) {
+        let convController = UINavigationController(rootViewController: NewConversationVC())
+        present(convController, animated: true, completion: nil)
     }
     
 }

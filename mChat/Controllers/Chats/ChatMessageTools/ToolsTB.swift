@@ -78,8 +78,9 @@ class ToolsTB: UITableView, UITableViewDelegate, UITableViewDataSource {
         }else if "Reply" == tool{
             if chatView.repliedMessage != nil { chatView.exitReplyButtonPressed() }
             blurView.handleViewDismiss(isReply: true)
-        }else{
-            print("do nothing")
+        }else if "Forward" == tool{
+//            if chatView.repliedMessage != nil {  }
+            blurView.handleViewDismiss(isForward: true)
         }
     }
     
