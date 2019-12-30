@@ -6,6 +6,7 @@
 //  Copyright © 2019 PALIY. All rights reserved.
 //
 import UIKit
+import Firebase
 
 class ChatCell: UICollectionViewCell {
     
@@ -24,18 +25,18 @@ class ChatCell: UICollectionViewCell {
             messageBackground.backgroundColor = isIncoming ?  .white  : UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1)
             message.textColor = isIncoming ? .black : .white
             let replyColor = isIncoming ? UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1) : .white
-            replyLine.backgroundColor = replyColor
-            replyNameLabel.textColor = replyColor
-            replyTextMessage.textColor = replyColor
+            repLine.backgroundColor = replyColor
+            repNameLabel.textColor = replyColor
+            repTextMessage.textColor = replyColor
         }
     }
     
     // Reply Outlets
-    let replyView = UIView()
-    let replyLine = UIView()
-    let replyNameLabel = UILabel()
-    let replyTextMessage = UILabel()
-    let replyMediaMessage = UIImageView()
+    let repView = UIView()
+    let repLine = UIView()
+    let repNameLabel = UILabel()
+    let repTextMessage = UILabel()
+    let repMediaMessage = UIImageView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -106,68 +107,71 @@ class ChatCell: UICollectionViewCell {
     }
     
     func setupReplyView(){
-        addSubview(replyView)
-        replyView.translatesAutoresizingMaskIntoConstraints = false
-        replyView.backgroundColor = .clear
+        addSubview(repView)
+        repView.translatesAutoresizingMaskIntoConstraints = false
+        repView.backgroundColor = .clear
         let constraints = [
-            replyView.leadingAnchor.constraint(equalTo: messageBackground.leadingAnchor, constant: 16),
-            replyView.topAnchor.constraint(equalTo: messageBackground.topAnchor, constant: 8),
-            replyView.bottomAnchor.constraint(equalTo: message.topAnchor, constant: -2),
-            replyView.trailingAnchor.constraint(equalTo: messageBackground.trailingAnchor, constant: -8)
+            repView.leadingAnchor.constraint(equalTo: messageBackground.leadingAnchor, constant: 16),
+            repView.topAnchor.constraint(equalTo: messageBackground.topAnchor, constant: 8),
+            repView.bottomAnchor.constraint(equalTo: message.topAnchor, constant: -2),
+            repView.trailingAnchor.constraint(equalTo: messageBackground.trailingAnchor, constant: -8)
         ]
         NSLayoutConstraint.activate(constraints)
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(replyViewTapped))
-        replyView.addGestureRecognizer(tapGesture)
+        repView.addGestureRecognizer(tapGesture)
     }
     
-    func setupRepMessageView(for repMessage: Messages, _ friendName: String){
-        guard let name = repMessage.determineUser() == CurrentUser.uid ? CurrentUser.name : friendName else { return }
-        msgTopAnchor.isActive = false
-        replyMsgTopAnchor.isActive = true
-        if backgroundWidthAnchor.constant < 140 { backgroundWidthAnchor.constant = 140 }
-        setupReplyLine()
-        setupReplyName(name: name)
-        if repMessage.repMessage != nil {
-            replyMediaMessage.removeFromSuperview()
-            setupReplyTextMessage(text: repMessage.repMessage)
-        }else if repMessage.repMediaMessage != nil {
-            replyTextMessage.removeFromSuperview()
-            setupReplyMediaMessage(repMessage.repMediaMessage)
+    func setupRepMessageView(_ friendName: String){
+            self.handleRepMessageSetup(friendName)
+    }
+    
+    private func handleRepMessageSetup(_ name: String){
+        self.msgTopAnchor.isActive = false
+        self.replyMsgTopAnchor.isActive = true
+        if self.backgroundWidthAnchor.constant < 140 { self.backgroundWidthAnchor.constant = 140 }
+        self.setupReplyLine()
+        self.setupReplyName(name: name)
+        if msg.repMessage != nil {
+            self.repMediaMessage.removeFromSuperview()
+            self.setupReplyTextMessage(text: msg.repMessage)
+        }else if msg.repMediaMessage != nil {
+            self.repTextMessage.removeFromSuperview()
+            self.setupReplyMediaMessage(msg.repMediaMessage)
         }
-        setupReplyView()
+        self.setupReplyView()
     }
     
     private func setupReplyLine(){
-        messageBackground.addSubview(replyLine)
-        replyLine.translatesAutoresizingMaskIntoConstraints = false
+        messageBackground.addSubview(repLine)
+        repLine.translatesAutoresizingMaskIntoConstraints = false
         let constraints = [
-            replyLine.leadingAnchor.constraint(equalTo: messageBackground.leadingAnchor, constant: 16),
-            replyLine.topAnchor.constraint(equalTo: messageBackground.topAnchor, constant: 8),
-            replyLine.bottomAnchor.constraint(equalTo: message.topAnchor, constant: -2),
-            replyLine.widthAnchor.constraint(equalToConstant: 2)
+            repLine.leadingAnchor.constraint(equalTo: messageBackground.leadingAnchor, constant: 16),
+            repLine.topAnchor.constraint(equalTo: messageBackground.topAnchor, constant: 8),
+            repLine.bottomAnchor.constraint(equalTo: message.topAnchor, constant: -2),
+            repLine.widthAnchor.constraint(equalToConstant: 2)
         ]
         NSLayoutConstraint.activate(constraints)
     }
     
     private func setupReplyName(name: String){
-        replyNameLabel.text = name
-        replyNameLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 16)
+        repNameLabel.text = name
+        repNameLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 16)
     }
     
     private func setupReplyTextMessage(text: String){
-        replyTextMessage.text = text
-        replyTextMessage.font = UIFont(name: "Helvetica Neue", size: 14)
-        messageBackground.addSubview(replyTextMessage)
-        replyTextMessage.translatesAutoresizingMaskIntoConstraints = false
-        replyTextMessage.addSubview(replyNameLabel)
-        replyNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        repTextMessage.text = text
+        repTextMessage.font = UIFont(name: "Helvetica Neue", size: 14)
+        messageBackground.addSubview(repTextMessage)
+        repTextMessage.translatesAutoresizingMaskIntoConstraints = false
+        repTextMessage.addSubview(repNameLabel)
+        repNameLabel.translatesAutoresizingMaskIntoConstraints = false
         let constraints = [
-            replyTextMessage.leadingAnchor.constraint(equalTo: replyLine.leadingAnchor, constant: 8),
-            replyTextMessage.bottomAnchor.constraint(equalTo: replyLine.bottomAnchor, constant: -4),
-            replyTextMessage.trailingAnchor.constraint(equalTo: messageBackground.trailingAnchor, constant: -8),
-            replyNameLabel.leadingAnchor.constraint(equalTo: replyLine.leadingAnchor, constant: 8),
-            replyNameLabel.topAnchor.constraint(equalTo: replyLine.topAnchor, constant: 2),
-            replyNameLabel.trailingAnchor.constraint(equalTo: messageBackground.trailingAnchor, constant: 8),
+            repTextMessage.leadingAnchor.constraint(equalTo: repLine.leadingAnchor, constant: 8),
+            repTextMessage.bottomAnchor.constraint(equalTo: repLine.bottomAnchor, constant: -4),
+            repTextMessage.trailingAnchor.constraint(equalTo: messageBackground.trailingAnchor, constant: -8),
+            repNameLabel.leadingAnchor.constraint(equalTo: repLine.leadingAnchor, constant: 8),
+            repNameLabel.topAnchor.constraint(equalTo: repLine.topAnchor, constant: 2),
+            repNameLabel.trailingAnchor.constraint(equalTo: messageBackground.trailingAnchor, constant: 8),
         ]
         NSLayoutConstraint.activate(constraints)
     }
@@ -177,38 +181,38 @@ class ChatCell: UICollectionViewCell {
         replyMediaLabel.text = "Image"
         replyMediaLabel.textColor = .lightText
         replyMediaLabel.font = UIFont(name: "Helvetica Neue", size: 15)
-        messageBackground.addSubview(replyMediaMessage)
-        replyMediaMessage.translatesAutoresizingMaskIntoConstraints = false
-        replyMediaMessage.addSubview(replyNameLabel)
-        replyNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        replyMediaMessage.addSubview(replyMediaLabel)
+        messageBackground.addSubview(repMediaMessage)
+        repMediaMessage.translatesAutoresizingMaskIntoConstraints = false
+        repMediaMessage.addSubview(repNameLabel)
+        repNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        repMediaMessage.addSubview(replyMediaLabel)
         replyMediaLabel.translatesAutoresizingMaskIntoConstraints = false
-        replyMediaMessage.loadImage(url: url)
+        repMediaMessage.loadImage(url: url)
         let constraints = [
-            replyMediaMessage.topAnchor.constraint(equalTo: replyLine.topAnchor, constant: 2),
-            replyMediaMessage.bottomAnchor.constraint(equalTo: replyLine.bottomAnchor, constant: -2),
-            replyMediaMessage.widthAnchor.constraint(equalToConstant: 30),
-            replyMediaMessage.leadingAnchor.constraint(equalTo: replyLine.trailingAnchor, constant: 4),
-            replyMediaLabel.centerYAnchor.constraint(equalTo: replyMediaMessage.centerYAnchor, constant: 8),
-            replyMediaLabel.leadingAnchor.constraint(equalTo: replyMediaMessage.trailingAnchor, constant: 4),
-            replyNameLabel.leadingAnchor.constraint(equalTo: replyMediaMessage.trailingAnchor, constant: 4),
-            replyNameLabel.centerYAnchor.constraint(equalTo: replyMediaMessage.centerYAnchor, constant: -8),
+            repMediaMessage.topAnchor.constraint(equalTo: repLine.topAnchor, constant: 2),
+            repMediaMessage.bottomAnchor.constraint(equalTo: repLine.bottomAnchor, constant: -2),
+            repMediaMessage.widthAnchor.constraint(equalToConstant: 30),
+            repMediaMessage.leadingAnchor.constraint(equalTo: repLine.trailingAnchor, constant: 4),
+            replyMediaLabel.centerYAnchor.constraint(equalTo: repMediaMessage.centerYAnchor, constant: 8),
+            replyMediaLabel.leadingAnchor.constraint(equalTo: repMediaMessage.trailingAnchor, constant: 4),
+            repNameLabel.leadingAnchor.constraint(equalTo: repMediaMessage.trailingAnchor, constant: 4),
+            repNameLabel.centerYAnchor.constraint(equalTo: repMediaMessage.centerYAnchor, constant: -8),
         ]
         NSLayoutConstraint.activate(constraints)
     }
     
     func removeReplyOutlets(){
         replyMsgTopAnchor.isActive = false
-        replyLine.removeFromSuperview()
-        replyNameLabel.removeFromSuperview()
-        replyTextMessage.removeFromSuperview()
-        replyMediaMessage.removeFromSuperview()
-        replyView.removeFromSuperview()
+        repLine.removeFromSuperview()
+        repNameLabel.removeFromSuperview()
+        repTextMessage.removeFromSuperview()
+        repMediaMessage.removeFromSuperview()
+        repView.removeFromSuperview()
         msgTopAnchor.isActive = true
     }
     
     @objc func replyViewTapped(){
-        chatVC.showReplyMessageView(cell: self)
+        chatVC.showRepMessageView(cell: self)
     }
     
 }

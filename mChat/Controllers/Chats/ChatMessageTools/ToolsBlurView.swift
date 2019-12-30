@@ -44,15 +44,16 @@ class ToolsBlurView: UIVisualEffectView {
             self.sView.removeFromSuperview()
             self.removeFromSuperview()
         }) { (true) in
+            self.chatView.collectionView.isUserInteractionEnabled = true
             self.chatView.view.insertSubview(self.chatView.messageContainer, aboveSubview: self.chatView.collectionView)
             self.cell.isHidden = false
             self.mView.removeFromSuperview()
             self.tView.removeFromSuperview()
             if isReply != nil{
-                self.chatView.replyButtonPressed(for: self.cell, self.message)
+                self.chatView.repButtonPressed(self.message)
             }
             if isForward != nil {
-                self.chatView.forwardButtonPressed(for: self.cell, self.message)
+                self.chatView.forwardButtonPressed(self.message)
             }
         }
     }

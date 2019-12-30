@@ -13,9 +13,14 @@ class NewConversationVC: UIViewController {
     var friendsList = [FriendInfo]()
     var tableView = UITableView()
     var timer = Timer()
+    var delegate: ChatVC!
+    var forwardName: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        if delegate != nil {
+            setupForwardView()
+        }
         view.backgroundColor = .white
         navigationController?.navigationBar.tintColor = .black
         setupTableView()
@@ -31,6 +36,18 @@ class NewConversationVC: UIViewController {
         super.viewWillDisappear(animated)
         friendsList = []
         tabBarController?.tabBar.isHidden = false
+    }
+    
+    func setupForwardView(){
+        navigationItem.title = "Forward"
+        let leftButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelButtonPressed))
+        navigationItem.leftBarButtonItem = leftButton
+    }
+    
+    @objc func cancelButtonPressed(){
+        delegate?.messageToForward = nil
+        delegate?.messageSender = nil
+        dismiss(animated: true, completion: nil)
     }
     
     func setupTableView(){
@@ -108,15 +125,11 @@ extension NewConversationVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let friend = friendsList[indexPath.row]
-        let chatController = ChatVC()
-        chatController.modalPresentationStyle = .overFullScreen
-        chatController.friendEmail = friend.email
-        chatController.friendProfileImage = friend.profileImage
-        chatController.friendName = friend.name
-        chatController.friendId = friend.id
-        chatController.friendIsOnline = friend.isOnline
-        chatController.friendLastLogin = friend.lastLogin
-        chatController.forwardedMessage = true
+        if let name = forwardName {
+            delegate?.forwardToSelectedFriend(friend: friend, for: name)
+        }
+        dismiss(animated: true, completion: nil)
+
     }
     
    

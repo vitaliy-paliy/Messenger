@@ -143,6 +143,7 @@ extension UIViewController {
         message.repMessage = values["repMessage"] as? String
         message.repMediaMessage = values["repMediaMessage"] as? String
         message.repMID = values["repMID"] as? String
+        message.repSender = values["repSender"] as? String
         return message
     }
     

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 class MessageView: UIView{
     
@@ -15,10 +16,10 @@ class MessageView: UIView{
     var message: Messages!
     let messageView = UILabel()
     let mediaMessage = UIImageView()
-    let replyLine = UIView()
-    let replyNameLabel = UILabel()
-    let replyTextMessage = UILabel()
-    let replyMediaMessage = UIImageView()
+    let repLine = UIView()
+    let repNameLabel = UILabel()
+    let repTextMessage = UILabel()
+    let repMediaMessage = UIImageView()
     
     init(frame: CGRect, cell: ChatCell, message: Messages, friendName: String) {
         super.init(frame: frame)
@@ -27,7 +28,7 @@ class MessageView: UIView{
         self.friendName = friendName
         showMessageMenu()
     }
-
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -39,13 +40,12 @@ class MessageView: UIView{
         if message.message != nil {
             addSubview(setupMsgText())
             if message.repMediaMessage != nil || message.repMessage != nil{
-                setupReplyLine()
-                guard let name = message.determineUser() == CurrentUser.uid ? CurrentUser.name : friendName else { return }
-                setupReplyName(name: name)
-                if message.repMessage != nil {
-                    setupReplyTextMessage(text: message.repMessage)
-                }else if message.repMediaMessage != nil {
-                    setupReplyMediaMessage(message.repMediaMessage)
+                setupRepLine()
+                self.setupRepName(name: message.repSender)
+                if self.message.repMessage != nil {
+                    self.setupRepTextMessage(text: self.message.repMessage)
+                }else if self.message.repMediaMessage != nil {
+                    self.setupRepMediaMessage(self.message.repMediaMessage)
                 }
             }
         }else if message.mediaUrl != nil {
@@ -74,7 +74,7 @@ class MessageView: UIView{
         NSLayoutConstraint.activate(constraints)
         return messageView
     }
-        
+    
     func setupMsgMedia() -> UIImageView{
         mediaMessage.loadImage(url: message.mediaUrl)
         addSubview(mediaMessage)
@@ -92,66 +92,66 @@ class MessageView: UIView{
         return mediaMessage
     }
     
-    func setupReplyLine(){
-        replyLine.backgroundColor = UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1)
-        addSubview(replyLine)
-        replyLine.translatesAutoresizingMaskIntoConstraints = false
-        replyLine.backgroundColor = cell.replyLine.backgroundColor
+    func setupRepLine(){
+        repLine.backgroundColor = UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1)
+        addSubview(repLine)
+        repLine.translatesAutoresizingMaskIntoConstraints = false
+        repLine.backgroundColor = cell.repLine.backgroundColor
         let constraints = [
-            replyLine.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            replyLine.topAnchor.constraint(equalTo: topAnchor, constant: 8),
-            replyLine.bottomAnchor.constraint(equalTo: messageView.topAnchor, constant: -2),
-            replyLine.widthAnchor.constraint(equalToConstant: 2)
+            repLine.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            repLine.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            repLine.bottomAnchor.constraint(equalTo: messageView.topAnchor, constant: -2),
+            repLine.widthAnchor.constraint(equalToConstant: 2)
         ]
         NSLayoutConstraint.activate(constraints)
     }
     
-    func setupReplyName(name: String){
-        replyNameLabel.text = name
-        replyNameLabel.textColor = cell.replyNameLabel.textColor
-        replyNameLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 16)
+    func setupRepName(name: String){
+        repNameLabel.text = name
+        repNameLabel.textColor = cell.repNameLabel.textColor
+        repNameLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 16)
     }
     
-    func setupReplyTextMessage(text: String){
-        replyTextMessage.text = text
-        replyTextMessage.textColor = cell.replyTextMessage.textColor
-        replyTextMessage.font = UIFont(name: "Helvetica Neue", size: 14)
-        addSubview(replyTextMessage)
-        replyTextMessage.translatesAutoresizingMaskIntoConstraints = false
-        replyTextMessage.addSubview(replyNameLabel)
-        replyNameLabel.translatesAutoresizingMaskIntoConstraints = false
+    func setupRepTextMessage(text: String){
+        repTextMessage.text = text
+        repTextMessage.textColor = cell.repTextMessage.textColor
+        repTextMessage.font = UIFont(name: "Helvetica Neue", size: 14)
+        addSubview(repTextMessage)
+        repTextMessage.translatesAutoresizingMaskIntoConstraints = false
+        repTextMessage.addSubview(repNameLabel)
+        repNameLabel.translatesAutoresizingMaskIntoConstraints = false
         let constraints = [
-            replyTextMessage.leadingAnchor.constraint(equalTo: replyLine.leadingAnchor, constant: 8),
-            replyTextMessage.bottomAnchor.constraint(equalTo: replyLine.bottomAnchor, constant: -4),
-            replyTextMessage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
-            replyNameLabel.leadingAnchor.constraint(equalTo: replyLine.leadingAnchor, constant: 8),
-            replyNameLabel.topAnchor.constraint(equalTo: replyLine.topAnchor, constant: 2),
-            replyNameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 8),
+            repTextMessage.leadingAnchor.constraint(equalTo: repLine.leadingAnchor, constant: 8),
+            repTextMessage.bottomAnchor.constraint(equalTo: repLine.bottomAnchor, constant: -4),
+            repTextMessage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+            repNameLabel.leadingAnchor.constraint(equalTo: repLine.leadingAnchor, constant: 8),
+            repNameLabel.topAnchor.constraint(equalTo: repLine.topAnchor, constant: 2),
+            repNameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 8),
         ]
         NSLayoutConstraint.activate(constraints)
     }
     
-    func setupReplyMediaMessage(_ url: String){
+    func setupRepMediaMessage(_ url: String){
         let replyMediaLabel = UILabel()
         replyMediaLabel.text = "Image"
         replyMediaLabel.textColor = .lightText
         replyMediaLabel.font = UIFont(name: "Helvetica Neue", size: 15)
-        addSubview(replyMediaMessage)
-        replyMediaMessage.translatesAutoresizingMaskIntoConstraints = false
-        replyMediaMessage.addSubview(replyNameLabel)
-        replyNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        replyMediaMessage.addSubview(replyMediaLabel)
+        addSubview(repMediaMessage)
+        repMediaMessage.translatesAutoresizingMaskIntoConstraints = false
+        repMediaMessage.addSubview(repNameLabel)
+        repNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        repMediaMessage.addSubview(replyMediaLabel)
         replyMediaLabel.translatesAutoresizingMaskIntoConstraints = false
-        replyMediaMessage.loadImage(url: url)
+        repMediaMessage.loadImage(url: url)
         let constraints = [
-            replyMediaMessage.topAnchor.constraint(equalTo: replyLine.topAnchor, constant: 2),
-            replyMediaMessage.bottomAnchor.constraint(equalTo: replyLine.bottomAnchor, constant: -2),
-            replyMediaMessage.widthAnchor.constraint(equalToConstant: 30),
-            replyMediaMessage.leadingAnchor.constraint(equalTo: replyLine.trailingAnchor, constant: 4),
-            replyMediaLabel.centerYAnchor.constraint(equalTo: replyMediaMessage.centerYAnchor, constant: 8),
-            replyMediaLabel.leadingAnchor.constraint(equalTo: replyMediaMessage.trailingAnchor, constant: 4),
-            replyNameLabel.leadingAnchor.constraint(equalTo: replyMediaMessage.trailingAnchor, constant: 4),
-            replyNameLabel.centerYAnchor.constraint(equalTo: replyMediaMessage.centerYAnchor, constant: -8),
+            repMediaMessage.topAnchor.constraint(equalTo: repLine.topAnchor, constant: 2),
+            repMediaMessage.bottomAnchor.constraint(equalTo: repLine.bottomAnchor, constant: -2),
+            repMediaMessage.widthAnchor.constraint(equalToConstant: 30),
+            repMediaMessage.leadingAnchor.constraint(equalTo: repLine.trailingAnchor, constant: 4),
+            replyMediaLabel.centerYAnchor.constraint(equalTo: repMediaMessage.centerYAnchor, constant: 8),
+            replyMediaLabel.leadingAnchor.constraint(equalTo: repMediaMessage.trailingAnchor, constant: 4),
+            repNameLabel.leadingAnchor.constraint(equalTo: repMediaMessage.trailingAnchor, constant: 4),
+            repNameLabel.centerYAnchor.constraint(equalTo: repMediaMessage.centerYAnchor, constant: -8),
         ]
         NSLayoutConstraint.activate(constraints)
     }

@@ -76,10 +76,10 @@ class ToolsTB: UITableView, UITableViewDelegate, UITableViewDataSource {
             pasteBoard.string = selectedMessage.message
             self.blurView.handleViewDismiss()
         }else if "Reply" == tool{
-            if chatView.repliedMessage != nil { chatView.exitReplyButtonPressed() }
+            if chatView.repliedMessage != nil || chatView.messageToForward != nil{ chatView.exitRepButtonPressed() }
             blurView.handleViewDismiss(isReply: true)
         }else if "Forward" == tool{
-//            if chatView.repliedMessage != nil {  }
+            if chatView.repliedMessage != nil || chatView.messageToForward != nil{ chatView.exitRepButtonPressed() }
             blurView.handleViewDismiss(isForward: true)
         }
     }
