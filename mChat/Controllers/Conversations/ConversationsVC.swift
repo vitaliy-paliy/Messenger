@@ -91,7 +91,7 @@ class ConversationsVC: UIViewController {
     }
     
     func loadMessagesHandler(_ values: [String: Any]) {
-        messages.append(setupUserMessage(for: values))
+        messages.append(MessageKit.setupUserMessage(for: values))
         messages.sort { (message1, message2) -> Bool in
             return message1.time.intValue > message2.time.intValue
         }
@@ -108,12 +108,7 @@ class ConversationsVC: UIViewController {
     func nextControllerHandler(usr: FriendInfo){
         let controller = ChatVC()
         controller.modalPresentationStyle = .fullScreen
-        controller.friendName = usr.name
-        controller.friendEmail = usr.email
-        controller.friendProfileImage = usr.profileImage
-        controller.friendId = usr.id
-        controller.friendIsOnline = usr.isOnline
-        controller.friendLastLogin = usr.lastLogin
+        controller.friend = usr
         show(controller, sender: nil)
     }
     
@@ -122,7 +117,7 @@ class ConversationsVC: UIViewController {
         let ref = Database.database().reference().child("users").child(user)
         ref.observe(.value) { (snap) in
             guard let data = snap.value as? [String: Any] else { return }
-            let friend = FriendInfo()
+            var friend = FriendInfo()
             friend.id = snap.key
             friend.name = data["name"] as? String
             friend.email = data["email"] as? String
@@ -140,10 +135,10 @@ class ConversationsVC: UIViewController {
         db.observe(.value) { (snap) in
             self.hideAnimationViews(cell)
             guard let data = snap.value as? [String: Any] else { return }
-            let activity = FriendActivity()
-            activity.friendId = data["fromFriend"] as? String
-            activity.isTyping = data["isTyping"] as? Bool
-            if activity.friendId == friendId && activity.isTyping {
+            guard let status = data["isTyping"] as? Bool else { return }
+            guard let id = data["fromFriend"] as? String else { return }
+            let friendActivity = FriendActivity(isTyping: status, friendId: id)
+            if friendActivity.friendId == friendId && friendActivity.isTyping {
                 cell.recentMessage.isHidden = true
                 cell.timeLabel.isHidden = true
                 cell.isTypingView.isHidden = false

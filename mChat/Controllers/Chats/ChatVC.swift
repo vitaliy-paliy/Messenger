@@ -16,16 +16,11 @@ protocol ForwardToFriend {
 
 class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UIGestureRecognizerDelegate{
     
-    var friendId: String!
-    var friendName: String!
-    var friendEmail: String!
-    var friendProfileImage: String!
-    var friendIsOnline: Bool!
-    var friendLastLogin: NSNumber!
+    var friend: FriendInfo!
     var messages = [Messages]()
     var loadNewMessages = false
-    var friendActivity = [FriendActivity]()
     var imageToSend: UIImage!
+    let chatNetworking = ChatNetworking()
     
     var containerHeight: CGFloat!
     var collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 50, height: 50), collectionViewLayout: UICollectionViewFlowLayout.init())
@@ -33,10 +28,9 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     var clipImageButton = UIButton(type: .system)
     var sendButton = UIButton(type: .system)
     var micButton = UIButton(type: .system)
-    var messageTF = UITextView()
+    var messageTV = UITextView()
     var isTypingView = UIView()
     let typingAnimation = AnimationView()
-    let calendar = Calendar(identifier: .gregorian)
     var imgFrame: CGRect?
     var imgBackground: UIView!
     var imageClickedView: UIImageView!
@@ -54,21 +48,29 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     var messageToForward: Messages?
     var messageSender: String?
     
+    let repLine = UIView()
+    let repNameLabel = UILabel()
+    var repNameLabelConstraint: NSLayoutConstraint!
+    let repMessageLabel = UILabel()
+    let repMediaMessage = UIImageView()
+    let exitRepButton = UIButton(type: .system)
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupChat()
         view.backgroundColor = UIColor(white: 0.95, alpha: 1)
         setuplongPress()
+        notificationCenterHandler()
+        hideKeyboardOnTap(collectionView)
     }
     
     func setupChat(){
+        chatNetworking.friend = friend
         setupChatNavBar()
         fetchMessages()
         setupProfileImage()
         observeMessageActions()
-        observeIsUserTyping()
-        hideKeyboardOnTap(collectionView)
-        notificationCenterHandler()
+        observeFriendTyping()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -101,12 +103,12 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     func setupChatNavBar(){
-        let loginDate = NSDate(timeIntervalSince1970: friendLastLogin.doubleValue)
+        let loginDate = NSDate(timeIntervalSince1970: friend.lastLogin.doubleValue)
         navigationController?.navigationBar.tintColor = .black
-        if friendIsOnline {
-            navigationItem.setNavTitles(navTitle: friendName, navSubtitle: "Online")
+        if friend.isOnline {
+            navigationItem.setNavTitles(navTitle: friend.name, navSubtitle: "Online")
         }else{
-            navigationItem.setNavTitles(navTitle: friendName, navSubtitle: calendar.calculateLastLogin(loginDate))
+            navigationItem.setNavTitles(navTitle: friend.name, navSubtitle: calendar.calculateLastLogin(loginDate))
         }
     }
     
@@ -130,7 +132,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     func setupProfileImage(){
         let friendImageButton = UIButton(type: .system)
         let friendImageIcon = UIImageView()
-        friendImageIcon.loadImage(url: friendProfileImage)
+        friendImageIcon.loadImage(url: friend.profileImage)
         friendImageButton.addSubview(friendImageIcon)
         friendImageIcon.translatesAutoresizingMaskIntoConstraints = false
         friendImageIcon.contentMode = .scaleAspectFill
@@ -223,31 +225,31 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     func setupMessageTF(_ const: CGFloat){
-        messageContainer.addSubview(messageTF)
-        messageTF.layer.cornerRadius = 12
-        messageTF.font = UIFont(name: "Helvetica Neue", size: 16)
-        messageTF.textColor = .black
-        messageTF.isScrollEnabled = false
-        messageTF.layer.borderWidth = 0.2
-        messageTF.layer.borderColor = UIColor.systemGray.cgColor
-        messageTF.layer.masksToBounds = true
+        messageContainer.addSubview(messageTV)
+        messageTV.layer.cornerRadius = 12
+        messageTV.font = UIFont(name: "Helvetica Neue", size: 16)
+        messageTV.textColor = .black
+        messageTV.isScrollEnabled = false
+        messageTV.layer.borderWidth = 0.2
+        messageTV.layer.borderColor = UIColor.systemGray.cgColor
+        messageTV.layer.masksToBounds = true
         let messTFPlaceholder = UILabel()
         messTFPlaceholder.text = "Message"
         messTFPlaceholder.font = UIFont(name: "Helvetica Neue", size: 16)
         messTFPlaceholder.sizeToFit()
-        messageTF.addSubview(messTFPlaceholder)
+        messageTV.addSubview(messTFPlaceholder)
         messTFPlaceholder.frame.origin = CGPoint(x: 10, y: 6)
         messTFPlaceholder.textColor = .lightGray
-        messageTF.textContainerInset = UIEdgeInsets(top: 5, left: 5, bottom: 0, right: 10)
-        messageTF.translatesAutoresizingMaskIntoConstraints = false
-        messageTF.backgroundColor = UIColor(white: 0.95, alpha: 1)
-        messageTF.adjustsFontForContentSizeCategory = true
-        messageTF.delegate = self
+        messageTV.textContainerInset = UIEdgeInsets(top: 5, left: 5, bottom: 0, right: 10)
+        messageTV.translatesAutoresizingMaskIntoConstraints = false
+        messageTV.backgroundColor = UIColor(white: 0.95, alpha: 1)
+        messageTV.adjustsFontForContentSizeCategory = true
+        messageTV.delegate = self
         let constraints = [
-            messageTF.leadingAnchor.constraint(equalTo: clipImageButton.trailingAnchor, constant: 8),
-            messageTF.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: -8),
-            messageTF.bottomAnchor.constraint(equalTo: messageContainer.bottomAnchor, constant: -messageContainer.frame.size.height - const),
-            messageTF.heightAnchor.constraint(equalToConstant: 32)
+            messageTV.leadingAnchor.constraint(equalTo: clipImageButton.trailingAnchor, constant: 8),
+            messageTV.trailingAnchor.constraint(equalTo: sendButton.leadingAnchor, constant: -8),
+            messageTV.bottomAnchor.constraint(equalTo: messageContainer.bottomAnchor, constant: -messageContainer.frame.size.height - const),
+            messageTV.heightAnchor.constraint(equalToConstant: 32)
         ]
         NSLayoutConstraint.activate(constraints)
     }
@@ -264,7 +266,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             imageToSend = originalImage
         }
-        uploadImage(image: imageToSend)
+        chatNetworking.uploadImage(image: imageToSend)
         dismiss(animated: true, completion: nil)
     }
     
@@ -275,39 +277,17 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         present(picker, animated: true, completion: nil)
     }
     
-    func uploadImage(image: UIImage){
-        let mediaName = NSUUID().uuidString
-        let storageRef = Storage.storage().reference().child("message-img").child(mediaName)
-        if let jpegName = self.imageToSend.jpegData(compressionQuality: 0.1) {
-            storageRef.putData(jpegName, metadata: nil) { (metadata, error) in
-                if let error = error {
-                    print(error.localizedDescription)
-                    return
-                }
-                storageRef.downloadURL { (url, error) in
-                    guard let url = url else { return }
-                    self.sendMediaMessage(url: url.absoluteString, image)
-                }
-            }
-        }
-        
-    }
-    
-    func sendMediaMessage(url: String, _ image: UIImage){
-        let senderRef = Constants.db.reference().child("messages").child(CurrentUser.uid).child(friendId).childByAutoId()
-        let friendRef = Constants.db.reference().child("messages").child(friendId).child(CurrentUser.uid).child(senderRef.key!)
-        guard let messageId = senderRef.key else { return }
-        let values = ["sender": CurrentUser.uid!, "time": Date().timeIntervalSince1970, "recipient": friendId!, "mediaUrl": url, "width": image.size.width, "height": image.size.height, "messageId": messageId] as [String: Any]
-        sendMessageHandler(senderRef: senderRef, friendRef: friendRef,values: values)
-    }
-    
     @objc func sendButtonPressed(){
-        let trimmedMessage = messageTF.text.trimmingCharacters(in: .whitespacesAndNewlines)
+        setupTextMessage()
+    }
+    
+    func setupTextMessage(){
+        let trimmedMessage = messageTV.text.trimmingCharacters(in: .whitespacesAndNewlines)
         guard trimmedMessage.count > 0 else { return }
-        let senderRef = Constants.db.reference().child("messages").child(CurrentUser.uid).child(friendId).childByAutoId()
-        let friendRef = Constants.db.reference().child("messages").child(friendId).child(CurrentUser.uid).child(senderRef.key!)
+        let senderRef = Constants.db.reference().child("messages").child(CurrentUser.uid).child(friend.id).childByAutoId()
+        let friendRef = Constants.db.reference().child("messages").child(friend.id).child(CurrentUser.uid).child(senderRef.key!)
         guard let messageId = senderRef.key else { return }
-        var values = ["message": trimmedMessage, "sender": CurrentUser.uid!, "recipient": friendId!, "time": Date().timeIntervalSince1970, "messageId": messageId] as [String : Any]
+        var values = ["message": trimmedMessage, "sender": CurrentUser.uid!, "recipient": friend.id!, "time": Date().timeIntervalSince1970, "messageId": messageId] as [String : Any]
         if repliedMessage != nil || messageToForward != nil{
             let repValues = messageToForward != nil ? messageToForward : repliedMessage
             if repValues?.message != nil {
@@ -319,27 +299,29 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
             values["repSender"] = messageSender
             exitRepButtonPressed()
         }
-        sendMessageHandler(senderRef: senderRef, friendRef: friendRef, values: values)
-        messageTF.text = ""
-        messageTF.subviews[2].isHidden = false
+        chatNetworking.sendMessageHandler(senderRef: senderRef, friendRef: friendRef, values: values) { (error) in
+            self.handleMessageTextSent(error)
+        }
     }
     
-    func sendMessageHandler(senderRef: DatabaseReference, friendRef: DatabaseReference,  values: [String: Any]){
-        senderRef.updateChildValues(values) { (error, ref) in
-            if let error = error {
-                self.showAlert(title: "Error", message: error.localizedDescription)
-            }
-            friendRef.updateChildValues(values)
+    func handleMessageTextSent(_ error: Error?){
+        guard error == nil else {
+            showAlert(title: "Error", message: error?.localizedDescription)
+            return
         }
-        self.messageTF.text = ""
-        disableIsTyping()
+        messageTV.text = ""
+        messageTV.subviews[2].isHidden = false
+        chatNetworking.disableIsTyping()
         hideKeyboard()
-        messageTF.constraints.forEach { (constraint) in
+        messageTV.constraints.forEach { (constraint) in
             if constraint.firstAttribute == .height {
                 constraint.constant = 32
                 messageContainer.constraints.forEach { (const) in if const.firstAttribute == .height {
-                    if sendingIsFinished(const: const){ return }}}}
-            self.view.layoutIfNeeded()
+                    if sendingIsFinished(const: const){ return }
+                    }
+                }
+            }
+            view.layoutIfNeeded()
         }
     }
     
@@ -364,10 +346,10 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     func fetchMessages(){
         loadMore = true
         scrollToIndex = []
-        getMessages{ (newMessages, order) in
+        chatNetworking.getMessages(view, messages) { (newMessages, order) in
             self.lastMessageReached = newMessages.count == 0
             if self.lastMessageReached {
-                print("hello?")
+                print("message.count == 0")
                 self.loadNewMessages = true
                 return
             }
@@ -385,61 +367,16 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         }
     }
     
-    func getMessages(completion: @escaping(_ newMessages: [Messages], _ mOrder: Bool) -> Void){
-        var nodeRef: DatabaseQuery
-        var messageOrder = true
-        var newMessages = [Messages]()
-        var messageCount: UInt = 20
-        if view.frame.height > 1000 { messageCount = 40 }
-        let firstMessage = self.messages.first
-        if firstMessage == nil{
-            nodeRef = Database.database().reference().child("messages").child(CurrentUser.uid).child(friendId).queryOrderedByKey().queryLimited(toLast: messageCount)
-            messageOrder = true
-        }else{
-            let mId = firstMessage!.id
-            nodeRef = Database.database().reference().child("messages").child(CurrentUser.uid).child(friendId).queryOrderedByKey().queryEnding(atValue: mId).queryLimited(toLast: messageCount)
-            messageOrder = false
-        }
-        nodeRef.observeSingleEvent(of: .value) { (snap) in
-            for child in snap.children {
-                guard let snapshot = child as? DataSnapshot else { return }
-                if firstMessage?.id != snapshot.key {
-                    guard let values = snapshot.value as? [String: Any] else { return }
-                    newMessages.append(self.setupUserMessage(for: values))
-                }
-            }
-            return completion(newMessages, messageOrder)
-        }
-    }
-    
     func observeMessageActions(){
-        let ref =  Database.database().reference().child("messages").child(CurrentUser.uid).child(friendId)
+        let ref = Database.database().reference().child("messages").child(CurrentUser.uid).child(friend.id)
         ref.observe(.childRemoved) { (snap) in
-            self.deletedMessageHandler(for: snap)
+            self.chatNetworking.deleteMessageHandler(self.messages, for: snap) { (index) in
+                self.messages.remove(at: index)
+                self.collectionView.deleteItems(at: [IndexPath(item: index, section: 0)])
+            }
         }
         ref.observe(.childAdded) { (snap) in
-            self.newMessageHandler(for: snap)
-        }
-    }
-    
-    func deletedMessageHandler(for snap: DataSnapshot){
-        var index = 0
-        for message in self.messages {
-            if message.id == snap.key {
-                self.messages.remove(at: index)
-                self.collectionView.reloadData()
-            }
-            index += 1
-        }
-    }
-    
-    func newMessageHandler(for snap: DataSnapshot){
-        if self.loadNewMessages {
-            print("GIFDf")
-            let status = self.messages.contains { (message) -> Bool in return message.id == snap.key }
-            if !status {
-                guard let values = snap.value as? [String: Any] else { return }
-                let newMessage = self.setupUserMessage(for: values)
+            self.chatNetworking.newMessageRecievedHandler(self.loadNewMessages, self.messages, for: snap) { (newMessage) in
                 self.messages.append(newMessage)
                 self.collectionView.reloadData()
                 self.scrollToTheBottom(animated: true)
@@ -469,14 +406,6 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         sendButtonPressed()
         return true
-    }
-    
-    func isIncomingHandler(sender: String) -> Bool{
-        if sender == CurrentUser.uid {
-            return false
-        }else{
-            return true
-        }
     }
     
     func zoomImageHandler(image: UIImageView){
@@ -555,7 +484,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         var height = estSize.height
         if repStatus { height = estSize.height + 50 }
         if height > 150 { return }
-        if messageTF.calculateLines() >= 2 {
+        if messageTV.calculateLines() >= 2 {
             if containerHeight > 45 {
                 const.constant = height + 35
             }else{ const.constant = height + 15 }
@@ -565,30 +494,26 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     func messageHeightHandler(_ constraint: NSLayoutConstraint, _ estSize: CGSize){
         let height: CGFloat = repStatus == true ? 100 : 150
         if estSize.height > height{
-            messageTF.isScrollEnabled = true
+            messageTV.isScrollEnabled = true
             return
-        }else if messageTF.calculateLines() < 2 {
+        }else if messageTV.calculateLines() < 2 {
             constraint.constant = 32
-            animateMessageContainer()
+            self.view.layoutIfNeeded()
             return
         }
         constraint.constant = estSize.height
-        animateMessageContainer()
+        self.view.layoutIfNeeded()
     }
     
     func sendingIsFinished(const: NSLayoutConstraint) -> Bool{
         let height: CGFloat = repStatus == true ? containerHeight + 50 : containerHeight
-        if messageTF.text.count == 0 {
-            messageTF.isScrollEnabled = false
+        if messageTV.text.count == 0 {
+            messageTV.isScrollEnabled = false
             const.constant = height
             return true
         }else{
             return false
         }
-    }
-    
-    func animateMessageContainer(){
-        self.view.layoutIfNeeded()
     }
     
     func notificationCenterHandler() {
@@ -598,7 +523,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     @objc func willResignActive(_ notification: Notification) {
-        disableIsTyping()
+        chatNetworking.disableIsTyping()
     }
     
     @objc func handleKeyboardWillShow(notification: NSNotification){
@@ -618,6 +543,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     @objc func handleKeyboardWillHide(notification: NSNotification){
+        print("Will hide")
         let kFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
         let kDuration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double
         guard let height = kFrame?.height else { return }
@@ -634,12 +560,12 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     
     func animateActionButton(){
         var buttonToAnimate = UIButton()
-        if messageTF.text.count >= 1 {
+        if messageTV.text.count >= 1 {
             micButton.alpha = 0
             if sendButton.alpha == 1 { return }
             sendButton.alpha = 1
             buttonToAnimate = sendButton
-        }else if messageTF.text.count == 0{
+        }else if messageTV.text.count == 0{
             micButton.alpha = 1
             sendButton.alpha = 0
             buttonToAnimate = micButton
@@ -650,29 +576,11 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         })
     }
     
-    func isTypingHandler(){
-        guard let friendId = friendId , let user = CurrentUser.uid else { return }
-        let userRef = Database.database().reference().child("userActions").child(CurrentUser.uid).child(friendId)
-        if messageTF.text.count >= 1 {
-            userRef.setValue(["isTyping": true, "fromFriend": user])
-        }else{
-            userRef.setValue(["isTyping": false, "fromFriend": user])
-        }
-    }
-    
-    func observeIsUserTyping(){
-        let db = Database.database().reference().child("userActions").child(friendId).child(CurrentUser.uid)
-        db.observe(.value) { (snap) in
-            guard let data = snap.value as? [String: Any] else { return }
-            let activity = FriendActivity()
-            activity.friendId = data["fromFriend"] as? String
-            activity.isTyping = data["isTyping"] as? Bool
-            self.friendActivity = [activity]
-            guard self.friendActivity.count == 1 else { return }
-            let friendActivity = self.friendActivity[0]
-            if friendActivity.friendId == self.friendId && friendActivity.isTyping {
+    func observeFriendTyping(){
+        chatNetworking.observeIsUserTyping() { (friendActivity) in
+            if friendActivity.friendId == self.friend.id && friendActivity.isTyping {
                 self.animateTyping(const: 1, isHidden: false)
-                self.navigationItem.setupTypingNavTitle(navTitle: self.friendName)
+                self.navigationItem.setupTypingNavTitle(navTitle: self.friend.name)
             }else{
                 self.animateTyping(const: 0, isHidden: true)
                 self.setupChatNavBar()
@@ -697,12 +605,6 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         }
     }
     
-    func disableIsTyping(){
-        guard let friendId = friendId , let user = CurrentUser.uid else { return }
-        let userRef = Database.database().reference().child("userActions").child(CurrentUser.uid).child(friendId)
-        userRef.updateChildValues(["isTyping": false, "fromFriend": user])
-    }
-    
     func setuplongPress(){
         let gesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPressGesture(longPress:)))
         gesture.delegate = self
@@ -721,7 +623,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     func openToolsMenu(_ indexPath: IndexPath, _ message: Messages, _ selectedCell: ChatCell){
-//        hideKeyboard()
+        hideKeyboard()
         collectionView.isUserInteractionEnabled = false
         selectedCell.isHidden = true
         let window = UIApplication.shared.windows[0]
@@ -751,7 +653,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         toolsScrollView.addSubview(toolsView)
         let _ = ToolsTB(frame: toolsView.frame, style: .plain, tV: toolsView, bV: toolsBlurView, cV: self, sM: message, i: indexPath, cell: selectedCell)
         let msgViewFrame = CGRect(x: bF.origin.x, y: messageYValue, width: w, height: h)
-        let messageView = MessageView(frame: msgViewFrame, cell: selectedCell, message: message, friendName: friendName)
+        let messageView = MessageView(frame: msgViewFrame, cell: selectedCell, message: message, friendName: friend.name)
         toolsScrollView.addSubview(messageView)
         toolMessageAppearance(window.frame, toolsView, messageView, noScroll, h)
         toolsBlurView.cell = selectedCell
@@ -799,184 +701,6 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     
     @objc func setupExitMenu(){
         toolsBlurView.handleViewDismiss()
-    }
-    
-    // Reply outlets
-    
-    let repLine = UIView()
-    let repNameLabel = UILabel()
-    var repNameLabelConstraint: NSLayoutConstraint!
-    let repMessageLabel = UILabel()
-    let repMediaMessage = UIImageView()
-    let exitRepButton = UIButton(type: .system)
-    
-    func repButtonPressed(_ message: Messages, forwardedName: String? = nil){
-        repViewChangeAlpha(a: 0)
-        messageTF.becomeFirstResponder()
-        repStatus = true
-        repliedMessage = message
-        containterHAnchor.constant += 50
-        UIView.animate(withDuration: 0.1, animations: {
-            self.view.layoutIfNeeded()
-            self.repMessageLine(message, forwardedName)
-        }) { (true) in
-            self.repViewChangeAlpha(a: 1)
-        }
-    }
-    
-    func repViewChangeAlpha(a: CGFloat){
-        repLine.alpha = a
-        repNameLabel.alpha = a
-        repMessageLabel.alpha = a
-        repMediaMessage.alpha = a
-        exitRepButton.alpha = a
-    }
-    
-    func repMessageLine(_ message: Messages, _ fN: String?){
-        repLine.backgroundColor = UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1)
-        repLine.layer.cornerRadius = 1
-        repLine.layer.masksToBounds = true
-        messageContainer.addSubview(repLine)
-        repLine.translatesAutoresizingMaskIntoConstraints = false
-        let constraints = [
-            repLine.topAnchor.constraint(equalTo: messageContainer.topAnchor, constant: 8),
-            repLine.bottomAnchor.constraint(equalTo: messageTF.topAnchor, constant: -8),
-            repLine.leadingAnchor.constraint(equalTo: messageTF.leadingAnchor, constant: 8),
-            repLine.widthAnchor.constraint(equalToConstant: 2),
-        ]
-        NSLayoutConstraint.activate(constraints)
-        setupExitRepButton()
-        var name: String!
-        if fN != nil {
-            name = fN
-            repMessageName(for: message, name)
-        }else{
-            Database.database().reference().child("messages").child(CurrentUser.uid).child(message.determineUser()).child(message.id).observeSingleEvent(of: .value) { (snap) in
-                guard let values = snap.value as? [String: Any] else { return }
-                let senderId = values["sender"] as? String
-                name = senderId == CurrentUser.uid ? CurrentUser.name : self.friendName
-                self.repMessageName(for: message, name)
-            }
-        }
-    }
-    
-    func setupExitRepButton(){
-        messageContainer.addSubview(exitRepButton)
-        exitRepButton.translatesAutoresizingMaskIntoConstraints = false
-        exitRepButton.setImage(UIImage(systemName: "xmark"), for: .normal)
-        exitRepButton.tintColor = .black
-        let constraints = [
-            exitRepButton.trailingAnchor.constraint(equalTo: messageTF.trailingAnchor, constant: -16),
-            exitRepButton.centerYAnchor.constraint(equalTo: repLine.centerYAnchor),
-            exitRepButton.widthAnchor.constraint(equalToConstant: 12),
-            exitRepButton.heightAnchor.constraint(equalToConstant: 12)
-        ]
-        exitRepButton.addTarget(self, action: #selector(exitRepButtonPressed), for: .touchUpInside)
-        NSLayoutConstraint.activate(constraints)
-    }
-    
-    @objc func exitRepButtonPressed(){
-        repStatus = false
-        repliedMessage = nil
-        messageToForward = nil
-        messageSender = nil
-        self.containterHAnchor.constant -= 50
-        UIView.animate(withDuration: 0.3){
-            self.repLine.removeFromSuperview()
-            self.exitRepButton.removeFromSuperview()
-            self.repNameLabel.removeFromSuperview()
-            self.repMediaMessage.removeFromSuperview()
-            self.repMessageLabel.removeFromSuperview()
-        }
-        
-    }
-    
-    func repMessageName(for message: Messages, _ name: String){
-        messageSender = name
-        messageContainer.addSubview(repNameLabel)
-        repNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        repNameLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 16)
-        repNameLabel.textColor = UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1)
-        repNameLabel.text = name
-        repNameLabelConstraint = repNameLabel.leadingAnchor.constraint(equalTo: repLine.trailingAnchor, constant: 8)
-        let constraints = [
-            repNameLabelConstraint!,
-            repNameLabel.trailingAnchor.constraint(equalTo: exitRepButton.trailingAnchor, constant: -8),
-            repNameLabel.topAnchor.constraint(equalTo: repLine.topAnchor, constant: 4)
-        ]
-        NSLayoutConstraint.activate(constraints)
-        setupRepMessage(message)
-    }
-    
-    func setupRepMessage(_ message: Messages){
-        if message.mediaUrl == nil {
-            setupRepTextM(message)
-        }else{
-            setupRepMediaM(message)
-        }
-    }
-    
-    func setupRepTextM(_ message: Messages){
-        messageContainer.addSubview(repMessageLabel)
-        repMessageLabel.translatesAutoresizingMaskIntoConstraints = false
-        repMessageLabel.font = UIFont(name: "Helvetica Neue", size: 15)
-        repMessageLabel.textColor = .black
-        repMessageLabel.text = message.message
-        let constraints = [
-            repMessageLabel.leadingAnchor.constraint(equalTo: repLine.trailingAnchor, constant: 8),
-            repMessageLabel.trailingAnchor.constraint(equalTo: exitRepButton.trailingAnchor, constant: -16),
-            repMessageLabel.topAnchor.constraint(equalTo: repNameLabel.bottomAnchor, constant: -2),
-            repMessageLabel.bottomAnchor.constraint(equalTo: messageTF.topAnchor, constant: -16)
-        ]
-        NSLayoutConstraint.activate(constraints)
-    }
-    
-    func setupRepMediaM(_ message: Messages){
-        let replyMediaLabel = UILabel()
-        replyMediaLabel.text = "Image"
-        replyMediaLabel.textColor = .gray
-        replyMediaLabel.font = UIFont(name: "Helvetica Neue", size: 15)
-        messageContainer.addSubview(repMediaMessage)
-        repMediaMessage.translatesAutoresizingMaskIntoConstraints = false
-        repMediaMessage.addSubview(replyMediaLabel)
-        replyMediaLabel.translatesAutoresizingMaskIntoConstraints = false
-        repMediaMessage.loadImage(url: message.mediaUrl)
-        repNameLabelConstraint.constant += 34
-        let constraints = [
-            repMediaMessage.topAnchor.constraint(equalTo: repLine.topAnchor, constant: 2),
-            repMediaMessage.bottomAnchor.constraint(equalTo: repLine.bottomAnchor, constant: -2),
-            repMediaMessage.widthAnchor.constraint(equalToConstant: 30),
-            repMediaMessage.leadingAnchor.constraint(equalTo: repLine.trailingAnchor, constant: 8),
-            replyMediaLabel.centerYAnchor.constraint(equalTo: repMediaMessage.centerYAnchor, constant: 8),
-            replyMediaLabel.leadingAnchor.constraint(equalTo: repMediaMessage.trailingAnchor, constant: 4),
-        ]
-        NSLayoutConstraint.activate(constraints)
-    }
-    
-    func showRepMessageView(cell: ChatCell){
-        var index = 0
-        for message in messages {
-            if message.id == cell.msg.repMID {
-                let indexPath = IndexPath(row: index, section: 0)
-                collectionView.scrollToItem(at: indexPath, at: .top, animated: true)
-                break
-            }
-            index += 1
-        }
-    }
-    
-    func forwardButtonPressed(_ message: Messages) {
-        messageToForward = message
-        Database.database().reference().child("messages").child(CurrentUser.uid).child(message.determineUser()).child(message.id).observeSingleEvent(of: .value) { (snap) in
-            guard let values = snap.value as? [String: Any] else { return }
-            let senderId = values["sender"] as? String
-            let fN = senderId == CurrentUser.uid ? CurrentUser.name : self.friendName
-            let convController = NewConversationVC()
-            convController.delegate = self
-            convController.forwardName = fN
-            let navController = UINavigationController(rootViewController: convController)
-            self.present(navController, animated: true, completion: nil)
-        }
     }
     
 }
@@ -1055,20 +779,20 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
 extension ChatVC: UITextViewDelegate {
     
     func textViewDidEndEditing(_ textView: UITextView) {
-        disableIsTyping()
+        chatNetworking.disableIsTyping()
     }
     
     func textViewDidChange(_ textView: UITextView) {
-        isTypingHandler()
+        chatNetworking.isTypingHandler(tV: textView)
         animateActionButton()
-        if !messageTF.text.isEmpty {
-            messageTF.subviews[2].isHidden = true
+        if !messageTV.text.isEmpty {
+            messageTV.subviews[2].isHidden = true
         }else{
-            messageTF.subviews[2].isHidden = false
+            messageTV.subviews[2].isHidden = false
         }
         let size = CGSize(width: textView.frame.width, height: 150)
         let estSize = textView.sizeThatFits(size)
-        messageTF.constraints.forEach { (constraint) in
+        messageTV.constraints.forEach { (constraint) in
             if constraint.firstAttribute != .height { return }
             messageHeightHandler(constraint, estSize)
             messageContainer.constraints.forEach { (const) in if const.firstAttribute == .height { messageContainerHeightHandler(const, estSize) }}
@@ -1079,12 +803,8 @@ extension ChatVC: UITextViewDelegate {
 extension ChatVC: ForwardToFriend {
     
     func forwardToSelectedFriend(friend: FriendInfo, for name: String) {
-        friendProfileImage = friend.profileImage
-        friendName = friend.name
-        friendId = friend.id
-        friendIsOnline = friend.isOnline
-        friendLastLogin = friend.lastLogin
         repButtonPressed(messageToForward!, forwardedName: name)
+        self.friend = friend
         messages = []
         collectionView.reloadData()
         loadNewMessages = false

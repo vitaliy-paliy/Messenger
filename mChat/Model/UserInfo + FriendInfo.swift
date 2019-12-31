@@ -15,7 +15,7 @@ class UserInfo{
     var profileImage: String!
 }
 
-class FriendInfo {
+struct FriendInfo {
     var id: String!
     var name: String!
     var profileImage: String!
@@ -24,7 +24,11 @@ class FriendInfo {
     var lastLogin: NSNumber!
 }
 
-class FriendActivity{
+struct FriendActivity{
     var isTyping: Bool!
     var friendId: String!
+    init(isTyping: Bool, friendId: String) {
+        self.isTyping = isTyping
+        self.friendId = friendId
+    }
 }

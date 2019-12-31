@@ -69,7 +69,7 @@ class ToolsTB: UITableView, UITableViewDelegate, UITableViewDataSource {
         let tool = tools[indexPath.row]
         tableView.deselectRow(at: indexPath, animated: true)
         if "Delete" == tool {
-            removeMessageHandler()
+            removeHandler()
         }else if "Copy" == tool{
             guard selectedMessage.mediaUrl == nil else { return }
             let pasteBoard = UIPasteboard.general
@@ -84,18 +84,11 @@ class ToolsTB: UITableView, UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    func removeMessageHandler(){
-        for message in chatView.messages{
-            if message.id == selectedMessage.id { removeHandler(friend: message.determineUser()) }
-        }
-    }
-    
-    func removeHandler(friend: String){
-        Database.database().reference().child("messages").child(CurrentUser.uid).child(friend).child(selectedMessage.id).removeValue { (error, ref) in
-            Database.database().reference().child("messages").child(friend).child(CurrentUser.uid).child(self.selectedMessage.id).removeValue()
-            guard error == nil else { return }
+    func removeHandler(){
+        chatView.chatNetworking.removeMessageHandler(mId: selectedMessage.id) {
             self.blurView.handleViewDismiss(isDeleted: true)
         }
+        
     }
     
 }

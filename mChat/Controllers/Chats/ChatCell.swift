@@ -160,7 +160,7 @@ class ChatCell: UICollectionViewCell {
     
     private func setupReplyTextMessage(text: String){
         repTextMessage.text = text
-        repTextMessage.font = UIFont(name: "Helvetica Neue", size: 14)
+        repTextMessage.font = UIFont(name: "Helvetica Neue", size: 15)
         messageBackground.addSubview(repTextMessage)
         repTextMessage.translatesAutoresizingMaskIntoConstraints = false
         repTextMessage.addSubview(repNameLabel)

@@ -22,6 +22,9 @@
 		CB644C2523A2FFC7003094DF /* chatTyping.json in Resources */ = {isa = PBXBuildFile; fileRef = CB644C2323A2FFC7003094DF /* chatTyping.json */; };
 		CB65C64723831EA300F2B5A3 /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB65C64623831EA300F2B5A3 /* CurrentUser.swift */; };
 		CB65C64C2383326300F2B5A3 /* ProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB65C64B2383326300F2B5A3 /* ProfileCell.swift */; };
+		CB8916FE23BA8D1D0019CBE9 /* MessageKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8916FD23BA8D1D0019CBE9 /* MessageKit.swift */; };
+		CB89170123BA93490019CBE9 /* ChatNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB89170023BA93490019CBE9 /* ChatNetworking.swift */; };
+		CB89170323BAD4FA0019CBE9 /* RepView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB89170223BAD4FA0019CBE9 /* RepView + Extension.swift */; };
 		CB8DEAAC2388C985001EDF19 /* ChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8DEAAB2388C985001EDF19 /* ChatCell.swift */; };
 		CB9525992380D5BB0006A76A /* SignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9525982380D5BB0006A76A /* SignUpVC.swift */; };
 		CBAB592C2381E49700078B7D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CBAB592B2381E49600078B7D /* GoogleService-Info.plist */; };
@@ -64,6 +67,9 @@
 		CB644C2323A2FFC7003094DF /* chatTyping.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = chatTyping.json; sourceTree = "<group>"; };
 		CB65C64623831EA300F2B5A3 /* CurrentUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
 		CB65C64B2383326300F2B5A3 /* ProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCell.swift; sourceTree = "<group>"; };
+		CB8916FD23BA8D1D0019CBE9 /* MessageKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageKit.swift; sourceTree = "<group>"; };
+		CB89170023BA93490019CBE9 /* ChatNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatNetworking.swift; sourceTree = "<group>"; };
+		CB89170223BAD4FA0019CBE9 /* RepView + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RepView + Extension.swift"; sourceTree = "<group>"; };
 		CB8DEAAB2388C985001EDF19 /* ChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCell.swift; sourceTree = "<group>"; };
 		CB9525982380D5BB0006A76A /* SignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVC.swift; sourceTree = "<group>"; };
 		CBAB592B2381E49600078B7D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -133,8 +139,6 @@
 		CB4CF77C23943D5D00AC2E31 /* NewConversations */ = {
 			isa = PBXGroup;
 			children = (
-				CB4CF77A23943B3600AC2E31 /* NewConversationVC.swift */,
-				CB4CF77D23943D8100AC2E31 /* NewConversationCell.swift */,
 			);
 			path = NewConversations;
 			sourceTree = "<group>";
@@ -149,6 +153,25 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		CB8916FC23BA8CFE0019CBE9 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				CB8916FD23BA8D1D0019CBE9 /* MessageKit.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		CB8916FF23BA92A50019CBE9 /* Conversations */ = {
+			isa = PBXGroup;
+			children = (
+				CB4CF77A23943B3600AC2E31 /* NewConversationVC.swift */,
+				CB4CF77D23943D8100AC2E31 /* NewConversationCell.swift */,
+				CBF644F62381C26B004830C6 /* ConversationsVC.swift */,
+				CBFC53BA23873B5600CC4C91 /* ConverstaionsCell.swift */,
+			);
+			path = Conversations;
+			sourceTree = "<group>";
+		};
 		CBAC237B23AC4A1600FCBED9 /* ChatMessageTools */ = {
 			isa = PBXGroup;
 			children = (
@@ -157,6 +180,7 @@
 				CB4CE16023AE9F92000D2516 /* ToolsView.swift */,
 				CB4CE16423AEAA9E000D2516 /* ToolsTB.swift */,
 				CBAC237C23AC4A5200FCBED9 /* ToolsCell.swift */,
+				CB89170223BAD4FA0019CBE9 /* RepView + Extension.swift */,
 			);
 			path = ChatMessageTools;
 			sourceTree = "<group>";
@@ -195,8 +219,7 @@
 		CBF644F82381C26F004830C6 /* Chats */ = {
 			isa = PBXGroup;
 			children = (
-				CBF644F62381C26B004830C6 /* ConversationsVC.swift */,
-				CBFC53BA23873B5600CC4C91 /* ConverstaionsCell.swift */,
+				CB89170023BA93490019CBE9 /* ChatNetworking.swift */,
 				CB08304A238709BD002A1861 /* ChatVC.swift */,
 				CB8DEAAB2388C985001EDF19 /* ChatCell.swift */,
 				CBAC237B23AC4A1600FCBED9 /* ChatMessageTools */,
@@ -235,6 +258,7 @@
 		CBF907E82380B83500EF8925 /* mChat */ = {
 			isa = PBXGroup;
 			children = (
+				CB8916FC23BA8CFE0019CBE9 /* Networking */,
 				CB2717392381E789003A4D46 /* Helper Tools */,
 				CBF907E92380B83500EF8925 /* AppDelegate.swift */,
 				CBF907EB2380B83500EF8925 /* SceneDelegate.swift */,
@@ -252,6 +276,7 @@
 			children = (
 				CBF644F22381C216004830C6 /* Auth Controllers */,
 				CBF644F52381C24D004830C6 /* Contacts */,
+				CB8916FF23BA92A50019CBE9 /* Conversations */,
 				CBF644F82381C26F004830C6 /* Chats */,
 				CBF644F92381C281004830C6 /* Settings */,
 				CBF644F02381C204004830C6 /* ChatTabBar.swift */,
@@ -388,6 +413,7 @@
 			files = (
 				CB9525992380D5BB0006A76A /* SignUpVC.swift in Sources */,
 				CB4CF77E23943D8100AC2E31 /* NewConversationCell.swift in Sources */,
+				CB89170323BAD4FA0019CBE9 /* RepView + Extension.swift in Sources */,
 				CB27173B2381ECB1003A4D46 /* Constants.swift in Sources */,
 				CB08304B238709BD002A1861 /* ChatVC.swift in Sources */,
 				CBF907EA2380B83500EF8925 /* AppDelegate.swift in Sources */,
@@ -395,6 +421,7 @@
 				CBF05E4523A086A400EF295F /* NavigationItem + Extension.swift in Sources */,
 				CBFC53BB23873B5600CC4C91 /* ConverstaionsCell.swift in Sources */,
 				CBF644F12381C204004830C6 /* ChatTabBar.swift in Sources */,
+				CB89170123BA93490019CBE9 /* ChatNetworking.swift in Sources */,
 				CB2717382381E775003A4D46 /* Helpers.swift in Sources */,
 				CBF907EC2380B83500EF8925 /* SceneDelegate.swift in Sources */,
 				CB4CF77B23943B3600AC2E31 /* NewConversationVC.swift in Sources */,
@@ -413,6 +440,7 @@
 				CBF907FE2380B8CE00EF8925 /* SignInVC.swift in Sources */,
 				CB4CE16123AE9F92000D2516 /* ToolsView.swift in Sources */,
 				CBF644F42381C23A004830C6 /* ContactsVC.swift in Sources */,
+				CB8916FE23BA8D1D0019CBE9 /* MessageKit.swift in Sources */,
 				CB65C64723831EA300F2B5A3 /* CurrentUser.swift in Sources */,
 				CBFC53B92387259E00CC4C91 /* Messages.swift in Sources */,
 				CB65C64C2383326300F2B5A3 /* ProfileCell.swift in Sources */,

@@ -115,7 +115,7 @@ class MessageView: UIView{
     func setupRepTextMessage(text: String){
         repTextMessage.text = text
         repTextMessage.textColor = cell.repTextMessage.textColor
-        repTextMessage.font = UIFont(name: "Helvetica Neue", size: 14)
+        repTextMessage.font = UIFont(name: "Helvetica Neue", size: 15)
         addSubview(repTextMessage)
         repTextMessage.translatesAutoresizingMaskIntoConstraints = false
         repTextMessage.addSubview(repNameLabel)

@@ -69,8 +69,13 @@ class ContactsVC: UIViewController {
     func setupFriendsList(_ key: String){
         Constants.db.reference().child("users").child(key).observeSingleEvent(of: .value) { (data) in
             guard let values = data.value as? [String: Any] else { return }
-            let friend = FriendInfo()
-            self.getFriendData(friend: friend, dict: key, values: values)
+            var friend = FriendInfo()
+            friend.id = key
+            friend.email = values["email"] as? String
+            friend.profileImage = values["profileImage"] as? String
+            friend.name = values["name"] as? String
+            friend.isOnline = values["isOnline"] as? Bool
+            friend.lastLogin = values["lastLogin"] as? NSNumber
             self.friendsList.append(friend)
             self.friendsList.sort { (friend1, friend2) -> Bool in
                 return friend1.name < friend2.name
@@ -347,12 +352,13 @@ class ContactsVC: UIViewController {
         guard let bInfo = button.friendInfo else { return }
         let controller = ChatVC()
         controller.modalPresentationStyle = .fullScreen
-        controller.friendId = bInfo.id
-        controller.friendProfileImage = bInfo.profileImage
-        controller.friendName = bInfo.name
-        controller.friendEmail = bInfo.email
-        controller.friendIsOnline = bInfo.isOnline
-        controller.friendLastLogin = bInfo.lastLogin
+        controller.friend = bInfo
+//        controller.friendId = bInfo.id
+//        controller.friendProfileImage = bInfo.profileImage
+//        controller.friendName = bInfo.name
+//        controller.friendEmail = bInfo.email
+//        controller.friendIsOnline = bInfo.isOnline
+//        controller.friendLastLogin = bInfo.lastLogin
         show(controller, sender: nil)
     }
     

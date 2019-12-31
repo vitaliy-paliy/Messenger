@@ -70,40 +70,40 @@ class NewConversationVC: UIViewController {
     }
     
     func loadFriends(){
-           Constants.db.reference().child("friendsList").child(CurrentUser.uid).observeSingleEvent(of: .value) { (snap) in
-               guard let friends = snap.value as? [String: Any] else {
-                   self.friendsList = []
-                   DispatchQueue.main.async {
-                       self.tableView.reloadData()
-                   }
-                   return
-               }
-               for dict in friends.keys {
-                   Constants.db.reference().child("users").child(dict).observe(.value) { (data) in
-                       guard let values = data.value as? [String: Any] else { return }
-                       let friend = FriendInfo()
-                       friend.id = dict
-                       friend.email = values["email"] as? String
-                       friend.profileImage = values["profileImage"] as? String
-                       friend.name = values["name"] as? String
-                        friend.isOnline = values["isOnline"] as? Bool
-                        friend.lastLogin = values["lastLogin"] as? NSNumber
-                       self.friendsList.append(friend)
-                       self.friendsList.sort { (friend1, friend2) -> Bool in
-                           return friend1.name < friend2.name
-                       }
-                       self.timer.invalidate()
-                       self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReload), userInfo: nil, repeats: false)
-                   }
-               }
-           }
-       }
-       
-       @objc func handleReload(){
-           DispatchQueue.main.async {
-               self.tableView.reloadData()
-           }
-       }
+        Constants.db.reference().child("friendsList").child(CurrentUser.uid).observeSingleEvent(of: .value) { (snap) in
+            guard let friends = snap.value as? [String: Any] else {
+                self.friendsList = []
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+                return
+            }
+            for dict in friends.keys {
+                Constants.db.reference().child("users").child(dict).observe(.value) { (data) in
+                    guard let values = data.value as? [String: Any] else { return }
+                    var friend = FriendInfo()
+                    friend.id = dict
+                    friend.email = values["email"] as? String
+                    friend.profileImage = values["profileImage"] as? String
+                    friend.name = values["name"] as? String
+                    friend.isOnline = values["isOnline"] as? Bool
+                    friend.lastLogin = values["lastLogin"] as? NSNumber
+                    self.friendsList.append(friend)
+                    self.friendsList.sort { (friend1, friend2) -> Bool in
+                        return friend1.name < friend2.name
+                    }
+                    self.timer.invalidate()
+                    self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReload), userInfo: nil, repeats: false)
+                }
+            }
+        }
+    }
+    
+    @objc func handleReload(){
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
     
 }
 
@@ -129,9 +129,9 @@ extension NewConversationVC: UITableViewDelegate, UITableViewDataSource {
             delegate?.forwardToSelectedFriend(friend: friend, for: name)
         }
         dismiss(animated: true, completion: nil)
-
+        
     }
     
-   
+    
     
 }
