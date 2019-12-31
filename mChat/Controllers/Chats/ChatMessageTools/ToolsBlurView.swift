@@ -11,49 +11,41 @@ import Firebase
 
 class ToolsBlurView: UIVisualEffectView {
     
-    var cell: ChatCell!
-    var message: Messages!
-    var mView: UIView!
-    var tView: UIView!
-    var backgroundFrame: CGRect!
-    var cellFrame: CGRect!
-    var sView: UIScrollView!
-    var timer = Timer()
-    var chatView: ChatVC!
+    var menu: ToolsMenuView!
     
     func handleViewDismiss(isDeleted: Bool? = nil, isReply: Bool? = nil, isForward: Bool? = nil){
         if isDeleted == nil {
-            mView.removeFromSuperview()
-            tView.removeFromSuperview()
-            chatView.view.addSubview(tView)
-            chatView.view.addSubview(mView)
-            chatView.view.insertSubview(chatView.messageContainer, aboveSubview: mView)
+            menu.mView.removeFromSuperview()
+            menu.tView.removeFromSuperview()
+            menu.chatView.view.addSubview(menu.tView)
+            menu.chatView.view.addSubview(menu.mView)
+            menu.chatView.view.insertSubview(menu.chatView.messageContainer, aboveSubview: menu.mView)
         }
-        let width = backgroundFrame.size.width
-        let height = backgroundFrame.size.height
-        let xValue = backgroundFrame.origin.x
-        let yValue = cellFrame.origin.y
+        let width = menu.backgroundFrame.size.width
+        let height = menu.backgroundFrame.size.height
+        let xValue = menu.backgroundFrame.origin.x
+        let yValue = menu.cellFrame.origin.y
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseOut, animations: {
             if isDeleted == nil {
-                self.mView.frame = CGRect(x: xValue, y: yValue, width: width, height: height)
-                self.tView.frame = CGRect(x: xValue, y: yValue, width: width, height: height)
-                self.tView.transform = CGAffineTransform(scaleX: 0.3, y: 0.3)
-                self.tView.layoutIfNeeded()
-                self.tView.layer.add(self.animateToolsView(fV: 1, tV: 0), forKey: "Changes Opacity")
+                self.menu.mView.frame = CGRect(x: xValue, y: yValue, width: width, height: height)
+                self.menu.tView.frame = CGRect(x: xValue, y: yValue, width: width, height: height)
+                self.menu.tView.transform = CGAffineTransform(scaleX: 0.3, y: 0.3)
+                self.menu.tView.layoutIfNeeded()
+                self.menu.tView.layer.add(self.animateToolsView(fV: 1, tV: 0), forKey: "Changes Opacity")
             }
-            self.sView.removeFromSuperview()
+            self.menu.sView.removeFromSuperview()
             self.removeFromSuperview()
         }) { (true) in
-            self.chatView.collectionView.isUserInteractionEnabled = true
-            self.chatView.view.insertSubview(self.chatView.messageContainer, aboveSubview: self.chatView.collectionView)
-            self.cell.isHidden = false
-            self.mView.removeFromSuperview()
-            self.tView.removeFromSuperview()
+            self.menu.chatView.collectionView.isUserInteractionEnabled = true
+            self.menu.chatView.view.insertSubview(self.menu.chatView.messageContainer, aboveSubview: self.menu.chatView.collectionView)
+            self.menu.cell.isHidden = false
+            self.menu.mView.removeFromSuperview()
+            self.menu.tView.removeFromSuperview()
             if isReply != nil{
-                self.chatView.repButtonPressed(self.message)
+                self.menu.chatView.responseButtonPressed(self.menu.message)
             }
             if isForward != nil {
-                self.chatView.forwardButtonPressed(self.message)
+                self.menu.chatView.forwardButtonPressed(self.menu.message)
             }
         }
     }

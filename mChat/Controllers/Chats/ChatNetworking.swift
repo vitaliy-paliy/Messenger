@@ -12,6 +12,11 @@ import Firebase
 class ChatNetworking {
     
     var friend: FriendInfo!
+    var loadMore = false
+    var lastMessageReached = false
+    var scrollToIndex = [Messages]()
+    var timer = Timer()
+    var loadNewMessages = false
     
     func getMessages(_ v: UIView, _ m: [Messages], completion: @escaping(_ newMessages: [Messages], _ mOrder: Bool) -> Void){
         var nodeRef: DatabaseQuery

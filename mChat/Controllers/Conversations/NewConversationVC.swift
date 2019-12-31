@@ -45,8 +45,8 @@ class NewConversationVC: UIViewController {
     }
     
     @objc func cancelButtonPressed(){
-        delegate?.messageToForward = nil
-        delegate?.messageSender = nil
+        delegate?.userResponse.messageToForward = nil
+        delegate?.userResponse.messageSender = nil
         dismiss(animated: true, completion: nil)
     }
     

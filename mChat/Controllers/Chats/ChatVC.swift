@@ -18,42 +18,23 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     
     var friend: FriendInfo!
     var messages = [Messages]()
-    var loadNewMessages = false
-    var imageToSend: UIImage!
     let chatNetworking = ChatNetworking()
+    var userResponse = UserResponse()
+    var imageGalleryView = ImageGalleryView()
     
+    // TODO: ChatView Outlets
     var containerHeight: CGFloat!
+    var containerBottomAnchor = NSLayoutConstraint()
+    var containterHAnchor = NSLayoutConstraint()
     var collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: 50, height: 50), collectionViewLayout: UICollectionViewFlowLayout.init())
     var messageContainer = UIView()
     var clipImageButton = UIButton(type: .system)
     var sendButton = UIButton(type: .system)
     var micButton = UIButton(type: .system)
     var messageTV = UITextView()
-    var isTypingView = UIView()
-    let typingAnimation = AnimationView()
-    var imgFrame: CGRect?
-    var imgBackground: UIView!
-    var imageClickedView: UIImageView!
-    var startingImageFrame: UIImageView!
-    var loadMore = false
-    var lastMessageReached = false
-    var scrollToIndex = [Messages]()
     var refreshIndicator = RefreshIndicator(style: .medium)
-    var timer = Timer()
     var toolsBlurView = ToolsBlurView()
     var toolsScrollView = UIScrollView()
-    let vGenerator = UIImpactFeedbackGenerator(style: .medium)
-    var repStatus = false
-    var repliedMessage: Messages?
-    var messageToForward: Messages?
-    var messageSender: String?
-    
-    let repLine = UIView()
-    let repNameLabel = UILabel()
-    var repNameLabelConstraint: NSLayoutConstraint!
-    let repMessageLabel = UILabel()
-    let repMediaMessage = UIImageView()
-    let exitRepButton = UIButton(type: .system)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -149,16 +130,10 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: friendImageButton)
     }
     
-    var containerBottomAnchor = NSLayoutConstraint()
-    var containterHAnchor = NSLayoutConstraint()
     func setupContainer(height: CGFloat){
         messageContainer.translatesAutoresizingMaskIntoConstraints = false
         messageContainer.backgroundColor = .white
         view.addSubview(messageContainer)
-        let topLine = UIView()
-        topLine.backgroundColor = UIColor(displayP3Red: 238/255, green: 238/255, blue: 238/255, alpha: 1)
-        topLine.translatesAutoresizingMaskIntoConstraints = false
-        messageContainer.addSubview(topLine)
         containerBottomAnchor = messageContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         containterHAnchor = messageContainer.heightAnchor.constraint(equalToConstant: height)
         let constraints = [
@@ -166,9 +141,6 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
             containerBottomAnchor,
             containterHAnchor,
             messageContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            topLine.leftAnchor.constraint(equalTo: view.leftAnchor),
-            topLine.rightAnchor.constraint(equalTo: view.rightAnchor),
-            topLine.heightAnchor.constraint(equalToConstant: 0.5)
         ]
         NSLayoutConstraint.activate(constraints)
     }
@@ -264,10 +236,9 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            imageToSend = originalImage
+            chatNetworking.uploadImage(image: originalImage)
+            dismiss(animated: true, completion: nil)
         }
-        chatNetworking.uploadImage(image: imageToSend)
-        dismiss(animated: true, completion: nil)
     }
     
     func openImagePicker(type: UIImagePickerController.SourceType){
@@ -288,16 +259,16 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         let friendRef = Constants.db.reference().child("messages").child(friend.id).child(CurrentUser.uid).child(senderRef.key!)
         guard let messageId = senderRef.key else { return }
         var values = ["message": trimmedMessage, "sender": CurrentUser.uid!, "recipient": friend.id!, "time": Date().timeIntervalSince1970, "messageId": messageId] as [String : Any]
-        if repliedMessage != nil || messageToForward != nil{
-            let repValues = messageToForward != nil ? messageToForward : repliedMessage
+        if userResponse.repliedMessage != nil || userResponse.messageToForward != nil{
+            let repValues = userResponse.messageToForward != nil ? userResponse.messageToForward : userResponse.repliedMessage
             if repValues?.message != nil {
                 values["repMessage"] = repValues?.message
             }else if repValues?.mediaUrl != nil{
                 values["repMediaMessage"] = repValues?.mediaUrl
             }
             values["repMID"] = repValues?.id
-            values["repSender"] = messageSender
-            exitRepButtonPressed()
+            values["repSender"] = userResponse.messageSender
+            exitResponseButtonPressed()
         }
         chatNetworking.sendMessageHandler(senderRef: senderRef, friendRef: friendRef, values: values) { (error) in
             self.handleMessageTextSent(error)
@@ -344,17 +315,17 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     func fetchMessages(){
-        loadMore = true
-        scrollToIndex = []
+        chatNetworking.loadMore = true
+        chatNetworking.scrollToIndex = []
         chatNetworking.getMessages(view, messages) { (newMessages, order) in
-            self.lastMessageReached = newMessages.count == 0
-            if self.lastMessageReached {
+            self.chatNetworking.lastMessageReached = newMessages.count == 0
+            if self.chatNetworking.lastMessageReached {
                 print("message.count == 0")
-                self.loadNewMessages = true
+                self.chatNetworking.loadNewMessages = true
                 return
             }
-            self.scrollToIndex = newMessages
-            self.timer.invalidate()
+            self.chatNetworking.scrollToIndex = newMessages
+            self.chatNetworking.timer.invalidate()
             self.refreshIndicator.startAnimating()
             if order {
                 self.refreshIndicator.order = order
@@ -363,7 +334,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
                 self.refreshIndicator.order = order
                 self.messages.insert(contentsOf: newMessages, at: 0)
             }
-            self.timer = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(self.handleReload), userInfo: nil, repeats: false)
+            self.chatNetworking.timer = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(self.handleReload), userInfo: nil, repeats: false)
         }
     }
     
@@ -376,7 +347,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
             }
         }
         ref.observe(.childAdded) { (snap) in
-            self.chatNetworking.newMessageRecievedHandler(self.loadNewMessages, self.messages, for: snap) { (newMessage) in
+            self.chatNetworking.newMessageRecievedHandler(self.chatNetworking.loadNewMessages, self.messages, for: snap) { (newMessage) in
                 self.messages.append(newMessage)
                 self.collectionView.reloadData()
                 self.scrollToTheBottom(animated: true)
@@ -390,12 +361,12 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
             if self.refreshIndicator.order{
                 self.scrollToTheBottom(animated: false)
             }else{
-                let index = self.scrollToIndex.count - 1
+                let index = self.chatNetworking.scrollToIndex.count - 1
                 self.collectionView.scrollToItem(at: IndexPath(item: index, section: 0), at: .top, animated: false)
             }
-            self.loadMore = false
+            self.chatNetworking.loadMore = false
             self.refreshIndicator.stopAnimating()
-            if self.messages.count >= 1 { self.loadNewMessages = true }
+            if self.messages.count >= 1 { self.chatNetworking.loadNewMessages = true }
         }
     }
     
@@ -410,10 +381,10 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     
     func zoomImageHandler(image: UIImageView){
         view.endEditing(true)
-        imgFrame = image.superview?.convert(image.frame, to: nil)
-        let photoView = UIImageView(frame: imgFrame!)
-        startingImageFrame = image
-        startingImageFrame.isHidden = true
+        imageGalleryView.frame = image.superview?.convert(image.frame, to: nil)
+        let photoView = UIImageView(frame: imageGalleryView.frame!)
+        imageGalleryView.startingFrame = image
+        imageGalleryView.startingFrame.isHidden = true
         photoView.isUserInteractionEnabled = true
         let slideUp = UISwipeGestureRecognizer(target: self, action: #selector(imageSlideUpDownHandler(tap:)))
         let slideDown = UISwipeGestureRecognizer(target: self, action: #selector(imageSlideUpDownHandler(tap:)))
@@ -423,31 +394,31 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         photoView.addGestureRecognizer(slideDown)
         photoView.image = image.image
         let keyWindow = UIApplication.shared.windows[0]
-        imgBackground = UIView(frame: keyWindow.frame)
-        imgBackground.backgroundColor = .black
-        imgBackground.alpha = 0
-        keyWindow.addSubview(imgBackground)
+        imageGalleryView.background = UIView(frame: keyWindow.frame)
+        imageGalleryView.background.backgroundColor = .black
+        imageGalleryView.background.alpha = 0
+        keyWindow.addSubview(imageGalleryView.background)
         keyWindow.addSubview(photoView)
         let closeImageButton = UIButton(type: .system)
-        imageClickedView = photoView
-        imgBackground.addSubview(closeImageButton)
+        imageGalleryView.clickedView = photoView
+        imageGalleryView.background.addSubview(closeImageButton)
         closeImageButton.translatesAutoresizingMaskIntoConstraints = false
         closeImageButton.tintColor = .white
         closeImageButton.addTarget(self, action: #selector(closeImageButtonPressed), for: .touchUpInside)
         closeImageButton.setImage(UIImage(systemName: "xmark"), for: .normal)
         
-        var tAnchor = closeImageButton.topAnchor.constraint(equalTo: imgBackground.topAnchor, constant: 20)
-        if imgBackground.safeAreaInsets.top > 25 {
-            tAnchor = closeImageButton.topAnchor.constraint(equalTo: imgBackground.topAnchor, constant: 45)
+        var tAnchor = closeImageButton.topAnchor.constraint(equalTo: imageGalleryView.background.topAnchor, constant: 20)
+        if imageGalleryView.background.safeAreaInsets.top > 25 {
+            tAnchor = closeImageButton.topAnchor.constraint(equalTo: imageGalleryView.background.topAnchor, constant: 45)
         }
         let constraints = [
-            closeImageButton.trailingAnchor.constraint(equalTo: imgBackground.trailingAnchor, constant: -16),
+            closeImageButton.trailingAnchor.constraint(equalTo: imageGalleryView.background.trailingAnchor, constant: -16),
             tAnchor
         ]
         NSLayoutConstraint.activate(constraints)
         UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            self.imgBackground.alpha = 1
-            let height = self.imgFrame!.height / self.imgFrame!.width * keyWindow.frame.width
+            self.imageGalleryView.background.alpha = 1
+            let height = self.imageGalleryView.frame!.height / self.imageGalleryView.frame!.width * keyWindow.frame.width
             photoView.frame = CGRect(x: 0, y: 0, width: keyWindow.frame.width, height: height)
             photoView.center = keyWindow.center
         }) { (true) in
@@ -462,7 +433,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     @objc func closeImageButtonPressed(){
-        let slideView = imageClickedView
+        let slideView = imageGalleryView.clickedView
         handleZoomOutAnim(slideView: slideView!)
     }
     
@@ -470,19 +441,19 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         slideView.layer.cornerRadius = 16
         slideView.layer.masksToBounds = true
         UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            slideView.frame = self.imgFrame!
-            self.imgBackground.alpha = 0
+            slideView.frame = self.imageGalleryView.frame!
+            self.imageGalleryView.background.alpha = 0
         }) { (true) in
             slideView.alpha = 0
             slideView.removeFromSuperview()
-            self.startingImageFrame.isHidden = false
+            self.imageGalleryView.startingFrame.isHidden = false
         }
     }
     
     func messageContainerHeightHandler(_ const: NSLayoutConstraint, _ estSize: CGSize){
         if sendingIsFinished(const: const) { return }
         var height = estSize.height
-        if repStatus { height = estSize.height + 50 }
+        if userResponse.responseStatus { height = estSize.height + 50 }
         if height > 150 { return }
         if messageTV.calculateLines() >= 2 {
             if containerHeight > 45 {
@@ -492,7 +463,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     func messageHeightHandler(_ constraint: NSLayoutConstraint, _ estSize: CGSize){
-        let height: CGFloat = repStatus == true ? 100 : 150
+        let height: CGFloat = userResponse.responseStatus == true ? 100 : 150
         if estSize.height > height{
             messageTV.isScrollEnabled = true
             return
@@ -506,7 +477,7 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     func sendingIsFinished(const: NSLayoutConstraint) -> Bool{
-        let height: CGFloat = repStatus == true ? containerHeight + 50 : containerHeight
+        let height: CGFloat = userResponse.responseStatus == true ? containerHeight + 50 : containerHeight
         if messageTV.text.count == 0 {
             messageTV.isScrollEnabled = false
             const.constant = height
@@ -527,7 +498,6 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     @objc func handleKeyboardWillShow(notification: NSNotification){
-        print("WILLSHOW")
         let kFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
         let kDuration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double
         guard let height = kFrame?.height, let duration = kDuration else { return }
@@ -543,7 +513,6 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     @objc func handleKeyboardWillHide(notification: NSNotification){
-        print("Will hide")
         let kFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
         let kDuration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double
         guard let height = kFrame?.height else { return }
@@ -579,22 +548,10 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     func observeFriendTyping(){
         chatNetworking.observeIsUserTyping() { (friendActivity) in
             if friendActivity.friendId == self.friend.id && friendActivity.isTyping {
-                self.animateTyping(const: 1, isHidden: false)
                 self.navigationItem.setupTypingNavTitle(navTitle: self.friend.name)
             }else{
-                self.animateTyping(const: 0, isHidden: true)
                 self.setupChatNavBar()
             }
-        }
-    }
-    
-    func animateTyping(const: CGFloat, isHidden: Bool){
-        UIView.animate(withDuration: 0.2, animations: {
-            self.isTypingView.alpha = const
-            self.typingAnimation.alpha = const
-        }) { (true) in
-            self.isTypingView.isHidden = isHidden
-            self.typingAnimation.isHidden = isHidden
         }
     }
     
@@ -622,51 +579,6 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         openToolsMenu(indexPath, message, cell)
     }
     
-    func openToolsMenu(_ indexPath: IndexPath, _ message: Messages, _ selectedCell: ChatCell){
-        hideKeyboard()
-        collectionView.isUserInteractionEnabled = false
-        selectedCell.isHidden = true
-        let window = UIApplication.shared.windows[0]
-        let cF = collectionView.convert(selectedCell.frame, to: collectionView.superview)
-        let bF = collectionView.convert(selectedCell.messageBackground.frame, to: collectionView.superview)
-        let w = selectedCell.messageBackground.frame.size.width
-        let h = selectedCell.messageBackground.frame.size.height
-        toolsScrollView = setupScrollView(h)
-        toolsBlurView = setupBlurView()
-        window.addSubview(toolsScrollView)
-        toolsScrollView.addSubview(toolsBlurView)
-        var xValue: CGFloat = bF.origin.x
-        if !selectedCell.isIncoming, bF.width < 190 {
-            xValue = bF.minX - 150
-            let width = bF.width
-            if  width < 190, width > 120 { xValue = bF.origin.x - 90 }
-        }
-        var scrollYValue = cF.maxY + 8
-        var messageYValue = cF.origin.y
-        let noScroll = self.toolsScrollView.contentSize.height == self.view.frame.height
-        if !noScroll {
-            scrollYValue = h
-            messageYValue = toolsScrollView.frame.minY - 8
-            toolsScrollView.setContentOffset(CGPoint(x: 0, y: max(toolsScrollView.contentSize.height - toolsScrollView.bounds.size.height, 0) ), animated: true)
-        }
-        let toolsView = ToolsView(frame: CGRect(x: xValue, y: scrollYValue, width: 200, height: 200))
-        toolsScrollView.addSubview(toolsView)
-        let _ = ToolsTB(frame: toolsView.frame, style: .plain, tV: toolsView, bV: toolsBlurView, cV: self, sM: message, i: indexPath, cell: selectedCell)
-        let msgViewFrame = CGRect(x: bF.origin.x, y: messageYValue, width: w, height: h)
-        let messageView = MessageView(frame: msgViewFrame, cell: selectedCell, message: message, friendName: friend.name)
-        toolsScrollView.addSubview(messageView)
-        toolMessageAppearance(window.frame, toolsView, messageView, noScroll, h)
-        toolsBlurView.cell = selectedCell
-        toolsBlurView.message = message
-        toolsBlurView.mView = messageView
-        toolsBlurView.tView = toolsView
-        toolsBlurView.backgroundFrame = bF
-        toolsBlurView.cellFrame = cF
-        toolsBlurView.sView = toolsScrollView
-        toolsBlurView.chatView = self
-        vGenerator.impactOccurred()
-    }
-    
     func toolMessageAppearance(_ window: CGRect, _ tV: UIView, _ mV: UIView, _ nS: Bool, _ h: CGFloat){
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             if tV.frame.maxY > window.maxY && nS{
@@ -679,29 +591,30 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         })
     }
     
-    func setupBlurView() -> ToolsBlurView{
-        let blurView = ToolsBlurView()
-        blurView.effect = UIBlurEffect(style: .dark)
-        let size = toolsScrollView.contentSize
-        blurView.frame = CGRect(x: 0, y: -400, width: size.width, height: size.height + 1000)
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(setupExitMenu))
-        blurView.addGestureRecognizer(tapGesture)
-        return blurView
+    func forwardButtonPressed(_ message: Messages) {
+        chatNetworking.getMessageSender(message: message) { (name) in
+            self.userResponse.messageToForward = message
+            let convController = NewConversationVC()
+            convController.delegate = self
+            convController.forwardName = name
+            let navController = UINavigationController(rootViewController: convController)
+            self.present(navController, animated: true, completion: nil)
+        }
     }
     
-    func setupScrollView(_ height: CGFloat) -> UIScrollView{
-        let scrollView = UIScrollView()
-        scrollView.frame = view.frame
-        var sHeight: CGFloat
-        scrollView.backgroundColor = .clear
-        if height < view.frame.height - 220 { sHeight = view.frame.height } else { sHeight = height + 230 }
-        scrollView.contentSize = CGSize(width: view.frame.width, height: sHeight)
-        return scrollView
-    }
-    
-    @objc func setupExitMenu(){
-        toolsBlurView.handleViewDismiss()
-    }
+    func responseButtonPressed(_ message: Messages, forwardedName: String? = nil){
+           responseViewChangeAlpha(a: 0)
+           messageTV.becomeFirstResponder()
+           userResponse.responseStatus = true
+           userResponse.repliedMessage = message
+           containterHAnchor.constant += 50
+           UIView.animate(withDuration: 0.1, animations: {
+               self.view.layoutIfNeeded()
+               self.responseMessageLine(message, forwardedName)
+           }) { (true) in
+               self.responseViewChangeAlpha(a: 1)
+           }
+       }
     
 }
 
@@ -767,8 +680,8 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard let sView = scrollView as? UICollectionView else { return }
         if sView.contentOffset.y + sView.adjustedContentInset.top == 0 {
-            if !loadMore && !lastMessageReached {
-                vGenerator.impactOccurred()
+            if !chatNetworking.loadMore && !chatNetworking.lastMessageReached {
+                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
                 fetchMessages()
             }
         }
@@ -803,11 +716,11 @@ extension ChatVC: UITextViewDelegate {
 extension ChatVC: ForwardToFriend {
     
     func forwardToSelectedFriend(friend: FriendInfo, for name: String) {
-        repButtonPressed(messageToForward!, forwardedName: name)
+        responseButtonPressed(userResponse.messageToForward!, forwardedName: name)
         self.friend = friend
         messages = []
         collectionView.reloadData()
-        loadNewMessages = false
+        chatNetworking.loadNewMessages = false
         setupChat()
     }
     

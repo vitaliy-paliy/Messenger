@@ -212,7 +212,7 @@ class ChatCell: UICollectionViewCell {
     }
     
     @objc func replyViewTapped(){
-        chatVC.showRepMessageView(cell: self)
+        chatVC.showResponseMessageView(cell: self)
     }
     
 }
