@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ToolsMenuView {
+class ToolsMenu{
     var cell: ChatCell
     var message: Messages
     var mView: UIView

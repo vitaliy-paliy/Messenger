@@ -11,7 +11,7 @@ import Firebase
 
 class ToolsBlurView: UIVisualEffectView {
     
-    var menu: ToolsMenuView!
+    var menu: ToolsMenu!
     
     func handleViewDismiss(isDeleted: Bool? = nil, isReply: Bool? = nil, isForward: Bool? = nil){
         if isDeleted == nil {

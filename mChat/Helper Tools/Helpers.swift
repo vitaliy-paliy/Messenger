@@ -18,10 +18,6 @@ class ContactsAnimationButton: UIButton{
     var friendInfo: FriendInfo?
 }
 
-class RefreshIndicator: UIActivityIndicatorView {
-    var order: Bool!
-}
-
 extension UIViewController {
     
     func showAlert(title: String?, message: String?){

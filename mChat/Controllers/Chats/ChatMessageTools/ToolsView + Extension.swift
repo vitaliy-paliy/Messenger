@@ -44,7 +44,7 @@ extension ChatVC{
         let messageView = MessageView(frame: msgViewFrame, cell: selectedCell, message: message, friendName: friend.name)
         toolsScrollView.addSubview(messageView)
         toolMessageAppearance(window.frame, toolsView, messageView, noScroll, height)
-        let menu = ToolsMenuView(cell: selectedCell, message: message, mView: messageView, tView: toolsView, backgroundFrame: bF, cellFrame: cF, sView: toolsScrollView, chatView: self)
+        let menu = ToolsMenu(cell: selectedCell, message: message, mView: messageView, tView: toolsView, backgroundFrame: bF, cellFrame: cF, sView: toolsScrollView, chatView: self)
         toolsBlurView.menu = menu
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
     }
