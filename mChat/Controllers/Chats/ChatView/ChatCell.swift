@@ -122,7 +122,7 @@ class ChatCell: UICollectionViewCell {
     }
     
     func setupRepMessageView(_ friendName: String){
-            self.handleRepMessageSetup(friendName)
+        self.handleRepMessageSetup(friendName)
     }
     
     private func handleRepMessageSetup(_ name: String){

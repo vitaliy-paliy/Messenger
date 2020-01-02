@@ -10,46 +10,45 @@ import UIKit
 import Firebase
 
 class ToolsTB: UITableView, UITableViewDelegate, UITableViewDataSource {
-    
+
     var tools = ["Reply", "Forward", "Copy", "Delete"]
     var toolsImg = ["arrowshape.turn.up.left", "arrowshape.turn.up.right", "doc.on.doc", "trash"]
-    var blurView: ToolsBlurView!
-    var chatView: ChatVC!
     var selectedMessage: Messages!
-    var indexPath: IndexPath!
+    var scrollView: ToolsMenu!
     var selectedCell: ChatCell!
+    var chatView: ChatVC!
     
-    init(frame: CGRect, style: UITableView.Style, tV: UIView, bV: ToolsBlurView, cV: ChatVC, sM: Messages, i: IndexPath, cell: ChatCell) {
-        super.init(frame: frame, style: style)
-        blurView = bV
-        chatView = cV
-        indexPath = i
-        selectedMessage = sM
-        selectedCell = cell
+    init(style: UITableView.Style, sV: ToolsMenu) {
+        super.init(frame: sV.toolsView.frame, style: style)
+        scrollView = sV
+        chatView = sV.chatVC
+        selectedMessage = sV.message
+        selectedCell = sV.selectedCell
         delegate = self
         dataSource = self
         register(ToolsCell.self, forCellReuseIdentifier: "ToolsCell")
         separatorStyle = .singleLine
         translatesAutoresizingMaskIntoConstraints = false
         rowHeight = 50
-        tV.addSubview(self)
+        let toolsView = sV.toolsView
+        toolsView.addSubview(self)
         let tableConstraints = [
-            leadingAnchor.constraint(equalTo: tV.leadingAnchor, constant: -16),
-            bottomAnchor.constraint(equalTo: tV.bottomAnchor),
-            trailingAnchor.constraint(equalTo: tV.trailingAnchor, constant: 16),
-            topAnchor.constraint(equalTo: tV.topAnchor),
+            leadingAnchor.constraint(equalTo: toolsView.leadingAnchor, constant: -16),
+            bottomAnchor.constraint(equalTo: toolsView.bottomAnchor),
+            trailingAnchor.constraint(equalTo: toolsView.trailingAnchor, constant: 16),
+            topAnchor.constraint(equalTo: toolsView.topAnchor),
         ]
         NSLayoutConstraint.activate(tableConstraints)
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tools.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ToolsCell") as! ToolsCell
         let tool = tools[indexPath.row]
@@ -64,7 +63,7 @@ class ToolsTB: UITableView, UITableViewDelegate, UITableViewDataSource {
         }
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let tool = tools[indexPath.row]
         let messageToForward = chatView.userResponse.messageToForward
@@ -76,21 +75,21 @@ class ToolsTB: UITableView, UITableViewDelegate, UITableViewDataSource {
             guard selectedMessage.mediaUrl == nil else { return }
             let pasteBoard = UIPasteboard.general
             pasteBoard.string = selectedMessage.message
-            self.blurView.handleViewDismiss()
+            scrollView.handleViewDismiss()
         }else if "Reply" == tool{
             if repliedMesage != nil || messageToForward != nil{ chatView.exitResponseButtonPressed() }
-            blurView.handleViewDismiss(isReply: true)
+            scrollView.handleViewDismiss(isReply: true)
         }else if "Forward" == tool{
             if repliedMesage != nil || messageToForward != nil{ chatView.exitResponseButtonPressed() }
-            blurView.handleViewDismiss(isForward: true)
+            scrollView.handleViewDismiss(isForward: true)
         }
     }
-    
+
     func removeHandler(){
         chatView.chatNetworking.removeMessageHandler(mId: selectedMessage.id) {
-            self.blurView.handleViewDismiss(isDeleted: true)
+            self.scrollView.handleViewDismiss(isDeleted: true)
         }
-        
+
     }
-    
+
 }

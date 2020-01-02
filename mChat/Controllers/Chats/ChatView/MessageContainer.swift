@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MessageContainer: UIView, UITextViewDelegate {
+class MessageContainer: UIView, UITextViewDelegate{
     
     var bottomAnchr = NSLayoutConstraint()
     var heightAnchr = NSLayoutConstraint()
@@ -156,7 +156,7 @@ extension MessageContainer {
         messageTV.constraints.forEach { (constraint) in
             if constraint.firstAttribute != .height { return }
             chatVC.messageHeightHandler(constraint, estSize)
-            constraints.forEach { (const) in if const.firstAttribute == .height { chatVC.messageContainerHeightHandler(const, estSize) }}
+            chatVC.messageContainerHeightHandler(heightAnchr, estSize)
         }
     }
 }

@@ -14,20 +14,17 @@ protocol ForwardToFriend {
     func forwardToSelectedFriend(friend: FriendInfo, for name: String)
 }
 
-class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var friend: FriendInfo!
     var messages = [Messages]()
     let chatNetworking = ChatNetworking()
     var userResponse = UserResponse()
-    var imageGalleryView = ImageGalleryView()
     
     var containerHeight: CGFloat!
     var collectionView: MessageCollectionView!
     var messageContainer: MessageContainer!
     var refreshIndicator: MessageLoadingIndicator!
-    var toolsBlurView = ToolsBlurView()
-    var toolsScrollView = UIScrollView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -136,18 +133,16 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         }
         messageContainer.messageTV.text = ""
         messageContainer.messageTV.subviews[2].isHidden = false
-        chatNetworking.disableIsTyping()
         hideKeyboard()
+        chatNetworking.disableIsTyping()
         messageContainer.messageTV.constraints.forEach { (constraint) in
             if constraint.firstAttribute == .height {
                 constraint.constant = 32
-                messageContainer.constraints.forEach { (const) in if const.firstAttribute == .height {
-                    if sendingIsFinished(const: const){ return }
-                    }
-                }
+                if sendingIsFinished(const: messageContainer.heightAnchr){ return }
             }
             view.layoutIfNeeded()
         }
+        self.scrollToTheBottom(animated: false)
     }
     
     func fetchMessages(){
@@ -186,7 +181,9 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
             self.chatNetworking.newMessageRecievedHandler(self.chatNetworking.loadNewMessages, self.messages, for: snap) { (newMessage) in
                 self.messages.append(newMessage)
                 self.collectionView.reloadData()
-                self.scrollToTheBottom(animated: true)
+                if newMessage.determineUser() != CurrentUser.uid {
+                    self.scrollToTheBottom(animated: true)
+                }
             }
         }
     }
@@ -215,75 +212,9 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         return true
     }
     
-    func zoomImageHandler(image: UIImageView){
+    func zoomImageHandler(image: UIImageView) {
         view.endEditing(true)
-        imageGalleryView.frame = image.superview?.convert(image.frame, to: nil)
-        let photoView = UIImageView(frame: imageGalleryView.frame!)
-        imageGalleryView.startingFrame = image
-        imageGalleryView.startingFrame.isHidden = true
-        photoView.isUserInteractionEnabled = true
-        let slideUp = UISwipeGestureRecognizer(target: self, action: #selector(imageSlideUpDownHandler(tap:)))
-        let slideDown = UISwipeGestureRecognizer(target: self, action: #selector(imageSlideUpDownHandler(tap:)))
-        slideUp.direction = .up
-        slideDown.direction = .down
-        photoView.addGestureRecognizer(slideUp)
-        photoView.addGestureRecognizer(slideDown)
-        photoView.image = image.image
-        let keyWindow = UIApplication.shared.windows[0]
-        imageGalleryView.background = UIView(frame: keyWindow.frame)
-        imageGalleryView.background.backgroundColor = .black
-        imageGalleryView.background.alpha = 0
-        keyWindow.addSubview(imageGalleryView.background)
-        keyWindow.addSubview(photoView)
-        let closeImageButton = UIButton(type: .system)
-        imageGalleryView.clickedView = photoView
-        imageGalleryView.background.addSubview(closeImageButton)
-        closeImageButton.translatesAutoresizingMaskIntoConstraints = false
-        closeImageButton.tintColor = .white
-        closeImageButton.addTarget(self, action: #selector(closeImageButtonPressed), for: .touchUpInside)
-        closeImageButton.setImage(UIImage(systemName: "xmark"), for: .normal)
-        
-        var tAnchor = closeImageButton.topAnchor.constraint(equalTo: imageGalleryView.background.topAnchor, constant: 20)
-        if imageGalleryView.background.safeAreaInsets.top > 25 {
-            tAnchor = closeImageButton.topAnchor.constraint(equalTo: imageGalleryView.background.topAnchor, constant: 45)
-        }
-        let constraints = [
-            closeImageButton.trailingAnchor.constraint(equalTo: imageGalleryView.background.trailingAnchor, constant: -16),
-            tAnchor
-        ]
-        NSLayoutConstraint.activate(constraints)
-        UIView.animate(withDuration: 0.4, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            self.imageGalleryView.background.alpha = 1
-            let height = self.imageGalleryView.frame!.height / self.imageGalleryView.frame!.width * keyWindow.frame.width
-            photoView.frame = CGRect(x: 0, y: 0, width: keyWindow.frame.width, height: height)
-            photoView.center = keyWindow.center
-        }) { (true) in
-            
-        }
-    }
-    
-    @objc func imageSlideUpDownHandler(tap: UISwipeGestureRecognizer){
-        if let slideView = tap.view as? UIImageView {
-            handleZoomOutAnim(slideView: slideView)
-        }
-    }
-    
-    @objc func closeImageButtonPressed(){
-        let slideView = imageGalleryView.clickedView
-        handleZoomOutAnim(slideView: slideView!)
-    }
-    
-    func handleZoomOutAnim(slideView: UIImageView){
-        slideView.layer.cornerRadius = 16
-        slideView.layer.masksToBounds = true
-        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            slideView.frame = self.imageGalleryView.frame!
-            self.imageGalleryView.background.alpha = 0
-        }) { (true) in
-            slideView.alpha = 0
-            slideView.removeFromSuperview()
-            self.imageGalleryView.startingFrame.isHidden = false
-        }
+        let _ = SelectedImageView(image, self)
     }
     
     func messageContainerHeightHandler(_ const: NSLayoutConstraint, _ estSize: CGSize){
@@ -341,8 +272,8 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
             messageContainer.bottomAnchr.constant = 13.2
             collectionView.contentOffset.y -= 13.2
         }
-        collectionView.contentOffset.y += height
         messageContainer.bottomAnchr.constant -= height
+        collectionView.contentOffset.y += height
         UIView.animate(withDuration: duration) {
             self.view.layoutIfNeeded()
         }
@@ -404,8 +335,17 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
         guard let indexPath = collectionView.indexPathForItem(at: point) else { return }
         guard let cell = collectionView.cellForItem(at: indexPath) as? ChatCell else { return }
         let message = messages[indexPath.row]
-        openToolsMenu(indexPath, message, cell)
+        openToolsMenu(message, cell)
     }
+    
+    func openToolsMenu(_ message: Messages, _ selectedCell: ChatCell){
+        hideKeyboard()
+        collectionView.isUserInteractionEnabled = false
+        selectedCell.isHidden = true
+        let _ = ToolsMenu(message, selectedCell, self)
+    }
+    
+    // TODO: move ToolMessageAppearance out VC
     
     func toolMessageAppearance(_ window: CGRect, _ tV: UIView, _ mV: UIView, _ nS: Bool, _ h: CGFloat){
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
@@ -431,18 +371,18 @@ class ChatVC: UIViewController, UITextFieldDelegate, UIImagePickerControllerDele
     }
     
     func responseButtonPressed(_ message: Messages, forwardedName: String? = nil){
-           responseViewChangeAlpha(a: 0)
-           messageContainer.messageTV.becomeFirstResponder()
-           userResponse.responseStatus = true
-           userResponse.repliedMessage = message
-           messageContainer.heightAnchr.constant += 50
-           UIView.animate(withDuration: 0.1, animations: {
-               self.view.layoutIfNeeded()
-               self.responseMessageLine(message, forwardedName)
-           }) { (true) in
-               self.responseViewChangeAlpha(a: 1)
-           }
-       }
+        responseViewChangeAlpha(a: 0)
+        messageContainer.messageTV.becomeFirstResponder()
+        userResponse.responseStatus = true
+        userResponse.repliedMessage = message
+        messageContainer.heightAnchr.constant += 50
+        UIView.animate(withDuration: 0.1, animations: {
+            self.view.layoutIfNeeded()
+            self.responseMessageLine(message, forwardedName)
+        }) { (true) in
+            self.responseViewChangeAlpha(a: 1)
+        }
+    }
     
 }
 
