@@ -8,7 +8,6 @@
 
 import Foundation
 
-let calendar = Calendar(identifier: .gregorian)
 extension Calendar {
     
     func calculateTimePassed(date: NSDate) -> String{

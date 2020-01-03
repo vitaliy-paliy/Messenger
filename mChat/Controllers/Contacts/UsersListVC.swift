@@ -10,7 +10,7 @@ import UIKit
 
 class UsersListVC: UIViewController {
 
-    var users: [UserInfo] = []
+    var users: [FriendInfo] = []
     var tableView = UITableView()
     
     override func viewDidLoad() {
@@ -34,7 +34,7 @@ class UsersListVC: UIViewController {
  
     func fetchUsers(){
         Constants.db.reference().child("users").observe(.childAdded) { (snapshot) in
-            let user = UserInfo()
+            var user = FriendInfo()
             guard let values = snapshot.value as? [String: Any] else { return }
             user.email = values["email"] as? String
             user.profileImage = values["profileImage"] as? String
@@ -89,10 +89,7 @@ extension UsersListVC: UITableViewDelegate, UITableViewDataSource {
         let selectedUser = users[indexPath.row]
         tableView.deselectRow(at: indexPath, animated: true)
         let controller = AddFriendVC()
-        controller.friendEmail = selectedUser.email
-        controller.friendName = selectedUser.name
-        controller.friendId = selectedUser.id
-        controller.friendProfileImage = selectedUser.profileImage
+        controller.friend = selectedUser
         controller.modalPresentationStyle = .fullScreen
         show(controller, sender: nil)
     }

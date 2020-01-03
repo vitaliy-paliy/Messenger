@@ -8,11 +8,6 @@
 
 import UIKit
 import Firebase
-import Lottie
-
-protocol ForwardToFriend {
-    func forwardToSelectedFriend(friend: FriendInfo, for name: String)
-}
 
 class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -25,6 +20,7 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     var collectionView: MessageCollectionView!
     var messageContainer: MessageContainer!
     var refreshIndicator: MessageLoadingIndicator!
+    let calendar = Calendar(identifier: .gregorian)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,23 +29,13 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
         notificationCenterHandler()
     }
     
-    func setupChat(){
-        chatNetworking.friend = friend
-        setupChatNavBar()
-        fetchMessages()
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: ProfileImageButton(chatVC: self, url: friend.profileImage))
-        observeMessageActions()
-        observeFriendTyping()
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = true
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewSafeAreaInsetsDidChange() {
@@ -65,6 +51,15 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
         messageContainer = MessageContainer(height: containerHeight, const: topConst, chatVC: self)
         collectionView = MessageCollectionView(collectionViewLayout: UICollectionViewFlowLayout.init(), chatVC: self)
         refreshIndicator = MessageLoadingIndicator(frame: view.frame, const: topConst, chatVC: self)
+    }
+    
+    func setupChat(){
+        chatNetworking.friend = friend
+        setupChatNavBar()
+        fetchMessages()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: ProfileImageButton(chatVC: self, url: friend.profileImage))
+        observeMessageActions()
+        observeFriendTyping()
     }
     
     func setupChatNavBar(){
@@ -133,6 +128,7 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
         }
         messageContainer.messageTV.text = ""
         messageContainer.messageTV.subviews[2].isHidden = false
+        self.scrollToTheBottom(animated: false)
         hideKeyboard()
         chatNetworking.disableIsTyping()
         messageContainer.messageTV.constraints.forEach { (constraint) in
@@ -142,7 +138,6 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
             }
             view.layoutIfNeeded()
         }
-        self.scrollToTheBottom(animated: false)
     }
     
     func fetchMessages(){
@@ -204,7 +199,10 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     }
     
     @objc func profileImageTapped(){
-        print("TODO: Friend Profile")
+        let friendController = FriendInformationVC()
+        friendController.friend = friend
+        friendController.modalPresentationStyle = .fullScreen
+        show(friendController, sender: self)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -339,24 +337,11 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     }
     
     func openToolsMenu(_ message: Messages, _ selectedCell: ChatCell){
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         hideKeyboard()
         collectionView.isUserInteractionEnabled = false
         selectedCell.isHidden = true
         let _ = ToolsMenu(message, selectedCell, self)
-    }
-    
-    // TODO: move ToolMessageAppearance out VC
-    
-    func toolMessageAppearance(_ window: CGRect, _ tV: UIView, _ mV: UIView, _ nS: Bool, _ h: CGFloat){
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            if tV.frame.maxY > window.maxY && nS{
-                tV.frame.origin.y = window.maxY - 220
-                mV.frame.origin.y = tV.frame.minY - h - 8
-            }else if mV.frame.minY < 100 && nS{
-                mV.frame.origin.y = window.minY + 40
-                tV.frame.origin.y = mV.frame.maxY + 8
-            }
-        })
     }
     
     func forwardButtonPressed(_ message: Messages) {
@@ -382,90 +367,6 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
         }) { (true) in
             self.responseViewChangeAlpha(a: 1)
         }
-    }
-    
-}
-
-extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        var height: CGFloat = 80
-        let message = messages[indexPath.row]
-        if let msg = message.message {
-            height = calculateFrameInText(message: msg).height + 10
-            if message.repMediaMessage != nil || message.repMessage != nil { height += 50 }
-        }else if let imageWidth = message.imageWidth?.floatValue, let imageHeight = message.imageHeight?.floatValue  {
-            height = CGFloat(imageHeight / imageWidth * 200)
-        }
-        return CGSize(width: view.frame.width, height: height)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return messages.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ChatCell", for: indexPath) as! ChatCell
-        
-        let message = messages[indexPath.row]
-        cell.chatVC = self
-        cell.message.text = message.message
-        cell.msg = message
-        if let message = message.message {
-            cell.backgroundWidthAnchor.constant = calculateFrameInText(message: message).width + 32
-        }
-        
-        if message.recipient == CurrentUser.uid{
-            cell.isIncoming = true
-            cell.outcomingMessage.isActive = false
-            cell.incomingMessage.isActive = true
-        }else{
-            cell.isIncoming = false
-            cell.incomingMessage.isActive = false
-            cell.outcomingMessage.isActive = true
-        }
-        
-        if message.mediaUrl != nil{
-            cell.mediaMessage.loadImage(url: message.mediaUrl)
-            cell.mediaMessage.isHidden = false
-            cell.backgroundWidthAnchor.constant = 200
-            cell.messageBackground.backgroundColor = .clear
-        }else{
-            cell.mediaMessage.isHidden = true
-        }
-        
-        if message.repMediaMessage != nil {
-            cell.setupRepMessageView(message.repSender)
-        }else if message.repMessage != nil {
-            cell.setupRepMessageView(message.repSender)
-        }else{
-            cell.removeReplyOutlets()
-        }
-        
-        return cell
-    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard let sView = scrollView as? UICollectionView else { return }
-        if sView.contentOffset.y + sView.adjustedContentInset.top == 0 {
-            if !chatNetworking.loadMore && !chatNetworking.lastMessageReached {
-                UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                fetchMessages()
-            }
-        }
-    }
-    
-}
-
-extension ChatVC: ForwardToFriend {
-    
-    func forwardToSelectedFriend(friend: FriendInfo, for name: String) {
-        responseButtonPressed(userResponse.messageToForward!, forwardedName: name)
-        self.friend = friend
-        messages = []
-        collectionView.reloadData()
-        chatNetworking.loadNewMessages = false
-        setupChat()
     }
     
 }

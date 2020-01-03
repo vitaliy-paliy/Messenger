@@ -8,13 +8,6 @@
 
 import Foundation
 
-class UserInfo{
-    var id: String!
-    var email: String!
-    var name: String!
-    var profileImage: String!
-}
-
 struct FriendInfo {
     var id: String!
     var name: String!

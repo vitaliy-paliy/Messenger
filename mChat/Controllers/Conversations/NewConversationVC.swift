@@ -129,7 +129,6 @@ extension NewConversationVC: UITableViewDelegate, UITableViewDataSource {
             delegate?.forwardToSelectedFriend(friend: friend, for: name)
         }
         dismiss(animated: true, completion: nil)
-        
     }
     
     

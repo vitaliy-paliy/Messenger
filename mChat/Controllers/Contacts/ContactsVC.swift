@@ -370,10 +370,7 @@ class ContactsVC: UIViewController {
         guard let bInfo = button.friendInfo else { return }
         let controller = AddFriendVC()
         controller.modalPresentationStyle = .fullScreen
-        controller.friendId = bInfo.id
-        controller.friendProfileImage = bInfo.profileImage
-        controller.friendName = bInfo.name
-        controller.friendEmail = bInfo.email
+        controller.friend = bInfo
         show(controller, sender: nil)
     }
     

@@ -11,15 +11,17 @@ import UIKit
 class SelectedImageView: UIScrollView, UIScrollViewDelegate{
     
     var keyWindow: UIWindow!
-    var chatVC: ChatVC!
+    var chatVC: ChatVC?
+    var sharedMediaVC: SharedMediaVC?
     var cellImage: UIImageView!
     var cellFrame: CGRect!
     var imageView = UIImageView()
     
-    init(_ cellImage: UIImageView, _ chatVC: ChatVC) {
+    init(_ cellImage: UIImageView, _ chatVC: ChatVC? = nil, _ sharedMediaVC: SharedMediaVC? = nil) {
         super.init(frame: .zero)
         self.cellImage = cellImage
         self.chatVC = chatVC
+        self.sharedMediaVC = sharedMediaVC
         self.cellImage.isHidden = true
         cellFrame = cellImage.superview?.convert(cellImage.frame, to: nil)
         keyWindow = UIApplication.shared.windows[0]
@@ -32,7 +34,11 @@ class SelectedImageView: UIScrollView, UIScrollViewDelegate{
     }
     
     func setupScrollView() {
-        frame = chatVC.view.frame
+        if let chatVC = chatVC {
+            frame = chatVC.view.frame
+        }else{
+            frame = sharedMediaVC!.view.frame
+        }
         keyWindow.addSubview(self)
         backgroundColor = .black
         delegate = self
@@ -72,7 +78,11 @@ class SelectedImageView: UIScrollView, UIScrollViewDelegate{
     
     @objc func handleSwipe() {
         removeFromSuperview()
-        chatVC.view.addSubview(imageView)
+        if let chatVC = chatVC {
+            chatVC.view.addSubview(imageView)
+        }else{
+            sharedMediaVC!.view.addSubview(imageView)
+        }
         UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.imageView.frame = self.cellFrame
             self.imageView.layer.cornerRadius = self.cellImage.layer.cornerRadius

@@ -11,17 +11,14 @@ import Firebase
 
 class AddFriendVC: UIViewController, UINavigationBarDelegate{
     
-    var friendId: String!
-    var friendName: String!
-    var friendEmail: String!
-    var friendProfileImage: String!
-    var isFriend = false
+    var friend: FriendInfo!
     
     var nameLabel = UILabel()
     var emailLabel = UILabel()
     var image = UIImageView()
     var addFriendButton = UIButton(type: .system)
     var container = UIView()
+    var isFriend = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -67,7 +64,7 @@ class AddFriendVC: UIViewController, UINavigationBarDelegate{
     }
     
     func setupImage(){
-        image.loadImage(url: friendProfileImage)
+        image.loadImage(url: friend.profileImage)
         view.addSubview(image)
         setupImages(image, .scaleAspectFill, 50, true)
         NSLayoutConstraint.activate(configureImagesConstraints(image, 100, 100, container, 20))
@@ -76,8 +73,8 @@ class AddFriendVC: UIViewController, UINavigationBarDelegate{
     func setupLabels(){
         view.addSubview(nameLabel)
         view.addSubview(emailLabel)
-        configureLabels(nameLabel, friendName, color: .black, size: 25)
-        configureLabels(emailLabel, friendEmail, color: .systemGray, size: 18)
+        configureLabels(nameLabel, friend.name, color: .black, size: 25)
+        configureLabels(emailLabel, friend.email, color: .systemGray, size: 18)
         NSLayoutConstraint.activate(configureLabelConstraints(view: container, label: nameLabel, topEqualTo: image, topConst: 20))
         NSLayoutConstraint.activate(configureLabelConstraints(view: container, label: emailLabel, topEqualTo: nameLabel, topConst: 0))
     }
@@ -90,8 +87,8 @@ class AddFriendVC: UIViewController, UINavigationBarDelegate{
     }
     
     @objc func addButtonPressed(){
-        let user = Constants.db.reference().child("friendsList").child(CurrentUser.uid).child(friendId).child(friendId)
-        let friend = Constants.db.reference().child("friendsList").child(friendId).child(CurrentUser.uid).child(CurrentUser.uid)
+        let user = Constants.db.reference().child("friendsList").child(CurrentUser.uid).child(friend.id).child(self.friend.id)
+        let friend = Constants.db.reference().child("friendsList").child(self.friend.id).child(CurrentUser.uid).child(CurrentUser.uid)
         if !isFriend {
             updateFriendship(user: user, friend: friend, status: !isFriend)
             self.showAlert(title: "Success", message: "User was successfully added to your friends list")
@@ -109,10 +106,10 @@ class AddFriendVC: UIViewController, UINavigationBarDelegate{
     }
     
     func checkFriend(){
-        Constants.db.reference().child("friendsList").child(CurrentUser.uid).child(friendId).observe(.value) { (snapshot) in
+        Constants.db.reference().child("friendsList").child(CurrentUser.uid).child(friend.id).observe(.value) { (snapshot) in
             guard let values = snapshot.value as? [String: Any] else { return }
             let f = values
-            if f[self.friendId] as? Bool != nil && f[self.friendId] as? Bool == true {
+            if f[self.friend.id] as? Bool != nil && f[self.friend.id] as? Bool == true {
                 self.isFriend = true
             }
         }

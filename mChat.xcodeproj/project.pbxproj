@@ -21,6 +21,13 @@
 		CB4CF77B23943B3600AC2E31 /* NewConversationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4CF77A23943B3600AC2E31 /* NewConversationVC.swift */; };
 		CB4CF77E23943D8100AC2E31 /* NewConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4CF77D23943D8100AC2E31 /* NewConversationCell.swift */; };
 		CB4E41F523BD7BE200D476E5 /* ToolsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4E41F423BD7BE200D476E5 /* ToolsMenu.swift */; };
+		CB513C3723BE6C1300BE8907 /* ChatCollectionView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB513C3623BE6C1300BE8907 /* ChatCollectionView + Extension.swift */; };
+		CB513C3923BE6CB900BE8907 /* ForwardToSend + Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB513C3823BE6CB900BE8907 /* ForwardToSend + Protocol.swift */; };
+		CB513C3B23BE717300BE8907 /* FriendInformationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB513C3A23BE717300BE8907 /* FriendInformationVC.swift */; };
+		CB513C3E23BE872A00BE8907 /* FriendInfoToolsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB513C3D23BE872A00BE8907 /* FriendInfoToolsCell.swift */; };
+		CB513C4023BE8C7F00BE8907 /* FriendInformationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB513C3F23BE8C7F00BE8907 /* FriendInformationCell.swift */; };
+		CB513C4223BEB14E00BE8907 /* SharedMediaVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB513C4123BEB14E00BE8907 /* SharedMediaVC.swift */; };
+		CB513C4423BEBB4B00BE8907 /* SharedMediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB513C4323BEBB4B00BE8907 /* SharedMediaCell.swift */; };
 		CB644C2523A2FFC7003094DF /* chatTyping.json in Resources */ = {isa = PBXBuildFile; fileRef = CB644C2323A2FFC7003094DF /* chatTyping.json */; };
 		CB65C64723831EA300F2B5A3 /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB65C64623831EA300F2B5A3 /* CurrentUser.swift */; };
 		CB65C64C2383326300F2B5A3 /* ProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB65C64B2383326300F2B5A3 /* ProfileCell.swift */; };
@@ -72,6 +79,13 @@
 		CB4CF77A23943B3600AC2E31 /* NewConversationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationVC.swift; sourceTree = "<group>"; };
 		CB4CF77D23943D8100AC2E31 /* NewConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationCell.swift; sourceTree = "<group>"; };
 		CB4E41F423BD7BE200D476E5 /* ToolsMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsMenu.swift; sourceTree = "<group>"; };
+		CB513C3623BE6C1300BE8907 /* ChatCollectionView + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatCollectionView + Extension.swift"; sourceTree = "<group>"; };
+		CB513C3823BE6CB900BE8907 /* ForwardToSend + Protocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ForwardToSend + Protocol.swift"; sourceTree = "<group>"; };
+		CB513C3A23BE717300BE8907 /* FriendInformationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendInformationVC.swift; sourceTree = "<group>"; };
+		CB513C3D23BE872A00BE8907 /* FriendInfoToolsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendInfoToolsCell.swift; sourceTree = "<group>"; };
+		CB513C3F23BE8C7F00BE8907 /* FriendInformationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendInformationCell.swift; sourceTree = "<group>"; };
+		CB513C4123BEB14E00BE8907 /* SharedMediaVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedMediaVC.swift; sourceTree = "<group>"; };
+		CB513C4323BEBB4B00BE8907 /* SharedMediaCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedMediaCell.swift; sourceTree = "<group>"; };
 		CB644C2323A2FFC7003094DF /* chatTyping.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = chatTyping.json; sourceTree = "<group>"; };
 		CB65C64623831EA300F2B5A3 /* CurrentUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
 		CB65C64B2383326300F2B5A3 /* ProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCell.swift; sourceTree = "<group>"; };
@@ -148,6 +162,18 @@
 			path = "Helper Tools";
 			sourceTree = "<group>";
 		};
+		CB513C3C23BE868200BE8907 /* FriendInformation */ = {
+			isa = PBXGroup;
+			children = (
+				CB513C3A23BE717300BE8907 /* FriendInformationVC.swift */,
+				CB513C3F23BE8C7F00BE8907 /* FriendInformationCell.swift */,
+				CB513C3D23BE872A00BE8907 /* FriendInfoToolsCell.swift */,
+				CB513C4123BEB14E00BE8907 /* SharedMediaVC.swift */,
+				CB513C4323BEBB4B00BE8907 /* SharedMediaCell.swift */,
+			);
+			path = FriendInformation;
+			sourceTree = "<group>";
+		};
 		CB65C64A23831EBC00F2B5A3 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -212,10 +238,11 @@
 			children = (
 				CBDBAE5223BC1D5E00A56746 /* MessageContainer.swift */,
 				CBDBAE5623BC42AC00A56746 /* MessageCollectionView.swift */,
+				CB8DEAAB2388C985001EDF19 /* ChatCell.swift */,
+				CB513C3623BE6C1300BE8907 /* ChatCollectionView + Extension.swift */,
 				CBDBAE5823BC456400A56746 /* ProfileImageButton.swift */,
 				CBDBAE5423BC3C9200A56746 /* LoadingIndicator.swift */,
 				CB4B6F7F23BBD7BC00CDA4B3 /* ImageGalleryView.swift */,
-				CB8DEAAB2388C985001EDF19 /* ChatCell.swift */,
 			);
 			path = ChatView;
 			sourceTree = "<group>";
@@ -247,9 +274,11 @@
 			children = (
 				CB08304A238709BD002A1861 /* ChatVC.swift */,
 				CB89170023BA93490019CBE9 /* ChatNetworking.swift */,
+				CB513C3823BE6CB900BE8907 /* ForwardToSend + Protocol.swift */,
 				CBDBAE4F23BC1D0A00A56746 /* ChatView */,
 				CBAC237B23AC4A1600FCBED9 /* ChatMessageTools */,
 				CBDBAE4D23BC1C6200A56746 /* ResponseView */,
+				CB513C3C23BE868200BE8907 /* FriendInformation */,
 			);
 			path = Chats;
 			sourceTree = "<group>";
@@ -443,20 +472,25 @@
 				CB27173B2381ECB1003A4D46 /* Constants.swift in Sources */,
 				CB4B6F7923BBB09600CDA4B3 /* LoadImage + Extension.swift in Sources */,
 				CB08304B238709BD002A1861 /* ChatVC.swift in Sources */,
+				CB513C3723BE6C1300BE8907 /* ChatCollectionView + Extension.swift in Sources */,
 				CBF907EA2380B83500EF8925 /* AppDelegate.swift in Sources */,
 				CBCC30802383634C00E36E39 /* UsersListVC.swift in Sources */,
 				CBF05E4523A086A400EF295F /* NavigationItem + Extension.swift in Sources */,
 				CBFC53BB23873B5600CC4C91 /* ConverstaionsCell.swift in Sources */,
 				CBF644F12381C204004830C6 /* ChatTabBar.swift in Sources */,
 				CB89170123BA93490019CBE9 /* ChatNetworking.swift in Sources */,
+				CB513C3E23BE872A00BE8907 /* FriendInfoToolsCell.swift in Sources */,
 				CB2717382381E775003A4D46 /* Helpers.swift in Sources */,
 				CBDBAE5723BC42AC00A56746 /* MessageCollectionView.swift in Sources */,
 				CBF907EC2380B83500EF8925 /* SceneDelegate.swift in Sources */,
+				CB513C3923BE6CB900BE8907 /* ForwardToSend + Protocol.swift in Sources */,
 				CB4CF77B23943B3600AC2E31 /* NewConversationVC.swift in Sources */,
+				CB513C3B23BE717300BE8907 /* FriendInformationVC.swift in Sources */,
 				CB4B6F7D23BBB6A400CDA4B3 /* UserResponse.swift in Sources */,
 				CBDBAE5323BC1D5E00A56746 /* MessageContainer.swift in Sources */,
 				CB27173D2381EFFA003A4D46 /* SelectProfileImageVC.swift in Sources */,
 				CBF644F72381C26B004830C6 /* ConversationsVC.swift in Sources */,
+				CB513C4023BE8C7F00BE8907 /* FriendInformationCell.swift in Sources */,
 				CB4CC233239DD71B0086DEA9 /* Calendar + Extension.swift in Sources */,
 				CBCC3084238365B500E36E39 /* UsersListCell.swift in Sources */,
 				CBF644FD2381D384004830C6 /* ContactsCell.swift in Sources */,
@@ -473,8 +507,10 @@
 				CB4B6F8023BBD7BC00CDA4B3 /* ImageGalleryView.swift in Sources */,
 				CB65C64723831EA300F2B5A3 /* CurrentUser.swift in Sources */,
 				CBDBAE5923BC456400A56746 /* ProfileImageButton.swift in Sources */,
+				CB513C4223BEB14E00BE8907 /* SharedMediaVC.swift in Sources */,
 				CB4E41F523BD7BE200D476E5 /* ToolsMenu.swift in Sources */,
 				CBFC53B92387259E00CC4C91 /* Messages.swift in Sources */,
+				CB513C4423BEBB4B00BE8907 /* SharedMediaCell.swift in Sources */,
 				CB65C64C2383326300F2B5A3 /* ProfileCell.swift in Sources */,
 				CBBDE7AE238353A40040A296 /* UserInfo + FriendInfo.swift in Sources */,
 			);

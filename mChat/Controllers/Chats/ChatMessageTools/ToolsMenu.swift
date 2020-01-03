@@ -94,11 +94,9 @@ class ToolsMenu: UIScrollView {
     func toolMessageAppearance(){
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             if self.toolsView.frame.maxY > self.keyWindow.frame.maxY && self.noScroll{
-                print("ho")
                 self.toolsView.frame.origin.y = self.keyWindow.frame.maxY - 220
                 self.messageView.frame.origin.y = self.toolsView.frame.minY - self.messageFrame.height - 8
             }else if self.messageView.frame.minY < 100 && self.noScroll{
-                print("hofwfw")
                 self.messageView.frame.origin.y = self.keyWindow.frame.minY + 40
                 self.toolsView.frame.origin.y = self.messageView.frame.maxY + 8
             }
