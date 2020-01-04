@@ -7,10 +7,11 @@
 //
 import UIKit
 import Firebase
+import AVFoundation
 
 class ChatCell: UICollectionViewCell {
     
-    var msg: Messages!
+    var msg: Messages?
     var message = UILabel()
     var messageBackground = UIView()
     var mediaMessage = UIImageView()
@@ -20,14 +21,21 @@ class ChatCell: UICollectionViewCell {
     var backgroundWidthAnchor: NSLayoutConstraint!
     var outcomingMessage: NSLayoutConstraint!
     var incomingMessage: NSLayoutConstraint!
+    
+    var audioPlayButton = UIButton(type: .system)
+    var durationLabel = UILabel()
+    var player: AVAudioPlayer!
+    var timer: Timer!
+    
     var isIncoming: Bool! {
         didSet{
             messageBackground.backgroundColor = isIncoming ?  .white  : UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1)
             message.textColor = isIncoming ? .black : .white
-            let replyColor = isIncoming ? UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1) : .white
-            repLine.backgroundColor = replyColor
-            repNameLabel.textColor = replyColor
-            repTextMessage.textColor = replyColor
+            let userColor = isIncoming ? UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1) : .white
+            repLine.backgroundColor = userColor
+            repNameLabel.textColor = userColor
+            repTextMessage.textColor = userColor
+            audioPlayButton.tintColor = userColor
         }
     }
     
@@ -50,7 +58,7 @@ class ChatCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupBackgroundView(){
+    private func setupBackgroundView(){
         messageBackground.translatesAutoresizingMaskIntoConstraints = false
         messageBackground.layer.cornerRadius = 12
         messageBackground.layer.masksToBounds = true
@@ -66,7 +74,7 @@ class ChatCell: UICollectionViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
-    func setupMessage(){
+    private func setupMessage(){
         messageBackground.addSubview(message)
         message.numberOfLines = 0
         message.backgroundColor = .clear
@@ -83,7 +91,7 @@ class ChatCell: UICollectionViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
-    func setupMediaMessage(){
+    private func setupMediaMessage(){
         messageBackground.addSubview(mediaMessage)
         mediaMessage.translatesAutoresizingMaskIntoConstraints = false
         mediaMessage.layer.cornerRadius = 16
@@ -101,12 +109,12 @@ class ChatCell: UICollectionViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
-    @objc func imageTappedHandler(tap: UITapGestureRecognizer){
+    @objc private func imageTappedHandler(tap: UITapGestureRecognizer){
         let imageView = tap.view as? UIImageView
         chatVC.zoomImageHandler(image: imageView!)
     }
     
-    func setupReplyView(){
+    private func setupReplyView(){
         addSubview(repView)
         repView.translatesAutoresizingMaskIntoConstraints = false
         repView.backgroundColor = .clear
@@ -131,12 +139,12 @@ class ChatCell: UICollectionViewCell {
         if self.backgroundWidthAnchor.constant < 140 { self.backgroundWidthAnchor.constant = 140 }
         self.setupReplyLine()
         self.setupReplyName(name: name)
-        if msg.repMessage != nil {
+        if msg?.repMessage != nil {
             self.repMediaMessage.removeFromSuperview()
-            self.setupReplyTextMessage(text: msg.repMessage)
-        }else if msg.repMediaMessage != nil {
+            self.setupReplyTextMessage(text: msg!.repMessage)
+        }else if msg?.repMediaMessage != nil {
             self.repTextMessage.removeFromSuperview()
-            self.setupReplyMediaMessage(msg.repMediaMessage)
+            self.setupReplyMediaMessage(msg!.repMediaMessage)
         }
         self.setupReplyView()
     }
@@ -214,5 +222,48 @@ class ChatCell: UICollectionViewCell {
     @objc func replyViewTapped(){
         chatVC.showResponseMessageView(cell: self)
     }
+    
+    func setupAudioPlayButton(){
+        durationLabel = UILabel()
+        durationLabel.font = UIFont(name: "Helvetica Neue", size: 14)
+        addSubview(durationLabel)
+        durationLabel.translatesAutoresizingMaskIntoConstraints = false
+        audioPlayButton.isEnabled = false
+        addSubview(audioPlayButton)
+        audioPlayButton.addTarget(self, action: #selector(playAudioButtonPressed), for: .touchUpInside)
+        audioPlayButton.setImage(UIImage(systemName: "play.circle.fill"), for: .normal)
+        audioPlayButton.translatesAutoresizingMaskIntoConstraints = false
+        let constraints = [
+            durationLabel.trailingAnchor.constraint(equalTo: messageBackground.trailingAnchor, constant: -8),
+            durationLabel.topAnchor.constraint(equalTo: messageBackground.topAnchor, constant: 8),
+            audioPlayButton.leadingAnchor.constraint(equalTo: messageBackground.leadingAnchor, constant: 8),
+            audioPlayButton.topAnchor.constraint(equalTo: messageBackground.topAnchor, constant: 8),
+            audioPlayButton.heightAnchor.constraint(equalToConstant: 25),
+            audioPlayButton.widthAnchor.constraint(equalToConstant: 25),
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    @objc func playAudioButtonPressed(){
+        player.play()
+        if timer != nil { timer.invalidate() }
+        timer = Timer(timeInterval: 1.0, target: self, selector: #selector(timerHandler), userInfo: nil, repeats: true)
+        RunLoop.current.add(timer, forMode: RunLoop.Mode.common)
+    }
+
+    @objc func timerHandler(){
+        let interval = Int(player.duration - player.currentTime)
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.minute, .second]
+        formatter.unitsStyle = .abbreviated
+        let formattedString = formatter.string(from: TimeInterval(interval))!
+        durationLabel.text = formattedString
+//        durationLabel.text = "\(m):\(s)"
+    }
+    
+//    func timeFrom(seconds : Int) -> (Int, Int) {
+//        return ((seconds % 3600) / 60, (seconds % 3600) % 60)
+//    }
+//
     
 }

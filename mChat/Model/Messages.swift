@@ -16,6 +16,7 @@ class Messages {
     var recipient: String!
     var time: NSNumber!
     var mediaUrl: String!
+    var audioUrl: String!
     var imageWidth: NSNumber!
     var imageHeight: NSNumber!
     var id: String!

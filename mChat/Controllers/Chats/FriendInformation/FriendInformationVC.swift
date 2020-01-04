@@ -14,8 +14,8 @@ class FriendInformationVC: UIViewController, UITableViewDelegate, UITableViewDat
     var friend: FriendInfo!
     var tableView = UITableView()
     
-    var tools = ["Send Message", "Shared Media", "Remove Friend"]
-    var toolsImages = ["message.circle.fill", "photo.fill.on.rectangle.fill","trash.circle.fill"]
+    var tools = ["Send Message", "Shared Media", "Open Maps"]
+    var toolsImages = ["message.circle.fill", "photo.fill.on.rectangle.fill","map"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,8 +73,8 @@ class FriendInformationVC: UIViewController, UITableViewDelegate, UITableViewDat
             cell.toolImage.image = UIImage(systemName: image)
             if tool == "Send Message"{
                 cell.toolImage.tintColor = .orange
-            }else if tool == "Remove Friend"{
-                cell.toolImage.tintColor = .red
+            }else if tool == "Open Maps"{
+                cell.toolImage.tintColor = .systemGreen
             }
             return cell
         }
@@ -91,7 +91,7 @@ class FriendInformationVC: UIViewController, UITableViewDelegate, UITableViewDat
             sharedMediaVC.friend = friend
             show(sharedMediaVC, sender: self)
         }else{
-            print("Hi")
+            print("TODO: Map")
         }
     }
     

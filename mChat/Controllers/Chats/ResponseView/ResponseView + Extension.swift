@@ -137,7 +137,7 @@ extension ChatVC {
     func showResponseMessageView(cell: ChatCell){
         var index = 0
         for message in messages {
-            if message.id == cell.msg.repMID {
+            if message.id == cell.msg?.repMID {
                 let indexPath = IndexPath(row: index, section: 0)
                 collectionView.scrollToItem(at: indexPath, at: .top, animated: true)
                 break

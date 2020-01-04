@@ -8,8 +8,9 @@
 
 import UIKit
 import Firebase
+import AVFoundation
 
-class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationControllerDelegate, AVAudioRecorderDelegate {
     
     var friend: FriendInfo!
     var messages = [Messages]()
@@ -20,7 +21,12 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     var collectionView: MessageCollectionView!
     var messageContainer: MessageContainer!
     var refreshIndicator: MessageLoadingIndicator!
+    
     let calendar = Calendar(identifier: .gregorian)
+    
+    var recordingSession: AVAudioSession!
+    var audioRecorder: AVAudioRecorder!
+    var player: AVAudioPlayer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,10 +80,6 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     
     @objc func clipImageButtonPressed() {
         openImagePicker(type: .photoLibrary)
-    }
-    
-    @objc func startAudioRec(){
-        print("TODO: Add Audio Rec")
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -348,7 +350,7 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
         chatNetworking.getMessageSender(message: message) { (name) in
             self.userResponse.messageToForward = message
             let convController = NewConversationVC()
-            convController.delegate = self
+            convController.forwardDelegate = self
             convController.forwardName = name
             let navController = UINavigationController(rootViewController: convController)
             self.present(navController, animated: true, completion: nil)
@@ -367,6 +369,47 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
         }) { (true) in
             self.responseViewChangeAlpha(a: 1)
         }
+    }
+    
+    @objc func startAudioRec(){
+        recordingSession = AVAudioSession.sharedInstance()
+        if !requestPermisson() { return }
+        if audioRecorder == nil {
+            let fileName = getDirectory().appendingPathComponent("sentAudio.m4a")
+            let settings = [AVFormatIDKey: Int(kAudioFormatMPEG4AAC), AVSampleRateKey: 12000, AVNumberOfChannelsKey: 1, AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue]
+            do{
+                audioRecorder = try AVAudioRecorder(url: fileName, settings: settings)
+                audioRecorder.delegate = self
+                audioRecorder.record()
+                messageContainer.micButton.setImage(UIImage(systemName: "stop.circle"), for: .normal)
+            }catch{
+                showAlert(title: "Error", message: error.localizedDescription)
+            }
+        }else{
+            audioRecorder.stop()
+            audioRecorder = nil
+            do{
+                let data = try Data(contentsOf: getDirectory().appendingPathComponent("sentAudio.m4a"))
+                chatNetworking.uploadAudio(file: data)
+            }catch{
+                print(error.localizedDescription)
+            }
+            messageContainer.micButton.setImage(UIImage(systemName: "mic"), for: .normal)
+        }
+    }
+    
+    func requestPermisson() -> Bool{
+        var permission = false
+        AVAudioSession.sharedInstance().requestRecordPermission { (status) in
+            permission = status
+        }
+        return permission
+    }
+    
+    func getDirectory() -> URL{
+        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        let documentDirectory = paths[0]
+        return documentDirectory
     }
     
 }

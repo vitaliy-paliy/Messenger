@@ -238,8 +238,8 @@
 			children = (
 				CBDBAE5223BC1D5E00A56746 /* MessageContainer.swift */,
 				CBDBAE5623BC42AC00A56746 /* MessageCollectionView.swift */,
-				CB8DEAAB2388C985001EDF19 /* ChatCell.swift */,
 				CB513C3623BE6C1300BE8907 /* ChatCollectionView + Extension.swift */,
+				CB8DEAAB2388C985001EDF19 /* ChatCell.swift */,
 				CBDBAE5823BC456400A56746 /* ProfileImageButton.swift */,
 				CBDBAE5423BC3C9200A56746 /* LoadingIndicator.swift */,
 				CB4B6F7F23BBD7BC00CDA4B3 /* ImageGalleryView.swift */,

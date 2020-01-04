@@ -18,6 +18,7 @@ class MessageKit {
         message.message = values["message"] as? String
         message.time = values["time"] as? NSNumber
         message.mediaUrl = values["mediaUrl"] as? String
+        message.audioUrl = values["audioUrl"] as? String
         message.imageWidth = values["width"] as? NSNumber
         message.imageHeight = values["height"] as? NSNumber
         message.id = values["messageId"] as? String

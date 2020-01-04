@@ -13,14 +13,14 @@ class NewConversationVC: UIViewController {
     var friendsList = [FriendInfo]()
     var tableView = UITableView()
     var timer = Timer()
-    var delegate: ChatVC!
+    var forwardDelegate: ChatVC!
+    var conversationDelegate: ConversationsVC!
     var forwardName: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if delegate != nil {
-            setupForwardView()
-        }
+        loadFriends()
+        setupForwardView()
         view.backgroundColor = .white
         navigationController?.navigationBar.tintColor = .black
         setupTableView()
@@ -28,25 +28,23 @@ class NewConversationVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        loadFriends()
         tabBarController?.tabBar.isHidden = true
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        friendsList = []
         tabBarController?.tabBar.isHidden = false
     }
     
     func setupForwardView(){
-        navigationItem.title = "Forward"
+        navigationItem.title = forwardName != nil ? "Forward" : "New Conversation"
         let leftButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelButtonPressed))
         navigationItem.leftBarButtonItem = leftButton
     }
     
     @objc func cancelButtonPressed(){
-        delegate?.userResponse.messageToForward = nil
-        delegate?.userResponse.messageSender = nil
+        forwardDelegate?.userResponse.messageToForward = nil
+        forwardDelegate?.userResponse.messageSender = nil
         dismiss(animated: true, completion: nil)
     }
     
@@ -79,7 +77,7 @@ class NewConversationVC: UIViewController {
                 return
             }
             for dict in friends.keys {
-                Constants.db.reference().child("users").child(dict).observe(.value) { (data) in
+                Constants.db.reference().child("users").child(dict).observeSingleEvent(of: .value) { (data) in
                     guard let values = data.value as? [String: Any] else { return }
                     var friend = FriendInfo()
                     friend.id = dict
@@ -126,11 +124,12 @@ extension NewConversationVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let friend = friendsList[indexPath.row]
         if let name = forwardName {
-            delegate?.forwardToSelectedFriend(friend: friend, for: name)
+            forwardDelegate?.forwardToSelectedFriend(friend: friend, for: name)
+            dismiss(animated: true, completion: nil)
+            return
         }
+        conversationDelegate.showSelectedUser(selectedFriend: friend)
         dismiss(animated: true, completion: nil)
     }
-    
-    
     
 }

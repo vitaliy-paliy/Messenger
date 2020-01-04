@@ -152,4 +152,46 @@ class ChatNetworking {
         }
     }
     
+    func uploadAudio(file: Data){
+        let audioName = NSUUID().uuidString
+        let storageRef = Storage.storage().reference().child("message-Audio").child(audioName)
+        storageRef.putData(file, metadata: nil, completion: { (metadata, error) in
+            if let error = error {
+                print(error.localizedDescription)
+                return
+            }
+            print("success")
+            self.downloadAudioUrl(storageRef, file)
+        })
+    }
+    
+    func downloadAudioUrl(_ ref: StorageReference, _ data: Data){
+        ref.downloadURL { (url, error) in
+            guard let url = url else { return }
+            self.sendAudioMessage(with: url.absoluteString)
+        }
+    }
+    
+    func sendAudioMessage(with url: String) {
+        let senderRef = Constants.db.reference().child("messages").child(CurrentUser.uid).child(friend.id).childByAutoId()
+        let friendRef = Constants.db.reference().child("messages").child(friend.id).child(CurrentUser.uid).child(senderRef.key!)
+        guard let messageId = senderRef.key else { return }
+        let values = ["sender": CurrentUser.uid!, "time": Date().timeIntervalSince1970, "recipient": friend.id!, "audioUrl": url,"messageId": messageId] as [String: Any]
+        senderRef.updateChildValues(values)
+        friendRef.updateChildValues(values)
+    }
+    
+    func downloadMessageAudio(with url: URL, completion: @escaping (_ data: Data?, _ error: Error?) -> Void){
+        let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
+            guard let data = data else {
+                return completion(nil, error)
+            }
+            DispatchQueue.main.async {
+                return completion(data, nil)
+            }
+        }
+        task.resume()
+    }
+    
 }
+

@@ -9,6 +9,10 @@
 import UIKit
 import Firebase
 
+protocol NewConversationSelected {
+    func showSelectedUser(selectedFriend: FriendInfo)
+}
+
 class ConversationsVC: UIViewController {
     
     var messages = [Messages]()
@@ -63,8 +67,8 @@ class ConversationsVC: UIViewController {
     
     @objc func newConversationTapped(){
         let controller = NewConversationVC()
-        controller.modalPresentationStyle = .fullScreen
-        show(controller, sender: nil)
+        controller.conversationDelegate = self
+        present(UINavigationController(rootViewController: controller), animated: true, completion: nil)
     }
     
     func loadFriendListHandler(){
@@ -209,4 +213,12 @@ extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+}
+
+extension ConversationsVC: NewConversationSelected {
+    
+    func showSelectedUser(selectedFriend: FriendInfo) {
+        nextControllerHandler(usr: selectedFriend)
+    }
+
 }

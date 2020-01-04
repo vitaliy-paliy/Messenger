@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
@@ -54,6 +55,31 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             cell.messageBackground.backgroundColor = .clear
         }else{
             cell.mediaMessage.isHidden = true
+        }
+        
+        if message.audioUrl != nil {
+            cell.backgroundWidthAnchor.constant = 150
+            cell.setupAudioPlayButton()
+            cell.audioPlayButton.isHidden = false
+            guard let url = URL(string: message.audioUrl!) else { return cell }
+            chatNetworking.downloadMessageAudio(with: url) { (data, eror) in
+                guard let data = data else { return }
+                do{
+                    cell.player = try AVAudioPlayer(data: data)
+                    cell.audioPlayButton.isEnabled = true
+                    let interval = Int(cell.player.duration - cell.player.currentTime)
+                    let formatter = DateComponentsFormatter()
+                    formatter.allowedUnits = [.minute, .second]
+                    formatter.unitsStyle = .abbreviated
+                    let formattedString = formatter.string(from: TimeInterval(interval))!
+                    cell.durationLabel.text = formattedString
+                }catch{
+                    print(error.localizedDescription)
+                }
+            }
+        }else{
+            cell.audioPlayButton.isHidden = true
+            cell.durationLabel.isHidden = true
         }
         
         if message.repMediaMessage != nil {
