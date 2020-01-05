@@ -26,7 +26,8 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     
     var recordingSession: AVAudioSession!
     var audioRecorder: AVAudioRecorder!
-    var player: AVAudioPlayer!
+    var audioPlayer: AVAudioPlayer?
+    var timer: Timer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -371,30 +372,85 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
         }
     }
     
-    @objc func startAudioRec(){
+    @objc func handleAudioRecording(){
         recordingSession = AVAudioSession.sharedInstance()
         if !requestPermisson() { return }
         if audioRecorder == nil {
-            let fileName = getDirectory().appendingPathComponent("sentAudio.m4a")
-            let settings = [AVFormatIDKey: Int(kAudioFormatMPEG4AAC), AVSampleRateKey: 12000, AVNumberOfChannelsKey: 1, AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue]
-            do{
-                audioRecorder = try AVAudioRecorder(url: fileName, settings: settings)
-                audioRecorder.delegate = self
-                audioRecorder.record()
-                messageContainer.micButton.setImage(UIImage(systemName: "stop.circle"), for: .normal)
-            }catch{
-                showAlert(title: "Error", message: error.localizedDescription)
-            }
+            startAudioRecording()
         }else{
-            audioRecorder.stop()
-            audioRecorder = nil
-            do{
-                let data = try Data(contentsOf: getDirectory().appendingPathComponent("sentAudio.m4a"))
-                chatNetworking.uploadAudio(file: data)
-            }catch{
-                print(error.localizedDescription)
-            }
-            messageContainer.micButton.setImage(UIImage(systemName: "mic"), for: .normal)
+            stopAudioRecording()
+        }
+    }
+    
+    func startAudioRecording(){
+        let fileName = getDirectory().appendingPathComponent("sentAudio.m4a")
+        let settings = [AVFormatIDKey: Int(kAudioFormatMPEG4AAC), AVSampleRateKey: 12000, AVNumberOfChannelsKey: 1, AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue]
+        do{
+            audioRecorder = try AVAudioRecorder(url: fileName, settings: settings)
+            audioRecorder.delegate = self
+            audioRecorder.record()
+            prepareContainerForRecording()
+        }catch{
+            showAlert(title: "Error", message: error.localizedDescription)
+        }
+    }
+    
+    func prepareContainerForRecording(){
+        timer = Timer(timeInterval: 1.0, target: self, selector: #selector(audioTimerHandler), userInfo: nil, repeats: true)
+        RunLoop.current.add(timer, forMode: RunLoop.Mode.common)
+        messageContainer.micButton.setImage(UIImage(systemName: "stop.circle"), for: .normal)
+        messageContainer.recordingLabel.isHidden = false
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseIn, animations: {
+            self.messageContainer.recordingLabel.frame.origin.x += self.messageContainer.frame.width/6
+            self.messageContainer.messageTV.frame.origin.y += self.containerHeight
+            self.messageContainer.clipImageButton.frame.origin.y += self.containerHeight
+            self.view.layoutIfNeeded()
+            self.messageContainer.recordingAudioView.isHidden = false
+        }) { (true) in
+            self.messageContainer.actionCircle.isHidden = false
+        }
+    }
+    
+    var timePassed = 0
+    
+    @objc func audioTimerHandler(){
+        timePassed += 1
+        let (m,s) = timePassedFrom(seconds: timePassed)
+        let minutes = m < 10 ? "0\(m)" : "\(m)"
+        let seconds = s < 10 ? "0\(s)" : "\(s)"
+        messageContainer.recordingLabel.text = "\(minutes):\(seconds)"
+    }
+    
+    func timePassedFrom(seconds : Int) -> (Int, Int) {
+        return ((seconds % 3600) / 60, (seconds % 3600) % 60)
+    }
+    
+    func stopAudioRecording() {
+        audioRecorder.stop()
+        audioRecorder = nil
+        timePassed = 0
+        do{
+            let data = try Data(contentsOf: getDirectory().appendingPathComponent("sentAudio.m4a"))
+            chatNetworking.uploadAudio(file: data)
+            removeRecordingUI()
+        }catch{
+            print(error.localizedDescription)
+        }
+    }
+    
+    func removeRecordingUI(){
+        messageContainer.recordingAudioView.isHidden = true
+        if timer != nil { timer.invalidate() }
+        messageContainer.micButton.setImage(UIImage(systemName: "mic"), for: .normal)
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseOut, animations: {
+            self.messageContainer.actionCircle.isHidden = true
+            self.messageContainer.recordingLabel.frame.origin.x -= self.messageContainer.frame.width/6
+            self.messageContainer.messageTV.frame.origin.y -= self.containerHeight
+            self.messageContainer.clipImageButton.frame.origin.y -= self.containerHeight
+            self.view.layoutIfNeeded()
+        }) { (true) in
+            self.messageContainer.recordingAudioView.isHidden = true
+            self.messageContainer.recordingLabel.text = "00:00"
         }
     }
     
@@ -410,6 +466,19 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
         let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         let documentDirectory = paths[0]
         return documentDirectory
+    }
+    
+    func handleUserPressedAudioButton(for cell: ChatCell){
+        if audioPlayer == nil {
+            audioPlayer = cell.audioPlayer
+            audioPlayer?.play()
+            cell.audioPlayButton.setImage(UIImage(systemName: "pause.circle.fill"), for: .normal)
+            cell.timer = Timer(timeInterval: 0.3, target: cell, selector: #selector(cell.timerHandler), userInfo: nil, repeats: true)
+            RunLoop.current.add(cell.timer, forMode: RunLoop.Mode.common)
+        }else{
+            audioPlayer?.pause()
+            print("paused")
+        }
     }
     
 }

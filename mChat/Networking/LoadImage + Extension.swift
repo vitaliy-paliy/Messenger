@@ -8,6 +8,8 @@
 
 import UIKit
 
+let imgCache = NSCache<NSString, UIImage>()
+
 extension UIImageView {
     
     private var activityIndicator: UIActivityIndicatorView {

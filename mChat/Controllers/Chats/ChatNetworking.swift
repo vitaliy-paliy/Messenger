@@ -11,6 +11,8 @@ import Firebase
 
 class ChatNetworking {
     
+    private let audioCache = NSCache<NSString, NSData>()
+    
     var friend: FriendInfo!
     var loadMore = false
     var lastMessageReached = false
@@ -182,11 +184,16 @@ class ChatNetworking {
     }
     
     func downloadMessageAudio(with url: URL, completion: @escaping (_ data: Data?, _ error: Error?) -> Void){
+        if let cachedData = audioCache.object(forKey: url.absoluteString as NSString) {
+            print("YES")
+            return completion(Data(referencing: cachedData), nil)
+        }
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in
             guard let data = data else {
                 return completion(nil, error)
             }
             DispatchQueue.main.async {
+                self.audioCache.setObject(NSData(data: data), forKey: url.absoluteString as NSString)
                 return completion(data, nil)
             }
         }

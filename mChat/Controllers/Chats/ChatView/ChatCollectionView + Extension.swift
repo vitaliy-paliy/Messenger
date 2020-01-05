@@ -16,9 +16,11 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         let message = messages[indexPath.row]
         if let msg = message.message {
             height = calculateFrameInText(message: msg).height + 10
-            if message.repMediaMessage != nil || message.repMessage != nil { height += 50 }
+            if message.repMID != nil { height += 50 }
         }else if let imageWidth = message.imageWidth?.floatValue, let imageHeight = message.imageHeight?.floatValue  {
             height = CGFloat(imageHeight / imageWidth * 200)
+        }else if message.audioUrl != nil {
+            height = 40
         }
         return CGSize(width: view.frame.width, height: height)
     }
@@ -58,33 +60,29 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         }
         
         if message.audioUrl != nil {
-            cell.backgroundWidthAnchor.constant = 150
-            cell.setupAudioPlayButton()
-            cell.audioPlayButton.isHidden = false
             guard let url = URL(string: message.audioUrl!) else { return cell }
+            cell.backgroundWidthAnchor.constant = 120
+            cell.setupAudioPlayButton()
             chatNetworking.downloadMessageAudio(with: url) { (data, eror) in
                 guard let data = data else { return }
                 do{
-                    cell.player = try AVAudioPlayer(data: data)
+                    cell.audioPlayer = try AVAudioPlayer(data: data)
                     cell.audioPlayButton.isEnabled = true
-                    let interval = Int(cell.player.duration - cell.player.currentTime)
-                    let formatter = DateComponentsFormatter()
-                    formatter.allowedUnits = [.minute, .second]
-                    formatter.unitsStyle = .abbreviated
-                    let formattedString = formatter.string(from: TimeInterval(interval))!
-                    cell.durationLabel.text = formattedString
+                    let (m,s) = cell.timeFrom(seconds: Int(cell.audioPlayer.duration - cell.audioPlayer.currentTime))
+                    let minutes = m < 10 ? "0\(m)" : "\(m)"
+                    let seconds = s < 10 ? "0\(s)" : "\(s)"
+                    cell.setupAudioDurationLabel()
+                    cell.durationLabel.text = "\(minutes):\(seconds)"
                 }catch{
                     print(error.localizedDescription)
                 }
             }
         }else{
-            cell.audioPlayButton.isHidden = true
-            cell.durationLabel.isHidden = true
+            cell.durationLabel.removeFromSuperview()
+            cell.audioPlayButton.removeFromSuperview()
         }
         
-        if message.repMediaMessage != nil {
-            cell.setupRepMessageView(message.repSender)
-        }else if message.repMessage != nil {
+        if message.repMID != nil {
             cell.setupRepMessageView(message.repSender)
         }else{
             cell.removeReplyOutlets()

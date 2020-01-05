@@ -9,9 +9,6 @@
 import UIKit
 import Firebase
 
-// Caches the images
-let imgCache = NSCache<NSString, UIImage>()
-
 class ContactsAnimationButton: UIButton{
     var cell: ContactsCell?
     var cellFrame: CGRect?

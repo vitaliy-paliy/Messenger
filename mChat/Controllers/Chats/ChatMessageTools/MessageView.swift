@@ -20,6 +20,9 @@ class MessageView: UIView{
     let repNameLabel = UILabel()
     let repTextMessage = UILabel()
     let repMediaMessage = UIImageView()
+    var responseAudioLabel = UILabel()
+    var audioPlayButton = UIButton(type: .system)
+    var durationLabel = UILabel()
     
     init(frame: CGRect, cell: ChatCell, message: Messages, friendName: String) {
         super.init(frame: frame)
@@ -39,17 +42,25 @@ class MessageView: UIView{
         backgroundColor = cell.messageBackground.backgroundColor
         if message.message != nil {
             addSubview(setupMsgText())
-            if message.repMediaMessage != nil || message.repMessage != nil{
-                setupRepLine()
-                self.setupRepName(name: message.repSender)
-                if self.message.repMessage != nil {
-                    self.setupRepTextMessage(text: self.message.repMessage)
-                }else if self.message.repMediaMessage != nil {
-                    self.setupRepMediaMessage(self.message.repMediaMessage)
-                }
+            if message.repMID != nil{
+                setupResponseView()
             }
         }else if message.mediaUrl != nil {
             addSubview(setupMsgMedia())
+        }else if message.audioUrl != nil {
+            setupAudioPlayButton()
+        }
+    }
+    
+    func setupResponseView(){
+        setupRepLine()
+        setupRepName(name: message.repSender)
+        if message.repMessage != nil {
+            setupRepTextMessage(text: message.repMessage)
+        }else if message.repMediaMessage != nil {
+            setupRepMediaMessage(message.repMediaMessage)
+        }else{
+            setupResponseAudioMessage()
         }
     }
     
@@ -61,7 +72,7 @@ class MessageView: UIView{
         addSubview(messageView)
         messageView.translatesAutoresizingMaskIntoConstraints = false
         messageView.font = UIFont(name: "Helvetica Neue", size: 16)
-        if message.repMediaMessage != nil || message.repMessage != nil {
+        if message.repMID != nil {
             messageView.topAnchor.constraint(equalTo: topAnchor, constant: 50).isActive = true
         }else{
             messageView.topAnchor.constraint(equalTo: topAnchor).isActive = true
@@ -134,7 +145,7 @@ class MessageView: UIView{
     func setupRepMediaMessage(_ url: String){
         let replyMediaLabel = UILabel()
         replyMediaLabel.text = "Image"
-        replyMediaLabel.textColor = .lightText
+        replyMediaLabel.textColor = cell.isIncoming ? .lightGray : .lightText
         replyMediaLabel.font = UIFont(name: "Helvetica Neue", size: 15)
         addSubview(repMediaMessage)
         repMediaMessage.translatesAutoresizingMaskIntoConstraints = false
@@ -152,6 +163,53 @@ class MessageView: UIView{
             replyMediaLabel.leadingAnchor.constraint(equalTo: repMediaMessage.trailingAnchor, constant: 4),
             repNameLabel.leadingAnchor.constraint(equalTo: repMediaMessage.trailingAnchor, constant: 4),
             repNameLabel.centerYAnchor.constraint(equalTo: repMediaMessage.centerYAnchor, constant: -8),
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    func setupResponseAudioMessage() {
+        addSubview(responseAudioLabel)
+        responseAudioLabel.text = "Audio Message"
+        responseAudioLabel.translatesAutoresizingMaskIntoConstraints = false
+        responseAudioLabel.textColor = cell.isIncoming ? .lightGray : .lightText
+        responseAudioLabel.font = UIFont(name: "Helvetica Neue", size: 15)
+        addSubview(repNameLabel)
+        repNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        let constraints = [
+            repNameLabel.leadingAnchor.constraint(equalTo: repLine.leadingAnchor, constant: 8),
+            repNameLabel.topAnchor.constraint(equalTo: repLine.topAnchor, constant: 2),
+            repNameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 8),
+            responseAudioLabel.topAnchor.constraint(equalTo: repNameLabel.bottomAnchor, constant: -2),
+            responseAudioLabel.leadingAnchor.constraint(equalTo: repLine.leadingAnchor, constant: 8)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    func setupAudioPlayButton(){
+        addSubview(audioPlayButton)
+        audioPlayButton.isUserInteractionEnabled = false
+        audioPlayButton.translatesAutoresizingMaskIntoConstraints = false
+        audioPlayButton.tintColor = cell.audioPlayButton.tintColor
+        audioPlayButton.setImage(UIImage(systemName: "play.circle.fill"), for: .normal)
+        let constraints = [
+            audioPlayButton.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
+            audioPlayButton.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            audioPlayButton.heightAnchor.constraint(equalToConstant: 25),
+            audioPlayButton.widthAnchor.constraint(equalToConstant: 25),
+        ]
+        NSLayoutConstraint.activate(constraints)
+        setupAudioDurationLabel()
+    }
+    
+    func setupAudioDurationLabel(){
+        addSubview(durationLabel)
+        durationLabel.text = cell.durationLabel.text
+        durationLabel.textColor = cell.durationLabel.textColor
+        durationLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 14)
+        durationLabel.translatesAutoresizingMaskIntoConstraints = false
+        let constraints = [
+            durationLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+            durationLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ]
         NSLayoutConstraint.activate(constraints)
     }

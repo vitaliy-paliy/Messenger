@@ -184,6 +184,8 @@ extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
         cell.timeLabel.text = calendar.calculateTimePassed(date: date)
         if recent.mediaUrl != nil {
             cell.recentMessage.text = "[Media Message]"
+        }else if recent.audioUrl != nil {
+            cell.recentMessage.text = "[Audio Message]"
         }else{
             cell.recentMessage.text = recent.message
         }

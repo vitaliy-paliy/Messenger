@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Lottie
 
 class MessageContainer: UIView, UITextViewDelegate{
     
@@ -16,6 +17,9 @@ class MessageContainer: UIView, UITextViewDelegate{
     var sendButton = UIButton(type: .system)
     var micButton = UIButton(type: .system)
     var messageTV = UITextView()
+    var recordingAudioView = AnimationView()
+    var recordingLabel = UILabel()
+    var actionCircle = UIView()
     var height: CGFloat!
     var const: CGFloat!
     var chatVC: ChatVC!
@@ -38,6 +42,9 @@ class MessageContainer: UIView, UITextViewDelegate{
         setupSendButton()
         setupMicrophone()
         setupMessageTF()
+        recordingAudioAnimation()
+        setupRecordingLabel()
+        setupActionCircle()
     }
     
     func setupBackground(){
@@ -95,7 +102,7 @@ class MessageContainer: UIView, UITextViewDelegate{
         micButton.translatesAutoresizingMaskIntoConstraints = false
         micButton.setImage(UIImage(systemName: "mic"), for: .normal)
         micButton.tintColor = .black
-        micButton.addTarget(chatVC, action: #selector(chatVC.startAudioRec), for: .touchUpInside)
+        micButton.addTarget(chatVC, action: #selector(chatVC.handleAudioRecording), for: .touchUpInside)
         let constraints = [
             micButton.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -const),
             micButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
@@ -134,6 +141,54 @@ class MessageContainer: UIView, UITextViewDelegate{
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    func recordingAudioAnimation(){
+        recordingAudioView.isHidden = true
+        addSubview(recordingAudioView)
+        recordingAudioView.animation = Animation.named("audioWave")
+        recordingAudioView.play()
+        recordingAudioView.loopMode = .loop
+        recordingAudioView.backgroundBehavior = .pauseAndRestore
+        recordingAudioView.translatesAutoresizingMaskIntoConstraints = false
+        let constraints = [
+            recordingAudioView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            recordingAudioView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            recordingAudioView.heightAnchor.constraint(equalToConstant: 180),
+            recordingAudioView.widthAnchor.constraint(equalToConstant: 180)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    func setupRecordingLabel(){
+        addSubview(recordingLabel)
+        recordingLabel.isHidden = true
+        recordingLabel.text = "00:00"
+        recordingLabel.translatesAutoresizingMaskIntoConstraints = false
+        recordingLabel.font = UIFont(name: "Helvetica Neue", size: 16)
+        let constraints = [
+            recordingLabel.trailingAnchor.constraint(equalTo: leadingAnchor),
+            recordingLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -const - 5)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    
+    func setupActionCircle(){
+        addSubview(actionCircle)
+        actionCircle.isHidden = true
+        actionCircle.translatesAutoresizingMaskIntoConstraints = false
+        actionCircle.backgroundColor = UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1)
+        actionCircle.layer.cornerRadius = 3
+        actionCircle.layer.masksToBounds = true
+        let constraints = [
+            actionCircle.heightAnchor.constraint(equalToConstant: 6),
+            actionCircle.widthAnchor.constraint(equalToConstant: 6),
+            actionCircle.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
+            actionCircle.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -const - 10)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
     
 }
 

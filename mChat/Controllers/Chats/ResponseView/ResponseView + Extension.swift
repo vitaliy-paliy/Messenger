@@ -16,6 +16,7 @@ extension ChatVC {
         userResponse.messageLabel.alpha = a
         userResponse.mediaMessage.alpha = a
         userResponse.exitButton.alpha = a
+        userResponse.audioMessage.alpha = a
     }
     
     func responseMessageLine(_ message: Messages, _ fN: String?){
@@ -68,6 +69,7 @@ extension ChatVC {
             self.userResponse.nameLabel.removeFromSuperview()
             self.userResponse.mediaMessage.removeFromSuperview()
             self.userResponse.messageLabel.removeFromSuperview()
+            self.userResponse.audioMessage.removeFromSuperview()
         }
         
     }
@@ -90,10 +92,12 @@ extension ChatVC {
     }
     
     func setupResponseMessage(_ message: Messages){
-        if message.mediaUrl == nil {
-            setupResponseTextM(message)
-        }else{
+        if message.mediaUrl != nil {
             setupResponseMediaM(message)
+        }else if message.audioUrl != nil {
+            setupAudioMessage()
+        }else{
+            setupResponseTextM(message)
         }
     }
     
@@ -115,7 +119,7 @@ extension ChatVC {
     func setupResponseMediaM(_ message: Messages){
         let replyMediaLabel = UILabel()
         replyMediaLabel.text = "Image"
-        replyMediaLabel.textColor = .gray
+        replyMediaLabel.textColor = .lightGray
         replyMediaLabel.font = UIFont(name: "Helvetica Neue", size: 15)
         messageContainer.addSubview(userResponse.mediaMessage)
         userResponse.mediaMessage.translatesAutoresizingMaskIntoConstraints = false
@@ -127,9 +131,24 @@ extension ChatVC {
             userResponse.mediaMessage.topAnchor.constraint(equalTo: userResponse.lineView.topAnchor, constant: 2),
             userResponse.mediaMessage.bottomAnchor.constraint(equalTo: userResponse.lineView.bottomAnchor, constant: -2),
             userResponse.mediaMessage.widthAnchor.constraint(equalToConstant: 30),
-            userResponse.mediaMessage.leadingAnchor.constraint(equalTo: userResponse.lineView.trailingAnchor, constant: 8),
+            userResponse.mediaMessage.leadingAnchor.constraint(equalTo: userResponse.lineView.trailingAnchor, constant: 4),
             replyMediaLabel.centerYAnchor.constraint(equalTo: userResponse.mediaMessage.centerYAnchor, constant: 8),
-            replyMediaLabel.leadingAnchor.constraint(equalTo: userResponse.mediaMessage.trailingAnchor, constant: 4),
+            replyMediaLabel.leadingAnchor.constraint(equalTo: userResponse.mediaMessage.trailingAnchor, constant: 8),
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    func setupAudioMessage(){
+        messageContainer.addSubview(userResponse.audioMessage)
+        userResponse.audioMessage.translatesAutoresizingMaskIntoConstraints = false
+        userResponse.audioMessage.text = "Audio Message"
+        userResponse.audioMessage.textColor = .lightGray
+        userResponse.audioMessage.font = UIFont(name: "Helvetica Neue", size: 15)
+        let constraints = [
+            userResponse.audioMessage.leadingAnchor.constraint(equalTo: userResponse.lineView.trailingAnchor, constant: 8),
+            userResponse.audioMessage.trailingAnchor.constraint(equalTo: userResponse.exitButton.trailingAnchor, constant: -16),
+            userResponse.audioMessage.topAnchor.constraint(equalTo: userResponse.nameLabel.bottomAnchor, constant: -2),
+            userResponse.audioMessage.bottomAnchor.constraint(equalTo: messageContainer.messageTV.topAnchor, constant: -16)
         ]
         NSLayoutConstraint.activate(constraints)
     }

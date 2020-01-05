@@ -353,12 +353,6 @@ class ContactsVC: UIViewController {
         let controller = ChatVC()
         controller.modalPresentationStyle = .fullScreen
         controller.friend = bInfo
-//        controller.friendId = bInfo.id
-//        controller.friendProfileImage = bInfo.profileImage
-//        controller.friendName = bInfo.name
-//        controller.friendEmail = bInfo.email
-//        controller.friendIsOnline = bInfo.isOnline
-//        controller.friendLastLogin = bInfo.lastLogin
         show(controller, sender: nil)
     }
     

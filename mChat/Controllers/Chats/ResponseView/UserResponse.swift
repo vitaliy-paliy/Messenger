@@ -18,6 +18,7 @@ class UserResponse {
     var nameLabelConstraint: NSLayoutConstraint!
     let messageLabel = UILabel()
     let mediaMessage = UIImageView()
+    let audioMessage = UILabel()
     let exitButton = UIButton(type: .system)
 }
 

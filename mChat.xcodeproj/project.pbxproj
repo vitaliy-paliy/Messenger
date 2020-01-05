@@ -31,6 +31,7 @@
 		CB644C2523A2FFC7003094DF /* chatTyping.json in Resources */ = {isa = PBXBuildFile; fileRef = CB644C2323A2FFC7003094DF /* chatTyping.json */; };
 		CB65C64723831EA300F2B5A3 /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB65C64623831EA300F2B5A3 /* CurrentUser.swift */; };
 		CB65C64C2383326300F2B5A3 /* ProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB65C64B2383326300F2B5A3 /* ProfileCell.swift */; };
+		CB84CD8C23C1198B0000605D /* audioWave.json in Resources */ = {isa = PBXBuildFile; fileRef = CB84CD8B23C1198B0000605D /* audioWave.json */; };
 		CB8916FE23BA8D1D0019CBE9 /* MessageKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8916FD23BA8D1D0019CBE9 /* MessageKit.swift */; };
 		CB89170123BA93490019CBE9 /* ChatNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB89170023BA93490019CBE9 /* ChatNetworking.swift */; };
 		CB89170323BAD4FA0019CBE9 /* ResponseView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB89170223BAD4FA0019CBE9 /* ResponseView + Extension.swift */; };
@@ -89,6 +90,7 @@
 		CB644C2323A2FFC7003094DF /* chatTyping.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = chatTyping.json; sourceTree = "<group>"; };
 		CB65C64623831EA300F2B5A3 /* CurrentUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
 		CB65C64B2383326300F2B5A3 /* ProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCell.swift; sourceTree = "<group>"; };
+		CB84CD8B23C1198B0000605D /* audioWave.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = audioWave.json; sourceTree = "<group>"; };
 		CB8916FD23BA8D1D0019CBE9 /* MessageKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageKit.swift; sourceTree = "<group>"; };
 		CB89170023BA93490019CBE9 /* ChatNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatNetworking.swift; sourceTree = "<group>"; };
 		CB89170223BAD4FA0019CBE9 /* ResponseView + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ResponseView + Extension.swift"; sourceTree = "<group>"; };
@@ -218,6 +220,7 @@
 		CBD040F023A32B0E005FBD5A /* Animations */ = {
 			isa = PBXGroup;
 			children = (
+				CB84CD8B23C1198B0000605D /* audioWave.json */,
 				CB644C2323A2FFC7003094DF /* chatTyping.json */,
 				CBD040EE23A30D15005FBD5A /* recentTyping.json */,
 			);
@@ -413,6 +416,7 @@
 				CBF907F32380B83600EF8925 /* Assets.xcassets in Resources */,
 				CBD040EF23A30D15005FBD5A /* recentTyping.json in Resources */,
 				CB644C2523A2FFC7003094DF /* chatTyping.json in Resources */,
+				CB84CD8C23C1198B0000605D /* audioWave.json in Resources */,
 				CBAB592C2381E49700078B7D /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
