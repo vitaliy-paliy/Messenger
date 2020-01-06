@@ -16,10 +16,10 @@ class MessageView: UIView{
     var message: Messages!
     let messageView = UILabel()
     let mediaMessage = UIImageView()
-    let repLine = UIView()
-    let repNameLabel = UILabel()
-    let repTextMessage = UILabel()
-    let repMediaMessage = UIImageView()
+    let responseLine = UIView()
+    let responseNameLabel = UILabel()
+    let responseTextMessage = UILabel()
+    let responseMediaMessage = UIImageView()
     var responseAudioLabel = UILabel()
     var audioPlayButton = UIButton(type: .system)
     var durationLabel = UILabel()
@@ -104,40 +104,40 @@ class MessageView: UIView{
     }
     
     func setupRepLine(){
-        repLine.backgroundColor = UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1)
-        addSubview(repLine)
-        repLine.translatesAutoresizingMaskIntoConstraints = false
-        repLine.backgroundColor = cell.repLine.backgroundColor
+        responseLine.backgroundColor = UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1)
+        addSubview(responseLine)
+        responseLine.translatesAutoresizingMaskIntoConstraints = false
+        responseLine.backgroundColor = cell.responseLine.backgroundColor
         let constraints = [
-            repLine.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            repLine.topAnchor.constraint(equalTo: topAnchor, constant: 8),
-            repLine.bottomAnchor.constraint(equalTo: messageView.topAnchor, constant: -2),
-            repLine.widthAnchor.constraint(equalToConstant: 2)
+            responseLine.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            responseLine.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            responseLine.bottomAnchor.constraint(equalTo: messageView.topAnchor, constant: -2),
+            responseLine.widthAnchor.constraint(equalToConstant: 2)
         ]
         NSLayoutConstraint.activate(constraints)
     }
     
     func setupRepName(name: String){
-        repNameLabel.text = name
-        repNameLabel.textColor = cell.repNameLabel.textColor
-        repNameLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 16)
+        responseNameLabel.text = name
+        responseNameLabel.textColor = cell.responseNameLabel.textColor
+        responseNameLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 16)
     }
     
     func setupRepTextMessage(text: String){
-        repTextMessage.text = text
-        repTextMessage.textColor = cell.repTextMessage.textColor
-        repTextMessage.font = UIFont(name: "Helvetica Neue", size: 15)
-        addSubview(repTextMessage)
-        repTextMessage.translatesAutoresizingMaskIntoConstraints = false
-        repTextMessage.addSubview(repNameLabel)
-        repNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        responseTextMessage.text = text
+        responseTextMessage.textColor = cell.responseTextMessage.textColor
+        responseTextMessage.font = UIFont(name: "Helvetica Neue", size: 15)
+        addSubview(responseTextMessage)
+        responseTextMessage.translatesAutoresizingMaskIntoConstraints = false
+        responseTextMessage.addSubview(responseNameLabel)
+        responseNameLabel.translatesAutoresizingMaskIntoConstraints = false
         let constraints = [
-            repTextMessage.leadingAnchor.constraint(equalTo: repLine.leadingAnchor, constant: 8),
-            repTextMessage.bottomAnchor.constraint(equalTo: repLine.bottomAnchor, constant: -4),
-            repTextMessage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
-            repNameLabel.leadingAnchor.constraint(equalTo: repLine.leadingAnchor, constant: 8),
-            repNameLabel.topAnchor.constraint(equalTo: repLine.topAnchor, constant: 2),
-            repNameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 8),
+            responseTextMessage.leadingAnchor.constraint(equalTo: responseLine.leadingAnchor, constant: 8),
+            responseTextMessage.bottomAnchor.constraint(equalTo: responseLine.bottomAnchor, constant: -4),
+            responseTextMessage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+            responseNameLabel.leadingAnchor.constraint(equalTo: responseLine.leadingAnchor, constant: 8),
+            responseNameLabel.topAnchor.constraint(equalTo: responseLine.topAnchor, constant: 2),
+            responseNameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 8),
         ]
         NSLayoutConstraint.activate(constraints)
     }
@@ -147,22 +147,22 @@ class MessageView: UIView{
         replyMediaLabel.text = "Image"
         replyMediaLabel.textColor = cell.isIncoming ? .lightGray : .lightText
         replyMediaLabel.font = UIFont(name: "Helvetica Neue", size: 15)
-        addSubview(repMediaMessage)
-        repMediaMessage.translatesAutoresizingMaskIntoConstraints = false
-        repMediaMessage.addSubview(repNameLabel)
-        repNameLabel.translatesAutoresizingMaskIntoConstraints = false
-        repMediaMessage.addSubview(replyMediaLabel)
+        addSubview(responseMediaMessage)
+        responseMediaMessage.translatesAutoresizingMaskIntoConstraints = false
+        responseMediaMessage.addSubview(responseNameLabel)
+        responseNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        responseMediaMessage.addSubview(replyMediaLabel)
         replyMediaLabel.translatesAutoresizingMaskIntoConstraints = false
-        repMediaMessage.loadImage(url: url)
+        responseMediaMessage.loadImage(url: url)
         let constraints = [
-            repMediaMessage.topAnchor.constraint(equalTo: repLine.topAnchor, constant: 2),
-            repMediaMessage.bottomAnchor.constraint(equalTo: repLine.bottomAnchor, constant: -2),
-            repMediaMessage.widthAnchor.constraint(equalToConstant: 30),
-            repMediaMessage.leadingAnchor.constraint(equalTo: repLine.trailingAnchor, constant: 4),
-            replyMediaLabel.centerYAnchor.constraint(equalTo: repMediaMessage.centerYAnchor, constant: 8),
-            replyMediaLabel.leadingAnchor.constraint(equalTo: repMediaMessage.trailingAnchor, constant: 4),
-            repNameLabel.leadingAnchor.constraint(equalTo: repMediaMessage.trailingAnchor, constant: 4),
-            repNameLabel.centerYAnchor.constraint(equalTo: repMediaMessage.centerYAnchor, constant: -8),
+            responseMediaMessage.topAnchor.constraint(equalTo: responseLine.topAnchor, constant: 2),
+            responseMediaMessage.bottomAnchor.constraint(equalTo: responseLine.bottomAnchor, constant: -2),
+            responseMediaMessage.widthAnchor.constraint(equalToConstant: 30),
+            responseMediaMessage.leadingAnchor.constraint(equalTo: responseLine.trailingAnchor, constant: 4),
+            replyMediaLabel.centerYAnchor.constraint(equalTo: responseMediaMessage.centerYAnchor, constant: 8),
+            replyMediaLabel.leadingAnchor.constraint(equalTo: responseMediaMessage.trailingAnchor, constant: 4),
+            responseNameLabel.leadingAnchor.constraint(equalTo: responseMediaMessage.trailingAnchor, constant: 4),
+            responseNameLabel.centerYAnchor.constraint(equalTo: responseMediaMessage.centerYAnchor, constant: -8),
         ]
         NSLayoutConstraint.activate(constraints)
     }
@@ -173,14 +173,14 @@ class MessageView: UIView{
         responseAudioLabel.translatesAutoresizingMaskIntoConstraints = false
         responseAudioLabel.textColor = cell.isIncoming ? .lightGray : .lightText
         responseAudioLabel.font = UIFont(name: "Helvetica Neue", size: 15)
-        addSubview(repNameLabel)
-        repNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(responseNameLabel)
+        responseNameLabel.translatesAutoresizingMaskIntoConstraints = false
         let constraints = [
-            repNameLabel.leadingAnchor.constraint(equalTo: repLine.leadingAnchor, constant: 8),
-            repNameLabel.topAnchor.constraint(equalTo: repLine.topAnchor, constant: 2),
-            repNameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 8),
-            responseAudioLabel.topAnchor.constraint(equalTo: repNameLabel.bottomAnchor, constant: -2),
-            responseAudioLabel.leadingAnchor.constraint(equalTo: repLine.leadingAnchor, constant: 8)
+            responseNameLabel.leadingAnchor.constraint(equalTo: responseLine.leadingAnchor, constant: 8),
+            responseNameLabel.topAnchor.constraint(equalTo: responseLine.topAnchor, constant: 2),
+            responseNameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 8),
+            responseAudioLabel.topAnchor.constraint(equalTo: responseNameLabel.bottomAnchor, constant: -2),
+            responseAudioLabel.leadingAnchor.constraint(equalTo: responseLine.leadingAnchor, constant: 8)
         ]
         NSLayoutConstraint.activate(constraints)
     }

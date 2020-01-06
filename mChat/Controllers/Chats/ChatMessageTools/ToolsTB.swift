@@ -86,7 +86,7 @@ class ToolsTB: UITableView, UITableViewDelegate, UITableViewDataSource {
     }
 
     func removeHandler(){
-        chatView.chatNetworking.removeMessageHandler(mId: selectedMessage.id) {
+        chatView.chatNetworking.removeMessageHandler(messageToRemove: selectedMessage) {
             self.scrollView.handleViewDismiss(isDeleted: true)
         }
 

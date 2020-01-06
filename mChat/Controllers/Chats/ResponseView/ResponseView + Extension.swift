@@ -63,6 +63,8 @@ extension ChatVC {
         userResponse.messageToForward = nil
         userResponse.messageSender = nil
         messageContainer.heightAnchr.constant -= 50
+        messageContainer.micButton.alpha = 1
+        messageContainer.sendButton.alpha = 0
         UIView.animate(withDuration: 0.3){
             self.userResponse.lineView.removeFromSuperview()
             self.userResponse.exitButton.removeFromSuperview()
@@ -151,18 +153,6 @@ extension ChatVC {
             userResponse.audioMessage.bottomAnchor.constraint(equalTo: messageContainer.messageTV.topAnchor, constant: -16)
         ]
         NSLayoutConstraint.activate(constraints)
-    }
-    
-    func showResponseMessageView(cell: ChatCell){
-        var index = 0
-        for message in messages {
-            if message.id == cell.msg?.repMID {
-                let indexPath = IndexPath(row: index, section: 0)
-                collectionView.scrollToItem(at: indexPath, at: .top, animated: true)
-                break
-            }
-            index += 1
-        }
     }
     
 }

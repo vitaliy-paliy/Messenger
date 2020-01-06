@@ -26,6 +26,7 @@ class MessageKit {
         message.repMediaMessage = values["repMediaMessage"] as? String
         message.repMID = values["repMID"] as? String
         message.repSender = values["repSender"] as? String
+        message.storageID = values["storageID"] as? String
         return message
     }
     

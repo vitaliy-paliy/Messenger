@@ -21,6 +21,8 @@
 		CB4CF77B23943B3600AC2E31 /* NewConversationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4CF77A23943B3600AC2E31 /* NewConversationVC.swift */; };
 		CB4CF77E23943D8100AC2E31 /* NewConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4CF77D23943D8100AC2E31 /* NewConversationCell.swift */; };
 		CB4E41F523BD7BE200D476E5 /* ToolsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4E41F423BD7BE200D476E5 /* ToolsMenu.swift */; };
+		CB50E72623C262000055BF78 /* ChatAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB50E72523C262000055BF78 /* ChatAudio.swift */; };
+		CB50E72B23C29B710055BF78 /* ConversationsNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB50E72A23C29B710055BF78 /* ConversationsNetworking.swift */; };
 		CB513C3723BE6C1300BE8907 /* ChatCollectionView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB513C3623BE6C1300BE8907 /* ChatCollectionView + Extension.swift */; };
 		CB513C3923BE6CB900BE8907 /* ForwardToSend + Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB513C3823BE6CB900BE8907 /* ForwardToSend + Protocol.swift */; };
 		CB513C3B23BE717300BE8907 /* FriendInformationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB513C3A23BE717300BE8907 /* FriendInformationVC.swift */; };
@@ -80,6 +82,8 @@
 		CB4CF77A23943B3600AC2E31 /* NewConversationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationVC.swift; sourceTree = "<group>"; };
 		CB4CF77D23943D8100AC2E31 /* NewConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationCell.swift; sourceTree = "<group>"; };
 		CB4E41F423BD7BE200D476E5 /* ToolsMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsMenu.swift; sourceTree = "<group>"; };
+		CB50E72523C262000055BF78 /* ChatAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatAudio.swift; sourceTree = "<group>"; };
+		CB50E72A23C29B710055BF78 /* ConversationsNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsNetworking.swift; sourceTree = "<group>"; };
 		CB513C3623BE6C1300BE8907 /* ChatCollectionView + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatCollectionView + Extension.swift"; sourceTree = "<group>"; };
 		CB513C3823BE6CB900BE8907 /* ForwardToSend + Protocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ForwardToSend + Protocol.swift"; sourceTree = "<group>"; };
 		CB513C3A23BE717300BE8907 /* FriendInformationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendInformationVC.swift; sourceTree = "<group>"; };
@@ -164,6 +168,15 @@
 			path = "Helper Tools";
 			sourceTree = "<group>";
 		};
+		CB50E72923C29B540055BF78 /* NewConversations */ = {
+			isa = PBXGroup;
+			children = (
+				CB4CF77A23943B3600AC2E31 /* NewConversationVC.swift */,
+				CB4CF77D23943D8100AC2E31 /* NewConversationCell.swift */,
+			);
+			path = NewConversations;
+			sourceTree = "<group>";
+		};
 		CB513C3C23BE868200BE8907 /* FriendInformation */ = {
 			isa = PBXGroup;
 			children = (
@@ -198,10 +211,10 @@
 		CB8916FF23BA92A50019CBE9 /* Conversations */ = {
 			isa = PBXGroup;
 			children = (
-				CB4CF77A23943B3600AC2E31 /* NewConversationVC.swift */,
-				CB4CF77D23943D8100AC2E31 /* NewConversationCell.swift */,
 				CBF644F62381C26B004830C6 /* ConversationsVC.swift */,
+				CB50E72A23C29B710055BF78 /* ConversationsNetworking.swift */,
 				CBFC53BA23873B5600CC4C91 /* ConverstaionsCell.swift */,
+				CB50E72923C29B540055BF78 /* NewConversations */,
 			);
 			path = Conversations;
 			sourceTree = "<group>";
@@ -277,6 +290,7 @@
 			children = (
 				CB08304A238709BD002A1861 /* ChatVC.swift */,
 				CB89170023BA93490019CBE9 /* ChatNetworking.swift */,
+				CB50E72523C262000055BF78 /* ChatAudio.swift */,
 				CB513C3823BE6CB900BE8907 /* ForwardToSend + Protocol.swift */,
 				CBDBAE4F23BC1D0A00A56746 /* ChatView */,
 				CBAC237B23AC4A1600FCBED9 /* ChatMessageTools */,
@@ -498,12 +512,14 @@
 				CB4CC233239DD71B0086DEA9 /* Calendar + Extension.swift in Sources */,
 				CBCC3084238365B500E36E39 /* UsersListCell.swift in Sources */,
 				CBF644FD2381D384004830C6 /* ContactsCell.swift in Sources */,
+				CB50E72623C262000055BF78 /* ChatAudio.swift in Sources */,
 				CB09181B23B6B81C00293E77 /* MessageView.swift in Sources */,
 				CB8DEAAC2388C985001EDF19 /* ChatCell.swift in Sources */,
 				CBF644FB2381C28D004830C6 /* SettingsVC.swift in Sources */,
 				CB4CE16523AEAA9E000D2516 /* ToolsTB.swift in Sources */,
 				CBDBAE5523BC3C9200A56746 /* LoadingIndicator.swift in Sources */,
 				CBAC237D23AC4A5200FCBED9 /* ToolsCell.swift in Sources */,
+				CB50E72B23C29B710055BF78 /* ConversationsNetworking.swift in Sources */,
 				CBCC30862383722500E36E39 /* AddFriendVC.swift in Sources */,
 				CBF907FE2380B8CE00EF8925 /* SignInVC.swift in Sources */,
 				CBF644F42381C23A004830C6 /* ContactsVC.swift in Sources */,

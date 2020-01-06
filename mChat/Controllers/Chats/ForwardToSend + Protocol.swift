@@ -19,7 +19,6 @@ extension ChatVC: ForwardToFriend {
         self.friend = friend
         messages = []
         collectionView.reloadData()
-        chatNetworking.loadNewMessages = false
         setupChat()
     }
     

@@ -18,7 +18,6 @@ class ChatNetworking {
     var lastMessageReached = false
     var scrollToIndex = [Messages]()
     var timer = Timer()
-    var loadNewMessages = false
     
     func getMessages(_ v: UIView, _ m: [Messages], completion: @escaping(_ newMessages: [Messages], _ mOrder: Bool) -> Void){
         var nodeRef: DatabaseQuery
@@ -58,23 +57,30 @@ class ChatNetworking {
         }
     }
     
-    func removeMessageHandler(mId: String, completion: @escaping () -> Void){
-        Database.database().reference().child("messages").child(CurrentUser.uid).child(friend.id).child(mId).removeValue { (error, ref) in
-            Database.database().reference().child("messages").child(self.friend.id).child(CurrentUser.uid).child(mId).removeValue()
+    func removeMessageHandler(messageToRemove: Messages, completion: @escaping () -> Void){
+        Database.database().reference().child("messages").child(CurrentUser.uid).child(friend.id).child(messageToRemove.id).removeValue { (error, ref) in
+            Database.database().reference().child("messages").child(self.friend.id).child(CurrentUser.uid).child(messageToRemove.id).removeValue()
+            if messageToRemove.audioUrl != nil {
+                Storage.storage().reference().child("message-Audio").child(messageToRemove.storageID).delete { (error) in
+                    guard error == nil else { return }
+                }
+            }else if messageToRemove.mediaUrl != nil{
+                Storage.storage().reference().child("message-img").child(messageToRemove.storageID).delete { (error) in
+                    guard error == nil else { return }
+                }
+            }
             guard error == nil else { return }
             return completion()
         }
     }
     
-    func newMessageRecievedHandler(_ fetchStatus: Bool, _ messages: [Messages], for snap: DataSnapshot, completion: @escaping (_ message: Messages) -> Void){
-        if fetchStatus {
+    func newMessageRecievedHandler(_ messages: [Messages], for snap: DataSnapshot, completion: @escaping (_ message: Messages) -> Void){
+        let status = messages.contains { (message) -> Bool in return message.id == snap.key }
+        if !status {
             print("New messages handler fired")
-            let status = messages.contains { (message) -> Bool in return message.id == snap.key }
-            if !status {
-                guard let values = snap.value as? [String: Any] else { return }
-                let newMessage = MessageKit.setupUserMessage(for: values)
-                return completion(newMessage)
-            }
+            guard let values = snap.value as? [String: Any] else { return }
+            let newMessage = MessageKit.setupUserMessage(for: values)
+            return completion(newMessage)
         }
     }
     
@@ -87,23 +93,23 @@ class ChatNetworking {
                     print(error.localizedDescription)
                     return
                 }
-                self.downloadImage(storageRef, image)
+                self.downloadImage(storageRef, image, mediaName)
             }
         }
     }
     
-    private func downloadImage(_ ref: StorageReference, _ image: UIImage) {
+    private func downloadImage(_ ref: StorageReference, _ image: UIImage, _ id: String) {
         ref.downloadURL { (url, error) in
             guard let url = url else { return }
-            self.sendMediaMessage(url: url.absoluteString, image)
+            self.sendMediaMessage(url: url.absoluteString, image, id)
         }
     }
     
-    func sendMediaMessage(url: String, _ image: UIImage){
+    func sendMediaMessage(url: String, _ image: UIImage, _ id: String){
         let senderRef = Constants.db.reference().child("messages").child(CurrentUser.uid).child(friend.id).childByAutoId()
         let friendRef = Constants.db.reference().child("messages").child(friend.id).child(CurrentUser.uid).child(senderRef.key!)
         guard let messageId = senderRef.key else { return }
-        let values = ["sender": CurrentUser.uid!, "time": Date().timeIntervalSince1970, "recipient": friend.id!, "mediaUrl": url, "width": image.size.width, "height": image.size.height, "messageId": messageId] as [String: Any]
+        let values = ["sender": CurrentUser.uid!, "time": Date().timeIntervalSince1970, "recipient": friend.id!, "mediaUrl": url, "width": image.size.width, "height": image.size.height, "messageId": messageId, "storageID": id] as [String: Any]
         senderRef.updateChildValues(values)
         friendRef.updateChildValues(values)
     }
@@ -162,30 +168,28 @@ class ChatNetworking {
                 print(error.localizedDescription)
                 return
             }
-            print("success")
-            self.downloadAudioUrl(storageRef, file)
+            self.downloadAudioUrl(storageRef, file, audioName)
         })
     }
     
-    func downloadAudioUrl(_ ref: StorageReference, _ data: Data){
+    func downloadAudioUrl(_ ref: StorageReference, _ data: Data, _ id: String){
         ref.downloadURL { (url, error) in
             guard let url = url else { return }
-            self.sendAudioMessage(with: url.absoluteString)
+            self.sendAudioMessage(with: url.absoluteString, and: id)
         }
     }
     
-    func sendAudioMessage(with url: String) {
+    func sendAudioMessage(with url: String, and id: String) {
         let senderRef = Constants.db.reference().child("messages").child(CurrentUser.uid).child(friend.id).childByAutoId()
         let friendRef = Constants.db.reference().child("messages").child(friend.id).child(CurrentUser.uid).child(senderRef.key!)
         guard let messageId = senderRef.key else { return }
-        let values = ["sender": CurrentUser.uid!, "time": Date().timeIntervalSince1970, "recipient": friend.id!, "audioUrl": url,"messageId": messageId] as [String: Any]
+        let values = ["sender": CurrentUser.uid!, "time": Date().timeIntervalSince1970, "recipient": friend.id!, "audioUrl": url,"messageId": messageId, "storageID": id] as [String: Any]
         senderRef.updateChildValues(values)
         friendRef.updateChildValues(values)
     }
     
     func downloadMessageAudio(with url: URL, completion: @escaping (_ data: Data?, _ error: Error?) -> Void){
         if let cachedData = audioCache.object(forKey: url.absoluteString as NSString) {
-            print("YES")
             return completion(Data(referencing: cachedData), nil)
         }
         let task = URLSession.shared.dataTask(with: url) { (data, response, error) in

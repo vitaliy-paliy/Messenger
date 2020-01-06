@@ -15,6 +15,7 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     var friend: FriendInfo!
     var messages = [Messages]()
     let chatNetworking = ChatNetworking()
+    let chatAudio = ChatAudio()
     var userResponse = UserResponse()
     
     var containerHeight: CGFloat!
@@ -23,11 +24,6 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     var refreshIndicator: MessageLoadingIndicator!
     
     let calendar = Calendar(identifier: .gregorian)
-    
-    var recordingSession: AVAudioSession!
-    var audioRecorder: AVAudioRecorder!
-    var audioPlayer: AVAudioPlayer?
-    var timer: Timer!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -65,7 +61,6 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
         setupChatNavBar()
         fetchMessages()
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: ProfileImageButton(chatVC: self, url: friend.profileImage))
-        observeMessageActions()
         observeFriendTyping()
     }
     
@@ -150,7 +145,7 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
             self.chatNetworking.lastMessageReached = newMessages.count == 0
             if self.chatNetworking.lastMessageReached {
                 print("message.count == 0")
-                self.chatNetworking.loadNewMessages = true
+                self.observeMessageActions()
                 return
             }
             self.chatNetworking.scrollToIndex = newMessages
@@ -163,7 +158,7 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
                 self.refreshIndicator.order = order
                 self.messages.insert(contentsOf: newMessages, at: 0)
             }
-            self.chatNetworking.timer = Timer.scheduledTimer(timeInterval: 0.3, target: self, selector: #selector(self.handleReload), userInfo: nil, repeats: false)
+            self.handleReload()
         }
     }
     
@@ -175,8 +170,8 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
                 self.collectionView.deleteItems(at: [IndexPath(item: index, section: 0)])
             }
         }
-        ref.observe(.childAdded) { (snap) in
-            self.chatNetworking.newMessageRecievedHandler(self.chatNetworking.loadNewMessages, self.messages, for: snap) { (newMessage) in
+        ref.queryLimited(toLast: 1).observe(.childAdded) { (snap) in
+            self.chatNetworking.newMessageRecievedHandler(self.messages, for: snap) { (newMessage) in
                 self.messages.append(newMessage)
                 self.collectionView.reloadData()
                 if newMessage.determineUser() != CurrentUser.uid {
@@ -186,7 +181,8 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
         }
     }
     
-    @objc func handleReload(){
+    func handleReload(){
+        print("reloaded")
         DispatchQueue.main.async {
             self.collectionView.reloadData()
             if self.refreshIndicator.order{
@@ -197,8 +193,8 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
             }
             self.chatNetworking.loadMore = false
             self.refreshIndicator.stopAnimating()
-            if self.messages.count >= 1 { self.chatNetworking.loadNewMessages = true }
         }
+        observeMessageActions()
     }
     
     @objc func profileImageTapped(){
@@ -360,6 +356,8 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     
     func responseButtonPressed(_ message: Messages, forwardedName: String? = nil){
         responseViewChangeAlpha(a: 0)
+        messageContainer.micButton.alpha = 0
+        messageContainer.sendButton.alpha = 1
         messageContainer.messageTV.becomeFirstResponder()
         userResponse.responseStatus = true
         userResponse.repliedMessage = message
@@ -372,10 +370,11 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
         }
     }
     
+    
     @objc func handleAudioRecording(){
-        recordingSession = AVAudioSession.sharedInstance()
-        if !requestPermisson() { return }
-        if audioRecorder == nil {
+        chatAudio.recordingSession = AVAudioSession.sharedInstance()
+        if !chatAudio.requestPermisson() { return }
+        if chatAudio.audioRecorder == nil {
             startAudioRecording()
         }else{
             stopAudioRecording()
@@ -383,12 +382,12 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     }
     
     func startAudioRecording(){
-        let fileName = getDirectory().appendingPathComponent("sentAudio.m4a")
+        let fileName = chatAudio.getDirectory().appendingPathComponent("sentAudio.m4a")
         let settings = [AVFormatIDKey: Int(kAudioFormatMPEG4AAC), AVSampleRateKey: 12000, AVNumberOfChannelsKey: 1, AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue]
         do{
-            audioRecorder = try AVAudioRecorder(url: fileName, settings: settings)
-            audioRecorder.delegate = self
-            audioRecorder.record()
+            chatAudio.audioRecorder = try AVAudioRecorder(url: fileName, settings: settings)
+            chatAudio.audioRecorder.delegate = self
+            chatAudio.audioRecorder.record()
             prepareContainerForRecording()
         }catch{
             showAlert(title: "Error", message: error.localizedDescription)
@@ -396,8 +395,8 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     }
     
     func prepareContainerForRecording(){
-        timer = Timer(timeInterval: 1.0, target: self, selector: #selector(audioTimerHandler), userInfo: nil, repeats: true)
-        RunLoop.current.add(timer, forMode: RunLoop.Mode.common)
+        chatAudio.timer = Timer(timeInterval: 1.0, target: self, selector: #selector(audioTimerHandler), userInfo: nil, repeats: true)
+        RunLoop.current.add(chatAudio.timer, forMode: RunLoop.Mode.common)
         messageContainer.micButton.setImage(UIImage(systemName: "stop.circle"), for: .normal)
         messageContainer.recordingLabel.isHidden = false
         UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseIn, animations: {
@@ -411,26 +410,20 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
         }
     }
     
-    var timePassed = 0
-    
     @objc func audioTimerHandler(){
-        timePassed += 1
-        let (m,s) = timePassedFrom(seconds: timePassed)
+        chatAudio.timePassed += 1
+        let (m,s) = chatAudio.timePassedFrom(seconds: chatAudio.timePassed)
         let minutes = m < 10 ? "0\(m)" : "\(m)"
         let seconds = s < 10 ? "0\(s)" : "\(s)"
         messageContainer.recordingLabel.text = "\(minutes):\(seconds)"
     }
     
-    func timePassedFrom(seconds : Int) -> (Int, Int) {
-        return ((seconds % 3600) / 60, (seconds % 3600) % 60)
-    }
-    
     func stopAudioRecording() {
-        audioRecorder.stop()
-        audioRecorder = nil
-        timePassed = 0
+        chatAudio.audioRecorder.stop()
+        chatAudio.audioRecorder = nil
+        chatAudio.timePassed = 0
         do{
-            let data = try Data(contentsOf: getDirectory().appendingPathComponent("sentAudio.m4a"))
+            let data = try Data(contentsOf: chatAudio.getDirectory().appendingPathComponent("sentAudio.m4a"))
             chatNetworking.uploadAudio(file: data)
             removeRecordingUI()
         }catch{
@@ -440,7 +433,7 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     
     func removeRecordingUI(){
         messageContainer.recordingAudioView.isHidden = true
-        if timer != nil { timer.invalidate() }
+        if chatAudio.timer != nil { chatAudio.timer.invalidate() }
         messageContainer.micButton.setImage(UIImage(systemName: "mic"), for: .normal)
         UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0, options: .curveEaseOut, animations: {
             self.messageContainer.actionCircle.isHidden = true
@@ -454,30 +447,15 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
         }
     }
     
-    func requestPermisson() -> Bool{
-        var permission = false
-        AVAudioSession.sharedInstance().requestRecordPermission { (status) in
-            permission = status
-        }
-        return permission
-    }
-    
-    func getDirectory() -> URL{
-        let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        let documentDirectory = paths[0]
-        return documentDirectory
-    }
-    
     func handleUserPressedAudioButton(for cell: ChatCell){
-        if audioPlayer == nil {
-            audioPlayer = cell.audioPlayer
-            audioPlayer?.play()
+        if chatAudio.audioPlayer == nil {
+            chatAudio.audioPlayer = cell.audioPlayer
+            chatAudio.audioPlayer?.play()
             cell.audioPlayButton.setImage(UIImage(systemName: "pause.circle.fill"), for: .normal)
             cell.timer = Timer(timeInterval: 0.3, target: cell, selector: #selector(cell.timerHandler), userInfo: nil, repeats: true)
             RunLoop.current.add(cell.timer, forMode: RunLoop.Mode.common)
         }else{
-            audioPlayer?.pause()
-            print("paused")
+            chatAudio.audioPlayer?.pause()
         }
     }
     
