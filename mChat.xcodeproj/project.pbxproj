@@ -33,6 +33,8 @@
 		CB644C2523A2FFC7003094DF /* chatTyping.json in Resources */ = {isa = PBXBuildFile; fileRef = CB644C2323A2FFC7003094DF /* chatTyping.json */; };
 		CB65C64723831EA300F2B5A3 /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB65C64623831EA300F2B5A3 /* CurrentUser.swift */; };
 		CB65C64C2383326300F2B5A3 /* ProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB65C64B2383326300F2B5A3 /* ProfileCell.swift */; };
+		CB82EA8623C4E907002FD857 /* ConvTableView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB82EA8523C4E907002FD857 /* ConvTableView + Extension.swift */; };
+		CB82EA8823C4EC9B002FD857 /* NewConvSelectedProtocol + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB82EA8723C4EC9B002FD857 /* NewConvSelectedProtocol + Extension.swift */; };
 		CB84CD8C23C1198B0000605D /* audioWave.json in Resources */ = {isa = PBXBuildFile; fileRef = CB84CD8B23C1198B0000605D /* audioWave.json */; };
 		CB8916FE23BA8D1D0019CBE9 /* MessageKit.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8916FD23BA8D1D0019CBE9 /* MessageKit.swift */; };
 		CB89170123BA93490019CBE9 /* ChatNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB89170023BA93490019CBE9 /* ChatNetworking.swift */; };
@@ -94,6 +96,8 @@
 		CB644C2323A2FFC7003094DF /* chatTyping.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = chatTyping.json; sourceTree = "<group>"; };
 		CB65C64623831EA300F2B5A3 /* CurrentUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
 		CB65C64B2383326300F2B5A3 /* ProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCell.swift; sourceTree = "<group>"; };
+		CB82EA8523C4E907002FD857 /* ConvTableView + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConvTableView + Extension.swift"; sourceTree = "<group>"; };
+		CB82EA8723C4EC9B002FD857 /* NewConvSelectedProtocol + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewConvSelectedProtocol + Extension.swift"; sourceTree = "<group>"; };
 		CB84CD8B23C1198B0000605D /* audioWave.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = audioWave.json; sourceTree = "<group>"; };
 		CB8916FD23BA8D1D0019CBE9 /* MessageKit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageKit.swift; sourceTree = "<group>"; };
 		CB89170023BA93490019CBE9 /* ChatNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatNetworking.swift; sourceTree = "<group>"; };
@@ -214,6 +218,8 @@
 				CBF644F62381C26B004830C6 /* ConversationsVC.swift */,
 				CB50E72A23C29B710055BF78 /* ConversationsNetworking.swift */,
 				CBFC53BA23873B5600CC4C91 /* ConverstaionsCell.swift */,
+				CB82EA8523C4E907002FD857 /* ConvTableView + Extension.swift */,
+				CB82EA8723C4EC9B002FD857 /* NewConvSelectedProtocol + Extension.swift */,
 				CB50E72923C29B540055BF78 /* NewConversations */,
 			);
 			path = Conversations;
@@ -515,6 +521,7 @@
 				CB50E72623C262000055BF78 /* ChatAudio.swift in Sources */,
 				CB09181B23B6B81C00293E77 /* MessageView.swift in Sources */,
 				CB8DEAAC2388C985001EDF19 /* ChatCell.swift in Sources */,
+				CB82EA8623C4E907002FD857 /* ConvTableView + Extension.swift in Sources */,
 				CBF644FB2381C28D004830C6 /* SettingsVC.swift in Sources */,
 				CB4CE16523AEAA9E000D2516 /* ToolsTB.swift in Sources */,
 				CBDBAE5523BC3C9200A56746 /* LoadingIndicator.swift in Sources */,
@@ -533,6 +540,7 @@
 				CB513C4423BEBB4B00BE8907 /* SharedMediaCell.swift in Sources */,
 				CB65C64C2383326300F2B5A3 /* ProfileCell.swift in Sources */,
 				CBBDE7AE238353A40040A296 /* UserInfo + FriendInfo.swift in Sources */,
+				CB82EA8823C4EC9B002FD857 /* NewConvSelectedProtocol + Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -112,6 +112,9 @@ class ChatNetworking {
         let values = ["sender": CurrentUser.uid!, "time": Date().timeIntervalSince1970, "recipient": friend.id!, "mediaUrl": url, "width": image.size.width, "height": image.size.height, "messageId": messageId, "storageID": id] as [String: Any]
         senderRef.updateChildValues(values)
         friendRef.updateChildValues(values)
+        let unreadRef = Constants.db.reference().child("unread-Messages").child(friend.id).child(CurrentUser.uid).child(senderRef.key!)
+        let unreadValues = [senderRef.key: 1]
+        unreadRef.updateChildValues(unreadValues)
     }
     
     func sendMessageHandler(senderRef: DatabaseReference, friendRef: DatabaseReference, values: [String: Any], completion: @escaping (_ error: Error?) -> Void){
@@ -120,11 +123,15 @@ class ChatNetworking {
                 completion(error)
             }
             friendRef.updateChildValues(values)
+            let unreadRef = Constants.db.reference().child("unread-Messages").child(self.friend.id).child(CurrentUser.uid).child(senderRef.key!)
+            let unreadValues = [senderRef.key: 1]
+            unreadRef.updateChildValues(unreadValues)
             completion(nil)
         }
     }
     
     func observeIsUserTyping(completion: @escaping (_ friendActivity: FriendActivity) -> Void){
+        readMessagesHandler()
         let db = Database.database().reference().child("userActions").child(friend.id).child(CurrentUser.uid)
         db.observe(.value) { (snap) in
             guard let data = snap.value as? [String: Any] else { return }
@@ -186,6 +193,9 @@ class ChatNetworking {
         let values = ["sender": CurrentUser.uid!, "time": Date().timeIntervalSince1970, "recipient": friend.id!, "audioUrl": url,"messageId": messageId, "storageID": id] as [String: Any]
         senderRef.updateChildValues(values)
         friendRef.updateChildValues(values)
+        let unreadRef = Constants.db.reference().child("unread-Messages").child(self.friend.id).child(CurrentUser.uid).child(senderRef.key!)
+        let unreadValues = [senderRef.key: 1]
+        unreadRef.updateChildValues(unreadValues)
     }
     
     func downloadMessageAudio(with url: URL, completion: @escaping (_ data: Data?, _ error: Error?) -> Void){
@@ -202,6 +212,11 @@ class ChatNetworking {
             }
         }
         task.resume()
+    }
+ 
+    func readMessagesHandler(){
+        let unreadRef = Constants.db.reference().child("unread-Messages").child(CurrentUser.uid).child(self.friend.id)
+        unreadRef.removeValue()
     }
     
 }
