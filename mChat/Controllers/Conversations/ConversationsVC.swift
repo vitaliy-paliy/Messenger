@@ -19,9 +19,7 @@ class ConversationsVC: UIViewController {
     var messages = [Messages]()
     var groupedMessages = [String: Messages]()
     var friends = [FriendInfo]()
-    var filteredFriends = [String: FriendInfo]()
     var tableView = UITableView()
-    var timer = Timer()
     let calendar = Calendar(identifier: .gregorian)
     var newConversationButton = UIBarButtonItem()
     
@@ -99,46 +97,10 @@ class ConversationsVC: UIViewController {
         let controller = ChatVC()
         controller.modalPresentationStyle = .fullScreen
         controller.friend = usr
+        for message in messages {
+            Database.database().reference().child("userActions").child(message.determineUser()).child(CurrentUser.uid).removeAllObservers()
+        }
         show(controller, sender: nil)
-    }
-    
-    func loadFriendsHandler(_ recent: Messages, _ cell: ConversationsCell, completion: @escaping (_ friend: FriendInfo) -> Void){
-        let user = recent.determineUser()
-        let ref = Database.database().reference().child("users").child(user)
-        ref.observe(.value) { (snap) in
-            guard let data = snap.value as? [String: Any] else { return }
-            var friend = FriendInfo()
-            friend.id = snap.key
-            friend.name = data["name"] as? String
-            friend.email = data["email"] as? String
-            friend.isOnline = data["isOnline"] as? Bool
-            friend.lastLogin = data["lastLogin"] as? NSNumber
-            friend.profileImage = data["profileImage"] as? String
-            self.filteredFriends[user] = friend
-            self.friends = Array(self.filteredFriends.values)
-            return completion(friend)
-        }
-    }
-    
-    func observeIsUserTyping(friendId: String, cell: ConversationsCell){
-        let db = Database.database().reference().child("userActions").child(friendId).child(CurrentUser.uid)
-        db.observe(.value) { (snap) in
-            guard let data = snap.value as? [String: Any] else { return }
-            guard let status = data["isTyping"] as? Bool else { return }
-            guard let id = data["fromFriend"] as? String else { return }
-            let friendActivity = FriendActivity(isTyping: status, friendId: id)
-            print(friendId)
-            if friendActivity.friendId == friendId && friendActivity.isTyping {
-//                print(friendId)
-                cell.recentMessage.isHidden = true
-                cell.timeLabel.isHidden = true
-                cell.isTypingView.isHidden = false
-            }else{
-                cell.isTypingView.isHidden = true
-                cell.recentMessage.isHidden = false
-                cell.timeLabel.isHidden = false
-            }
-        }
     }
     
 }
@@ -153,8 +115,18 @@ extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ConversationsCell") as! ConversationsCell
         cell.selectionStyle = .none
         let recent = messages[indexPath.row]
-        observeIsUserTyping(friendId: recent.determineUser(), cell: cell)
-        loadFriendsHandler(recent, cell) { (friend) in
+        cell.message = recent
+        standardConvUI(cell)
+        self.convNetworking.observeIsUserTyping(recent.determineUser()) { (isTyping, friendId) in
+            if isTyping && cell.message.determineUser() == friendId {
+                cell.recentMessage.isHidden = true
+                cell.timeLabel.isHidden = true
+                cell.isTypingView.isHidden = false
+            }else{
+                self.standardConvUI(cell)
+            }
+        }
+        convNetworking.loadFriendsHandler(recent, cell) { (friend) in
             cell.friendName.text = friend.name
             cell.profileImage.loadImage(url: friend.profileImage)
             if friend.isOnline{
@@ -173,6 +145,12 @@ extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
             cell.recentMessage.text = recent.message
         }
         return cell
+    }
+    
+    func standardConvUI(_ cell: ConversationsCell){
+        cell.isTypingView.isHidden = true
+        cell.recentMessage.isHidden = false
+        cell.timeLabel.isHidden = false
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

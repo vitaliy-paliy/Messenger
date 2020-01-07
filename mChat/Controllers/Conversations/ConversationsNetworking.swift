@@ -28,8 +28,53 @@ class ConversationsNetworking {
             }
             self.messagesReference()
         }
+    }
+    
+    func observeFriendActions(){
         Database.database().reference().child("friendsList").child(CurrentUser.uid).observe(.childRemoved) { (snap) in
-            print("Do Deletion")
+            print("Removed handler fired: ConvVC")
+            guard let values = snap.value as? [String: Any] else { return }
+            var friendToRemove: String!
+            var index = 0
+            for key in values.keys {
+                friendToRemove = key
+            }
+            for message in self.convVC.messages {
+                if message.determineUser() == friendToRemove {
+                    self.groupedMessages.removeValue(forKey: friendToRemove)
+                    self.convVC.messages.remove(at: index)
+                    self.convVC.tableView.reloadData()
+                }
+                index += 1
+            }
+            self.removeFriendFromArray(friendToRemove)
+        }
+        Database.database().reference().child("friendsList").child(CurrentUser.uid).observe(.childAdded) { (snap) in
+            print("Add handler fired: ConvVC")
+            guard let values = snap.value as? [String: Any] else { return }
+            var friendToAdd: String!
+            for key in values.keys {
+                friendToAdd = key
+            }
+            let status = self.friendKeys.contains { (key) -> Bool in
+                return key == friendToAdd
+            }
+            if status {
+                return
+            }else{
+                self.friendKeys.append(friendToAdd)
+                self.convVC.observeMessageActions()
+            }
+        }
+    }
+    
+    func removeFriendFromArray(_ friendToRemove: String){
+        var index = 0
+        for friend in friendKeys {
+            if friendToRemove == friend {
+                friendKeys.remove(at: index)
+            }
+            index += 1
         }
     }
     
@@ -62,7 +107,36 @@ class ConversationsNetworking {
                 return completion(Array(self.groupedMessages.values))
             }
         }
+        self.observeFriendActions()
     }
     
+    func loadFriendsHandler(_ recent: Messages, _ cell: ConversationsCell, completion: @escaping (_ friend: FriendInfo) -> Void){
+        let user = recent.determineUser()
+        let ref = Database.database().reference().child("users").child(user)
+        ref.observeSingleEvent(of: .value) { (snap) in
+            guard let data = snap.value as? [String: Any] else { return }
+            var friend = FriendInfo()
+            friend.id = snap.key
+            friend.name = data["name"] as? String
+            friend.email = data["email"] as? String
+            friend.isOnline = data["isOnline"] as? Bool
+            friend.lastLogin = data["lastLogin"] as? NSNumber
+            friend.profileImage = data["profileImage"] as? String
+            self.convVC.friends.append(friend)
+            return completion(friend)
+        }
+    }
+
+    func observeIsUserTyping(_ friendId: String, completion: @escaping (_ isTyping: Bool, _ friendId: String) -> Void){
+        let ref = Database.database().reference().child("userActions").child(friendId).child(CurrentUser.uid)
+        ref.observe(.value) { (snap) in
+            guard let data = snap.value as? [String: Any] else { return }
+            guard let isTyping = data["isTyping"] as? Bool else { return }
+            guard let friendId = data["fromFriend"] as? String else { return }
+            return completion(isTyping, friendId)
+        }
+    }
+
 }
+
 

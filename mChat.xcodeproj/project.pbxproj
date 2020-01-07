@@ -277,8 +277,8 @@
 			isa = PBXGroup;
 			children = (
 				CBF644F32381C23A004830C6 /* ContactsVC.swift */,
-				CBF644FC2381D384004830C6 /* ContactsCell.swift */,
 				CBCC307F2383634C00E36E39 /* UsersListVC.swift */,
+				CBF644FC2381D384004830C6 /* ContactsCell.swift */,
 				CBCC3083238365B500E36E39 /* UsersListCell.swift */,
 				CBCC30852383722500E36E39 /* AddFriendVC.swift */,
 			);

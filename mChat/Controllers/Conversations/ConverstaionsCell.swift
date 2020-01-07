@@ -12,6 +12,7 @@ import Firebase
 
 class ConversationsCell: UITableViewCell {
     
+    var message: Messages!
     var profileImage = UIImageView()
     var friendName = UILabel()
     var recentMessage = UILabel()
