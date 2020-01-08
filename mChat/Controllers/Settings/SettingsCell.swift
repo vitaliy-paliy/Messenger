@@ -1,0 +1,50 @@
+//
+//  SettingsCell.swift
+//  mChat
+//
+//  Created by Vitaliy Paliy on 1/8/20.
+//  Copyright © 2020 PALIY. All rights reserved.
+//
+
+import UIKit
+
+class SettingsCell: UITableViewCell {
+    
+    var settingsImage = UIImageView()
+    var settingsLabel = UILabel()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupSettingsImage()
+        setupSettingsLabel()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+ 
+    func setupSettingsImage(){
+        addSubview(settingsImage)
+        settingsImage.translatesAutoresizingMaskIntoConstraints = false
+        let constraints = [
+            settingsImage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
+            settingsImage.centerYAnchor.constraint(equalTo: centerYAnchor),
+            settingsImage.widthAnchor.constraint(equalToConstant: 20),
+            settingsImage.heightAnchor.constraint(equalToConstant: 20)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    func setupSettingsLabel(){
+        addSubview(settingsLabel)
+        settingsLabel.textColor = .darkGray
+        settingsLabel.translatesAutoresizingMaskIntoConstraints = false
+        settingsLabel.font = UIFont(name: "Helvetica Neue", size: 14)
+        let constraints = [
+            settingsLabel.leadingAnchor.constraint(equalTo: settingsImage.trailingAnchor, constant: 8),
+            settingsLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+}

@@ -13,4 +13,5 @@ class CurrentUser {
     static var name: String!
     static var email: String!
     static var profileImage: String!
+    static var isMapLocationEnabled: Bool!
 }

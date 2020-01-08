@@ -26,6 +26,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 CurrentUser.email = snap["email"] as? String
                 CurrentUser.profileImage = snap["profileImage"] as? String
                 CurrentUser.uid = uid
+                CurrentUser.isMapLocationEnabled = snap["isMapLocationEnabled"] as? Bool
                 self.window?.rootViewController = ChatTabBar()
                 self.window?.makeKeyAndVisible()
             }

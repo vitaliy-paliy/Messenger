@@ -111,6 +111,7 @@ class SignInVC: UIViewController {
             CurrentUser.email = snap["email"] as? String
             CurrentUser.profileImage = snap["profileImage"] as? String
             CurrentUser.uid = uid
+            CurrentUser.isMapLocationEnabled = snap["isMapLocationEnabled"] as? Bool
             Constants.activityObservers(isOnline: true)
             let controller = ChatTabBar()
             controller.modalPresentationStyle = .fullScreen

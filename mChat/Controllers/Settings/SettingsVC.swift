@@ -14,6 +14,9 @@ class SettingsVC: UIViewController {
     var logoutButton = UIButton(type: .system)
     var tableView = UITableView()
     
+    var settingsItems = ["Saved Messages", "Appearance", "Maps"]
+    var settingsImages = ["folder.fill", "paintbrush.fill","map.fill"]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Settings"
@@ -36,15 +39,15 @@ class SettingsVC: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.rowHeight = 100
         tableView.tableFooterView = UIView(frame: .zero)
         tableView.backgroundColor = .clear
         tableView.register(ProfileCell.self, forCellReuseIdentifier: "ProfileCell")
+        tableView.register(SettingsCell.self, forCellReuseIdentifier: "SettingsCell")
         let constraints = [
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 0)
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ]
         NSLayoutConstraint.activate(constraints)
     }
@@ -66,31 +69,63 @@ class SettingsVC: UIViewController {
 
 extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
     
-// TODO: Add Appearence etc.
-//    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-//        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 35))
-//        footerView.backgroundColor = UIColor(white: 0.90, alpha: 1)
-//        return footerView
-//    }
-//
-//    func numberOfSections(in tableView: UITableView) -> Int {
-//        return 3
-//    }
-//
-//    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-//        return 35
-//    }
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView()
+        headerView.backgroundColor = UIColor(white: 0.95, alpha: 1)
+        return headerView
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 1 { return 30 } else { return 0.1 }
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 1
+        if section == 0 { return 1 } else { return 3 }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileCell") as! ProfileCell
-        cell.emailLabel.text = CurrentUser.email
-        cell.nameLabel.text = CurrentUser.name
-        cell.profileImage.loadImage(url: CurrentUser.profileImage)
-        return cell
+        if indexPath.section == 0 {
+            tableView.rowHeight = 100
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ProfileCell") as! ProfileCell
+            cell.emailLabel.text = CurrentUser.email
+            cell.nameLabel.text = CurrentUser.name
+            cell.profileImage.loadImage(url: CurrentUser.profileImage)
+            return cell
+        }else{
+            tableView.rowHeight = 45
+            let cell = tableView.dequeueReusableCell(withIdentifier: "SettingsCell") as! SettingsCell
+            let item = settingsItems[indexPath.row]
+            let itemImg = settingsImages[indexPath.row]
+            cell.settingsLabel.text = item
+            cell.settingsImage.image = UIImage(systemName: itemImg)
+            if item == "Appearance" {
+                cell.settingsImage.tintColor = .orange
+            }else if item == "Maps"{
+                cell.settingsImage.tintColor = .systemGreen
+            }
+            return cell
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        if indexPath.section == 0{
+            print("TODO: Changing password etc.")
+        }else{
+            let item = settingsItems[indexPath.row]
+            if item == "Appearance"{
+                print("TODO: Appearance")
+            }else if item == "Saved Messages"{
+                print("TODO: Saved Messages")
+            }else{
+                let mapSettings = MapsSettingsVC()
+                show(mapSettings, sender: self)
+            }
+        }
     }
     
     

@@ -163,7 +163,7 @@ class ConversationsCell: UITableViewCell {
         unreadLabel.font = UIFont(name: "Helvetica Neue", size: 14)
         unreadLabel.textColor = .white
         let constraints = [
-            unreadMessageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
+            unreadMessageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             unreadMessageView.centerYAnchor.constraint(equalTo: centerYAnchor),
             unreadMessageView.widthAnchor.constraint(equalToConstant: 20),
             unreadMessageView.heightAnchor.constraint(equalToConstant: 20),

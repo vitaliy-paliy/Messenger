@@ -15,6 +15,7 @@ struct FriendInfo {
     var email: String!
     var isOnline: Bool!
     var lastLogin: NSNumber!
+    var isMapLocationEnabled: Bool!
 }
 
 struct FriendActivity{

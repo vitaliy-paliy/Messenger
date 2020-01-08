@@ -123,14 +123,15 @@ class ConversationsNetworking {
         let user = recent.determineUser()
         let ref = Database.database().reference().child("users").child(user)
         ref.observe(.value) { (snap) in
-            guard let data = snap.value as? [String: Any] else { return }
+            guard let values = snap.value as? [String: Any] else { return }
             var friend = FriendInfo()
             friend.id = snap.key
-            friend.name = data["name"] as? String
-            friend.email = data["email"] as? String
-            friend.isOnline = data["isOnline"] as? Bool
-            friend.lastLogin = data["lastLogin"] as? NSNumber
-            friend.profileImage = data["profileImage"] as? String
+            friend.name = values["name"] as? String
+            friend.email = values["email"] as? String
+            friend.isOnline = values["isOnline"] as? Bool
+            friend.lastLogin = values["lastLogin"] as? NSNumber
+            friend.profileImage = values["profileImage"] as? String
+            friend.isMapLocationEnabled = values["isMapLocationEnabled"] as? Bool
             return completion(friend)
         }
     }

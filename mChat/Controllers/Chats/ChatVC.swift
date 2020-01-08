@@ -32,13 +32,15 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
         notificationCenterHandler()
     }
     
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        chatNetworking.removeObserves()
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewSafeAreaInsetsDidChange() {

@@ -76,6 +76,7 @@ class ContactsVC: UIViewController {
             friend.name = values["name"] as? String
             friend.isOnline = values["isOnline"] as? Bool
             friend.lastLogin = values["lastLogin"] as? NSNumber
+            friend.isMapLocationEnabled = values["isMapLocationEnabled"] as? Bool
             self.friendsList.append(friend)
             self.friendsList.sort { (friend1, friend2) -> Bool in
                 return friend1.name < friend2.name
@@ -357,7 +358,9 @@ class ContactsVC: UIViewController {
     }
     
     @objc func openMap(_ button: ContactsAnimationButton){
-        print("TODO: Map")
+        let mapVC = MapsVC()
+        mapVC.modalPresentationStyle = .fullScreen
+        present(mapVC, animated: true, completion: nil)
     }
     
     @objc func removeFriend(_ button: ContactsAnimationButton){

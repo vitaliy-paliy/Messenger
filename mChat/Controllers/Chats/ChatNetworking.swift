@@ -180,14 +180,14 @@ class ChatNetworking {
         })
     }
     
-    func downloadAudioUrl(_ ref: StorageReference, _ data: Data, _ id: String){
+    private func downloadAudioUrl(_ ref: StorageReference, _ data: Data, _ id: String){
         ref.downloadURL { (url, error) in
             guard let url = url else { return }
             self.sendAudioMessage(with: url.absoluteString, and: id)
         }
     }
     
-    func sendAudioMessage(with url: String, and id: String) {
+    private func sendAudioMessage(with url: String, and id: String) {
         let senderRef = Constants.db.reference().child("messages").child(CurrentUser.uid).child(friend.id).childByAutoId()
         let friendRef = Constants.db.reference().child("messages").child(friend.id).child(CurrentUser.uid).child(senderRef.key!)
         guard let messageId = senderRef.key else { return }
@@ -216,8 +216,14 @@ class ChatNetworking {
     }
  
     func readMessagesHandler(){
-        let unreadRef = Database.database().reference().child("messages").child("unread-Messages").child(CurrentUser.uid).child(self.friend.id)
-        unreadRef.removeValue()
+        let unreadRef = Database.database().reference().child("messages").child("unread-Messages").child(CurrentUser.uid).child(friend.id)
+        unreadRef.observe(.childAdded) { (snap) in
+            unreadRef.removeValue()
+        }
+    }
+    
+    func removeObserves(){
+        Database.database().reference().child("messages").child("unread-Messages").child(CurrentUser.uid).child(friend.id).removeAllObservers()
     }
     
 }

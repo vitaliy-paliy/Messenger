@@ -95,7 +95,7 @@ class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, U
                             print("Error downloading image(url is nil)")
                             return
                         }
-                        let values: [String: Any] = ["name": self.name!, "email": self.email!, "profileImage": url.absoluteString]
+                        let values: [String: Any] = ["name": self.name!, "email": self.email!, "profileImage": url.absoluteString, "isMapLocationEnabled": false]
                         self.registerUserHandler(uid,values)
                     }
                 }
@@ -123,6 +123,7 @@ class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, U
             CurrentUser.email = snap["email"] as? String
             CurrentUser.profileImage = snap["profileImage"] as? String
             CurrentUser.uid = uid
+            CurrentUser.isMapLocationEnabled = snap["isMapLocationEnabled"] as? Bool
             Constants.activityObservers(isOnline: true)
             let controller = ChatTabBar()
             controller.modalPresentationStyle = .fullScreen
