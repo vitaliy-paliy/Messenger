@@ -26,8 +26,9 @@ extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
         let recent = messages[indexPath.row]
         cell.message = recent
         setupNoTypingCell(cell)
+        cell.unreadMessageView.isHidden = true
         convNetworking.observeUnreadMessages(recent.determineUser()) { (unreadMessage) in
-            if let numOfMessages = unreadMessage[recent.determineUser()], numOfMessages > 0 {
+            if let numOfMessages = unreadMessage[cell.message.determineUser()], numOfMessages > 0 {
                 cell.unreadMessageView.isHidden = false
                 cell.unreadLabel.text = "\(numOfMessages)"
             }else{
@@ -73,6 +74,7 @@ extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
     
     func loadFriendsHandler(_ recent: Messages, _ cell: ConversationsCell){
         convNetworking.loadFriends(recent) { (friend) in
+            if cell.message.determineUser() != friend.id { return }
             self.friends.append(friend)
             cell.friendName.text = friend.name
             cell.profileImage.loadImage(url: friend.profileImage)

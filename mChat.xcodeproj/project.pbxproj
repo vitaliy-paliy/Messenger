@@ -217,8 +217,8 @@
 			children = (
 				CBF644F62381C26B004830C6 /* ConversationsVC.swift */,
 				CB50E72A23C29B710055BF78 /* ConversationsNetworking.swift */,
-				CBFC53BA23873B5600CC4C91 /* ConverstaionsCell.swift */,
 				CB82EA8523C4E907002FD857 /* ConvTableView + Extension.swift */,
+				CBFC53BA23873B5600CC4C91 /* ConverstaionsCell.swift */,
 				CB82EA8723C4EC9B002FD857 /* NewConvSelectedProtocol + Extension.swift */,
 				CB50E72923C29B540055BF78 /* NewConversations */,
 			);

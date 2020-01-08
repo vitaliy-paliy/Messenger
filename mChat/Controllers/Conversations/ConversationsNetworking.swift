@@ -153,11 +153,11 @@ class ConversationsNetworking {
     }
     
     func observeUnreadMessages(_ key: String, completion: @escaping(_ unreadMessages: [String: Int]) -> Void){
-        Database.database().reference().child("unread-Messages").child(CurrentUser.uid).child(key).observe(.value) { (snap) in
+        Database.database().reference().child("messages").child("unread-Messages").child(CurrentUser.uid).child(key).observe(.value) { (snap) in
             self.unreadMessages[key] = Int(snap.childrenCount)
             return completion(self.unreadMessages)
         }
-        Database.database().reference().child("unread-Messages").child(CurrentUser.uid).child(key).observe(.childRemoved) { (snap) in
+        Database.database().reference().child("messages").child("unread-Messages").child(CurrentUser.uid).child(key).observe(.childRemoved) { (snap) in
             self.unreadMessages.removeValue(forKey: key)
             return completion(self.unreadMessages)
         }

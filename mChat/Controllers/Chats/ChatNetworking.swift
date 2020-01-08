@@ -60,6 +60,7 @@ class ChatNetworking {
     func removeMessageHandler(messageToRemove: Messages, completion: @escaping () -> Void){
         Database.database().reference().child("messages").child(CurrentUser.uid).child(friend.id).child(messageToRemove.id).removeValue { (error, ref) in
             Database.database().reference().child("messages").child(self.friend.id).child(CurrentUser.uid).child(messageToRemove.id).removeValue()
+            Database.database().reference().child("messages").child("unread-Messages").child(self.friend.id).child(CurrentUser.uid).child(messageToRemove.id).removeValue()
             if messageToRemove.audioUrl != nil {
                 Storage.storage().reference().child("message-Audio").child(messageToRemove.storageID).delete { (error) in
                     guard error == nil else { return }
@@ -112,7 +113,7 @@ class ChatNetworking {
         let values = ["sender": CurrentUser.uid!, "time": Date().timeIntervalSince1970, "recipient": friend.id!, "mediaUrl": url, "width": image.size.width, "height": image.size.height, "messageId": messageId, "storageID": id] as [String: Any]
         senderRef.updateChildValues(values)
         friendRef.updateChildValues(values)
-        let unreadRef = Constants.db.reference().child("unread-Messages").child(friend.id).child(CurrentUser.uid).child(senderRef.key!)
+        let unreadRef = Database.database().reference().child("messages").child("unread-Messages").child(friend.id).child(CurrentUser.uid).child(senderRef.key!)
         let unreadValues = [senderRef.key: 1]
         unreadRef.updateChildValues(unreadValues)
     }
@@ -123,7 +124,7 @@ class ChatNetworking {
                 completion(error)
             }
             friendRef.updateChildValues(values)
-            let unreadRef = Constants.db.reference().child("unread-Messages").child(self.friend.id).child(CurrentUser.uid).child(senderRef.key!)
+            let unreadRef = Database.database().reference().child("messages").child("unread-Messages").child(self.friend.id).child(CurrentUser.uid).child(senderRef.key!)
             let unreadValues = [senderRef.key: 1]
             unreadRef.updateChildValues(unreadValues)
             completion(nil)
@@ -193,7 +194,7 @@ class ChatNetworking {
         let values = ["sender": CurrentUser.uid!, "time": Date().timeIntervalSince1970, "recipient": friend.id!, "audioUrl": url,"messageId": messageId, "storageID": id] as [String: Any]
         senderRef.updateChildValues(values)
         friendRef.updateChildValues(values)
-        let unreadRef = Constants.db.reference().child("unread-Messages").child(self.friend.id).child(CurrentUser.uid).child(senderRef.key!)
+        let unreadRef = Database.database().reference().child("messages").child("unread-Messages").child(self.friend.id).child(CurrentUser.uid).child(senderRef.key!)
         let unreadValues = [senderRef.key: 1]
         unreadRef.updateChildValues(unreadValues)
     }
@@ -215,7 +216,7 @@ class ChatNetworking {
     }
  
     func readMessagesHandler(){
-        let unreadRef = Constants.db.reference().child("unread-Messages").child(CurrentUser.uid).child(self.friend.id)
+        let unreadRef = Database.database().reference().child("messages").child("unread-Messages").child(CurrentUser.uid).child(self.friend.id)
         unreadRef.removeValue()
     }
     
