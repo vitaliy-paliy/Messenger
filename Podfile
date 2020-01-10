@@ -13,5 +13,6 @@ pod 'Firebase/Database'
 pod 'Firebase/Core'
 pod 'Firebase/Storage'
 pod 'lottie-ios'
+pod 'Mapbox-iOS-SDK', '~> 5.6’
 
 end
