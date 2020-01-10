@@ -83,6 +83,7 @@ class MapsVC: UIViewController {
             mapView.setRegion(region, animated: true)
         }
     }
+    //
     
     func checkLocationAuth(){
         switch CLLocationManager.authorizationStatus() {
