@@ -6,7 +6,7 @@
 //  Copyright © 2019 PALIY. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class CurrentUser {
     static var uid: String!

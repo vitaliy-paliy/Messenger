@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>MGLMapboxAccessToken</key>
+	<string>pk.eyJ1IjoidnBhbGl5IiwiYSI6ImNrNTdiY3A3YzBjNGQza21yMTBhMW13eDcifQ.52_aQWMRYSvJYVIUVxIgAQ</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>It allows you to see your friends on the map</string>
 	<key>NSMicrophoneUsageDescription</key>

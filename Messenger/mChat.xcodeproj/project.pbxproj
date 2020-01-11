@@ -10,6 +10,10 @@
 		AB84247D3884D7F997D67FD0 /* Pods_mChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E1467D72B76AF7D9B11C55A /* Pods_mChat.framework */; };
 		CB08304B238709BD002A1861 /* ChatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB08304A238709BD002A1861 /* ChatVC.swift */; };
 		CB09181B23B6B81C00293E77 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB09181A23B6B81B00293E77 /* MessageView.swift */; };
+		CB1B3F7F23C8FDCE000858DF /* AnnotationPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1B3F7E23C8FDCE000858DF /* AnnotationPin.swift */; };
+		CB1B3F8123C903D0000858DF /* CurrentUserAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1B3F8023C903D0000858DF /* CurrentUserAnnotationView.swift */; };
+		CB1B3F8323C92616000858DF /* FriendAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1B3F8223C92616000858DF /* FriendAnnotationView.swift */; };
+		CB1B3F8723C94E5B000858DF /* UserCalloutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1B3F8623C94E5B000858DF /* UserCalloutView.swift */; };
 		CB2717382381E775003A4D46 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2717372381E775003A4D46 /* Helpers.swift */; };
 		CB27173B2381ECB1003A4D46 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB27173A2381ECB1003A4D46 /* Constants.swift */; };
 		CB27173D2381EFFA003A4D46 /* SelectProfileImageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB27173C2381EFFA003A4D46 /* SelectProfileImageVC.swift */; };
@@ -77,6 +81,10 @@
 		AF45AF9736070E7C6E1CC18D /* Pods-mChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mChat.debug.xcconfig"; path = "Target Support Files/Pods-mChat/Pods-mChat.debug.xcconfig"; sourceTree = "<group>"; };
 		CB08304A238709BD002A1861 /* ChatVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
 		CB09181A23B6B81B00293E77 /* MessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
+		CB1B3F7E23C8FDCE000858DF /* AnnotationPin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationPin.swift; sourceTree = "<group>"; };
+		CB1B3F8023C903D0000858DF /* CurrentUserAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUserAnnotationView.swift; sourceTree = "<group>"; };
+		CB1B3F8223C92616000858DF /* FriendAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendAnnotationView.swift; sourceTree = "<group>"; };
+		CB1B3F8623C94E5B000858DF /* UserCalloutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCalloutView.swift; sourceTree = "<group>"; };
 		CB2717372381E775003A4D46 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		CB27173A2381ECB1003A4D46 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CB27173C2381EFFA003A4D46 /* SelectProfileImageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectProfileImageVC.swift; sourceTree = "<group>"; };
@@ -217,6 +225,10 @@
 				CB82EA8A23C63F34002FD857 /* MapsVC.swift */,
 				CB82EA8E23C660C7002FD857 /* MapsSettingsVC.swift */,
 				CB82EA9023C666D0002FD857 /* MapSettingsCell.swift */,
+				CB1B3F7E23C8FDCE000858DF /* AnnotationPin.swift */,
+				CB1B3F8023C903D0000858DF /* CurrentUserAnnotationView.swift */,
+				CB1B3F8223C92616000858DF /* FriendAnnotationView.swift */,
+				CB1B3F8623C94E5B000858DF /* UserCalloutView.swift */,
 			);
 			path = Maps;
 			sourceTree = "<group>";
@@ -526,6 +538,7 @@
 				CB89170123BA93490019CBE9 /* ChatNetworking.swift in Sources */,
 				CB513C3E23BE872A00BE8907 /* FriendInfoToolsCell.swift in Sources */,
 				CB2717382381E775003A4D46 /* Helpers.swift in Sources */,
+				CB1B3F8323C92616000858DF /* FriendAnnotationView.swift in Sources */,
 				CBDBAE5723BC42AC00A56746 /* MessageCollectionView.swift in Sources */,
 				CB82EA9123C666D0002FD857 /* MapSettingsCell.swift in Sources */,
 				CBF907EC2380B83500EF8925 /* SceneDelegate.swift in Sources */,
@@ -537,6 +550,7 @@
 				CB27173D2381EFFA003A4D46 /* SelectProfileImageVC.swift in Sources */,
 				CBF644F72381C26B004830C6 /* ConversationsVC.swift in Sources */,
 				CB513C4023BE8C7F00BE8907 /* FriendInformationCell.swift in Sources */,
+				CB1B3F8723C94E5B000858DF /* UserCalloutView.swift in Sources */,
 				CB82EA8B23C63F34002FD857 /* MapsVC.swift in Sources */,
 				CB4CC233239DD71B0086DEA9 /* Calendar + Extension.swift in Sources */,
 				CBCC3084238365B500E36E39 /* UsersListCell.swift in Sources */,
@@ -550,6 +564,8 @@
 				CBDBAE5523BC3C9200A56746 /* LoadingIndicator.swift in Sources */,
 				CBAC237D23AC4A5200FCBED9 /* ToolsCell.swift in Sources */,
 				CB50E72B23C29B710055BF78 /* ConversationsNetworking.swift in Sources */,
+				CB1B3F8123C903D0000858DF /* CurrentUserAnnotationView.swift in Sources */,
+				CB1B3F7F23C8FDCE000858DF /* AnnotationPin.swift in Sources */,
 				CBCC30862383722500E36E39 /* AddFriendVC.swift in Sources */,
 				CBF907FE2380B8CE00EF8925 /* SignInVC.swift in Sources */,
 				CB82EA8D23C65845002FD857 /* SettingsCell.swift in Sources */,
