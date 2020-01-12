@@ -13,8 +13,8 @@ class FriendAnnotationView: MGLAnnotationView {
     
     let size: CGFloat = 32
     
-    init(profileImage: String) {
-        super.init(frame: .zero)
+    init(annotation: MGLAnnotation?, reuseIdentifier: String?, profileImage: String) {
+        super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
         frame = CGRect(x: 0, y: 0, width: size, height: size)
         scalesWithViewingDistance = false
         layer.contentsScale = UIScreen.main.scale
@@ -29,9 +29,8 @@ class FriendAnnotationView: MGLAnnotationView {
         imageLayer.borderWidth = 2.0
         imageLayer.borderColor = UIColor.white.cgColor
         layer.addSublayer(imageLayer)
-        
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

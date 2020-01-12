@@ -12,14 +12,24 @@ import Firebase
 class MapsSettingsVC: UIViewController {
     
     var tableView = UITableView()
+    var isMapOpened = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
-        setupTableView()
+        if isMapOpened { setupBackButton() }
         navigationItem.title = "Maps"
         navigationController?.navigationBar.tintColor = .black
         view.backgroundColor = .white
+    }
+    
+    func setupBackButton(){
+        let button = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(backButtonPressed))
+        navigationItem.leftBarButtonItem = button
+    }
+    
+    @objc func backButtonPressed(){
+        dismiss(animated: true, completion: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -40,6 +50,7 @@ class MapsSettingsVC: UIViewController {
         tableView.isScrollEnabled = false
         tableView.tableFooterView = UIView(frame: .zero)
         tableView.register(MapSettingsCell.self, forCellReuseIdentifier: "MapSettingsCell")
+        tableView.register(MapStylesCell.self, forCellReuseIdentifier: "MapStylesCell")
         tableView.backgroundColor = .clear
         let constraints = [
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -101,7 +112,7 @@ extension MapsSettingsVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        if isMapOpened { return 2 } else { return 3 }
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -109,22 +120,32 @@ extension MapsSettingsVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        // If MapSettingsVC was opened in MapsVC then we should hide the "Open maps" row
+        let section = isMapOpened ? indexPath.section + 1 : 1
         if indexPath.section == 0 {
+            tableView.rowHeight = 35
             let cell = tableView.dequeueReusableCell(withIdentifier: "MapSettingsCell") as! MapSettingsCell
             cell.selectionStyle = .none
             cell.switchButton.isOn = !CurrentUser.isMapLocationEnabled
             cell.setupSwitch()
             cell.textLabel?.text = "Incognito mode"
             return cell
-        }else{
+        }else if indexPath.section == section {
+            if isMapOpened { return UITableViewCell() }
+            tableView.rowHeight = 35
             let cell = UITableViewCell()
             cell.textLabel?.text = "Open maps"
+            return cell
+        }else{
+            tableView.rowHeight = 250
+            let cell = tableView.dequeueReusableCell(withIdentifier: "MapStylesCell") as! MapStylesCell
+            cell.selectionStyle = .default
             return cell
         }
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard indexPath.section == 1 else { return }
+        guard indexPath.section == 1, !isMapOpened else { return }
         tableView.deselectRow(at: indexPath, animated: true)
         let controller = MapsVC()
         controller.modalPresentationStyle = .fullScreen

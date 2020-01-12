@@ -15,6 +15,7 @@ class MapsVC: UIViewController {
     var friends = [FriendInfo]()
     var mapView = MGLMapView()
     var exitButton = UIButton(type: .system)
+    var userInfoTab: UserInfoTab?
     var timer = Timer()
     
     override func viewDidLoad() {
@@ -40,7 +41,7 @@ class MapsVC: UIViewController {
     
     func setupMapView(){
         mapView.frame = view.frame
-        mapView.styleURL = URL(string: "mapbox://styles/mapbox/streets-v11")
+        mapView.styleURL = URL(string: "mapbox://styles/mapbox/navigation-preview-day-v4")
         view.addSubview(mapView)
         mapView.delegate = self
         mapView.allowsRotating = false
@@ -93,7 +94,6 @@ class MapsVC: UIViewController {
             guard let longitude = values["longitude"] as? Double else { return }
             let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
             let friendPin = AnnotationPin(coordinate, friend)
-            
             var annotationToDelete: AnnotationPin!
             let status = self.mapView.annotations?.contains(where: { (annotation) -> Bool in
                 guard let oldAnnotation = annotation as? AnnotationPin else { return false }
@@ -104,7 +104,6 @@ class MapsVC: UIViewController {
                 self.mapView.removeAnnotation(annotationToDelete)
             }
             self.mapView.addAnnotation(friendPin)
-            self.mapView.reloadInputViews()
         }
     }
     
@@ -126,6 +125,29 @@ class MapsVC: UIViewController {
     @objc func exitButtonPressed(){
         dismiss(animated: true, completion: nil)
     }
+        
+    @objc func openMapsSettings(){
+        let controller = MapsSettingsVC()
+        controller.isMapOpened = true
+        presentingVC().present(UINavigationController(rootViewController: controller),animated: true, completion: nil)
+    }
+        
+    func openUserMessagesHandler(_ friend: FriendInfo){
+        let controller = ChatVC()
+        controller.friend = friend
+        let navigationController = UINavigationController(rootViewController: controller)
+        navigationController.viewControllers = [self, controller]
+        navigationController.modalPresentationStyle = .fullScreen
+        presentingVC().show(navigationController, sender: nil)
+    }
+    
+    func presentingVC() -> UIViewController {
+        var topController: UIViewController = UIApplication.shared.windows[0].rootViewController!
+        while (topController.presentedViewController != nil) {
+            topController = topController.presentedViewController!
+        }
+        return topController
+    }
     
 }
 
@@ -136,27 +158,35 @@ extension MapsVC: MGLMapViewDelegate {
             return CurrentUserAnnotationView()
         }else{
             guard let pin = annotation as? AnnotationPin else { return nil }
-            return FriendAnnotationView(profileImage: pin.friend.profileImage)
+            let reuseIdentifier = "FriendAnnotation"
+            return FriendAnnotationView(annotation: pin, reuseIdentifier: reuseIdentifier, profileImage: pin.friend.profileImage)
         }
         
     }
     
-    func mapView(_ mapView: MGLMapView, annotationCanShowCallout annotation: MGLAnnotation) -> Bool {
-        return true
-    }
-    
     func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {
-        print("HI")
+        if annotation is MGLUserLocation && mapView.userLocation != nil {
+            mapView.setCenter(annotation.coordinate, zoomLevel: 13, animated: true)
+            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+                self.userInfoTab = UserInfoTab(annotation: annotation)
+                self.view.addSubview(self.userInfoTab!)
+            })
+        }else{
+            guard let pin = annotation as? AnnotationPin else { return }
+            mapView.setCenter(pin.coordinate, zoomLevel: 13, animated: true)
+            UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+                self.userInfoTab = UserInfoTab(annotation: pin)
+                self.view.addSubview(self.userInfoTab!)
+            })
+            
+        }
     }
     
-    func mapView(_ mapView: MGLMapView, calloutViewFor annotation: MGLAnnotation) -> MGLCalloutView? {
-        print("Hi")
-        if annotation is MGLUserLocation && mapView.userLocation != nil {
-            print("fdfds")
-            return nil
-        }else{
-            guard let pin = annotation as? AnnotationPin else { return nil }
-            return UserCalloutView(annotation: pin)
+    func mapView(_ mapView: MGLMapView, didDeselect annotation: MGLAnnotation) {
+        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+            self.userInfoTab?.frame = CGRect(x: self.view.frame.minX, y: self.view.frame.maxY + 100, width: self.userInfoTab?.frame.width ?? 100, height: 60)
+        }) { (true) in
+            self.userInfoTab?.removeFromSuperview()
         }
     }
     

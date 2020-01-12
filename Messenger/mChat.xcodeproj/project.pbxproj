@@ -13,7 +13,6 @@
 		CB1B3F7F23C8FDCE000858DF /* AnnotationPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1B3F7E23C8FDCE000858DF /* AnnotationPin.swift */; };
 		CB1B3F8123C903D0000858DF /* CurrentUserAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1B3F8023C903D0000858DF /* CurrentUserAnnotationView.swift */; };
 		CB1B3F8323C92616000858DF /* FriendAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1B3F8223C92616000858DF /* FriendAnnotationView.swift */; };
-		CB1B3F8723C94E5B000858DF /* UserCalloutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1B3F8623C94E5B000858DF /* UserCalloutView.swift */; };
 		CB2717382381E775003A4D46 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2717372381E775003A4D46 /* Helpers.swift */; };
 		CB27173B2381ECB1003A4D46 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB27173A2381ECB1003A4D46 /* Constants.swift */; };
 		CB27173D2381EFFA003A4D46 /* SelectProfileImageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB27173C2381EFFA003A4D46 /* SelectProfileImageVC.swift */; };
@@ -25,6 +24,9 @@
 		CB4CF77B23943B3600AC2E31 /* NewConversationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4CF77A23943B3600AC2E31 /* NewConversationVC.swift */; };
 		CB4CF77E23943D8100AC2E31 /* NewConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4CF77D23943D8100AC2E31 /* NewConversationCell.swift */; };
 		CB4E41F523BD7BE200D476E5 /* ToolsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4E41F423BD7BE200D476E5 /* ToolsMenu.swift */; };
+		CB4FEA9023CA446F006B8B08 /* UserInfoTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4FEA8F23CA446F006B8B08 /* UserInfoTab.swift */; };
+		CB4FEA9423CA6E18006B8B08 /* MapStylesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4FEA9323CA6E18006B8B08 /* MapStylesCell.swift */; };
+		CB4FEA9823CA7370006B8B08 /* StylesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4FEA9723CA7370006B8B08 /* StylesCollectionViewCell.swift */; };
 		CB50E72623C262000055BF78 /* ChatAudio.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB50E72523C262000055BF78 /* ChatAudio.swift */; };
 		CB50E72B23C29B710055BF78 /* ConversationsNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB50E72A23C29B710055BF78 /* ConversationsNetworking.swift */; };
 		CB513C3723BE6C1300BE8907 /* ChatCollectionView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB513C3623BE6C1300BE8907 /* ChatCollectionView + Extension.swift */; };
@@ -84,7 +86,6 @@
 		CB1B3F7E23C8FDCE000858DF /* AnnotationPin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationPin.swift; sourceTree = "<group>"; };
 		CB1B3F8023C903D0000858DF /* CurrentUserAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUserAnnotationView.swift; sourceTree = "<group>"; };
 		CB1B3F8223C92616000858DF /* FriendAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendAnnotationView.swift; sourceTree = "<group>"; };
-		CB1B3F8623C94E5B000858DF /* UserCalloutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCalloutView.swift; sourceTree = "<group>"; };
 		CB2717372381E775003A4D46 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		CB27173A2381ECB1003A4D46 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CB27173C2381EFFA003A4D46 /* SelectProfileImageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectProfileImageVC.swift; sourceTree = "<group>"; };
@@ -96,6 +97,9 @@
 		CB4CF77A23943B3600AC2E31 /* NewConversationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationVC.swift; sourceTree = "<group>"; };
 		CB4CF77D23943D8100AC2E31 /* NewConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationCell.swift; sourceTree = "<group>"; };
 		CB4E41F423BD7BE200D476E5 /* ToolsMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsMenu.swift; sourceTree = "<group>"; };
+		CB4FEA8F23CA446F006B8B08 /* UserInfoTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoTab.swift; sourceTree = "<group>"; };
+		CB4FEA9323CA6E18006B8B08 /* MapStylesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapStylesCell.swift; sourceTree = "<group>"; };
+		CB4FEA9723CA7370006B8B08 /* StylesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StylesCollectionViewCell.swift; sourceTree = "<group>"; };
 		CB50E72523C262000055BF78 /* ChatAudio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatAudio.swift; sourceTree = "<group>"; };
 		CB50E72A23C29B710055BF78 /* ConversationsNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsNetworking.swift; sourceTree = "<group>"; };
 		CB513C3623BE6C1300BE8907 /* ChatCollectionView + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ChatCollectionView + Extension.swift"; sourceTree = "<group>"; };
@@ -224,11 +228,13 @@
 			children = (
 				CB82EA8A23C63F34002FD857 /* MapsVC.swift */,
 				CB82EA8E23C660C7002FD857 /* MapsSettingsVC.swift */,
+				CB4FEA9323CA6E18006B8B08 /* MapStylesCell.swift */,
+				CB4FEA9723CA7370006B8B08 /* StylesCollectionViewCell.swift */,
 				CB82EA9023C666D0002FD857 /* MapSettingsCell.swift */,
 				CB1B3F7E23C8FDCE000858DF /* AnnotationPin.swift */,
 				CB1B3F8023C903D0000858DF /* CurrentUserAnnotationView.swift */,
 				CB1B3F8223C92616000858DF /* FriendAnnotationView.swift */,
-				CB1B3F8623C94E5B000858DF /* UserCalloutView.swift */,
+				CB4FEA8F23CA446F006B8B08 /* UserInfoTab.swift */,
 			);
 			path = Maps;
 			sourceTree = "<group>";
@@ -530,6 +536,7 @@
 				CB08304B238709BD002A1861 /* ChatVC.swift in Sources */,
 				CB513C3723BE6C1300BE8907 /* ChatCollectionView + Extension.swift in Sources */,
 				CBF907EA2380B83500EF8925 /* AppDelegate.swift in Sources */,
+				CB4FEA9423CA6E18006B8B08 /* MapStylesCell.swift in Sources */,
 				CBCC30802383634C00E36E39 /* UsersListVC.swift in Sources */,
 				CB82EA8F23C660C7002FD857 /* MapsSettingsVC.swift in Sources */,
 				CBF05E4523A086A400EF295F /* NavigationItem + Extension.swift in Sources */,
@@ -548,9 +555,9 @@
 				CB4B6F7D23BBB6A400CDA4B3 /* UserResponse.swift in Sources */,
 				CBDBAE5323BC1D5E00A56746 /* MessageContainer.swift in Sources */,
 				CB27173D2381EFFA003A4D46 /* SelectProfileImageVC.swift in Sources */,
+				CB4FEA9023CA446F006B8B08 /* UserInfoTab.swift in Sources */,
 				CBF644F72381C26B004830C6 /* ConversationsVC.swift in Sources */,
 				CB513C4023BE8C7F00BE8907 /* FriendInformationCell.swift in Sources */,
-				CB1B3F8723C94E5B000858DF /* UserCalloutView.swift in Sources */,
 				CB82EA8B23C63F34002FD857 /* MapsVC.swift in Sources */,
 				CB4CC233239DD71B0086DEA9 /* Calendar + Extension.swift in Sources */,
 				CBCC3084238365B500E36E39 /* UsersListCell.swift in Sources */,
@@ -569,6 +576,7 @@
 				CBCC30862383722500E36E39 /* AddFriendVC.swift in Sources */,
 				CBF907FE2380B8CE00EF8925 /* SignInVC.swift in Sources */,
 				CB82EA8D23C65845002FD857 /* SettingsCell.swift in Sources */,
+				CB4FEA9823CA7370006B8B08 /* StylesCollectionViewCell.swift in Sources */,
 				CBF644F42381C23A004830C6 /* ContactsVC.swift in Sources */,
 				CB8916FE23BA8D1D0019CBE9 /* MessageKit.swift in Sources */,
 				CB4B6F8023BBD7BC00CDA4B3 /* ImageGalleryView.swift in Sources */,
