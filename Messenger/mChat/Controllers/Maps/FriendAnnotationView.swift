@@ -12,7 +12,7 @@ import Mapbox
 class FriendAnnotationView: MGLAnnotationView {
     
     let size: CGFloat = 32
-    
+        
     init(annotation: MGLAnnotation?, reuseIdentifier: String?, profileImage: String) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
         frame = CGRect(x: 0, y: 0, width: size, height: size)

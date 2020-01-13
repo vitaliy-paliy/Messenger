@@ -81,7 +81,7 @@ extension UsersListVC: UITableViewDelegate, UITableViewDataSource {
         let user = users[indexPath.row]
         cell.userName.text = user.name
         cell.userEmail.text = user.email
-        cell.profileImage.loadImage(url: user.profileImage!)
+        cell.profileImage.loadImage(url: user.profileImage)
         return cell
     }
     

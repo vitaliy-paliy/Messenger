@@ -38,6 +38,7 @@ class UserInfoTab: UIView{
             self.pin = pin
             profileImage.loadImage(url: pin.friend.profileImage)
             actionButton.setImage(UIImage(systemName: "bubble.right"), for: .normal)
+            actionButton.addTarget(self, action: #selector(openUserMessages), for: .touchUpInside)
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(openUserMessages))
             addGestureRecognizer(tapGesture)
             guard let title = annotation.title, let lastSeen = annotation.subtitle else { return }
@@ -46,11 +47,12 @@ class UserInfoTab: UIView{
         }else{
             profileImage.loadImage(url: CurrentUser.profileImage)
             actionButton.setImage(UIImage(systemName: "gear"), for: .normal)
+            actionButton.addTarget(mapsVC, action: #selector(mapsVC.openMapsSettings), for: .touchUpInside)
             let tapGesture = UITapGestureRecognizer(target: mapsVC, action: #selector(mapsVC.openMapsSettings))
             addGestureRecognizer(tapGesture)
             nameLabel.text = "Me"
             var status: String!
-            if CurrentUser.isMapLocationEnabled { status = "Anonymous mode is disabled"} else { status = "Anonymous node is enabled" }
+            if CurrentUser.isMapLocationEnabled { status = "Anonymous mode is disabled"} else { status = "Anonymous mode is enabled" }
             lastSeenLabel.text = status
         }
     }

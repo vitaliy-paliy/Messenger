@@ -8,15 +8,34 @@
 
 import UIKit
 
+struct MapStyles {
+    var name: String
+    var selected: String?
+    init(name: String, _ selected: String?) {
+        self.name = name
+        self.selected = selected
+    }
+}
+
 class MapStylesCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource {
     
     var collectionView: UICollectionView!
+    
+    var mapStyles = [MapStyles]()
     
     var mapStyleImages = ["Streets Style","Light Style","Dark Style","Satellite Style","Satellite Light Style","Satellite Dark Style"]
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupData()
         setupCollectionView()
+    }
+    
+    func setupData(){
+        for style in mapStyleImages {
+            let mapStyle = MapStyles(name: style,nil)
+            mapStyles.append(mapStyle)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -48,15 +67,29 @@ class MapStylesCell: UITableViewCell, UICollectionViewDelegate, UICollectionView
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return mapStyleImages.count
+        return mapStyles.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "StylesCollectionViewCell", for: indexPath) as! StylesCollectionViewCell
-        let imageName = mapStyleImages[indexPath.row]
-        cell.imageView.image = UIImage(named: imageName)
-        cell.nameLabel.text = imageName
+        let style = mapStyles[indexPath.row]
+        
+        if style.selected != nil {
+            cell.radioButton.select()
+        }else{
+            cell.radioButton.deselect()
+        }
+        cell.imageView.image = UIImage(named: style.name)
+        cell.nameLabel.text = style.name
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        for s in 0..<mapStyles.count {
+            mapStyles[s].selected = nil
+        }
+        mapStyles[indexPath.row].selected = mapStyles[indexPath.row].name
+        collectionView.reloadData()
     }
     
 }

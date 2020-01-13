@@ -12,22 +12,22 @@ import Mapbox
 class CurrentUserAnnotationView: MGLUserLocationAnnotationView {
 
     let size: CGFloat = 32
+    let imageLayer = CALayer()
     
     override func update() {
         if frame.isNull {
-            frame = CGRect(x: 0, y: 0, width: size, height: size)
+            frame = CGRect(x: 0, y: 0 , width: size, height: size)
             return setNeedsLayout()
         }
-        let imageLayer = CALayer()
         imageLayer.bounds = CGRect(x: 0, y: 0, width: size, height: size)
         let imageView = UIImageView()
         imageView.loadImage(url: CurrentUser.profileImage)
         imageLayer.contents = imageView.image?.cgImage
         imageLayer.cornerRadius = imageLayer.frame.size.width/2
         imageLayer.masksToBounds = true
-        imageLayer.borderWidth = 2.0
+        imageLayer.borderWidth = 2
         imageLayer.borderColor = UIColor.white.cgColor
         layer.addSublayer(imageLayer)
     }
-
+    
 }

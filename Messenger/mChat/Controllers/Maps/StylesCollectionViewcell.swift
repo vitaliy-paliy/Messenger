@@ -63,19 +63,12 @@ class StylesCollectionViewCell: UICollectionViewCell {
             radioButton.heightAnchor.constraint(equalToConstant: 16)
         ]
         NSLayoutConstraint.activate(constraints)
-        
-//        radioButton.onSelect {
-//            print("TODO: Put into cache")
-//        }
-//        radioButton.onDeselect {
-//            print("TODO: Remove from cache")
-//        }
-        
+                
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
 }
 
