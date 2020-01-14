@@ -360,6 +360,7 @@ class ContactsVC: UIViewController {
     @objc func openMap(_ button: ContactsAnimationButton){
         let mapVC = MapsVC()
         mapVC.modalPresentationStyle = .fullScreen
+        mapVC.zoomToSelectedFriend(friend: button.friendInfo!)
         present(mapVC, animated: true, completion: nil)
     }
     

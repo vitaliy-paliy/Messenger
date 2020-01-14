@@ -75,7 +75,7 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
             navigationItem.setNavTitles(navTitle: friend.name, navSubtitle: calendar.calculateLastLogin(loginDate))
         }
     }
-    
+
     @objc func clipImageButtonPressed() {
         openImagePicker(type: .photoLibrary)
     }

@@ -10,7 +10,7 @@ import UIKit
 
 class UsersListVC: UIViewController {
 
-    var users: [FriendInfo] = []
+    var users = [FriendInfo]()
     var tableView = UITableView()
     
     override func viewDidLoad() {
@@ -29,7 +29,7 @@ class UsersListVC: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         tabBarController?.tabBar.isHidden = false
-        users = []
+//        users = []
     }
  
     func fetchUsers(){

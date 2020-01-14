@@ -10,9 +10,19 @@ import UIKit
 import Firebase
 import Mapbox
 
+// Relocate protocol to a different swift file
+
+
+protocol UserSelectedFriend {
+    func zoomToSelectedFriend(friend: FriendInfo)
+}
+
 class MapsVC: UIViewController {
     
     var friends = [FriendInfo]()
+    var isFriendSelected = false
+    var selectedFriend = FriendInfo()
+    var friendCoordinates = [String: CLLocationCoordinate2D]()
     var mapView = MGLMapView()
     var exitButton = UIButton(type: .system)
     var settingsButton = UIButton(type: .system)
@@ -65,6 +75,7 @@ class MapsVC: UIViewController {
         mapView.styleURL = URL(string: "mapbox://styles/mapbox/streets-v11")
         mapView.delegate = self
         mapView.allowsRotating = false
+        mapView.logoView.isHidden = true
         mapView.showsUserLocation = true
     }
     
@@ -123,7 +134,12 @@ class MapsVC: UIViewController {
             if status ?? false {
                 self.mapView.removeAnnotation(annotationToDelete)
             }
+            self.friendCoordinates[friend.id] = coordinate
             self.mapView.addAnnotation(friendPin)
+            if self.isFriendSelected {
+                guard let coordinate = self.friendCoordinates[self.selectedFriend.id] else { return }
+                self.mapView.setCenter(coordinate, zoomLevel: 13, animated: true)
+            }
         }
     }
     
@@ -133,8 +149,9 @@ class MapsVC: UIViewController {
         settingsButton.tintColor = .white
         settingsButton.setImage(UIImage(systemName: "gear"), for: .normal)
         settingsButton.tintColor = .white
+        settingsButton.layer.shadowColor = UIColor.white.cgColor
         settingsButton.layer.shadowRadius = 10
-        settingsButton.layer.shadowOpacity = 0.5
+        settingsButton.layer.shadowOpacity = 0.3
         settingsButton.addTarget(self, action: #selector(openMapsSettings), for: .touchUpInside)
         let constraints = [
             settingsButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -8),
@@ -150,8 +167,9 @@ class MapsVC: UIViewController {
         exitButton.translatesAutoresizingMaskIntoConstraints = false
         exitButton.setImage(UIImage(systemName: "arrow.left.circle.fill"), for: .normal)
         exitButton.tintColor = .white
+        exitButton.layer.shadowColor = UIColor.white.cgColor
         exitButton.layer.shadowRadius = 10
-        exitButton.layer.shadowOpacity = 0.5
+        exitButton.layer.shadowOpacity = 0.3
         exitButton.addTarget(self, action: #selector(exitButtonPressed), for: .touchUpInside)
         let constraints = [
             exitButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 8),
@@ -176,9 +194,8 @@ class MapsVC: UIViewController {
         let controller = ChatVC()
         controller.friend = friend
         let navigationController = UINavigationController(rootViewController: controller)
-        navigationController.viewControllers = [self, controller]
         navigationController.modalPresentationStyle = .fullScreen
-        presentingVC().show(navigationController, sender: nil)
+        present(navigationController, animated: true, completion: nil)
     }
     
     func presentingVC() -> UIViewController {
@@ -188,7 +205,7 @@ class MapsVC: UIViewController {
         }
         return topController
     }
-    
+        
 }
 
 extension MapsVC: MGLMapViewDelegate {
@@ -199,35 +216,41 @@ extension MapsVC: MGLMapViewDelegate {
         }else{
             guard let pin = annotation as? AnnotationPin else { return nil }
             let reuseIdentifier = "FriendAnnotation"
-            return FriendAnnotationView(annotation: pin, reuseIdentifier: reuseIdentifier, profileImage: pin.friend.profileImage)
+            return FriendAnnotationView(annotation: pin, reuseIdentifier: reuseIdentifier, friend: pin.friend)
         }
         
     }
     
+    
     func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {
+        mapView.setCenter(annotation.coordinate, zoomLevel: 13, animated: true)
         if annotation is MGLUserLocation && mapView.userLocation != nil {
-            mapView.setCenter(annotation.coordinate, zoomLevel: 13, animated: true)
             UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
                 self.userInfoTab = UserInfoTab(annotation: annotation)
                 self.view.addSubview(self.userInfoTab!)
             })
         }else{
             guard let pin = annotation as? AnnotationPin else { return }
-            mapView.setCenter(pin.coordinate, zoomLevel: 13, animated: true)
             UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
                 self.userInfoTab = UserInfoTab(annotation: pin)
                 self.view.addSubview(self.userInfoTab!)
             })
-            
         }
     }
+    
     
     func mapView(_ mapView: MGLMapView, didDeselect annotation: MGLAnnotation) {
-        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
-            self.userInfoTab?.frame = CGRect(x: self.view.frame.minX, y: self.view.frame.maxY + 100, width: self.userInfoTab?.frame.width ?? 100, height: 60)
-        }) { (true) in
-            self.userInfoTab?.removeFromSuperview()
-        }
+        self.userInfoTab?.removeFromSuperview()
+        self.userInfoTab = nil
     }
     
+}
+
+extension MapsVC: UserSelectedFriend {
+    
+    func zoomToSelectedFriend(friend: FriendInfo) {
+        selectedFriend = friend
+        isFriendSelected = true
+    }
+
 }
