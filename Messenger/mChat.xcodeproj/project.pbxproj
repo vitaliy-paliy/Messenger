@@ -24,6 +24,7 @@
 		CB4CF77B23943B3600AC2E31 /* NewConversationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4CF77A23943B3600AC2E31 /* NewConversationVC.swift */; };
 		CB4CF77E23943D8100AC2E31 /* NewConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4CF77D23943D8100AC2E31 /* NewConversationCell.swift */; };
 		CB4E41F523BD7BE200D476E5 /* ToolsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4E41F423BD7BE200D476E5 /* ToolsMenu.swift */; };
+		CB4E539223CE963A0000F33B /* MapsNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4E539123CE963A0000F33B /* MapsNetworking.swift */; };
 		CB4FEA9023CA446F006B8B08 /* UserInfoTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4FEA8F23CA446F006B8B08 /* UserInfoTab.swift */; };
 		CB4FEA9423CA6E18006B8B08 /* MapStylesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4FEA9323CA6E18006B8B08 /* MapStylesCell.swift */; };
 		CB4FEA9823CA7370006B8B08 /* StylesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4FEA9723CA7370006B8B08 /* StylesCollectionViewCell.swift */; };
@@ -50,6 +51,8 @@
 		CB89170123BA93490019CBE9 /* ChatNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB89170023BA93490019CBE9 /* ChatNetworking.swift */; };
 		CB89170323BAD4FA0019CBE9 /* ResponseView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB89170223BAD4FA0019CBE9 /* ResponseView + Extension.swift */; };
 		CB8DEAAC2388C985001EDF19 /* ChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8DEAAB2388C985001EDF19 /* ChatCell.swift */; };
+		CB902B4623CEA96D0091221D /* UserSelectedFriendProtocol + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB902B4523CEA96D0091221D /* UserSelectedFriendProtocol + Extension.swift */; };
+		CB902B4823CEA9940091221D /* MapView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB902B4723CEA9940091221D /* MapView + Extension.swift */; };
 		CB9525992380D5BB0006A76A /* SignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9525982380D5BB0006A76A /* SignUpVC.swift */; };
 		CBAB592C2381E49700078B7D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CBAB592B2381E49600078B7D /* GoogleService-Info.plist */; };
 		CBAC237D23AC4A5200FCBED9 /* ToolsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAC237C23AC4A5200FCBED9 /* ToolsCell.swift */; };
@@ -97,6 +100,7 @@
 		CB4CF77A23943B3600AC2E31 /* NewConversationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationVC.swift; sourceTree = "<group>"; };
 		CB4CF77D23943D8100AC2E31 /* NewConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationCell.swift; sourceTree = "<group>"; };
 		CB4E41F423BD7BE200D476E5 /* ToolsMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsMenu.swift; sourceTree = "<group>"; };
+		CB4E539123CE963A0000F33B /* MapsNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapsNetworking.swift; sourceTree = "<group>"; };
 		CB4FEA8F23CA446F006B8B08 /* UserInfoTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoTab.swift; sourceTree = "<group>"; };
 		CB4FEA9323CA6E18006B8B08 /* MapStylesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapStylesCell.swift; sourceTree = "<group>"; };
 		CB4FEA9723CA7370006B8B08 /* StylesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StylesCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -123,6 +127,8 @@
 		CB89170023BA93490019CBE9 /* ChatNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatNetworking.swift; sourceTree = "<group>"; };
 		CB89170223BAD4FA0019CBE9 /* ResponseView + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ResponseView + Extension.swift"; sourceTree = "<group>"; };
 		CB8DEAAB2388C985001EDF19 /* ChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCell.swift; sourceTree = "<group>"; };
+		CB902B4523CEA96D0091221D /* UserSelectedFriendProtocol + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserSelectedFriendProtocol + Extension.swift"; sourceTree = "<group>"; };
+		CB902B4723CEA9940091221D /* MapView + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MapView + Extension.swift"; sourceTree = "<group>"; };
 		CB9525982380D5BB0006A76A /* SignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVC.swift; sourceTree = "<group>"; };
 		CBAB592B2381E49600078B7D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CBAC237C23AC4A5200FCBED9 /* ToolsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsCell.swift; sourceTree = "<group>"; };
@@ -192,6 +198,28 @@
 			path = "Helper Tools";
 			sourceTree = "<group>";
 		};
+		CB4E538F23CE86C00000F33B /* MapsSettings */ = {
+			isa = PBXGroup;
+			children = (
+				CB82EA8E23C660C7002FD857 /* MapsSettingsVC.swift */,
+				CB4FEA9323CA6E18006B8B08 /* MapStylesCell.swift */,
+				CB4FEA9723CA7370006B8B08 /* StylesCollectionViewCell.swift */,
+				CB82EA9023C666D0002FD857 /* MapSettingsCell.swift */,
+			);
+			path = MapsSettings;
+			sourceTree = "<group>";
+		};
+		CB4E539023CE86E60000F33B /* MapView */ = {
+			isa = PBXGroup;
+			children = (
+				CB1B3F7E23C8FDCE000858DF /* AnnotationPin.swift */,
+				CB1B3F8023C903D0000858DF /* CurrentUserAnnotationView.swift */,
+				CB1B3F8223C92616000858DF /* FriendAnnotationView.swift */,
+				CB4FEA8F23CA446F006B8B08 /* UserInfoTab.swift */,
+			);
+			path = MapView;
+			sourceTree = "<group>";
+		};
 		CB50E72923C29B540055BF78 /* NewConversations */ = {
 			isa = PBXGroup;
 			children = (
@@ -227,14 +255,11 @@
 			isa = PBXGroup;
 			children = (
 				CB82EA8A23C63F34002FD857 /* MapsVC.swift */,
-				CB82EA8E23C660C7002FD857 /* MapsSettingsVC.swift */,
-				CB4FEA9323CA6E18006B8B08 /* MapStylesCell.swift */,
-				CB4FEA9723CA7370006B8B08 /* StylesCollectionViewCell.swift */,
-				CB82EA9023C666D0002FD857 /* MapSettingsCell.swift */,
-				CB1B3F7E23C8FDCE000858DF /* AnnotationPin.swift */,
-				CB1B3F8023C903D0000858DF /* CurrentUserAnnotationView.swift */,
-				CB1B3F8223C92616000858DF /* FriendAnnotationView.swift */,
-				CB4FEA8F23CA446F006B8B08 /* UserInfoTab.swift */,
+				CB4E539123CE963A0000F33B /* MapsNetworking.swift */,
+				CB902B4523CEA96D0091221D /* UserSelectedFriendProtocol + Extension.swift */,
+				CB902B4723CEA9940091221D /* MapView + Extension.swift */,
+				CB4E539023CE86E60000F33B /* MapView */,
+				CB4E538F23CE86C00000F33B /* MapsSettings */,
 			);
 			path = Maps;
 			sourceTree = "<group>";
@@ -549,10 +574,12 @@
 				CBDBAE5723BC42AC00A56746 /* MessageCollectionView.swift in Sources */,
 				CB82EA9123C666D0002FD857 /* MapSettingsCell.swift in Sources */,
 				CBF907EC2380B83500EF8925 /* SceneDelegate.swift in Sources */,
+				CB902B4823CEA9940091221D /* MapView + Extension.swift in Sources */,
 				CB513C3923BE6CB900BE8907 /* ForwardToSend + Protocol.swift in Sources */,
 				CB4CF77B23943B3600AC2E31 /* NewConversationVC.swift in Sources */,
 				CB513C3B23BE717300BE8907 /* FriendInformationVC.swift in Sources */,
 				CB4B6F7D23BBB6A400CDA4B3 /* UserResponse.swift in Sources */,
+				CB902B4623CEA96D0091221D /* UserSelectedFriendProtocol + Extension.swift in Sources */,
 				CBDBAE5323BC1D5E00A56746 /* MessageContainer.swift in Sources */,
 				CB27173D2381EFFA003A4D46 /* SelectProfileImageVC.swift in Sources */,
 				CB4FEA9023CA446F006B8B08 /* UserInfoTab.swift in Sources */,
@@ -560,6 +587,7 @@
 				CB513C4023BE8C7F00BE8907 /* FriendInformationCell.swift in Sources */,
 				CB82EA8B23C63F34002FD857 /* MapsVC.swift in Sources */,
 				CB4CC233239DD71B0086DEA9 /* Calendar + Extension.swift in Sources */,
+				CB4E539223CE963A0000F33B /* MapsNetworking.swift in Sources */,
 				CBCC3084238365B500E36E39 /* UsersListCell.swift in Sources */,
 				CBF644FD2381D384004830C6 /* ContactsCell.swift in Sources */,
 				CB50E72623C262000055BF78 /* ChatAudio.swift in Sources */,

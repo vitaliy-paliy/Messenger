@@ -11,6 +11,8 @@ import Firebase
 
 class MessageKit {
     
+    static var timer = Timer()
+    
     static func setupUserMessage(for values: [String:Any]) -> Messages{
         let message = Messages()
         message.sender = values["sender"] as? String

@@ -359,9 +359,9 @@ class ContactsVC: UIViewController {
     
     @objc func openMap(_ button: ContactsAnimationButton){
         let mapVC = MapsVC()
-        mapVC.modalPresentationStyle = .fullScreen
         mapVC.zoomToSelectedFriend(friend: button.friendInfo!)
-        present(mapVC, animated: true, completion: nil)
+        mapVC.modalPresentationStyle = .fullScreen
+        show(mapVC, sender: nil)
     }
     
     @objc func removeFriend(_ button: ContactsAnimationButton){

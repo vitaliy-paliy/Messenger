@@ -149,7 +149,7 @@ extension MapsSettingsVC: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         let controller = MapsVC()
         controller.modalPresentationStyle = .fullScreen
-        present(controller, animated: true, completion: nil)
+        show(controller, sender: nil)
     }
     
     

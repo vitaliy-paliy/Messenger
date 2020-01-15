@@ -23,7 +23,12 @@ class SettingsVC: UIViewController {
         view.backgroundColor = .white
         setupTableView()
         setupLeftNavButton()
-        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = false
+        tabBarController?.tabBar.isHidden = false
     }
     
     func setupLeftNavButton(){
@@ -57,6 +62,7 @@ class SettingsVC: UIViewController {
             Constants.activityObservers(isOnline: false)
             try Auth.auth().signOut()
             let controller = SignInVC()
+            MessageKit.timer.invalidate()
             view.window?.rootViewController = controller
             view.window?.makeKeyAndVisible()
         }catch{

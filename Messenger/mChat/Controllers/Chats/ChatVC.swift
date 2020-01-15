@@ -31,7 +31,7 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
         view.backgroundColor = UIColor(white: 0.95, alpha: 1)
         notificationCenterHandler()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = true
@@ -40,6 +40,9 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         chatNetworking.removeObserves()
+    }
+    
+    deinit {
         NotificationCenter.default.removeObserver(self)
     }
     

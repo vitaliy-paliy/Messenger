@@ -19,7 +19,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(windowScene: sceneWindow)
         if Auth.auth().currentUser != nil{
             print("signedIn")
-           let uid = Auth.auth().currentUser?.uid
+            let uid = Auth.auth().currentUser?.uid
             Constants.db.reference().child("users").child(uid!).observeSingleEvent(of: .value) { (snapshot) in
                 guard let snap = snapshot.value as? [String: AnyObject] else { return }
                 CurrentUser.name = snap["name"] as? String
@@ -27,10 +27,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 CurrentUser.profileImage = snap["profileImage"] as? String
                 CurrentUser.uid = uid
                 CurrentUser.isMapLocationEnabled = snap["isMapLocationEnabled"] as? Bool
+                let mapVC = MapsVC()
+                mapVC.mapView.showsUserLocation = true
+                mapVC.startUpdatingUserLocation()
                 self.window?.rootViewController = ChatTabBar()
                 self.window?.makeKeyAndVisible()
             }
-            
         }else{
             window?.rootViewController = SignInVC()
             window?.makeKeyAndVisible()
