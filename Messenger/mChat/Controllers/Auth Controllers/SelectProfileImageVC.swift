@@ -125,9 +125,7 @@ class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, U
             CurrentUser.uid = uid
             CurrentUser.isMapLocationEnabled = snap["isMapLocationEnabled"] as? Bool
             Constants.activityObservers(isOnline: true)
-            let mapsVC = MapsVC()
-            mapsVC.mapView.showsUserLocation = true
-            mapsVC.startUpdatingUserLocation()
+            ChatKit.startUpdatingUserLocation()
             let controller = ChatTabBar()
             controller.modalPresentationStyle = .fullScreen
             self.show(controller, sender: nil)

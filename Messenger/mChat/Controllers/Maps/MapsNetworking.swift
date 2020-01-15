@@ -70,13 +70,4 @@ class MapsNetworking {
         }
     }
     
-    @objc func updateCurrentLocation(){
-        guard CurrentUser.isMapLocationEnabled else { return }
-        guard let currentLocation = mapsVC.mapView.userLocation?.coordinate else { return }
-        let ref = Database.database().reference().child("user-Location").child(CurrentUser.uid)
-        let values = ["longitude": currentLocation.longitude, "latitude": currentLocation.latitude]
-        ref.updateChildValues(values)
-        print("Updated")
-    }
-    
 }

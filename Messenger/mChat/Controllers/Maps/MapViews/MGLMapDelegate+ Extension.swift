@@ -1,8 +1,8 @@
 //
-//  MapView + Extension.swift
+//  MapView.swift
 //  mChat
 //
-//  Created by Vitaliy Paliy on 1/14/20.
+//  Created by Vitaliy Paliy on 1/15/20.
 //  Copyright © 2020 PALIY. All rights reserved.
 //
 

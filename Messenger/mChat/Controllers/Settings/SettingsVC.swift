@@ -62,7 +62,7 @@ class SettingsVC: UIViewController {
             Constants.activityObservers(isOnline: false)
             try Auth.auth().signOut()
             let controller = SignInVC()
-            MessageKit.timer.invalidate()
+            ChatKit.mapTimer.invalidate()
             view.window?.rootViewController = controller
             view.window?.makeKeyAndVisible()
         }catch{

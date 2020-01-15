@@ -115,9 +115,8 @@ class SignInVC: UIViewController {
             Constants.activityObservers(isOnline: true)
             let controller = ChatTabBar()
             controller.modalPresentationStyle = .fullScreen
-            let mapsVC = MapsVC()
-            mapsVC.mapView.showsUserLocation = true
-            mapsVC.startUpdatingUserLocation()
+            ChatKit.map.showsUserLocation = true
+            ChatKit.startUpdatingUserLocation()
             self.show(controller, sender: nil)
         }
     }

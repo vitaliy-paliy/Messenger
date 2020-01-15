@@ -1,5 +1,5 @@
 //
-//  UserSelectedFriendProtocol + Extension.swift
+//  ScrollToSelectedUser + Extension.swift
 //  mChat
 //
 //  Created by Vitaliy Paliy on 1/14/20.
@@ -7,16 +7,17 @@
 //
 
 import UIKit
+import Mapbox
 
-protocol UserSelectedFriend {
+protocol ScrollToSelectedUser {
     func zoomToSelectedFriend(friend: FriendInfo)
 }
 
-extension MapsVC: UserSelectedFriend {
+extension MapsVC: ScrollToSelectedUser {
     
     func zoomToSelectedFriend(friend: FriendInfo) {
         selectedFriend = friend
         isFriendSelected = true
     }
-    
+
 }

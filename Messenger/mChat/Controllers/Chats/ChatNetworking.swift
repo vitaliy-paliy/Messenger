@@ -39,7 +39,7 @@ class ChatNetworking {
                 guard let snapshot = child as? DataSnapshot else { return }
                 if firstMessage?.id != snapshot.key {
                     guard let values = snapshot.value as? [String: Any] else { return }
-                    newMessages.append(MessageKit.setupUserMessage(for: values))
+                    newMessages.append(ChatKit.setupUserMessage(for: values))
                 }
             }
             return completion(newMessages, messageOrder)
@@ -80,7 +80,7 @@ class ChatNetworking {
         if !status {
             print("New messages handler fired")
             guard let values = snap.value as? [String: Any] else { return }
-            let newMessage = MessageKit.setupUserMessage(for: values)
+            let newMessage = ChatKit.setupUserMessage(for: values)
             return completion(newMessage)
         }
     }

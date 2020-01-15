@@ -27,9 +27,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 CurrentUser.profileImage = snap["profileImage"] as? String
                 CurrentUser.uid = uid
                 CurrentUser.isMapLocationEnabled = snap["isMapLocationEnabled"] as? Bool
-                let mapVC = MapsVC()
-                mapVC.mapView.showsUserLocation = true
-                mapVC.startUpdatingUserLocation()
+                ChatKit.map.showsUserLocation = true
+                ChatKit.startUpdatingUserLocation()
                 self.window?.rootViewController = ChatTabBar()
                 self.window?.makeKeyAndVisible()
             }

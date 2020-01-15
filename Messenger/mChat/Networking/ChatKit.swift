@@ -1,5 +1,5 @@
 //
-//  MessageKit.swift
+//  ChatKit.swift
 //  mChat
 //
 //  Created by Vitaliy Paliy on 12/30/19.
@@ -8,10 +8,27 @@
 
 import UIKit
 import Firebase
+import Mapbox
 
-class MessageKit {
+class ChatKit {
     
-    static var timer = Timer()
+    static var mapTimer = Timer()
+    
+    static var map = MGLMapView()
+        
+    static func startUpdatingUserLocation(){
+        ChatKit.mapTimer = Timer(timeInterval: 20, target: self, selector: #selector(ChatKit.updateCurrentLocation), userInfo: nil, repeats: true)
+        RunLoop.current.add(ChatKit.mapTimer, forMode: RunLoop.Mode.common)
+    }
+    
+    @objc static func updateCurrentLocation(){
+        guard CurrentUser.isMapLocationEnabled else { return }
+        guard let currentLocation = ChatKit.map.userLocation?.coordinate else { return }
+        let ref = Database.database().reference().child("user-Location").child(CurrentUser.uid)
+        let values = ["longitude": currentLocation.longitude, "latitude": currentLocation.latitude]
+        ref.updateChildValues(values)
+        print("Updated")
+    }
     
     static func setupUserMessage(for values: [String:Any]) -> Messages{
         let message = Messages()
@@ -31,5 +48,5 @@ class MessageKit {
         message.storageID = values["storageID"] as? String
         return message
     }
-    
+        
 }
