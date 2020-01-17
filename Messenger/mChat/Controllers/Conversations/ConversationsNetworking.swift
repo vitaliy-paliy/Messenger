@@ -39,38 +39,31 @@ class ConversationsNetworking {
     func observeRemovedFriends(){
         Database.database().reference().child("friendsList").child(CurrentUser.uid).observe(.childRemoved) { (snap) in
             print("Removed handler fired: ConvVC")
-            guard let values = snap.value as? [String: Any] else { return }
-            var friendToRemove: String!
+            let friendToRemove = snap.key
             var index = 0
-            for key in values.keys {
-                friendToRemove = key
-            }
             for message in self.convVC.messages {
                 if message.determineUser() == friendToRemove {
                     self.groupedMessages.removeValue(forKey: friendToRemove)
                     self.convVC.messages.remove(at: index)
+                    self.removeFriendFromArray(friendToRemove)
                     self.convVC.tableView.reloadData()
+                    return
                 }
                 index += 1
             }
-            self.removeFriendFromArray(friendToRemove)
         }
     }
     
     func observeNewFriends(){
         Database.database().reference().child("friendsList").child(CurrentUser.uid).observe(.childAdded) { (snap) in
-            print("Add handler fired: ConvVC")
-            guard let values = snap.value as? [String: Any] else { return }
-            var friendToAdd: String!
-            for key in values.keys {
-                friendToAdd = key
-            }
+            let friendToAdd = snap.key
             let status = self.friendKeys.contains { (key) -> Bool in
                 return key == friendToAdd
             }
             if status {
                 return
             }else{
+                print("Add handler fired: ConvVC")
                 self.friendKeys.append(friendToAdd)
                 self.convVC.observeMessageActions()
             }
@@ -112,8 +105,15 @@ class ConversationsNetworking {
             Database.database().reference().child("messages").child(CurrentUser.uid).child(key).queryLimited(toLast: 1).observe(.childAdded) { (snap) in
                 guard let values = snap.value as? [String: Any] else { return }
                 let message = ChatKit.setupUserMessage(for: values)
-                self.groupedMessages[message.determineUser()] = message
-                return completion(Array(self.groupedMessages.values))
+                let status = self.convVC.messages.contains { (oldMessage) -> Bool in
+                    return message.id == oldMessage.id
+                }
+                if status {
+                    return
+                }else{
+                    self.groupedMessages[message.determineUser()] = message
+                    return completion(Array(self.groupedMessages.values))
+                }
             }
         }
         self.observeFriendActions()
@@ -160,7 +160,17 @@ class ConversationsNetworking {
         }
         Database.database().reference().child("messages").child("unread-Messages").child(CurrentUser.uid).child(key).observe(.childRemoved) { (snap) in
             self.unreadMessages.removeValue(forKey: key)
+            self.convVC.totalUnreadMessages -= Int(snap.childrenCount)
+            self.setupTabBarBadge()
             return completion(self.unreadMessages)
+        }
+    }
+
+    func setupTabBarBadge(){
+        if convVC.totalUnreadMessages == 0 {
+            convVC.tabBarBadge.badgeValue = nil
+        }else{
+            convVC.tabBarBadge.badgeValue = "\(convVC.totalUnreadMessages)"
         }
     }
     

@@ -40,6 +40,7 @@
 		CB513C4023BE8C7F00BE8907 /* FriendInformationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB513C3F23BE8C7F00BE8907 /* FriendInformationCell.swift */; };
 		CB513C4223BEB14E00BE8907 /* SharedMediaVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB513C4123BEB14E00BE8907 /* SharedMediaVC.swift */; };
 		CB513C4423BEBB4B00BE8907 /* SharedMediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB513C4323BEBB4B00BE8907 /* SharedMediaCell.swift */; };
+		CB639E0323D0E000000748A0 /* ContactsNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB639E0223D0E000000748A0 /* ContactsNetworking.swift */; };
 		CB644C2523A2FFC7003094DF /* chatTyping.json in Resources */ = {isa = PBXBuildFile; fileRef = CB644C2323A2FFC7003094DF /* chatTyping.json */; };
 		CB65C64723831EA300F2B5A3 /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB65C64623831EA300F2B5A3 /* CurrentUser.swift */; };
 		CB65C64C2383326300F2B5A3 /* ProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB65C64B2383326300F2B5A3 /* ProfileCell.swift */; };
@@ -118,6 +119,7 @@
 		CB513C3F23BE8C7F00BE8907 /* FriendInformationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendInformationCell.swift; sourceTree = "<group>"; };
 		CB513C4123BEB14E00BE8907 /* SharedMediaVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedMediaVC.swift; sourceTree = "<group>"; };
 		CB513C4323BEBB4B00BE8907 /* SharedMediaCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedMediaCell.swift; sourceTree = "<group>"; };
+		CB639E0223D0E000000748A0 /* ContactsNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsNetworking.swift; sourceTree = "<group>"; };
 		CB644C2323A2FFC7003094DF /* chatTyping.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = chatTyping.json; sourceTree = "<group>"; };
 		CB65C64623831EA300F2B5A3 /* CurrentUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
 		CB65C64B2383326300F2B5A3 /* ProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCell.swift; sourceTree = "<group>"; };
@@ -358,6 +360,7 @@
 			isa = PBXGroup;
 			children = (
 				CBF644F32381C23A004830C6 /* ContactsVC.swift */,
+				CB639E0223D0E000000748A0 /* ContactsNetworking.swift */,
 				CBCC307F2383634C00E36E39 /* UsersListVC.swift */,
 				CBF644FC2381D384004830C6 /* ContactsCell.swift */,
 				CBCC3083238365B500E36E39 /* UsersListCell.swift */,
@@ -593,6 +596,7 @@
 				CB4CF77B23943B3600AC2E31 /* NewConversationVC.swift in Sources */,
 				CB513C3B23BE717300BE8907 /* FriendInformationVC.swift in Sources */,
 				CB4B6F7D23BBB6A400CDA4B3 /* UserResponse.swift in Sources */,
+				CB639E0323D0E000000748A0 /* ContactsNetworking.swift in Sources */,
 				CB902B4623CEA96D0091221D /* ScrollToSelectedUserProtocol + Extension.swift in Sources */,
 				CBDBAE5323BC1D5E00A56746 /* MessageContainer.swift in Sources */,
 				CB27173D2381EFFA003A4D46 /* SelectProfileImageVC.swift in Sources */,

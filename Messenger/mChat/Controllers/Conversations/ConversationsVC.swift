@@ -18,10 +18,16 @@ class ConversationsVC: UIViewController {
     let calendar = Calendar(identifier: .gregorian)
     var newConversationButton = UIBarButtonItem()
     
+    var tabBarBadge: UITabBarItem!
+    var totalUnreadMessages = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Chats"
         view.backgroundColor = .white
+        if let tabItems = tabBarController?.tabBar.items {
+            tabBarBadge = tabItems[1]
+        }
         loadConversations()
         setupNewConversationButton()
         setupTableView()
@@ -85,6 +91,7 @@ class ConversationsVC: UIViewController {
     
     func observeMessageActions(){
         convNetworking.observeNewMessages { (newMessages) in
+            self.totalUnreadMessages = 0
             self.handleReload(newMessages)
         }
     }

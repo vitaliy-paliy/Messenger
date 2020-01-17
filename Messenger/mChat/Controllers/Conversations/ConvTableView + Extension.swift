@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Firebase
 
 extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
     

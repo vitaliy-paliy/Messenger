@@ -10,9 +10,8 @@ import UIKit
 
 class ContactsVC: UIViewController {
     
-    var friendsList: [FriendInfo] = []
-    var backgroundImage = UIImageView()
-    var timer = Timer()
+    var contactsNetworking = ContactsNetworking()
+    var friendsList = [FriendInfo]()
     var tableView = UITableView()
     var infoMenu = UIView()
     var blurView = UIVisualEffectView()
@@ -23,11 +22,8 @@ class ContactsVC: UIViewController {
         view.backgroundColor = .white
         setupTableView()
         setupaddButton()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        loadFriends()
+        contactsNetworking.observeFriendList()
+        contactsNetworking.contactsVC = self
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -54,38 +50,7 @@ class ContactsVC: UIViewController {
         NSLayoutConstraint.activate(constraints)
         
     }
-    
-    func loadFriends(){
-        Constants.db.reference().child("friendsList").child(CurrentUser.uid).observe(.value) { (snap) in
-            self.friendsList = []
-            self.tableView.reloadData()
-            guard let friends = snap.value as? [String: Any] else { return }
-            for dict in friends.keys {
-                self.setupFriendsList(dict)
-            }
-        }
-    }
-    
-    func setupFriendsList(_ key: String){
-        Constants.db.reference().child("users").child(key).observeSingleEvent(of: .value) { (data) in
-            guard let values = data.value as? [String: Any] else { return }
-            var friend = FriendInfo()
-            friend.id = key
-            friend.email = values["email"] as? String
-            friend.profileImage = values["profileImage"] as? String
-            friend.name = values["name"] as? String
-            friend.isOnline = values["isOnline"] as? Bool
-            friend.lastLogin = values["lastLogin"] as? NSNumber
-            friend.isMapLocationEnabled = values["isMapLocationEnabled"] as? Bool
-            self.friendsList.append(friend)
-            self.friendsList.sort { (friend1, friend2) -> Bool in
-                return friend1.name < friend2.name
-            }
-            self.timer.invalidate()
-            self.timer = Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(self.handleReload), userInfo: nil, repeats: false)
-        }
-    }
-    
+        
     @objc func handleReload(){
         DispatchQueue.main.async {
             self.tableView.reloadData()
