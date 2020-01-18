@@ -17,9 +17,7 @@ class ConversationsVC: UIViewController {
     var tableView = UITableView()
     let calendar = Calendar(identifier: .gregorian)
     var newConversationButton = UIBarButtonItem()
-    
     var tabBarBadge: UITabBarItem!
-    var totalUnreadMessages = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,7 +36,7 @@ class ConversationsVC: UIViewController {
         tabBarController?.tabBar.isHidden = false
     }
     
-    func setupTableView(){
+    func setupTableView() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.rowHeight = 80
@@ -56,19 +54,19 @@ class ConversationsVC: UIViewController {
         NSLayoutConstraint.activate(constraints)
     }
     
-    func setupNewConversationButton(){
+    func setupNewConversationButton() {
         newConversationButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(newConversationTapped))
         newConversationButton.tintColor = .black
         navigationItem.rightBarButtonItem = newConversationButton
     }
     
-    @objc func newConversationTapped(){
+    @objc func newConversationTapped() {
         let controller = NewConversationVC()
         controller.conversationDelegate = self
         present(UINavigationController(rootViewController: controller), animated: true, completion: nil)
     }
     
-    func loadConversations(){
+    func loadConversations() {
         convNetworking.convVC = self
         convNetworking.observeFriendsList()
     }
@@ -80,7 +78,7 @@ class ConversationsVC: UIViewController {
         observeMessageActions()
     }
     
-    func handleReload(_ newMessages: [Messages]){
+    func handleReload(_ newMessages: [Messages]) {
         messages = newMessages
         messages.sort { (message1, message2) -> Bool in
             return message1.time.intValue > message2.time.intValue
@@ -89,14 +87,13 @@ class ConversationsVC: UIViewController {
         friends = []
     }
     
-    func observeMessageActions(){
+    func observeMessageActions() {
         convNetworking.observeNewMessages { (newMessages) in
-            self.totalUnreadMessages = 0
             self.handleReload(newMessages)
         }
     }
     
-    func nextControllerHandler(usr: FriendInfo){
+    func nextControllerHandler(usr: FriendInfo) {
         let controller = ChatVC()
         controller.modalPresentationStyle = .fullScreen
         controller.friend = usr

@@ -13,6 +13,7 @@ class ContactsNetworking {
     
     var contactsVC: ContactsVC!
     var friendKeys = [String]()
+    var groupedFriends = [String: FriendInfo]()
     
     func observeFriendList(){
         Database.database().reference().child("friendsList").child(CurrentUser.uid).observeSingleEvent(of: .value) { (snap) in
@@ -31,7 +32,7 @@ class ContactsNetworking {
         observeNewFriend()
         observeRemovedFriends()
     }
-        
+    
     func observeNewFriend(){
         Database.database().reference().child("friendsList").child(CurrentUser.uid).observe(.childAdded) { (snap) in
             let friend = snap.key
@@ -78,11 +79,8 @@ class ContactsNetworking {
             Database.database().reference().child("users").child(key).observe(.value) { (snap) in
                 guard let values = snap.value as? [String: Any] else { return }
                 self.setupFriendInfo(for: key, values)
-                if key == self.friendKeys[self.friendKeys.count - 1] {
-                    print("Reload")
-                    self.contactsVC.handleReload()
-                    self.observeFriendActions()
-                }
+                self.contactsVC.handleReload()
+                self.observeFriendActions()
             }
         }
     }
@@ -104,8 +102,9 @@ class ContactsNetworking {
         friend.isOnline = values["isOnline"] as? Bool
         friend.lastLogin = values["lastLogin"] as? NSNumber
         friend.isMapLocationEnabled = values["isMapLocationEnabled"] as? Bool
-        self.contactsVC.friendsList.append(friend)
-        self.contactsVC.friendsList.sort { (friend1, friend2) -> Bool in
+        groupedFriends[key] = friend
+        contactsVC.friendsList = Array(groupedFriends.values)
+        contactsVC.friendsList.sort { (friend1, friend2) -> Bool in
             return friend1.name < friend2.name
         }
     }

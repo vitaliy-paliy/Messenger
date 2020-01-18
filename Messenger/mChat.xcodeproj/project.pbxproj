@@ -19,6 +19,7 @@
 		CB2717382381E775003A4D46 /* Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2717372381E775003A4D46 /* Helpers.swift */; };
 		CB27173B2381ECB1003A4D46 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB27173A2381ECB1003A4D46 /* Constants.swift */; };
 		CB27173D2381EFFA003A4D46 /* SelectProfileImageVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB27173C2381EFFA003A4D46 /* SelectProfileImageVC.swift */; };
+		CB47B66923D248FF00329470 /* InfoMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB47B66823D248FF00329470 /* InfoMenuView.swift */; };
 		CB4B6F7923BBB09600CDA4B3 /* LoadImage + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4B6F7823BBB09600CDA4B3 /* LoadImage + Extension.swift */; };
 		CB4B6F7D23BBB6A400CDA4B3 /* UserResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4B6F7C23BBB6A400CDA4B3 /* UserResponse.swift */; };
 		CB4B6F8023BBD7BC00CDA4B3 /* ImageGalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4B6F7F23BBD7BC00CDA4B3 /* ImageGalleryView.swift */; };
@@ -98,6 +99,7 @@
 		CB2717372381E775003A4D46 /* Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helpers.swift; sourceTree = "<group>"; };
 		CB27173A2381ECB1003A4D46 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		CB27173C2381EFFA003A4D46 /* SelectProfileImageVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectProfileImageVC.swift; sourceTree = "<group>"; };
+		CB47B66823D248FF00329470 /* InfoMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoMenuView.swift; sourceTree = "<group>"; };
 		CB4B6F7823BBB09600CDA4B3 /* LoadImage + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoadImage + Extension.swift"; sourceTree = "<group>"; };
 		CB4B6F7C23BBB6A400CDA4B3 /* UserResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserResponse.swift; sourceTree = "<group>"; };
 		CB4B6F7F23BBD7BC00CDA4B3 /* ImageGalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageGalleryView.swift; sourceTree = "<group>"; };
@@ -212,6 +214,23 @@
 				CB4CC232239DD71B0086DEA9 /* Calendar + Extension.swift */,
 			);
 			path = "Helper Tools";
+			sourceTree = "<group>";
+		};
+		CB47B66623D2487700329470 /* UserListVC */ = {
+			isa = PBXGroup;
+			children = (
+				CBCC307F2383634C00E36E39 /* UsersListVC.swift */,
+				CBCC3083238365B500E36E39 /* UsersListCell.swift */,
+			);
+			path = UserListVC;
+			sourceTree = "<group>";
+		};
+		CB47B66723D2489B00329470 /* AddNewFriendVC */ = {
+			isa = PBXGroup;
+			children = (
+				CBCC30852383722500E36E39 /* AddFriendVC.swift */,
+			);
+			path = AddNewFriendVC;
 			sourceTree = "<group>";
 		};
 		CB4E538F23CE86C00000F33B /* MapsSettings */ = {
@@ -361,10 +380,10 @@
 			children = (
 				CBF644F32381C23A004830C6 /* ContactsVC.swift */,
 				CB639E0223D0E000000748A0 /* ContactsNetworking.swift */,
-				CBCC307F2383634C00E36E39 /* UsersListVC.swift */,
 				CBF644FC2381D384004830C6 /* ContactsCell.swift */,
-				CBCC3083238365B500E36E39 /* UsersListCell.swift */,
-				CBCC30852383722500E36E39 /* AddFriendVC.swift */,
+				CB47B66823D248FF00329470 /* InfoMenuView.swift */,
+				CB47B66623D2487700329470 /* UserListVC */,
+				CB47B66723D2489B00329470 /* AddNewFriendVC */,
 			);
 			path = Contacts;
 			sourceTree = "<group>";
@@ -584,6 +603,7 @@
 				CBF05E4523A086A400EF295F /* NavigationItem + Extension.swift in Sources */,
 				CBFC53BB23873B5600CC4C91 /* ConverstaionsCell.swift in Sources */,
 				CBF644F12381C204004830C6 /* ChatTabBar.swift in Sources */,
+				CB47B66923D248FF00329470 /* InfoMenuView.swift in Sources */,
 				CB89170123BA93490019CBE9 /* ChatNetworking.swift in Sources */,
 				CB513C3E23BE872A00BE8907 /* FriendInfoToolsCell.swift in Sources */,
 				CB2717382381E775003A4D46 /* Helpers.swift in Sources */,

@@ -10,7 +10,6 @@ import UIKit
 
 class ContactsCell: UITableViewCell {
     
-    var cellBackground = UIView()
     var profileImage = UIImageView()
     var friendName = UILabel()
     var friendEmail = UILabel()
@@ -19,12 +18,10 @@ class ContactsCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .clear
-        addSubview(cellBackground)
-        cellBackground.addSubview(profileImage)
-        cellBackground.addSubview(friendName)
-        cellBackground.addSubview(friendEmail)
-        cellBackground.addSubview(isOnlineView)
-        setupCellBackground()
+        addSubview(profileImage)
+        addSubview(friendName)
+        addSubview(friendEmail)
+        addSubview(isOnlineView)
         setupImage()
         setupNameLabel()
         setupEmailLabel()
@@ -34,32 +31,15 @@ class ContactsCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    func setupCellBackground(){
-        cellBackground.translatesAutoresizingMaskIntoConstraints = false
-        cellBackground.backgroundColor = .white
-        cellBackground.layer.cornerRadius = 8
-        cellBackground.layer.shadowRadius = 10
-        cellBackground.layer.shadowOpacity = 0.2
-        cellBackground.layer.shadowColor = UIColor.black.cgColor
-        cellBackground.alpha = 0.9
-        let constraints = [
-            cellBackground.topAnchor.constraint(equalTo: topAnchor, constant: 5),
-            cellBackground.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
-            cellBackground.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
-            cellBackground.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5)
-        ]
-        NSLayoutConstraint.activate(constraints)
-    }
-    
+
     func setupImage(){
         profileImage.contentMode = .scaleAspectFill
         profileImage.layer.cornerRadius = 30
         profileImage.layer.masksToBounds = true
         profileImage.translatesAutoresizingMaskIntoConstraints = false
         let constraints = [
-            profileImage.centerYAnchor.constraint(equalTo: cellBackground.centerYAnchor),
-            profileImage.leadingAnchor.constraint(equalTo: cellBackground.leadingAnchor, constant: 12),
+            profileImage.centerYAnchor.constraint(equalTo: centerYAnchor),
+            profileImage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
             profileImage.heightAnchor.constraint(equalToConstant: 60),
             profileImage.widthAnchor.constraint(equalToConstant: 60)
         ]
@@ -74,10 +54,10 @@ class ContactsCell: UITableViewCell {
         isOnlineView.backgroundColor = UIColor(displayP3Red: 116/255, green: 195/255, blue: 168/255, alpha: 1)
         isOnlineView.translatesAutoresizingMaskIntoConstraints = false
         let constraints = [
-            isOnlineView.leadingAnchor.constraint(equalTo: cellBackground.leadingAnchor, constant: 55),
+            isOnlineView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 55),
             isOnlineView.widthAnchor.constraint(equalToConstant: 16),
             isOnlineView.heightAnchor.constraint(equalToConstant: 16),
-            isOnlineView.bottomAnchor.constraint(equalTo: cellBackground.bottomAnchor, constant: -11)
+            isOnlineView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -11)
         ]
         NSLayoutConstraint.activate(constraints)
     }
@@ -100,7 +80,7 @@ class ContactsCell: UITableViewCell {
         friendName.adjustsFontSizeToFitWidth = true
         friendName.translatesAutoresizingMaskIntoConstraints = false
         let constraints = [
-            friendName.topAnchor.constraint(equalTo: cellBackground.topAnchor, constant: 10),
+            friendName.topAnchor.constraint(equalTo: topAnchor, constant: 10),
             friendName.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 15)
         ]
         NSLayoutConstraint.activate(constraints)

@@ -15,6 +15,7 @@ class ConversationsNetworking {
     var groupedMessages = [String: Messages]()
     var unreadMessages = [String: Int]()
     var friendKeys = [String]()
+    var totalUnread = Int()
     
     func observeFriendsList() {
         Database.database().reference().child("friendsList").child(CurrentUser.uid).observeSingleEvent(of: .value) { (snap) in
@@ -155,22 +156,31 @@ class ConversationsNetworking {
     
     func observeUnreadMessages(_ key: String, completion: @escaping(_ unreadMessages: [String: Int]) -> Void){
         Database.database().reference().child("messages").child("unread-Messages").child(CurrentUser.uid).child(key).observe(.value) { (snap) in
+            self.totalUnread = 0
             self.unreadMessages[key] = Int(snap.childrenCount)
+            self.addValueToBadge()
             return completion(self.unreadMessages)
         }
         Database.database().reference().child("messages").child("unread-Messages").child(CurrentUser.uid).child(key).observe(.childRemoved) { (snap) in
+            self.removeValueFromBadge(key)
             self.unreadMessages.removeValue(forKey: key)
-            self.convVC.totalUnreadMessages -= Int(snap.childrenCount)
-            self.setupTabBarBadge()
             return completion(self.unreadMessages)
         }
     }
-
-    func setupTabBarBadge(){
-        if convVC.totalUnreadMessages == 0 {
-            convVC.tabBarBadge.badgeValue = nil
-        }else{
-            convVC.tabBarBadge.badgeValue = "\(convVC.totalUnreadMessages)"
+    
+    func addValueToBadge() {
+        for m in self.unreadMessages.values {
+            totalUnread += m
+        }
+        if totalUnread != 0 {
+            self.convVC.tabBarBadge.badgeValue = "\(totalUnread)"
+        }
+    }
+    
+    func removeValueFromBadge(_ key: String) {
+        self.totalUnread -= self.unreadMessages[key] ?? 0
+        if totalUnread == 0 {
+            self.convVC.tabBarBadge.badgeValue = nil
         }
     }
     
