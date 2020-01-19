@@ -66,9 +66,10 @@ class ContactsCell: UITableViewCell {
         friendEmail.numberOfLines = 0
         friendEmail.adjustsFontSizeToFitWidth = true
         friendEmail.textColor = .gray
+        friendEmail.font = UIFont(name: "Helvetica Neue", size: 16)
         friendEmail.translatesAutoresizingMaskIntoConstraints = false
         let constraints = [
-            friendEmail.topAnchor.constraint(equalTo: friendName.bottomAnchor, constant: 0),
+            friendEmail.topAnchor.constraint(equalTo: friendName.bottomAnchor),
             friendEmail.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 15)
         ]
         NSLayoutConstraint.activate(constraints)
@@ -77,10 +78,10 @@ class ContactsCell: UITableViewCell {
     func setupNameLabel(){
         friendName.textColor = .black
         friendName.numberOfLines = 0
-        friendName.adjustsFontSizeToFitWidth = true
         friendName.translatesAutoresizingMaskIntoConstraints = false
+        friendName.font = UIFont(name: "Helvetica Neue", size: 18)
         let constraints = [
-            friendName.topAnchor.constraint(equalTo: topAnchor, constant: 10),
+            friendName.topAnchor.constraint(equalTo: topAnchor, constant: 8),
             friendName.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 15)
         ]
         NSLayoutConstraint.activate(constraints)

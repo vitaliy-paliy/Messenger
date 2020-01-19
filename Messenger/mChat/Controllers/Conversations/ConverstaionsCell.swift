@@ -105,7 +105,6 @@ class ConversationsCell: UITableViewCell {
         friendName.textColor = .black
         friendName.font = UIFont(name: "Helvetica Neue", size: 18)
         friendName.numberOfLines = 0
-        friendName.adjustsFontSizeToFitWidth = true
         friendName.translatesAutoresizingMaskIntoConstraints = false
         let constraints = [
             friendName.topAnchor.constraint(equalTo: topAnchor, constant: 8),

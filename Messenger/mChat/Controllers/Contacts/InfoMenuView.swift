@@ -76,6 +76,8 @@ class InfoMenuView: UIView {
         infoImage.layer.masksToBounds = true
         infoImage.contentMode = .scaleAspectFill
         let constraints = [
+            infoImage.centerYAnchor.constraint(equalTo: centerYAnchor),
+            infoImage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
             infoImage.widthAnchor.constraint(equalToConstant: 60),
             infoImage.heightAnchor.constraint(equalToConstant: 60),
         ]
@@ -89,6 +91,11 @@ class InfoMenuView: UIView {
         infoName.text = friend.name
         infoName.textColor = .black
         infoName.font = UIFont(name: "Helvetica Neue", size: 24)
+        let constraints = [
+            infoName.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+            infoName.leadingAnchor.constraint(equalTo: infoImage.trailingAnchor, constant: 15)
+        ]
+        NSLayoutConstraint.activate(constraints)
     }
     
     func setuoInfoEmail() {
@@ -96,8 +103,13 @@ class InfoMenuView: UIView {
         infoEmail.translatesAutoresizingMaskIntoConstraints = false
         infoEmail.text = friend.email
         infoEmail.textAlignment = .center
-        infoEmail.textColor = .lightGray
+        infoEmail.textColor = .gray
         infoEmail.font = UIFont(name: "Helvetica Neue", size: 16)
+        let constraints = [
+            infoEmail.topAnchor.constraint(equalTo: infoName.bottomAnchor),
+            infoEmail.leadingAnchor.constraint(equalTo: infoImage.trailingAnchor, constant: 15)
+        ]
+        NSLayoutConstraint.activate(constraints)
     }
     
     func moveObjectToCenter(xValue: CGFloat, yValue: CGFloat, yConst: CGFloat) -> CAKeyframeAnimation {
@@ -112,24 +124,23 @@ class InfoMenuView: UIView {
         movingImageAnimation.isRemovedOnCompletion = false
         return movingImageAnimation
     }
- 
+    
     func setupInfoBlur() {
         let blurEffect = UIBlurEffect(style: UIBlurEffect.Style.dark)
-        blurView = UIVisualEffectView(effect: blurEffect)
-        blurView.frame = CGRect(x: contactsVC.view.center.x, y: contactsVC.view.center.y, width: 40, height: 40)
-        blurView.layer.cornerRadius = blurView.frame.width / 2
-        blurView.layer.masksToBounds = true
-        let window = UIApplication.shared.windows[0]
+        blurView.effect = blurEffect
+        blurView.frame = contactsVC.view.frame
+        blurView.isUserInteractionEnabled = true
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(closeInfoMenuView))
         blurView.addGestureRecognizer(tapGesture)
+        let window = UIApplication.shared.windows[0]
         window.addSubview(blurView)
     }
     
     func blurEffectAnim() -> CABasicAnimation {
-        let anim = CABasicAnimation(keyPath: "transform.scale")
-        anim.fromValue = 1
-        anim.toValue = contactsVC.view.frame.width / 8
-        anim.duration = 0.4
+        let anim = CABasicAnimation(keyPath: "opacity")
+        anim.fromValue = 0
+        anim.toValue = 1
+        anim.duration = 0.3
         anim.fillMode = .forwards
         anim.isRemovedOnCompletion = false
         return anim
@@ -182,6 +193,7 @@ class InfoMenuView: UIView {
         let controller = ChatVC()
         controller.modalPresentationStyle = .fullScreen
         controller.friend = friend
+        exitInfoMenuHandler()
         contactsVC.show(controller, sender: nil)
     }
     
@@ -189,6 +201,7 @@ class InfoMenuView: UIView {
         let mapVC = MapsVC()
         mapVC.zoomToSelectedFriend(friend: friend)
         mapVC.modalPresentationStyle = .fullScreen
+        exitInfoMenuHandler()
         contactsVC.show(mapVC, sender: nil)
     }
     
@@ -196,13 +209,36 @@ class InfoMenuView: UIView {
         let controller = AddFriendVC()
         controller.modalPresentationStyle = .fullScreen
         controller.friend = friend
+        exitInfoMenuHandler()
         contactsVC.show(controller, sender: nil)
     }
     
     @objc func closeInfoMenuView() {
-        removeFromSuperview()
-        print("Hi")
+        closingAnimation()
+    }
+    
+    func closingAnimation() {
         blurView.removeFromSuperview()
+        stackView.isHidden = true
+        infoName.layer.removeAllAnimations()
+        infoName.font = UIFont(name: "Helvetica Neue", size: 18)
+        infoEmail.layer.removeAllAnimations()
+        infoImage.layer.removeAllAnimations()
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+            self.layer.shadowRadius = 0
+            self.layer.shadowOpacity = 0
+            self.layer.cornerRadius = 0
+            self.frame = self.cellFrame
+        }) { (true) in
+            self.exitInfoMenuHandler()
+        }
+    }
+    
+    func exitInfoMenuHandler(){
+        blurView.removeFromSuperview()
+        removeFromSuperview()
+        cell.isHidden = false
+        contactsVC.tableView.isUserInteractionEnabled = true
     }
     
 }
