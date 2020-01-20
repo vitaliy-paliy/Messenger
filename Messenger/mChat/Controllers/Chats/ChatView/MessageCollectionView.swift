@@ -17,7 +17,6 @@ class MessageCollectionView: UICollectionView, UIGestureRecognizerDelegate{
         self.chatVC = chatVC
         setupCollectionView()
         setuplongPress()
-        chatVC.hideKeyboardOnTap(self)
     }
     
     required init?(coder: NSCoder) {

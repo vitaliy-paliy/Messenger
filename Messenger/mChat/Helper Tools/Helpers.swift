@@ -95,23 +95,6 @@ extension UIViewController {
         ]
     }
     
-    func calculateFrameInText(message: String) -> CGRect{
-        return NSString(string: message).boundingRect(with: CGSize(width: 200, height: 9999999), options: NSStringDrawingOptions.usesFontLeading.union(.usesLineFragmentOrigin), attributes: [NSAttributedString.Key.font:UIFont(name: "Helvetica Neue", size: 16)!], context: nil)
-    }
-    
-    func hideKeyboardOnTap(_ cView: UICollectionView? = nil){
-        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
-        tap.cancelsTouchesInView = false
-        if let cView = cView {
-            cView.addGestureRecognizer(tap)
-        }
-        navigationController?.navigationBar.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(hideKeyboard)))
-    }
-    
-    @objc func hideKeyboard(){
-        view.endEditing(true)
-    }
-        
 }
 
 extension UITextView {

@@ -14,7 +14,7 @@ pod 'Firebase/Core'
 pod 'Firebase/Storage'
 pod 'lottie-ios'
 pod 'LTHRadioButton'
+pod 'SkyFloatingLabelTextField', '~> 3.0'
 pod 'Mapbox-iOS-SDK', '~> 5.6’
-
 
 end

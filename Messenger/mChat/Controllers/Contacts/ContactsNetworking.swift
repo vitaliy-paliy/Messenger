@@ -36,6 +36,7 @@ class ContactsNetworking {
     func observeNewFriend(){
         Database.database().reference().child("friendsList").child(CurrentUser.uid).observe(.childAdded) { (snap) in
             let friend = snap.key
+            self.updateFriendInfo(friend)
             let status = self.friendKeys.contains { (key) -> Bool in
                 return friend == key
             }
@@ -43,7 +44,6 @@ class ContactsNetworking {
                 return
             }else{
                 self.friendKeys.append(friend)
-                self.updateFriendInfo(friend)
             }
         }
     }
@@ -76,11 +76,13 @@ class ContactsNetworking {
     
     func getFriendInfo(){
         for key in friendKeys {
-            Database.database().reference().child("users").child(key).observe(.value) { (snap) in
+            Database.database().reference().child("users").child(key).observeSingleEvent(of: .value) { (snap) in
                 guard let values = snap.value as? [String: Any] else { return }
                 self.setupFriendInfo(for: key, values)
-                self.contactsVC.handleReload()
-                self.observeFriendActions()
+                if key == self.friendKeys[self.friendKeys.count - 1] {
+                    self.contactsVC.handleReload(Array(self.groupedFriends.values))
+                    self.observeFriendActions()
+                }
             }
         }
     }
@@ -89,7 +91,7 @@ class ContactsNetworking {
         Database.database().reference().child("users").child(key).observe(.value) { (snap) in
             guard let values = snap.value as? [String: Any] else { return }
             self.setupFriendInfo(for: key, values)
-            self.contactsVC.handleReload()
+            self.contactsVC.handleReload(Array(self.groupedFriends.values))
         }
     }
     
@@ -103,10 +105,6 @@ class ContactsNetworking {
         friend.lastLogin = values["lastLogin"] as? NSNumber
         friend.isMapLocationEnabled = values["isMapLocationEnabled"] as? Bool
         groupedFriends[key] = friend
-        contactsVC.friendsList = Array(groupedFriends.values)
-        contactsVC.friendsList.sort { (friend1, friend2) -> Bool in
-            return friend1.name < friend2.name
-        }
     }
     
 }

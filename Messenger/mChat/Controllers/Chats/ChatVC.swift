@@ -59,6 +59,7 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
         messageContainer = MessageContainer(height: containerHeight, const: topConst, chatVC: self)
         collectionView = MessageCollectionView(collectionViewLayout: UICollectionViewFlowLayout.init(), chatVC: self)
         refreshIndicator = MessageLoadingIndicator(frame: view.frame, const: topConst, chatVC: self)
+        hideKeyboardOnTap()
     }
     
     func setupChat(){
@@ -99,6 +100,17 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     
     @objc func sendButtonPressed(){
         setupTextMessage()
+    }
+    
+    func hideKeyboardOnTap(){
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        tap.cancelsTouchesInView = false
+        collectionView.addGestureRecognizer(tap)
+        navigationController?.navigationBar.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(hideKeyboard)))
+    }
+    
+    @objc func hideKeyboard(){
+        view.endEditing(true)
     }
     
     func setupTextMessage(){

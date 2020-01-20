@@ -58,6 +58,9 @@
 		CB8DEAAC2388C985001EDF19 /* ChatCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB8DEAAB2388C985001EDF19 /* ChatCell.swift */; };
 		CB902B4623CEA96D0091221D /* ScrollToSelectedUserProtocol + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB902B4523CEA96D0091221D /* ScrollToSelectedUserProtocol + Extension.swift */; };
 		CB9525992380D5BB0006A76A /* SignUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB9525982380D5BB0006A76A /* SignUpVC.swift */; };
+		CB99D07C23D4D268008645D6 /* ContactsTableView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99D07B23D4D268008645D6 /* ContactsTableView + Extension.swift */; };
+		CB99D08523D5003A008645D6 /* Alata-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB99D08423D5003A008645D6 /* Alata-Regular.ttf */; };
+		CB99D08723D5397E008645D6 /* AuthNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99D08623D5397E008645D6 /* AuthNetworking.swift */; };
 		CBAB592C2381E49700078B7D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CBAB592B2381E49600078B7D /* GoogleService-Info.plist */; };
 		CBAC237D23AC4A5200FCBED9 /* ToolsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAC237C23AC4A5200FCBED9 /* ToolsCell.swift */; };
 		CBBDE7AE238353A40040A296 /* UserInfo + FriendInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDE7AD238353A40040A296 /* UserInfo + FriendInfo.swift */; };
@@ -138,6 +141,9 @@
 		CB8DEAAB2388C985001EDF19 /* ChatCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatCell.swift; sourceTree = "<group>"; };
 		CB902B4523CEA96D0091221D /* ScrollToSelectedUserProtocol + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ScrollToSelectedUserProtocol + Extension.swift"; sourceTree = "<group>"; };
 		CB9525982380D5BB0006A76A /* SignUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpVC.swift; sourceTree = "<group>"; };
+		CB99D07B23D4D268008645D6 /* ContactsTableView + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContactsTableView + Extension.swift"; sourceTree = "<group>"; };
+		CB99D08423D5003A008645D6 /* Alata-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Alata-Regular.ttf"; sourceTree = "<group>"; };
+		CB99D08623D5397E008645D6 /* AuthNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNetworking.swift; sourceTree = "<group>"; };
 		CBAB592B2381E49600078B7D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CBAC237C23AC4A5200FCBED9 /* ToolsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsCell.swift; sourceTree = "<group>"; };
 		CBBDE7AD238353A40040A296 /* UserInfo + FriendInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInfo + FriendInfo.swift"; sourceTree = "<group>"; };
@@ -321,6 +327,14 @@
 			path = Conversations;
 			sourceTree = "<group>";
 		};
+		CB99D08123D4FF92008645D6 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				CB99D08423D5003A008645D6 /* Alata-Regular.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		CBAC237B23AC4A1600FCBED9 /* ChatMessageTools */ = {
 			isa = PBXGroup;
 			children = (
@@ -370,6 +384,7 @@
 			children = (
 				CBF907FD2380B8CE00EF8925 /* SignInVC.swift */,
 				CB9525982380D5BB0006A76A /* SignUpVC.swift */,
+				CB99D08623D5397E008645D6 /* AuthNetworking.swift */,
 				CB27173C2381EFFA003A4D46 /* SelectProfileImageVC.swift */,
 			);
 			path = "Auth Controllers";
@@ -382,6 +397,7 @@
 				CB639E0223D0E000000748A0 /* ContactsNetworking.swift */,
 				CBF644FC2381D384004830C6 /* ContactsCell.swift */,
 				CB47B66823D248FF00329470 /* InfoMenuView.swift */,
+				CB99D07B23D4D268008645D6 /* ContactsTableView + Extension.swift */,
 				CB47B66623D2487700329470 /* UserListVC */,
 				CB47B66723D2489B00329470 /* AddNewFriendVC */,
 			);
@@ -464,6 +480,7 @@
 		CBF908002380C56100EF8925 /* Assets */ = {
 			isa = PBXGroup;
 			children = (
+				CB99D08123D4FF92008645D6 /* Fonts */,
 				CBD040F023A32B0E005FBD5A /* Animations */,
 				CBF907F22380B83600EF8925 /* Assets.xcassets */,
 				CBF907F42380B83600EF8925 /* LaunchScreen.storyboard */,
@@ -537,6 +554,7 @@
 				CB644C2523A2FFC7003094DF /* chatTyping.json in Resources */,
 				CB84CD8C23C1198B0000605D /* audioWave.json in Resources */,
 				CBAB592C2381E49700078B7D /* GoogleService-Info.plist in Resources */,
+				CB99D08523D5003A008645D6 /* Alata-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -639,12 +657,14 @@
 				CB50E72B23C29B710055BF78 /* ConversationsNetworking.swift in Sources */,
 				CB1B3F8123C903D0000858DF /* CurrentUserAnnotationView.swift in Sources */,
 				CB1B3F7F23C8FDCE000858DF /* AnnotationPin.swift in Sources */,
+				CB99D07C23D4D268008645D6 /* ContactsTableView + Extension.swift in Sources */,
 				CBCC30862383722500E36E39 /* AddFriendVC.swift in Sources */,
 				CBF907FE2380B8CE00EF8925 /* SignInVC.swift in Sources */,
 				CB82EA8D23C65845002FD857 /* SettingsCell.swift in Sources */,
 				CB4FEA9823CA7370006B8B08 /* StylesCollectionViewCell.swift in Sources */,
 				CB2580BD23CFAE1200F9B088 /* MapExitButton.swift in Sources */,
 				CBF644F42381C23A004830C6 /* ContactsVC.swift in Sources */,
+				CB99D08723D5397E008645D6 /* AuthNetworking.swift in Sources */,
 				CB8916FE23BA8D1D0019CBE9 /* ChatKit.swift in Sources */,
 				CB4B6F8023BBD7BC00CDA4B3 /* ImageGalleryView.swift in Sources */,
 				CB65C64723831EA300F2B5A3 /* CurrentUser.swift in Sources */,
