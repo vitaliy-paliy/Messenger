@@ -18,24 +18,25 @@ class SignInVC: UIViewController, UITextFieldDelegate {
     var passwordTextField = SkyFloatingLabelTextField()
     var errorLabel = UILabel()
     var keyboardIsShown = false
+    var keyBoardHeight: CGFloat?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupGradientView()
         setupLoginView()
         notificationCenterHandler()
         hideKeyboardOnTap()
-          setupLogo()
+        setupLogo()
         view.backgroundColor = .white
     }
-    
+
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         view.endEditing(true)
-        keyboardIsShown = false
         return false
     }
     
@@ -43,13 +44,14 @@ class SignInVC: UIViewController, UITextFieldDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
-    
+        
     @objc func handleKeyboardWillShow(notification: NSNotification){
         let kFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
         let kDuration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double
         guard let height = kFrame?.height, let duration = kDuration else { return }
         if !keyboardIsShown {
-            view.frame.origin.y -= height - 80
+            keyBoardHeight = height
+            view.frame.origin.y -= keyBoardHeight!
         }
         keyboardIsShown = true
         UIView.animate(withDuration: duration) {
@@ -58,10 +60,10 @@ class SignInVC: UIViewController, UITextFieldDelegate {
     }
     
     @objc func handleKeyboardWillHide(notification: NSNotification){
-        let kFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
         let kDuration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double
-        guard let height = kFrame?.height else { return }
-        view.frame.origin.y += height - 80
+        guard let height = keyBoardHeight else { return }
+        view.frame.origin.y += height
+        keyboardIsShown = false
         guard let duration = kDuration else { return }
         UIView.animate(withDuration: duration) {
             self.view.layoutIfNeeded()
@@ -85,22 +87,23 @@ class SignInVC: UIViewController, UITextFieldDelegate {
         view.addSubview(logoView)
         logoView.backgroundColor = .white
         logoView.translatesAutoresizingMaskIntoConstraints = false
-        logoView.layer.cornerRadius = 60
+        logoView.layer.cornerRadius = 50
         logoView.layer.masksToBounds = true
         let logo = UIImageView()
-        logo.image = UIImage(systemName: "bubble.middle.bottom.fill")
-        logo.tintColor = UIColor(red: 70/255, green: 130/255, blue: 220/255, alpha: 1)
+        logo.image = UIImage(named: "logo")
+        logo.layer.cornerRadius = 40
+        logo.layer.masksToBounds = true
         logoView.addSubview(logo)
         logo.translatesAutoresizingMaskIntoConstraints = false
         let constraints = [
             logoView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             logoView.topAnchor.constraint(equalTo: view.topAnchor, constant: view.frame.height/6),
-            logoView.widthAnchor.constraint(equalToConstant: 120),
-            logoView.heightAnchor.constraint(equalToConstant: 120),
+            logoView.widthAnchor.constraint(equalToConstant: 100),
+            logoView.heightAnchor.constraint(equalToConstant: 100),
             logo.centerXAnchor.constraint(equalTo: logoView.centerXAnchor),
             logo.centerYAnchor.constraint(equalTo: logoView.centerYAnchor),
-            logo.widthAnchor.constraint(equalToConstant: 60),
-            logo.heightAnchor.constraint(equalToConstant: 60)
+            logo.widthAnchor.constraint(equalToConstant: 80),
+            logo.heightAnchor.constraint(equalToConstant: 80)
         ]
         NSLayoutConstraint.activate(constraints)
         
@@ -141,11 +144,13 @@ class SignInVC: UIViewController, UITextFieldDelegate {
         loginView.layer.cornerRadius = 8
         loginView.layer.shadowRadius = 10
         loginView.layer.shadowOpacity = 0.3
+        var height: CGFloat = 280
+        if view.frame.height > 1000 { height = 600 }
         let constraints = [
             loginView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -150),
             loginView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             loginView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
-            loginView.heightAnchor.constraint(equalToConstant: 300)
+            loginView.heightAnchor.constraint(equalToConstant: height )
         ]
         NSLayoutConstraint.activate(constraints)
         setupLoginLabel()
@@ -199,6 +204,7 @@ class SignInVC: UIViewController, UITextFieldDelegate {
         emailTextField.font = UIFont(name: "Alata", size: 18)
         emailTextField.selectedLineColor = UIColor(red: 70/255, green: 100/255, blue: 200/255, alpha: 1)
         emailTextField.lineColor = .lightGray
+        emailTextField.reloadInputViews()
         let constraints = [
             emailTextField.centerXAnchor.constraint(equalTo: loginView.centerXAnchor),
             emailTextField.topAnchor.constraint(equalTo: loginView.topAnchor, constant: 64),
@@ -243,12 +249,12 @@ class SignInVC: UIViewController, UITextFieldDelegate {
     
     func validateTF() -> String?{
         if emailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" || passwordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == ""{
-            return "Make sure you fill in all fields."
+            return "Make sure you fill in all fields"
         }
         
         let password = passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         if password.count < 6 {
-            return "Password should be at least 6 characters long."
+            return "Password should be at least 6 characters long"
         }
         return nil
     }

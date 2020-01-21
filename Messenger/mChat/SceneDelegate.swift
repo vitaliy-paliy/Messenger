@@ -33,7 +33,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 self.window?.makeKeyAndVisible()
             }
         }else{
-            window?.rootViewController = SignInVC()
+            window?.rootViewController = WelcomeVC()
             window?.makeKeyAndVisible()
         }
         activityObservers()

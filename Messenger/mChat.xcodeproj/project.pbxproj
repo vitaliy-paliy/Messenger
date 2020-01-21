@@ -29,6 +29,8 @@
 		CB4CF77E23943D8100AC2E31 /* NewConversationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4CF77D23943D8100AC2E31 /* NewConversationCell.swift */; };
 		CB4E41F523BD7BE200D476E5 /* ToolsMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4E41F423BD7BE200D476E5 /* ToolsMenu.swift */; };
 		CB4E539223CE963A0000F33B /* MapsNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4E539123CE963A0000F33B /* MapsNetworking.swift */; };
+		CB4F587C23D626690086C5BB /* WelcomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4F587B23D626690086C5BB /* WelcomeVC.swift */; };
+		CB4F587E23D633C60086C5BB /* WelcomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4F587D23D633C60086C5BB /* WelcomeCell.swift */; };
 		CB4FEA9023CA446F006B8B08 /* UserInfoTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4FEA8F23CA446F006B8B08 /* UserInfoTab.swift */; };
 		CB4FEA9423CA6E18006B8B08 /* MapStylesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4FEA9323CA6E18006B8B08 /* MapStylesCell.swift */; };
 		CB4FEA9823CA7370006B8B08 /* StylesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4FEA9723CA7370006B8B08 /* StylesCollectionViewCell.swift */; };
@@ -112,6 +114,8 @@
 		CB4CF77D23943D8100AC2E31 /* NewConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewConversationCell.swift; sourceTree = "<group>"; };
 		CB4E41F423BD7BE200D476E5 /* ToolsMenu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsMenu.swift; sourceTree = "<group>"; };
 		CB4E539123CE963A0000F33B /* MapsNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapsNetworking.swift; sourceTree = "<group>"; };
+		CB4F587B23D626690086C5BB /* WelcomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeVC.swift; sourceTree = "<group>"; };
+		CB4F587D23D633C60086C5BB /* WelcomeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeCell.swift; sourceTree = "<group>"; };
 		CB4FEA8F23CA446F006B8B08 /* UserInfoTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoTab.swift; sourceTree = "<group>"; };
 		CB4FEA9323CA6E18006B8B08 /* MapStylesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapStylesCell.swift; sourceTree = "<group>"; };
 		CB4FEA9723CA7370006B8B08 /* StylesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StylesCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -382,6 +386,8 @@
 		CBF644F22381C216004830C6 /* Auth Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				CB4F587B23D626690086C5BB /* WelcomeVC.swift */,
+				CB4F587D23D633C60086C5BB /* WelcomeCell.swift */,
 				CBF907FD2380B8CE00EF8925 /* SignInVC.swift */,
 				CB9525982380D5BB0006A76A /* SignUpVC.swift */,
 				CB99D08623D5397E008645D6 /* AuthNetworking.swift */,
@@ -609,6 +615,7 @@
 			files = (
 				CB9525992380D5BB0006A76A /* SignUpVC.swift in Sources */,
 				CB4CF77E23943D8100AC2E31 /* NewConversationCell.swift in Sources */,
+				CB4F587C23D626690086C5BB /* WelcomeVC.swift in Sources */,
 				CB89170323BAD4FA0019CBE9 /* ResponseView + Extension.swift in Sources */,
 				CB27173B2381ECB1003A4D46 /* Constants.swift in Sources */,
 				CB4B6F7923BBB09600CDA4B3 /* LoadImage + Extension.swift in Sources */,
@@ -660,6 +667,7 @@
 				CB99D07C23D4D268008645D6 /* ContactsTableView + Extension.swift in Sources */,
 				CBCC30862383722500E36E39 /* AddFriendVC.swift in Sources */,
 				CBF907FE2380B8CE00EF8925 /* SignInVC.swift in Sources */,
+				CB4F587E23D633C60086C5BB /* WelcomeCell.swift in Sources */,
 				CB82EA8D23C65845002FD857 /* SettingsCell.swift in Sources */,
 				CB4FEA9823CA7370006B8B08 /* StylesCollectionViewCell.swift in Sources */,
 				CB2580BD23CFAE1200F9B088 /* MapExitButton.swift in Sources */,
