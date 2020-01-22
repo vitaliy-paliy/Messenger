@@ -90,7 +90,7 @@ class SignInVC: UIViewController, UITextFieldDelegate {
         logoView.layer.cornerRadius = 50
         logoView.layer.masksToBounds = true
         let logo = UIImageView()
-        logo.image = UIImage(named: "logo")
+        logo.image = UIImage(named: "Logo-Light")
         logo.layer.cornerRadius = 40
         logo.layer.masksToBounds = true
         logoView.addSubview(logo)
@@ -130,8 +130,8 @@ class SignInVC: UIViewController, UITextFieldDelegate {
     
     func setupGradientLayer() -> CAGradientLayer {
         let gradient = CAGradientLayer()
-        let topColor = UIColor(red: 70/255, green: 130/255, blue: 220/255, alpha: 1).cgColor
-        let bottomColor = UIColor(red: 85/255, green: 80/255, blue: 190/255, alpha: 1).cgColor
+        let topColor = UIColor(red: 100/255, green: 90/255, blue: 255/255, alpha: 1).cgColor
+        let bottomColor = UIColor(red: 140/255, green: 135/255, blue: 255/255, alpha: 1).cgColor
         gradient.colors = [topColor, bottomColor]
         gradient.locations = [0, 1]
         return gradient

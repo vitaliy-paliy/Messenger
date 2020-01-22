@@ -10,8 +10,8 @@ import UIKit
 import Lottie
 
 class AppColors {
-    static var mainColor = UIColor(red: 70/255, green: 100/255, blue: 200/255, alpha: 1)
-    static var secondaryColor = UIColor(red: 70/255, green: 100/255, blue: 200/255, alpha: 0.2)
+    static var mainColor = UIColor(red: 100/255, green: 90/255, blue: 255/255, alpha: 1)
+    static var secondaryColor = UIColor(red: 140/255, green: 135/255, blue: 255/255, alpha: 0.5)
 }
 
 struct WelcomePage {
@@ -23,7 +23,7 @@ struct WelcomePage {
 class WelcomeVC: UIViewController {
     
     let welcomePages = [
-        WelcomePage(imageName: "logo", topicText: "mChat", descriptionText: "The messaging app."),
+        WelcomePage(imageName: "Logo-Light", topicText: "mChat", descriptionText: "The messaging app."),
         WelcomePage(imageName: "Chat", topicText: "Chat", descriptionText: "Contact your friends by sending them text, audio or media messages."),
         WelcomePage(imageName: "MapsHome", topicText: "Maps", descriptionText: "Share your location with your friends."),
         WelcomePage(imageName: "Design", topicText: "Design", descriptionText: "Make your messenger look the way you like it."),
@@ -31,9 +31,8 @@ class WelcomeVC: UIViewController {
     ]
     var collectionView: UICollectionView!
     var skipButton = UIButton(type: .system)
-    var nextButton = UIButton(type: .system)
-    var previousButton = UIButton(type: .system)
     var pageControl = UIPageControl()
+    var slideAnimView = AnimationView()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,8 +40,7 @@ class WelcomeVC: UIViewController {
         setupCollectionView()
         setupSkipButton()
         setupPageControl()
-        setupnextButton()
-        setupPreviousButton()
+        setupAnimView()
     }
     
     func setupCollectionView() {
@@ -80,20 +78,6 @@ class WelcomeVC: UIViewController {
         NSLayoutConstraint.activate(constraints)
     }
     
-    func setupnextButton() {
-        view.addSubview(nextButton)
-        nextButton.translatesAutoresizingMaskIntoConstraints = false
-        nextButton.setTitle("NEXT", for: .normal)
-        nextButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-        nextButton.tintColor = AppColors.mainColor
-        nextButton.addTarget(self, action: #selector(nextButtonPressed), for: .touchUpInside)
-        let constraints = [
-            nextButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 8),
-            nextButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
-        ]
-        NSLayoutConstraint.activate(constraints)
-    }
-    
     func setupPageControl() {
         view.addSubview(pageControl)
         pageControl.translatesAutoresizingMaskIntoConstraints = false
@@ -101,6 +85,7 @@ class WelcomeVC: UIViewController {
         pageControl.numberOfPages = welcomePages.count
         pageControl.currentPageIndicatorTintColor = AppColors.mainColor
         pageControl.pageIndicatorTintColor = AppColors.secondaryColor
+        pageControl.isUserInteractionEnabled = false
         let constraints = [
             pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             pageControl.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
@@ -109,69 +94,80 @@ class WelcomeVC: UIViewController {
         NSLayoutConstraint.activate(constraints)
     }
     
-    func setupPreviousButton(){
-        view.addSubview(previousButton)
-        previousButton.isHidden = true
-        previousButton.translatesAutoresizingMaskIntoConstraints = false
-        previousButton.setTitle("PREVIOUS", for: .normal)
-        previousButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-        previousButton.tintColor = AppColors.mainColor
-        previousButton.addTarget(self, action: #selector(previousButtonPressed), for: .touchUpInside)
+    func setupAnimView() {
+        view.addSubview(slideAnimView)
+        slideAnimView.translatesAutoresizingMaskIntoConstraints = false
+        slideAnimView.animation = Animation.named("slideInstructions")
+        slideAnimView.backgroundBehavior = .pauseAndRestore
+        slideAnimView.loopMode = .loop
+        slideAnimView.play()
         let constraints = [
-            previousButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
-            previousButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 8),
+            slideAnimView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            slideAnimView.bottomAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: -32),
+            slideAnimView.widthAnchor.constraint(equalToConstant: 100),
+            slideAnimView.heightAnchor.constraint(equalToConstant: 100)
         ]
         NSLayoutConstraint.activate(constraints)
-    }
-    
-    @objc func nextButtonPressed(){
-        if pageControl.currentPage == welcomePages.count - 1 {
-            nextButton.isHidden = true
-            skipButton.isHidden = true
-            return
-        }
-        let pageNum = min(pageControl.currentPage + 1, welcomePages.count - 1)
-        if pageNum > 0 { previousButton.isHidden = false }
-        pageControl.currentPage = pageNum
-        let indexPath = IndexPath(item: pageNum, section: 0)
-        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-    }
-    
-    @objc func previousButtonPressed() {
-        if pageControl.currentPage == 0 {
-            previousButton.isHidden = true
-            return
-        }
-        let pageNum = max(pageControl.currentPage - 1, 0)
-        if pageNum > 0 {
-            nextButton.isHidden = false
-            skipButton.isHidden = false
-        }
-        pageControl.currentPage = pageNum
-        let indexPath = IndexPath(item: pageNum, section: 0)
-        collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
     }
     
     @objc func skipButtonPressed() {
         let indexPath = IndexPath(item: welcomePages.count - 1, section: 0)
         collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
         pageControl.currentPage = welcomePages.count - 1
-        previousButton.isHidden = false
-        nextButton.isHidden = true
-        skipButton.isHidden = true
-    }
-    
-    func goToSignUpController(){
-        print("ADD ANIMATION")
-        let controller = SignUpVC()
-        controller.modalPresentationStyle = .fullScreen
-        show(controller, sender: nil)
+        goToSignInController()
     }
     
     func goToSignInController() {
-        let controller = SignInVC()
-        controller.modalPresentationStyle = .fullScreen
-        show(controller, sender: nil)
+        let transitionView = UIView(frame: CGRect(x: view.center.x, y: view.center.y, width: 100, height: 100))
+        let window = UIApplication.shared.windows[0]
+        window.addSubview(transitionView)
+        transitionView.backgroundColor = AppColors.mainColor
+        transitionView.layer.cornerRadius = 50
+        transitionView.layer.masksToBounds = true
+        let timer = Timer(timeInterval: 0, target: self, selector: #selector(self.animateLogo), userInfo: nil, repeats: false)
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+            transitionView.transform = CGAffineTransform(scaleX: 20, y: 20)
+            RunLoop.current.add(timer, forMode: .default)
+        })
+    }
+ 
+    @objc func animateLogo(){
+        let window = UIApplication.shared.windows[0]
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
+        imageView.center = CGPoint(x: view.center.x, y: view.center.y)
+        imageView.image = UIImage(named: "Logo-Light")
+        imageView.contentMode = .scaleAspectFit
+        imageView.layer.cornerRadius = 100
+        imageView.layer.masksToBounds = true
+        window.addSubview(imageView)
+        imageView.alpha = 0
+        imageView.transform = CGAffineTransform(rotationAngle: 360)
+        let timer = Timer(timeInterval: 0, target: self, selector: #selector(animateLogoLabel), userInfo: nil, repeats: false)
+        UIView.animate(withDuration: 0.8, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+            imageView.transform = .identity
+            imageView.alpha = 1
+            RunLoop.current.add(timer, forMode: .default)
+        }) { (true) in
+            print("Finished")
+        }
+    }
+    
+    @objc func animateLogoLabel(){
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+        label.center = CGPoint(x: view.center.x, y: view.center.y + 150)
+        label.font = UIFont.boldSystemFont(ofSize: 32)
+        label.text = "mChat"
+        label.textColor = .white
+        let window = UIApplication.shared.windows[0]
+        window.addSubview(label)
+        label.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: .curveEaseIn, animations: {
+            label.transform = .identity
+        }) { (true) in
+            let controller = SignInVC()
+            controller.modalPresentationStyle = .fullScreen
+            self.present(controller, animated: false, completion: nil)
+        }
     }
     
 }
@@ -183,17 +179,12 @@ extension WelcomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICol
         let pageNum = Int(xValue / view.frame.width)
         pageControl.currentPage = pageNum
         if pageNum != welcomePages.count - 1 {
-            nextButton.isHidden = false
             skipButton.isHidden = false
         }else{
-            nextButton.isHidden = true
+            goToSignInController()
             skipButton.isHidden = true
         }
-        if pageNum > 0 {
-            previousButton.isHidden = false
-        }else{
-            previousButton.isHidden = true
-        }
+        if pageControl.currentPage > 0 { slideAnimView.isHidden = true } else { slideAnimView.isHidden = false }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -220,9 +211,11 @@ extension WelcomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICol
         let welcomeCell = cell as! WelcomeCell
         welcomeCell.topicImage.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
         welcomeCell.descriptionLabel.transform = CGAffineTransform(translationX: view.frame.origin.x + view.frame.width/2, y: 0)
+        welcomeCell.signInButton.transform = CGAffineTransform(scaleX: 0.4, y: 0.4)
         UIView.animate(withDuration: 0.8, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
             welcomeCell.topicImage.transform = .identity
             welcomeCell.descriptionLabel.transform = .identity
+            welcomeCell.signInButton.transform = .identity
         })
     }
     
