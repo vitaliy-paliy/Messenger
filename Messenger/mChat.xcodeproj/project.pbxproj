@@ -43,7 +43,6 @@
 		CB513C4023BE8C7F00BE8907 /* FriendInformationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB513C3F23BE8C7F00BE8907 /* FriendInformationCell.swift */; };
 		CB513C4223BEB14E00BE8907 /* SharedMediaVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB513C4123BEB14E00BE8907 /* SharedMediaVC.swift */; };
 		CB513C4423BEBB4B00BE8907 /* SharedMediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB513C4323BEBB4B00BE8907 /* SharedMediaCell.swift */; };
-		CB6239B023D7D1CE00A9F05D /* slideInstructions.json in Resources */ = {isa = PBXBuildFile; fileRef = CB6239AF23D7D1CE00A9F05D /* slideInstructions.json */; };
 		CB639E0323D0E000000748A0 /* ContactsNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB639E0223D0E000000748A0 /* ContactsNetworking.swift */; };
 		CB644C2523A2FFC7003094DF /* chatTyping.json in Resources */ = {isa = PBXBuildFile; fileRef = CB644C2323A2FFC7003094DF /* chatTyping.json */; };
 		CB65C64723831EA300F2B5A3 /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB65C64623831EA300F2B5A3 /* CurrentUser.swift */; };
@@ -88,6 +87,7 @@
 		CBF907FE2380B8CE00EF8925 /* SignInVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF907FD2380B8CE00EF8925 /* SignInVC.swift */; };
 		CBFC53B92387259E00CC4C91 /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFC53B82387259E00CC4C91 /* Messages.swift */; };
 		CBFC53BB23873B5600CC4C91 /* ConverstaionsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBFC53BA23873B5600CC4C91 /* ConverstaionsCell.swift */; };
+		CBFCFAE223D939E50038BD06 /* slideInstructions.json in Resources */ = {isa = PBXBuildFile; fileRef = CBFCFAE123D939E50038BD06 /* slideInstructions.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -129,7 +129,6 @@
 		CB513C3F23BE8C7F00BE8907 /* FriendInformationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendInformationCell.swift; sourceTree = "<group>"; };
 		CB513C4123BEB14E00BE8907 /* SharedMediaVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedMediaVC.swift; sourceTree = "<group>"; };
 		CB513C4323BEBB4B00BE8907 /* SharedMediaCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedMediaCell.swift; sourceTree = "<group>"; };
-		CB6239AF23D7D1CE00A9F05D /* slideInstructions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = slideInstructions.json; sourceTree = "<group>"; };
 		CB639E0223D0E000000748A0 /* ContactsNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsNetworking.swift; sourceTree = "<group>"; };
 		CB644C2323A2FFC7003094DF /* chatTyping.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = chatTyping.json; sourceTree = "<group>"; };
 		CB65C64623831EA300F2B5A3 /* CurrentUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
@@ -176,6 +175,7 @@
 		CBF907FD2380B8CE00EF8925 /* SignInVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInVC.swift; sourceTree = "<group>"; };
 		CBFC53B82387259E00CC4C91 /* Messages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
 		CBFC53BA23873B5600CC4C91 /* ConverstaionsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConverstaionsCell.swift; sourceTree = "<group>"; };
+		CBFCFAE123D939E50038BD06 /* slideInstructions.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = slideInstructions.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -355,7 +355,7 @@
 		CBD040F023A32B0E005FBD5A /* Animations */ = {
 			isa = PBXGroup;
 			children = (
-				CB6239AF23D7D1CE00A9F05D /* slideInstructions.json */,
+				CBFCFAE123D939E50038BD06 /* slideInstructions.json */,
 				CB84CD8B23C1198B0000605D /* audioWave.json */,
 				CB644C2323A2FFC7003094DF /* chatTyping.json */,
 				CBD040EE23A30D15005FBD5A /* recentTyping.json */,
@@ -558,9 +558,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				CBF907F62380B83600EF8925 /* LaunchScreen.storyboard in Resources */,
+				CBFCFAE223D939E50038BD06 /* slideInstructions.json in Resources */,
 				CBF907F32380B83600EF8925 /* Assets.xcassets in Resources */,
 				CBD040EF23A30D15005FBD5A /* recentTyping.json in Resources */,
-				CB6239B023D7D1CE00A9F05D /* slideInstructions.json in Resources */,
 				CB644C2523A2FFC7003094DF /* chatTyping.json in Resources */,
 				CB84CD8C23C1198B0000605D /* audioWave.json in Resources */,
 				CBAB592C2381E49700078B7D /* GoogleService-Info.plist in Resources */,

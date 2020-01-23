@@ -119,55 +119,62 @@ class WelcomeVC: UIViewController {
     
     func goToSignInController() {
         let transitionView = UIView(frame: CGRect(x: view.center.x, y: view.center.y, width: 100, height: 100))
-        let window = UIApplication.shared.windows[0]
-        window.addSubview(transitionView)
-        transitionView.backgroundColor = AppColors.mainColor
+        view.addSubview(transitionView)
         transitionView.layer.cornerRadius = 50
         transitionView.layer.masksToBounds = true
-        let timer = Timer(timeInterval: 0, target: self, selector: #selector(self.animateLogo), userInfo: nil, repeats: false)
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+        let gradient = setupGradientLayer()
+        gradient.frame = view.bounds
+        transitionView.layer.insertSublayer(gradient, at: 0)
+        let timer = Timer(timeInterval: 0.3, target: self, selector: #selector(self.animateLogo), userInfo: nil, repeats: false)
+        UIView.animate(withDuration: 1.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
             transitionView.transform = CGAffineTransform(scaleX: 20, y: 20)
             RunLoop.current.add(timer, forMode: .default)
         })
     }
  
     @objc func animateLogo(){
-        let window = UIApplication.shared.windows[0]
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
         imageView.center = CGPoint(x: view.center.x, y: view.center.y)
         imageView.image = UIImage(named: "Logo-Light")
         imageView.contentMode = .scaleAspectFit
         imageView.layer.cornerRadius = 100
         imageView.layer.masksToBounds = true
-        window.addSubview(imageView)
+        view.addSubview(imageView)
         imageView.alpha = 0
-        imageView.transform = CGAffineTransform(rotationAngle: 360)
-        let timer = Timer(timeInterval: 0, target: self, selector: #selector(animateLogoLabel), userInfo: nil, repeats: false)
+        imageView.transform = CGAffineTransform(rotationAngle: 720)
         UIView.animate(withDuration: 0.8, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
             imageView.transform = .identity
             imageView.alpha = 1
-            RunLoop.current.add(timer, forMode: .default)
         }) { (true) in
-            print("Finished")
+            self.animateLogoLabel()
         }
     }
     
     @objc func animateLogoLabel(){
-        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 100))
         label.center = CGPoint(x: view.center.x, y: view.center.y + 150)
-        label.font = UIFont.boldSystemFont(ofSize: 32)
+        label.font = UIFont(name: "Alata", size: 48)
         label.text = "mChat"
+        label.textAlignment = .center
         label.textColor = .white
-        let window = UIApplication.shared.windows[0]
-        window.addSubview(label)
+        view.addSubview(label)
         label.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
-        UIView.animate(withDuration: 1, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: .curveEaseIn, animations: {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: .curveEaseIn, animations: {
             label.transform = .identity
         }) { (true) in
             let controller = SignInVC()
             controller.modalPresentationStyle = .fullScreen
             self.present(controller, animated: false, completion: nil)
         }
+    }
+    
+    func setupGradientLayer() -> CAGradientLayer {
+        let gradient = CAGradientLayer()
+        let topColor = UIColor(red: 100/255, green: 90/255, blue: 255/255, alpha: 1).cgColor
+        let bottomColor = UIColor(red: 140/255, green: 135/255, blue: 255/255, alpha: 1).cgColor
+        gradient.colors = [topColor, bottomColor]
+        gradient.locations = [0, 1]
+        return gradient
     }
     
 }
@@ -211,11 +218,9 @@ extension WelcomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICol
         let welcomeCell = cell as! WelcomeCell
         welcomeCell.topicImage.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
         welcomeCell.descriptionLabel.transform = CGAffineTransform(translationX: view.frame.origin.x + view.frame.width/2, y: 0)
-        welcomeCell.signInButton.transform = CGAffineTransform(scaleX: 0.4, y: 0.4)
         UIView.animate(withDuration: 0.8, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
             welcomeCell.topicImage.transform = .identity
             welcomeCell.descriptionLabel.transform = .identity
-            welcomeCell.signInButton.transform = .identity
         })
     }
     

@@ -11,6 +11,11 @@ import SkyFloatingLabelTextField
 
 class SignInVC: UIViewController, UITextFieldDelegate {
     
+    let logo = UIImageView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
+    let logoLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 100))
+    let logoTransitionView = UIView()
+    
+    var logoView = UIView()
     var authNetworking = AuthNetworking()
     var loginView = UIView()
     var loginButton = UIButton(type: .system)
@@ -22,15 +27,19 @@ class SignInVC: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupGradientView()
         setupLoginView()
         notificationCenterHandler()
         hideKeyboardOnTap()
         setupLogo()
         view.backgroundColor = .white
+        animateTransition()
     }
-
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
@@ -44,7 +53,7 @@ class SignInVC: UIViewController, UITextFieldDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
-        
+    
     @objc func handleKeyboardWillShow(notification: NSNotification){
         let kFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
         let kDuration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double
@@ -83,30 +92,58 @@ class SignInVC: UIViewController, UITextFieldDelegate {
     }
     
     func setupLogo() {
-        let logoView = UIView()
         view.addSubview(logoView)
         logoView.backgroundColor = .white
         logoView.translatesAutoresizingMaskIntoConstraints = false
         logoView.layer.cornerRadius = 50
         logoView.layer.masksToBounds = true
-        let logo = UIImageView()
-        logo.image = UIImage(named: "Logo-Light")
-        logo.layer.cornerRadius = 40
-        logo.layer.masksToBounds = true
-        logoView.addSubview(logo)
-        logo.translatesAutoresizingMaskIntoConstraints = false
         let constraints = [
             logoView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             logoView.topAnchor.constraint(equalTo: view.topAnchor, constant: view.frame.height/6),
             logoView.widthAnchor.constraint(equalToConstant: 100),
             logoView.heightAnchor.constraint(equalToConstant: 100),
-            logo.centerXAnchor.constraint(equalTo: logoView.centerXAnchor),
-            logo.centerYAnchor.constraint(equalTo: logoView.centerYAnchor),
-            logo.widthAnchor.constraint(equalToConstant: 80),
-            logo.heightAnchor.constraint(equalToConstant: 80)
         ]
         NSLayoutConstraint.activate(constraints)
         
+    }
+    
+    func animateTransition() {
+        
+        logoTransitionView.frame = view.frame
+        let gradient = setupGradientLayer()
+        gradient.frame = view.frame
+        logoTransitionView.layer.addSublayer(gradient)
+        view.addSubview(logoTransitionView)
+        
+        logo.center = CGPoint(x: view.center.x, y: view.center.y)
+        logo.image = UIImage(named: "Logo-Light")
+        logo.contentMode = .scaleAspectFit
+        logo.layer.cornerRadius = 100
+        logo.layer.masksToBounds = true
+        view.addSubview(logo)
+        
+        logoLabel.center = CGPoint(x: view.center.x, y: view.center.y + 150)
+        logoLabel.font = UIFont(name: "Alata", size: 48)
+        logoLabel.text = "mChat"
+        logoLabel.textAlignment = .center
+        logoLabel.textColor = .white
+        view.addSubview(logoLabel)
+        
+        let timer = Timer(timeInterval: 0.1, target: self, selector: #selector(animateLogo), userInfo: nil, repeats: false)
+        RunLoop.current.add(timer, forMode: .default)
+    }
+    
+    @objc func animateLogo(){
+        UIView.animate(withDuration: 0.8, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+            self.logo.layer.cornerRadius = 40
+            self.logo.frame.size = CGSize(width: 80, height: 80)
+            self.logo.center = CGPoint(x: self.logoView.center.x, y: self.logoView.center.y)
+            self.logoTransitionView.alpha = 0
+            self.logoLabel.alpha = 0
+        }) { (true) in
+            self.logoTransitionView.removeFromSuperview()
+            self.logoLabel.removeFromSuperview()
+        }
     }
     
     func setupGradientView() {
@@ -161,15 +198,19 @@ class SignInVC: UIViewController, UITextFieldDelegate {
     }
     
     func setupLoginButton() {
+        loginButton.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
         view.addSubview(loginButton)
         loginButton.translatesAutoresizingMaskIntoConstraints = false
         loginButton.setTitle("Login", for: .normal)
-        loginButton.titleLabel?.font = UIFont(name: "Alata", size: 16)
+        loginButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         loginButton.tintColor = .white
         loginButton.layer.cornerRadius = 18
-        loginButton.layer.shadowRadius = 5
-        loginButton.layer.shadowOpacity = 0.1
-        loginButton.backgroundColor = UIColor(red: 70/255, green: 100/255, blue: 200/255, alpha: 1)
+        loginButton.layer.masksToBounds = true
+        let gradient = setupGradientLayer()
+        gradient.frame = loginButton.bounds
+        gradient.startPoint = CGPoint(x: 0, y: 1)
+        gradient.endPoint = CGPoint(x: 1, y: 1)
+        loginButton.layer.insertSublayer(gradient, at: 0)
         loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
         let constraints = [
             loginButton.centerXAnchor.constraint(equalTo: loginView.centerXAnchor),
