@@ -33,6 +33,7 @@ class SignInVC: UIViewController, UITextFieldDelegate {
         hideKeyboardOnTap()
         setupLogo()
         view.backgroundColor = .white
+        setupSignUpButton()
         animateTransition()
     }
     
@@ -298,6 +299,32 @@ class SignInVC: UIViewController, UITextFieldDelegate {
             return "Password should be at least 6 characters long"
         }
         return nil
+    }
+    
+    func setupSignUpButton() {
+        let signUpButton = UIButton(type: .system)
+        view.addSubview(signUpButton)
+        signUpButton.translatesAutoresizingMaskIntoConstraints = false
+        let mainString = "Don't have an account? Sign Up"
+        let stringWithColor = "Sign Up"
+        let range = (mainString as NSString).range(of: stringWithColor)
+        let attributedString = NSMutableAttributedString(string: mainString)
+        attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.systemBlue, range: range)
+        signUpButton.setAttributedTitle(attributedString, for: .normal)
+        signUpButton.tintColor = .black
+        signUpButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        signUpButton.addTarget(self, action: #selector(signUpButtonPressed), for: .touchUpInside)
+        let constraints = [
+            signUpButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            signUpButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 8),
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    @objc func signUpButtonPressed() {
+        let signUVC = SignUpVC()
+        signUVC.modalPresentationStyle = .fullScreen
+        show(signUVC, sender: nil)
     }
     
     @objc func loginButtonPressed() {
