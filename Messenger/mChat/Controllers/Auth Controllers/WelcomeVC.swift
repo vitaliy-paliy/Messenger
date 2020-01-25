@@ -165,6 +165,7 @@ class WelcomeVC: UIViewController {
             let controller = SignInVC()
             controller.modalPresentationStyle = .fullScreen
             self.present(controller, animated: false, completion: nil)
+            self.collectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .centeredHorizontally, animated: false)
         }
     }
     

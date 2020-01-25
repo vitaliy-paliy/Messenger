@@ -107,7 +107,7 @@ class SignInVC: UIViewController, UITextFieldDelegate {
         NSLayoutConstraint.activate(constraints)
         
     }
-    
+        
     func animateTransition() {
         
         logoTransitionView.frame = view.frame
@@ -312,7 +312,7 @@ class SignInVC: UIViewController, UITextFieldDelegate {
         attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.systemBlue, range: range)
         signUpButton.setAttributedTitle(attributedString, for: .normal)
         signUpButton.tintColor = .black
-        signUpButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        signUpButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         signUpButton.addTarget(self, action: #selector(signUpButtonPressed), for: .touchUpInside)
         let constraints = [
             signUpButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -322,9 +322,9 @@ class SignInVC: UIViewController, UITextFieldDelegate {
     }
     
     @objc func signUpButtonPressed() {
-        let signUVC = SignUpVC()
-        signUVC.modalPresentationStyle = .fullScreen
-        show(signUVC, sender: nil)
+        let controller = SignUpVC()
+        controller.modalPresentationStyle = .fullScreen
+        self.present(controller, animated: false, completion: nil)
     }
     
     @objc func loginButtonPressed() {
