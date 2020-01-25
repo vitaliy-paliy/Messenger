@@ -41,4 +41,14 @@ class AuthNetworking {
         }
     }
     
+    func checkForExistingEmail(_ email: String, completion: @escaping (_ errorMessage: String?) -> Void) {
+        Auth.auth().fetchSignInMethods(forEmail: email) { (methods, error) in
+            if methods == nil {
+                return completion(nil)
+            }else{
+                return completion("This email is already in use.")
+            }
+        }
+    }
+    
 }

@@ -36,11 +36,7 @@ class SignInVC: UIViewController, UITextFieldDelegate {
         setupSignUpButton()
         animateTransition()
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-    
+        
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
@@ -136,8 +132,8 @@ class SignInVC: UIViewController, UITextFieldDelegate {
     
     @objc func animateLogo(){
         UIView.animate(withDuration: 0.8, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
-            self.logo.layer.cornerRadius = 40
-            self.logo.frame.size = CGSize(width: 80, height: 80)
+            self.logo.layer.cornerRadius = 45
+            self.logo.frame.size = CGSize(width: 90, height: 90)
             self.logo.center = CGPoint(x: self.logoView.center.x, y: self.logoView.center.y)
             self.logoTransitionView.alpha = 0
             self.logoLabel.alpha = 0
@@ -246,7 +242,6 @@ class SignInVC: UIViewController, UITextFieldDelegate {
         emailTextField.font = UIFont(name: "Alata", size: 18)
         emailTextField.selectedLineColor = UIColor(red: 70/255, green: 100/255, blue: 200/255, alpha: 1)
         emailTextField.lineColor = .lightGray
-        emailTextField.reloadInputViews()
         let constraints = [
             emailTextField.centerXAnchor.constraint(equalTo: loginView.centerXAnchor),
             emailTextField.topAnchor.constraint(equalTo: loginView.topAnchor, constant: 64),
