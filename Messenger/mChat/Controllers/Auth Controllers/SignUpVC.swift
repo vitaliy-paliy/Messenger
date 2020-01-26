@@ -11,6 +11,7 @@ import SkyFloatingLabelTextField
 
 class SignUpVC: UIViewController, UITextFieldDelegate {
     
+    var signInVC: SignInVC!
     let backButton = UIButton(type: .system)
     let continueButton = UIButton(type: .system)
     var nameTextField = SkyFloatingLabelTextField()
@@ -100,7 +101,7 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
             registerView.heightAnchor.constraint(equalToConstant: height)
         ]
         NSLayoutConstraint.activate(constraints)
-        let timer = Timer(timeInterval: 0.5, target: self, selector: #selector(animateSignUpViews), userInfo: nil, repeats: false)
+        let timer = Timer(timeInterval: 0.2, target: self, selector: #selector(animateSignUpViews), userInfo: nil, repeats: false)
         RunLoop.current.add(timer, forMode: .default)
         setupSignUpLabel()
         setupNameTextField()
@@ -143,16 +144,25 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
     }
     
     func setupContinueButton() {
+        continueButton.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
         view.addSubview(continueButton)
         continueButton.translatesAutoresizingMaskIntoConstraints = false
-        continueButton.setTitle("CONTINUE", for: .normal)
-        continueButton.tintColor = AppColors.mainColor
-        continueButton.titleLabel?.textAlignment = .center
-        continueButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        continueButton.setTitle("Continue", for: .normal)
+        continueButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        continueButton.tintColor = .white
+        continueButton.layer.cornerRadius = 18
+        continueButton.layer.masksToBounds = true
+        let gradient = setupGradientLayer()
+        gradient.frame = continueButton.bounds
+        gradient.startPoint = CGPoint(x: 0, y: 1)
+        gradient.endPoint = CGPoint(x: 1, y: 1)
+        continueButton.layer.insertSublayer(gradient, at: 0)
         continueButton.addTarget(self, action: #selector(continueButtonPressed), for: .touchUpInside)
         let constraints = [
-            continueButton.bottomAnchor.constraint(equalTo: registerView.bottomAnchor, constant: -16),
-            continueButton.centerXAnchor.constraint(equalTo: registerView.centerXAnchor)
+            continueButton.centerXAnchor.constraint(equalTo: registerView.centerXAnchor),
+            continueButton.centerYAnchor.constraint(equalTo: registerView.bottomAnchor),
+            continueButton.heightAnchor.constraint(equalToConstant: 40),
+            continueButton.widthAnchor.constraint(equalToConstant: 200)
         ]
         NSLayoutConstraint.activate(constraints)
         continueButton.alpha = 0
@@ -163,9 +173,8 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
         nameTextField.translatesAutoresizingMaskIntoConstraints = false
         nameTextField.placeholder = "Name"
         nameTextField.delegate = self
-        nameTextField.titleFont = UIFont(name: "Alata", size: 12)!
         nameTextField.font = UIFont(name: "Alata", size: 18)
-        nameTextField.selectedLineColor = UIColor(red: 70/255, green: 100/255, blue: 200/255, alpha: 1)
+        nameTextField.selectedLineColor = AppColors.mainColor
         nameTextField.lineColor = .lightGray
         let constraints = [
             nameTextField.centerXAnchor.constraint(equalTo: registerView.centerXAnchor),
@@ -181,9 +190,8 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
         emailTextField.translatesAutoresizingMaskIntoConstraints = false
         emailTextField.placeholder = "Email"
         emailTextField.delegate = self
-        emailTextField.titleFont = UIFont(name: "Alata", size: 12)!
         emailTextField.font = UIFont(name: "Alata", size: 18)
-        emailTextField.selectedLineColor = UIColor(red: 70/255, green: 100/255, blue: 200/255, alpha: 1)
+        emailTextField.selectedLineColor = AppColors.mainColor
         emailTextField.lineColor = .lightGray
         let constraints = [
             emailTextField.centerXAnchor.constraint(equalTo: registerView.centerXAnchor),
@@ -199,9 +207,8 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
         passwordTextField.translatesAutoresizingMaskIntoConstraints = false
         passwordTextField.placeholder = "Password"
         passwordTextField.delegate = self
-        passwordTextField.titleFont = UIFont(name: "Alata", size: 12)!
         passwordTextField.font = UIFont(name: "Alata", size: 18)
-        passwordTextField.selectedLineColor = UIColor(red: 70/255, green: 100/255, blue: 200/255, alpha: 1)
+        passwordTextField.selectedLineColor = AppColors.mainColor
         passwordTextField.lineColor = .lightGray
         let constraints = [
             passwordTextField.centerXAnchor.constraint(equalTo: registerView.centerXAnchor),
@@ -229,7 +236,9 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
     }
     
     @objc func backButtonPressed() {
-        dismiss(animated: false, completion: nil)
+        dismiss(animated: false) {
+            self.signInVC.returnToSignInVC()
+        }
     }
     
     @objc func animateSignUpViews() {

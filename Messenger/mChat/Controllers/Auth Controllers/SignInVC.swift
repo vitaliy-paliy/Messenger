@@ -9,6 +9,10 @@
 import UIKit
 import SkyFloatingLabelTextField
 
+protocol HandleLoginViews {
+    func returnToSignInVC()
+}
+
 class SignInVC: UIViewController, UITextFieldDelegate {
     
     let logo = UIImageView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
@@ -131,7 +135,7 @@ class SignInVC: UIViewController, UITextFieldDelegate {
     }
     
     @objc func animateLogo(){
-        UIView.animate(withDuration: 0.8, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
             self.logo.layer.cornerRadius = 45
             self.logo.frame.size = CGSize(width: 90, height: 90)
             self.logo.center = CGPoint(x: self.logoView.center.x, y: self.logoView.center.y)
@@ -222,9 +226,9 @@ class SignInVC: UIViewController, UITextFieldDelegate {
         let loginLabel = UILabel()
         loginView.addSubview(loginLabel)
         loginLabel.translatesAutoresizingMaskIntoConstraints = false
-        loginLabel.text = "Sign In"
+        loginLabel.text = "SIGN IN"
         loginLabel.textAlignment = .center
-        loginLabel.font = UIFont(name: "Alata", size: 24)
+        loginLabel.font = UIFont.boldSystemFont(ofSize: 18)
         loginLabel.textColor = .gray
         let constraints = [
             loginLabel.centerXAnchor.constraint(equalTo: loginView.centerXAnchor),
@@ -236,16 +240,16 @@ class SignInVC: UIViewController, UITextFieldDelegate {
     func setupEmailTextField() {
         loginView.addSubview(emailTextField)
         emailTextField.translatesAutoresizingMaskIntoConstraints = false
-        emailTextField.placeholder = "Email"
+        emailTextField.placeholder = "EMAIL"
         emailTextField.delegate = self
-        emailTextField.titleFont = UIFont(name: "Alata", size: 12)!
-        emailTextField.font = UIFont(name: "Alata", size: 18)
-        emailTextField.selectedLineColor = UIColor(red: 70/255, green: 100/255, blue: 200/255, alpha: 1)
+        emailTextField.font = UIFont.boldSystemFont(ofSize: 14)
+        emailTextField.selectedLineColor = AppColors.mainColor
         emailTextField.lineColor = .lightGray
         let constraints = [
             emailTextField.centerXAnchor.constraint(equalTo: loginView.centerXAnchor),
             emailTextField.topAnchor.constraint(equalTo: loginView.topAnchor, constant: 64),
-            emailTextField.widthAnchor.constraint(equalToConstant: view.frame.width - 120)
+            emailTextField.widthAnchor.constraint(equalToConstant: view.frame.width - 120),
+            emailTextField.heightAnchor.constraint(equalToConstant: 40)
         ]
         NSLayoutConstraint.activate(constraints)
     }
@@ -253,17 +257,17 @@ class SignInVC: UIViewController, UITextFieldDelegate {
     func setupPasswordTextField() {
         loginView.addSubview(passwordTextField)
         passwordTextField.translatesAutoresizingMaskIntoConstraints = false
-        passwordTextField.placeholder = "Password"
+        passwordTextField.placeholder = "PASSWORD"
         passwordTextField.delegate = self
-        passwordTextField.titleFont = UIFont(name: "Alata", size: 12)!
-        passwordTextField.font = UIFont(name: "Alata", size: 18)
+        passwordTextField.font = UIFont.boldSystemFont(ofSize: 14)
         passwordTextField.isSecureTextEntry = true
-        passwordTextField.selectedLineColor = UIColor(red: 70/255, green: 100/255, blue: 200/255, alpha: 1)
+        passwordTextField.selectedLineColor = AppColors.mainColor
         passwordTextField.lineColor = .lightGray
         let constraints = [
             passwordTextField.centerXAnchor.constraint(equalTo: loginView.centerXAnchor),
-            passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 8),
-            passwordTextField.widthAnchor.constraint(equalToConstant: view.frame.width - 120)
+            passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 16),
+            passwordTextField.widthAnchor.constraint(equalToConstant: view.frame.width - 120),
+            passwordTextField.heightAnchor.constraint(equalToConstant: 40)
         ]
         NSLayoutConstraint.activate(constraints)
     }
@@ -317,9 +321,17 @@ class SignInVC: UIViewController, UITextFieldDelegate {
     }
     
     @objc func signUpButtonPressed() {
-        let controller = SignUpVC()
-        controller.modalPresentationStyle = .fullScreen
-        self.present(controller, animated: false, completion: nil)
+        UIView.animate(withDuration: 0.2, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+            for subview in self.loginView.subviews {
+                subview.alpha = 0
+            }
+            self.loginButton.alpha = 0
+        }) { (true) in
+            let controller = SignUpVC()
+            controller.modalPresentationStyle = .fullScreen
+            controller.signInVC = self
+            self.present(controller, animated: false, completion: nil)
+        }
     }
     
     @objc func loginButtonPressed() {
@@ -336,5 +348,24 @@ class SignInVC: UIViewController, UITextFieldDelegate {
             self.errorLabel.text = error?.localizedDescription
         }
     }
+    
+}
+
+extension SignInVC: HandleLoginViews {
+    func returnToSignInVC() {
+        for subview in loginView.subviews {
+            subview.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+        }
+        loginButton.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
+            for subview in self.loginView.subviews {
+                subview.transform = .identity
+                subview.alpha = 1
+                self.loginButton.alpha = 1
+                self.loginButton.transform = .identity
+            }
+        })
+    }
+    
     
 }

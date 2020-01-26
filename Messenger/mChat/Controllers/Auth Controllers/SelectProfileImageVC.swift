@@ -21,12 +21,14 @@ class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, U
     var selectImageButton = UIButton(type: .system)
     var continueButton = UIButton(type: .system)
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupGradientView()
         setupProfileView()
         setupBackButton()
+        setupContinueButton()
     }
     
     func setupGradientView() {
@@ -90,6 +92,23 @@ class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, U
     
     @objc func backButtonPressed() {
         dismiss(animated: true, completion: nil)
+    }
+    
+    func setupContinueButton() {
+        view.addSubview(continueButton)
+        continueButton.translatesAutoresizingMaskIntoConstraints = false
+        continueButton.setTitle("CONTINUE", for: .normal)
+        continueButton.tintColor = AppColors.mainColor
+        continueButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        let constraints = [
+            continueButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            continueButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 16)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    func setupChangeImageButton() {
+        
     }
     
     //    func setupButtons() {

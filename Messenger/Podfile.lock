@@ -112,7 +112,7 @@ DEPENDENCIES:
   - lottie-ios
   - LTHRadioButton
   - Mapbox-iOS-SDK (~> 5.6)
-  - SkyFloatingLabelTextField (~> 3.0)
+  - SkyFloatingLabelTextField
 
 SPEC REPOS:
   trunk:
@@ -167,6 +167,6 @@ SPEC CHECKSUMS:
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   SkyFloatingLabelTextField: 5a338412114808e961fe2d14ea2c5452c8b6e4aa
 
-PODFILE CHECKSUM: b8ca5e470fd4be6baf81e59e0ff450639c5e8a15
+PODFILE CHECKSUM: 47768e4b59d658857995ba97e79a33372c011ef4
 
 COCOAPODS: 1.8.4
