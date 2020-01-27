@@ -12,13 +12,14 @@ import Firebase
 class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     // User credentials
+    
     var name: String!
     var email: String!
     var password: String!
     
     var selectedImage: UIImage!
     var profileImage = UIImageView(image: UIImage(named: "DefaultUserImage"))
-    var selectImageButton = UIButton(type: .system)
+    var changeImageButton = UIButton(type: .system)
     var continueButton = UIButton(type: .system)
     
     
@@ -26,6 +27,7 @@ class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, U
         super.viewDidLoad()
         view.backgroundColor = .white
         setupGradientView()
+        setupLogo()
         setupProfileView()
         setupBackButton()
         setupContinueButton()
@@ -50,29 +52,46 @@ class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, U
         gradientView.layer.insertSublayer(gradient, at: 0)
     }
     
-    func setupGradientLayer() -> CAGradientLayer {
-        let gradient = CAGradientLayer()
-        let topColor = UIColor(red: 100/255, green: 90/255, blue: 255/255, alpha: 1).cgColor
-        let bottomColor = UIColor(red: 140/255, green: 135/255, blue: 255/255, alpha: 1).cgColor
-        gradient.colors = [topColor, bottomColor]
-        gradient.locations = [0, 1]
-        return gradient
+    func setupLogo() {
+        let logoView = UIView()
+        view.addSubview(logoView)
+        logoView.translatesAutoresizingMaskIntoConstraints = false
+        logoView.backgroundColor = .white
+        logoView.layer.cornerRadius = 50
+        logoView.layer.masksToBounds = true
+        let imageView = UIImageView()
+        view.addSubview(imageView)
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.image = UIImage(named: "Logo-Light")
+        imageView.layer.cornerRadius = 45
+        imageView.layer.masksToBounds = true
+        let constraints = [
+            logoView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            logoView.topAnchor.constraint(equalTo: view.topAnchor, constant: view.frame.height/6),
+            logoView.widthAnchor.constraint(equalToConstant: 100),
+            logoView.heightAnchor.constraint(equalToConstant: 100),
+            imageView.centerXAnchor.constraint(equalTo: logoView.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: logoView.centerYAnchor),
+            imageView.widthAnchor.constraint(equalToConstant: 90),
+            imageView.heightAnchor.constraint(equalToConstant: 90),
+        ]
+        NSLayoutConstraint.activate(constraints)
     }
     
     func setupProfileView() {
         view.addSubview(profileImage)
         profileImage.translatesAutoresizingMaskIntoConstraints = false
-        profileImage.layer.cornerRadius = 45
+        profileImage.layer.cornerRadius = 75
         profileImage.layer.masksToBounds = true
         let constraints = [
             profileImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            profileImage.topAnchor.constraint(equalTo: view.topAnchor, constant: view.frame.height/6),
-            profileImage.widthAnchor.constraint(equalToConstant: 90),
-            profileImage.heightAnchor.constraint(equalToConstant: 90)
+            profileImage.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            profileImage.widthAnchor.constraint(equalToConstant: 150),
+            profileImage.heightAnchor.constraint(equalToConstant: 150)
         ]
         NSLayoutConstraint.activate(constraints)
     }
-    
+        
     func setupBackButton() {
         let backButton = UIButton(type: .system)
         view.addSubview(backButton)
@@ -89,6 +108,15 @@ class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, U
         ]
         NSLayoutConstraint.activate(constraints)
     }
+        
+    func setupGradientLayer() -> CAGradientLayer {
+        let gradient = CAGradientLayer()
+        let topColor = UIColor(red: 100/255, green: 90/255, blue: 255/255, alpha: 1).cgColor
+        let bottomColor = UIColor(red: 140/255, green: 135/255, blue: 255/255, alpha: 1).cgColor
+        gradient.colors = [topColor, bottomColor]
+        gradient.locations = [0, 1]
+        return gradient
+    }
     
     @objc func backButtonPressed() {
         dismiss(animated: true, completion: nil)
@@ -101,14 +129,56 @@ class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, U
         continueButton.tintColor = AppColors.mainColor
         continueButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         let constraints = [
-            continueButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            continueButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 16)
+            continueButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
+            continueButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8)
         ]
         NSLayoutConstraint.activate(constraints)
+        setupInfoLabels()
+    }
+
+    func setupInfoLabels() {
+        let nameLabel = UILabel()
+        view.addSubview(nameLabel)
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        nameLabel.text = name.uppercased()
+        nameLabel.font = UIFont.boldSystemFont(ofSize: 16)
+        let emailLabel = UILabel()
+        view.addSubview(emailLabel)
+        emailLabel.translatesAutoresizingMaskIntoConstraints = false
+        emailLabel.text = email.uppercased()
+        emailLabel.font = UIFont.boldSystemFont(ofSize: 12)
+        emailLabel.textColor = .lightGray
+        let constraints = [
+            nameLabel.topAnchor.constraint(equalTo: profileImage.bottomAnchor, constant: 8),
+            nameLabel.centerXAnchor.constraint(equalTo: profileImage.centerXAnchor),
+            emailLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
+            emailLabel.centerXAnchor.constraint(equalTo: profileImage.centerXAnchor)
+        ]
+        NSLayoutConstraint.activate(constraints)
+        setupChangeImageButton(emailLabel)
     }
     
-    func setupChangeImageButton() {
-        
+    func setupChangeImageButton(_ emailLabel: UILabel) {
+        view.addSubview(changeImageButton)
+        changeImageButton.frame = CGRect(x: 0, y: 0, width: 200, height: 35)
+        changeImageButton.translatesAutoresizingMaskIntoConstraints = false
+        changeImageButton.layer.cornerRadius = 8
+        changeImageButton.setTitle("CHANGE PROFILE IMAGE", for: .normal)
+        changeImageButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
+        changeImageButton.layer.masksToBounds = true
+        changeImageButton.tintColor = .white
+        let gradient = setupGradientLayer()
+        gradient.frame = changeImageButton.frame
+        gradient.startPoint = CGPoint(x: 0, y: 1)
+        gradient.endPoint = CGPoint(x: 1, y: 1)
+        changeImageButton.layer.insertSublayer(gradient, at: 0)
+        let constraints = [
+            changeImageButton.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 8),
+            changeImageButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            changeImageButton.heightAnchor.constraint(equalToConstant: 35),
+            changeImageButton.widthAnchor.constraint(equalToConstant: 200)
+        ]
+        NSLayoutConstraint.activate(constraints)
     }
     
     //    func setupButtons() {
