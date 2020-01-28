@@ -63,6 +63,15 @@
 		CB99D07C23D4D268008645D6 /* ContactsTableView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99D07B23D4D268008645D6 /* ContactsTableView + Extension.swift */; };
 		CB99D08523D5003A008645D6 /* Alata-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB99D08423D5003A008645D6 /* Alata-Regular.ttf */; };
 		CB99D08723D5397E008645D6 /* AuthNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99D08623D5397E008645D6 /* AuthNetworking.swift */; };
+		CBAA926F23DF88FB00572978 /* AuthKeyboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAA926E23DF88FB00572978 /* AuthKeyboardHandler.swift */; };
+		CBAA927423DF905300572978 /* HandleSignInViewDelegate + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAA927323DF905300572978 /* HandleSignInViewDelegate + Extension.swift */; };
+		CBAA927923DF930500572978 /* AuthGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAA927823DF930500572978 /* AuthGradientView.swift */; };
+		CBAA927E23DF981500572978 /* SignInLogoAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAA927D23DF981500572978 /* SignInLogoAnimation.swift */; };
+		CBAA928023DFA10C00572978 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAA927F23DFA10C00572978 /* SignInView.swift */; };
+		CBAA928223DFBC1F00572978 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAA928123DFBC1F00572978 /* SignUpView.swift */; };
+		CBAA928423DFC0A400572978 /* EmailValidation + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAA928323DFC0A400572978 /* EmailValidation + Extension.swift */; };
+		CBAA928623DFC2D400572978 /* AuthActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAA928523DFC2D400572978 /* AuthActionButton.swift */; };
+		CBAA928B23DFD3DE00572978 /* AuthBackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAA928A23DFD3DE00572978 /* AuthBackButton.swift */; };
 		CBAB592C2381E49700078B7D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CBAB592B2381E49600078B7D /* GoogleService-Info.plist */; };
 		CBAC237D23AC4A5200FCBED9 /* ToolsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAC237C23AC4A5200FCBED9 /* ToolsCell.swift */; };
 		CBBDE7AE238353A40040A296 /* UserInfo + FriendInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDE7AD238353A40040A296 /* UserInfo + FriendInfo.swift */; };
@@ -149,6 +158,15 @@
 		CB99D07B23D4D268008645D6 /* ContactsTableView + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContactsTableView + Extension.swift"; sourceTree = "<group>"; };
 		CB99D08423D5003A008645D6 /* Alata-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Alata-Regular.ttf"; sourceTree = "<group>"; };
 		CB99D08623D5397E008645D6 /* AuthNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNetworking.swift; sourceTree = "<group>"; };
+		CBAA926E23DF88FB00572978 /* AuthKeyboardHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthKeyboardHandler.swift; sourceTree = "<group>"; };
+		CBAA927323DF905300572978 /* HandleSignInViewDelegate + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HandleSignInViewDelegate + Extension.swift"; sourceTree = "<group>"; };
+		CBAA927823DF930500572978 /* AuthGradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthGradientView.swift; sourceTree = "<group>"; };
+		CBAA927D23DF981500572978 /* SignInLogoAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInLogoAnimation.swift; sourceTree = "<group>"; };
+		CBAA927F23DFA10C00572978 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
+		CBAA928123DFBC1F00572978 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
+		CBAA928323DFC0A400572978 /* EmailValidation + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EmailValidation + Extension.swift"; sourceTree = "<group>"; };
+		CBAA928523DFC2D400572978 /* AuthActionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthActionButton.swift; sourceTree = "<group>"; };
+		CBAA928A23DFD3DE00572978 /* AuthBackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthBackButton.swift; sourceTree = "<group>"; };
 		CBAB592B2381E49600078B7D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CBAC237C23AC4A5200FCBED9 /* ToolsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsCell.swift; sourceTree = "<group>"; };
 		CBBDE7AD238353A40040A296 /* UserInfo + FriendInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInfo + FriendInfo.swift"; sourceTree = "<group>"; };
@@ -341,6 +359,56 @@
 			path = Fonts;
 			sourceTree = "<group>";
 		};
+		CBAA927023DF8B8600572978 /* Welcome Screen */ = {
+			isa = PBXGroup;
+			children = (
+				CB4F587B23D626690086C5BB /* WelcomeVC.swift */,
+				CB4F587D23D633C60086C5BB /* WelcomeCell.swift */,
+			);
+			path = "Welcome Screen";
+			sourceTree = "<group>";
+		};
+		CBAA927A23DF959300572978 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				CBAA928723DFD32900572978 /* ProfileImageVC */,
+				CBAA927C23DF97BC00572978 /* SignIn Views */,
+				CBAA927B23DF97B200572978 /* SignUp Views */,
+				CBAA927823DF930500572978 /* AuthGradientView.swift */,
+				CBAA927323DF905300572978 /* HandleSignInViewDelegate + Extension.swift */,
+				CBAA926E23DF88FB00572978 /* AuthKeyboardHandler.swift */,
+				CB99D08623D5397E008645D6 /* AuthNetworking.swift */,
+				CBAA928323DFC0A400572978 /* EmailValidation + Extension.swift */,
+				CBAA928523DFC2D400572978 /* AuthActionButton.swift */,
+				CBAA928A23DFD3DE00572978 /* AuthBackButton.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		CBAA927B23DF97B200572978 /* SignUp Views */ = {
+			isa = PBXGroup;
+			children = (
+				CBAA928123DFBC1F00572978 /* SignUpView.swift */,
+			);
+			path = "SignUp Views";
+			sourceTree = "<group>";
+		};
+		CBAA927C23DF97BC00572978 /* SignIn Views */ = {
+			isa = PBXGroup;
+			children = (
+				CBAA927D23DF981500572978 /* SignInLogoAnimation.swift */,
+				CBAA927F23DFA10C00572978 /* SignInView.swift */,
+			);
+			path = "SignIn Views";
+			sourceTree = "<group>";
+		};
+		CBAA928723DFD32900572978 /* ProfileImageVC */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ProfileImageVC;
+			sourceTree = "<group>";
+		};
 		CBAC237B23AC4A1600FCBED9 /* ChatMessageTools */ = {
 			isa = PBXGroup;
 			children = (
@@ -386,17 +454,15 @@
 			path = ChatView;
 			sourceTree = "<group>";
 		};
-		CBF644F22381C216004830C6 /* Auth Controllers */ = {
+		CBF644F22381C216004830C6 /* Auth Controllers + Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				CB4F587B23D626690086C5BB /* WelcomeVC.swift */,
-				CB4F587D23D633C60086C5BB /* WelcomeCell.swift */,
 				CBF907FD2380B8CE00EF8925 /* SignInVC.swift */,
 				CB9525982380D5BB0006A76A /* SignUpVC.swift */,
-				CB99D08623D5397E008645D6 /* AuthNetworking.swift */,
 				CB27173C2381EFFA003A4D46 /* SelectProfileImageVC.swift */,
+				CBAA927A23DF959300572978 /* Helpers */,
 			);
-			path = "Auth Controllers";
+			path = "Auth Controllers + Helpers";
 			sourceTree = "<group>";
 		};
 		CBF644F52381C24D004830C6 /* Contacts */ = {
@@ -475,7 +541,8 @@
 		CBF907FF2380C55100EF8925 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				CBF644F22381C216004830C6 /* Auth Controllers */,
+				CBAA927023DF8B8600572978 /* Welcome Screen */,
+				CBF644F22381C216004830C6 /* Auth Controllers + Helpers */,
 				CBF644F52381C24D004830C6 /* Contacts */,
 				CB8916FF23BA92A50019CBE9 /* Conversations */,
 				CBF644F82381C26F004830C6 /* Chats */,
@@ -623,6 +690,8 @@
 				CB89170323BAD4FA0019CBE9 /* ResponseView + Extension.swift in Sources */,
 				CB27173B2381ECB1003A4D46 /* Constants.swift in Sources */,
 				CB4B6F7923BBB09600CDA4B3 /* LoadImage + Extension.swift in Sources */,
+				CBAA928B23DFD3DE00572978 /* AuthBackButton.swift in Sources */,
+				CBAA928423DFC0A400572978 /* EmailValidation + Extension.swift in Sources */,
 				CB08304B238709BD002A1861 /* ChatVC.swift in Sources */,
 				CB513C3723BE6C1300BE8907 /* ChatCollectionView + Extension.swift in Sources */,
 				CBF907EA2380B83500EF8925 /* AppDelegate.swift in Sources */,
@@ -634,9 +703,11 @@
 				CBF644F12381C204004830C6 /* ChatTabBar.swift in Sources */,
 				CB47B66923D248FF00329470 /* InfoMenuView.swift in Sources */,
 				CB89170123BA93490019CBE9 /* ChatNetworking.swift in Sources */,
+				CBAA927E23DF981500572978 /* SignInLogoAnimation.swift in Sources */,
 				CB513C3E23BE872A00BE8907 /* FriendInfoToolsCell.swift in Sources */,
 				CB2717382381E775003A4D46 /* Helpers.swift in Sources */,
 				CB2580BB23CFA19C00F9B088 /* MGLMapDelegate+ Extension.swift in Sources */,
+				CBAA927923DF930500572978 /* AuthGradientView.swift in Sources */,
 				CB1B3F8323C92616000858DF /* FriendAnnotationView.swift in Sources */,
 				CBDBAE5723BC42AC00A56746 /* MessageCollectionView.swift in Sources */,
 				CB82EA9123C666D0002FD857 /* MapSettingsCell.swift in Sources */,
@@ -649,6 +720,7 @@
 				CB902B4623CEA96D0091221D /* ScrollToSelectedUserProtocol + Extension.swift in Sources */,
 				CBDBAE5323BC1D5E00A56746 /* MessageContainer.swift in Sources */,
 				CB27173D2381EFFA003A4D46 /* SelectProfileImageVC.swift in Sources */,
+				CBAA928223DFBC1F00572978 /* SignUpView.swift in Sources */,
 				CB4FEA9023CA446F006B8B08 /* UserInfoTab.swift in Sources */,
 				CBF644F72381C26B004830C6 /* ConversationsVC.swift in Sources */,
 				CB513C4023BE8C7F00BE8907 /* FriendInformationCell.swift in Sources */,
@@ -664,6 +736,7 @@
 				CBF644FB2381C28D004830C6 /* SettingsVC.swift in Sources */,
 				CB4CE16523AEAA9E000D2516 /* ToolsTB.swift in Sources */,
 				CBDBAE5523BC3C9200A56746 /* LoadingIndicator.swift in Sources */,
+				CBAA926F23DF88FB00572978 /* AuthKeyboardHandler.swift in Sources */,
 				CBAC237D23AC4A5200FCBED9 /* ToolsCell.swift in Sources */,
 				CB50E72B23C29B710055BF78 /* ConversationsNetworking.swift in Sources */,
 				CB1B3F8123C903D0000858DF /* CurrentUserAnnotationView.swift in Sources */,
@@ -673,11 +746,13 @@
 				CBF907FE2380B8CE00EF8925 /* SignInVC.swift in Sources */,
 				CB4F587E23D633C60086C5BB /* WelcomeCell.swift in Sources */,
 				CB82EA8D23C65845002FD857 /* SettingsCell.swift in Sources */,
+				CBAA928623DFC2D400572978 /* AuthActionButton.swift in Sources */,
 				CB4FEA9823CA7370006B8B08 /* StylesCollectionViewCell.swift in Sources */,
 				CB2580BD23CFAE1200F9B088 /* MapExitButton.swift in Sources */,
 				CBF644F42381C23A004830C6 /* ContactsVC.swift in Sources */,
 				CB99D08723D5397E008645D6 /* AuthNetworking.swift in Sources */,
 				CB8916FE23BA8D1D0019CBE9 /* ChatKit.swift in Sources */,
+				CBAA928023DFA10C00572978 /* SignInView.swift in Sources */,
 				CB4B6F8023BBD7BC00CDA4B3 /* ImageGalleryView.swift in Sources */,
 				CB65C64723831EA300F2B5A3 /* CurrentUser.swift in Sources */,
 				CB2580BF23CFAF3100F9B088 /* MapSettingsButton.swift in Sources */,
@@ -687,6 +762,7 @@
 				CBFC53B92387259E00CC4C91 /* Messages.swift in Sources */,
 				CB513C4423BEBB4B00BE8907 /* SharedMediaCell.swift in Sources */,
 				CB65C64C2383326300F2B5A3 /* ProfileCell.swift in Sources */,
+				CBAA927423DF905300572978 /* HandleSignInViewDelegate + Extension.swift in Sources */,
 				CBBDE7AE238353A40040A296 /* UserInfo + FriendInfo.swift in Sources */,
 				CB82EA8823C4EC9B002FD857 /* NewConvSelectedProtocol + Extension.swift in Sources */,
 			);
