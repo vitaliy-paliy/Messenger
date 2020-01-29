@@ -8,13 +8,16 @@
 
 import UIKit
 import Firebase
+import Lottie
 
 class AuthNetworking {
     
     var mainController: UIViewController!
     
     func signIn(with email: String, and pass: String, completion: @escaping (_ error: Error?) -> Void){
+        setupLoadingView()
         Auth.auth().signIn(withEmail: email, password: pass) { (authResult, error) in
+            self.removeLoadingAnimation()
             if let error = error {
                 return completion(error)
             }else{
@@ -69,7 +72,7 @@ class AuthNetworking {
         }
     }
     
-    func uploadProfileImageToStorage(_ image: UIImage, completion: @escaping (_ imageUrl: URL?, _ error: Error?) -> Void) {
+    private func uploadProfileImageToStorage(_ image: UIImage, completion: @escaping (_ imageUrl: URL?, _ error: Error?) -> Void) {
         let uniqueName = NSUUID().uuidString
         let storageRef = Storage.storage().reference().child("ProfileImages").child("\(uniqueName).jpg")
         if let uploadData = image.jpegData(compressionQuality: 0.1) {
@@ -83,7 +86,7 @@ class AuthNetworking {
         }
     }
     
-    func registerUserHandler(_ uid: String, _ values: [String:Any], completion: @escaping (_ error: Error?) -> Void) {
+    private func registerUserHandler(_ uid: String, _ values: [String:Any], completion: @escaping (_ error: Error?) -> Void) {
         let usersRef = Constants.db.reference().child("users").child(uid)
         usersRef.updateChildValues(values) { (error, dataRef) in
             if let error = error { return completion(error) }
@@ -91,5 +94,45 @@ class AuthNetworking {
             self.nextController(self.mainController)
         }
     }
+    
+    // ****************************** Relocate to another file ***********************************************************
+
+    var blurView = UIVisualEffectView()
+    var loadingView = UIView()
+    
+    private func removeLoadingAnimation(){
+        loadingView.removeFromSuperview()
+        blurView.removeFromSuperview()
+    }
+    
+    private func setupLoadingView() {
+        mainController.view.addSubview(blurView)
+        blurView.frame = mainController.view.frame
+        blurView.effect = UIBlurEffect(style: .dark)
+        blurView.contentView.addSubview(loadingView)
+        loadingView.translatesAutoresizingMaskIntoConstraints = false
+        loadingView.backgroundColor = .white
+        loadingView.layer.cornerRadius = 75
+        loadingView.layer.masksToBounds = true
+        let animationView = AnimationView()
+        animationView.animation = Animation.named("loadingAnimation")
+        animationView.play()
+        animationView.loopMode = .loop
+        loadingView.addSubview(animationView)
+        animationView.translatesAutoresizingMaskIntoConstraints = false
+        let constraints = [
+            loadingView.centerYAnchor.constraint(equalTo: mainController.view.centerYAnchor),
+            loadingView.centerXAnchor.constraint(equalTo: mainController.view.centerXAnchor),
+            loadingView.widthAnchor.constraint(equalToConstant: 150),
+            loadingView.heightAnchor.constraint(equalToConstant: 150),
+            animationView.centerXAnchor.constraint(equalTo: loadingView.centerXAnchor),
+            animationView.centerYAnchor.constraint(equalTo: loadingView.centerYAnchor),
+            animationView.widthAnchor.constraint(equalToConstant: 300),
+            animationView.heightAnchor.constraint(equalToConstant: 300),
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    // ******************************************************************************************************************
     
 }

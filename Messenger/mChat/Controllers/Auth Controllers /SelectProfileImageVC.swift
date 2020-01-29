@@ -28,7 +28,7 @@ class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, U
         super.viewDidLoad()
         view.backgroundColor = .white
         setupGradientView()
-        setupProfileView()
+        setupRegistrationInfoView()
         setupBackButton()
         setupContinueButton()
     }
@@ -37,28 +37,8 @@ class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, U
         let _ = AuthGradientView(self, true)
     }
     
-    func setupProfileView() {
-        view.addSubview(profileImage)
-        profileImage.translatesAutoresizingMaskIntoConstraints = false
-        profileImage.layer.cornerRadius = 75
-        profileImage.layer.masksToBounds = true
-        profileImage.contentMode = .scaleAspectFill
-        let constraints = [
-            profileImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            profileImage.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            profileImage.widthAnchor.constraint(equalToConstant: 150),
-            profileImage.heightAnchor.constraint(equalToConstant: 150)
-        ]
-        NSLayoutConstraint.activate(constraints)
-    }
-    
-    func setupBackButton() {
-        let backButton = AuthBackButton(self)
-        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
-    }
-    
-    @objc func backButtonPressed() {
-        dismiss(animated: true, completion: nil)
+    func setupRegistrationInfoView(){
+        let _ = RegistrationInfoView(frame: view.frame, self, profileImage: profileImage)
     }
     
     func setupContinueButton() {
@@ -73,53 +53,15 @@ class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, U
             continueButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8)
         ]
         NSLayoutConstraint.activate(constraints)
-        setupInfoLabels()
     }
     
-    func setupInfoLabels() {
-        let nameLabel = UILabel()
-        view.addSubview(nameLabel)
-        nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        nameLabel.text = name.uppercased()
-        nameLabel.font = UIFont.boldSystemFont(ofSize: 16)
-        let emailLabel = UILabel()
-        view.addSubview(emailLabel)
-        emailLabel.translatesAutoresizingMaskIntoConstraints = false
-        emailLabel.text = email.uppercased()
-        emailLabel.font = UIFont.boldSystemFont(ofSize: 12)
-        emailLabel.textColor = .lightGray
-        let constraints = [
-            nameLabel.topAnchor.constraint(equalTo: profileImage.bottomAnchor, constant: 8),
-            nameLabel.centerXAnchor.constraint(equalTo: profileImage.centerXAnchor),
-            emailLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 8),
-            emailLabel.centerXAnchor.constraint(equalTo: profileImage.centerXAnchor)
-        ]
-        NSLayoutConstraint.activate(constraints)
-        setupChangeImageButton(emailLabel)
+    func setupBackButton() {
+        let backButton = AuthBackButton(self)
+        backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
     }
     
-    func setupChangeImageButton(_ emailLabel: UILabel) {
-        view.addSubview(changeImageButton)
-        changeImageButton.frame = CGRect(x: 0, y: 0, width: 200, height: 35)
-        changeImageButton.translatesAutoresizingMaskIntoConstraints = false
-        changeImageButton.layer.cornerRadius = 8
-        changeImageButton.setTitle("CHANGE PROFILE IMAGE", for: .normal)
-        changeImageButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-        changeImageButton.layer.masksToBounds = true
-        changeImageButton.tintColor = .white
-        let gradient = setupGradientLayer()
-        gradient.frame = changeImageButton.frame
-        gradient.startPoint = CGPoint(x: 0, y: 1)
-        gradient.endPoint = CGPoint(x: 1, y: 1)
-        changeImageButton.layer.insertSublayer(gradient, at: 0)
-        changeImageButton.addTarget(self, action: #selector(changeImagePressed), for: .touchUpInside)
-        let constraints = [
-            changeImageButton.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 8),
-            changeImageButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            changeImageButton.heightAnchor.constraint(equalToConstant: 35),
-            changeImageButton.widthAnchor.constraint(equalToConstant: 200)
-        ]
-        NSLayoutConstraint.activate(constraints)
+    @objc func backButtonPressed() {
+        dismiss(animated: true, completion: nil)
     }
     
     @objc func changeImagePressed() {
@@ -136,6 +78,9 @@ class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, U
             imagePicker.sourceType = .photoLibrary
             self.present(imagePicker, animated: true, completion: nil)
         }))
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        cancelAction.setValue(UIColor.systemRed, forKey: "titleTextColor")
+        alert.addAction(cancelAction)
         present(alert, animated: true, completion: nil)
     }
     
@@ -154,7 +99,6 @@ class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, U
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
     }
-    
     
     @objc func continueButtonPressed(){
         authNetworking.mainController = self

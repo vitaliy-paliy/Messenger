@@ -31,7 +31,7 @@ class SignInVC: UIViewController, UITextFieldDelegate {
         view.endEditing(true)
         return false
     }
-    
+        
     func setupUI(){
         view.backgroundColor = .white
         let _ = AuthGradientView(self, false)
@@ -40,7 +40,7 @@ class SignInVC: UIViewController, UITextFieldDelegate {
         setupLoginButton()
         setupSignUpButton()
     }
-            
+    
     func validateTF() -> String?{
         if loginView.emailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" || loginView.passwordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == ""{
             return "Make sure you fill in all fields"
