@@ -12,7 +12,6 @@ class AuthKeyboardHandler {
     
     var view: UIView!
     var keyboardIsShown = false
-    var keyBoardHeight: CGFloat?
     
     func notificationCenterHandler() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
@@ -25,8 +24,8 @@ class AuthKeyboardHandler {
         let kDuration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double
         guard let height = kFrame?.height, let duration = kDuration else { return }
         if !keyboardIsShown {
-            keyBoardHeight = height
-            view.frame.origin.y -= keyBoardHeight!
+            view.frame.origin.y -= height
+            print("HELLEO")
         }
         keyboardIsShown = true
         UIView.animate(withDuration: duration) {
@@ -35,11 +34,11 @@ class AuthKeyboardHandler {
     }
     
     @objc func handleKeyboardWillHide(notification: NSNotification){
+        let kFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
         let kDuration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double
-        guard let height = keyBoardHeight else { return }
+        guard let height = kFrame?.height, let duration = kDuration else { return }
         view.frame.origin.y += height
         keyboardIsShown = false
-        guard let duration = kDuration else { return }
         UIView.animate(withDuration: duration) {
             self.view.layoutIfNeeded()
         }

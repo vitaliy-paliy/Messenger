@@ -76,6 +76,7 @@ class SignUpView: UIView {
         nameTextField.font = UIFont(name: "Alata", size: 18)
         nameTextField.selectedLineColor = AppColors.mainColor
         nameTextField.lineColor = .lightGray
+        nameTextField.autocorrectionType = .no
         let constraints = [
             nameTextField.centerXAnchor.constraint(equalTo: centerXAnchor),
             nameTextField.topAnchor.constraint(equalTo: topAnchor, constant: 48),
@@ -94,6 +95,7 @@ class SignUpView: UIView {
         emailTextField.selectedLineColor = AppColors.mainColor
         emailTextField.lineColor = .lightGray
         emailTextField.autocapitalizationType = .none
+        emailTextField.autocorrectionType = .no
         let constraints = [
             emailTextField.centerXAnchor.constraint(equalTo: centerXAnchor),
             emailTextField.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 8),
@@ -111,6 +113,9 @@ class SignUpView: UIView {
         passwordTextField.font = UIFont(name: "Alata", size: 18)
         passwordTextField.selectedLineColor = AppColors.mainColor
         passwordTextField.lineColor = .lightGray
+        passwordTextField.autocorrectionType = .no
+        passwordTextField.isSecureTextEntry = true
+        passwordTextField.textContentType = .oneTimeCode
         let constraints = [
             passwordTextField.centerXAnchor.constraint(equalTo: centerXAnchor),
             passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 8),

@@ -14,7 +14,6 @@
 		CB1B3F8123C903D0000858DF /* CurrentUserAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1B3F8023C903D0000858DF /* CurrentUserAnnotationView.swift */; };
 		CB1B3F8323C92616000858DF /* FriendAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1B3F8223C92616000858DF /* FriendAnnotationView.swift */; };
 		CB21413623E0E7F900EFE433 /* RegistrationInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB21413523E0E7F900EFE433 /* RegistrationInfoView.swift */; };
-		CB21414023E1248700EFE433 /* loadingAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = CB21413F23E1248700EFE433 /* loadingAnimation.json */; };
 		CB2580BB23CFA19C00F9B088 /* MGLMapDelegate+ Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2580BA23CFA19C00F9B088 /* MGLMapDelegate+ Extension.swift */; };
 		CB2580BD23CFAE1200F9B088 /* MapExitButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2580BC23CFAE1200F9B088 /* MapExitButton.swift */; };
 		CB2580BF23CFAF3100F9B088 /* MapSettingsButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB2580BE23CFAF3100F9B088 /* MapSettingsButton.swift */; };
@@ -45,6 +44,8 @@
 		CB513C4023BE8C7F00BE8907 /* FriendInformationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB513C3F23BE8C7F00BE8907 /* FriendInformationCell.swift */; };
 		CB513C4223BEB14E00BE8907 /* SharedMediaVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB513C4123BEB14E00BE8907 /* SharedMediaVC.swift */; };
 		CB513C4423BEBB4B00BE8907 /* SharedMediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB513C4323BEBB4B00BE8907 /* SharedMediaCell.swift */; };
+		CB5189D423E25F7C00165A63 /* loadingAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = CB5189D323E25F7C00165A63 /* loadingAnimation.json */; };
+		CB5189D623E268FD00165A63 /* NetworkingLoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5189D523E268FD00165A63 /* NetworkingLoadingIndicator.swift */; };
 		CB639E0323D0E000000748A0 /* ContactsNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB639E0223D0E000000748A0 /* ContactsNetworking.swift */; };
 		CB644C2523A2FFC7003094DF /* chatTyping.json in Resources */ = {isa = PBXBuildFile; fileRef = CB644C2323A2FFC7003094DF /* chatTyping.json */; };
 		CB65C64723831EA300F2B5A3 /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB65C64623831EA300F2B5A3 /* CurrentUser.swift */; };
@@ -110,7 +111,6 @@
 		CB1B3F8023C903D0000858DF /* CurrentUserAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUserAnnotationView.swift; sourceTree = "<group>"; };
 		CB1B3F8223C92616000858DF /* FriendAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendAnnotationView.swift; sourceTree = "<group>"; };
 		CB21413523E0E7F900EFE433 /* RegistrationInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationInfoView.swift; sourceTree = "<group>"; };
-		CB21413F23E1248700EFE433 /* loadingAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loadingAnimation.json; sourceTree = "<group>"; };
 		CB2580BA23CFA19C00F9B088 /* MGLMapDelegate+ Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MGLMapDelegate+ Extension.swift"; sourceTree = "<group>"; };
 		CB2580BC23CFAE1200F9B088 /* MapExitButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapExitButton.swift; sourceTree = "<group>"; };
 		CB2580BE23CFAF3100F9B088 /* MapSettingsButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapSettingsButton.swift; sourceTree = "<group>"; };
@@ -141,6 +141,8 @@
 		CB513C3F23BE8C7F00BE8907 /* FriendInformationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendInformationCell.swift; sourceTree = "<group>"; };
 		CB513C4123BEB14E00BE8907 /* SharedMediaVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedMediaVC.swift; sourceTree = "<group>"; };
 		CB513C4323BEBB4B00BE8907 /* SharedMediaCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedMediaCell.swift; sourceTree = "<group>"; };
+		CB5189D323E25F7C00165A63 /* loadingAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loadingAnimation.json; sourceTree = "<group>"; };
+		CB5189D523E268FD00165A63 /* NetworkingLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingLoadingIndicator.swift; sourceTree = "<group>"; };
 		CB639E0223D0E000000748A0 /* ContactsNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsNetworking.swift; sourceTree = "<group>"; };
 		CB644C2323A2FFC7003094DF /* chatTyping.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = chatTyping.json; sourceTree = "<group>"; };
 		CB65C64623831EA300F2B5A3 /* CurrentUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
@@ -336,6 +338,7 @@
 			children = (
 				CB8916FD23BA8D1D0019CBE9 /* ChatKit.swift */,
 				CB4B6F7823BBB09600CDA4B3 /* LoadImage + Extension.swift */,
+				CB5189D523E268FD00165A63 /* NetworkingLoadingIndicator.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -426,7 +429,7 @@
 		CBD040F023A32B0E005FBD5A /* Animations */ = {
 			isa = PBXGroup;
 			children = (
-				CB21413F23E1248700EFE433 /* loadingAnimation.json */,
+				CB5189D323E25F7C00165A63 /* loadingAnimation.json */,
 				CBFCFAE123D939E50038BD06 /* slideInstructions.json */,
 				CB84CD8B23C1198B0000605D /* audioWave.json */,
 				CB644C2323A2FFC7003094DF /* chatTyping.json */,
@@ -632,8 +635,8 @@
 				CBD040EF23A30D15005FBD5A /* recentTyping.json in Resources */,
 				CB644C2523A2FFC7003094DF /* chatTyping.json in Resources */,
 				CB84CD8C23C1198B0000605D /* audioWave.json in Resources */,
+				CB5189D423E25F7C00165A63 /* loadingAnimation.json in Resources */,
 				CBAB592C2381E49700078B7D /* GoogleService-Info.plist in Resources */,
-				CB21414023E1248700EFE433 /* loadingAnimation.json in Resources */,
 				CB99D08523D5003A008645D6 /* Alata-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -761,6 +764,7 @@
 				CB65C64723831EA300F2B5A3 /* CurrentUser.swift in Sources */,
 				CB2580BF23CFAF3100F9B088 /* MapSettingsButton.swift in Sources */,
 				CBDBAE5923BC456400A56746 /* ProfileImageButton.swift in Sources */,
+				CB5189D623E268FD00165A63 /* NetworkingLoadingIndicator.swift in Sources */,
 				CB513C4223BEB14E00BE8907 /* SharedMediaVC.swift in Sources */,
 				CB4E41F523BD7BE200D476E5 /* ToolsMenu.swift in Sources */,
 				CBFC53B92387259E00CC4C91 /* Messages.swift in Sources */,

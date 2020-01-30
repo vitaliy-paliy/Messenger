@@ -17,10 +17,9 @@ class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, U
     var email: String!
     var password: String!
     
-    var authNetworking = AuthNetworking()
+    var authNetworking: AuthNetworking!
     var selectedImage: UIImage!
     var profileImage = UIImageView(image: UIImage(named: "DefaultUserImage"))
-    var changeImageButton = UIButton(type: .system)
     var continueButton = UIButton(type: .system)
     
     
@@ -101,8 +100,9 @@ class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     @objc func continueButtonPressed(){
-        authNetworking.mainController = self
+        authNetworking = AuthNetworking(self)
         authNetworking.registerUser(name, email, password, profileImage.image) { (error) in
+            self.authNetworking.networkingLoadingIndicator.endLoadingAnimation()
             self.showAlert(title: "Error", message: error)
         }
     }

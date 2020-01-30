@@ -16,7 +16,7 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
     var continueButton: AuthActionButton!
     var signUpView: SignUpView!
     
-    var authNetworking = AuthNetworking()
+    var authNetworking: AuthNetworking!
     var authKeyboardHandler = AuthKeyboardHandler()
     
     override func viewDidLoad() {
@@ -108,6 +108,7 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
             return
         }
         let email = signUpView.emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
+        authNetworking = AuthNetworking(self)
         authNetworking.checkForExistingEmail(email) { (errorMessage) in
             guard errorMessage == nil else {
                 self.signUpView.errorLabel.text = errorMessage

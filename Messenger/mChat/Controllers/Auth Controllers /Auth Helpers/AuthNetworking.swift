@@ -8,17 +8,24 @@
 
 import UIKit
 import Firebase
-import Lottie
 
 class AuthNetworking {
     
     var mainController: UIViewController!
     
+    var networkingLoadingIndicator: NetworkingLoadingIndicator!
+    
+    init(_ mainController: UIViewController){
+        self.mainController = mainController
+        self.networkingLoadingIndicator = NetworkingLoadingIndicator(mainController)
+    }
+    
+    
     func signIn(with email: String, and pass: String, completion: @escaping (_ error: Error?) -> Void){
-        setupLoadingView()
+        networkingLoadingIndicator.setupLoadingView()
         Auth.auth().signIn(withEmail: email, password: pass) { (authResult, error) in
-            self.removeLoadingAnimation()
             if let error = error {
+                self.networkingLoadingIndicator.endLoadingAnimation()
                 return completion(error)
             }else{
                 self.nextController(self.mainController)
@@ -42,12 +49,15 @@ class AuthNetworking {
                 ChatKit.map.showsUserLocation = true
                 ChatKit.startUpdatingUserLocation()
             }
+            self.networkingLoadingIndicator.endLoadingAnimation()
             self.mainController.show(controller, sender: nil)
         }
     }
     
     func checkForExistingEmail(_ email: String, completion: @escaping (_ errorMessage: String?) -> Void) {
+        networkingLoadingIndicator.setupLoadingView()
         Auth.auth().fetchSignInMethods(forEmail: email) { (methods, error) in
+            self.networkingLoadingIndicator.endLoadingAnimation()
             if methods == nil {
                 return completion(nil)
             }else{
@@ -57,12 +67,13 @@ class AuthNetworking {
     }
     
     func registerUser(_ name: String, _ email: String, _ password: String, _ profileImage: UIImage?, completion: @escaping (_ error: String?) -> Void) {
+        networkingLoadingIndicator.setupLoadingView()
         Auth.auth().createUser(withEmail: email, password: password) { (dataResult, error) in
             if let error = error { return completion(error.localizedDescription) }
-            guard let uid = dataResult?.user.uid else { return completion("Error occured, try again!")}
+            guard let uid = dataResult?.user.uid else { return completion("Error occured, try again!") }
             let imageToSend = profileImage ?? UIImage(named: "DefaultUserImage")
             self.uploadProfileImageToStorage(imageToSend!) { (url, error) in
-                if let error = error { return completion(error.localizedDescription)}
+                if let error = error { return completion(error.localizedDescription) }
                 guard let url = url else { return }
                 let values: [String: Any] = ["name": name, "email": email, "profileImage": url.absoluteString, "isMapLocationEnabled": false]
                 self.registerUserHandler(uid, values) { (error) in
@@ -94,45 +105,5 @@ class AuthNetworking {
             self.nextController(self.mainController)
         }
     }
-    
-    // ****************************** Relocate to another file ***********************************************************
-
-    var blurView = UIVisualEffectView()
-    var loadingView = UIView()
-    
-    private func removeLoadingAnimation(){
-        loadingView.removeFromSuperview()
-        blurView.removeFromSuperview()
-    }
-    
-    private func setupLoadingView() {
-        mainController.view.addSubview(blurView)
-        blurView.frame = mainController.view.frame
-        blurView.effect = UIBlurEffect(style: .dark)
-        blurView.contentView.addSubview(loadingView)
-        loadingView.translatesAutoresizingMaskIntoConstraints = false
-        loadingView.backgroundColor = .white
-        loadingView.layer.cornerRadius = 75
-        loadingView.layer.masksToBounds = true
-        let animationView = AnimationView()
-        animationView.animation = Animation.named("loadingAnimation")
-        animationView.play()
-        animationView.loopMode = .loop
-        loadingView.addSubview(animationView)
-        animationView.translatesAutoresizingMaskIntoConstraints = false
-        let constraints = [
-            loadingView.centerYAnchor.constraint(equalTo: mainController.view.centerYAnchor),
-            loadingView.centerXAnchor.constraint(equalTo: mainController.view.centerXAnchor),
-            loadingView.widthAnchor.constraint(equalToConstant: 150),
-            loadingView.heightAnchor.constraint(equalToConstant: 150),
-            animationView.centerXAnchor.constraint(equalTo: loadingView.centerXAnchor),
-            animationView.centerYAnchor.constraint(equalTo: loadingView.centerYAnchor),
-            animationView.widthAnchor.constraint(equalToConstant: 300),
-            animationView.heightAnchor.constraint(equalToConstant: 300),
-        ]
-        NSLayoutConstraint.activate(constraints)
-    }
-    
-    // ******************************************************************************************************************
     
 }

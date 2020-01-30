@@ -11,7 +11,7 @@ import SkyFloatingLabelTextField
 
 class SignInVC: UIViewController, UITextFieldDelegate {
     
-    var authNetworking = AuthNetworking()
+    var authNetworking: AuthNetworking!
     var authKeyboardHandler = AuthKeyboardHandler()
     var loginView: SignInView!
     var loginButton: AuthActionButton!
@@ -109,7 +109,7 @@ class SignInVC: UIViewController, UITextFieldDelegate {
         }
         let password = loginView.passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         let email = loginView.emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
-        authNetworking.mainController = self
+        authNetworking = AuthNetworking(self)
         authNetworking.signIn(with: email, and: password) { (error) in
             self.loginView.errorLabel.text = error?.localizedDescription
         }
