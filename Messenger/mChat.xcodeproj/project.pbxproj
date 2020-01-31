@@ -77,6 +77,8 @@
 		CBAA928B23DFD3DE00572978 /* AuthBackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAA928A23DFD3DE00572978 /* AuthBackButton.swift */; };
 		CBAB592C2381E49700078B7D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CBAB592B2381E49600078B7D /* GoogleService-Info.plist */; };
 		CBAC237D23AC4A5200FCBED9 /* ToolsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAC237C23AC4A5200FCBED9 /* ToolsCell.swift */; };
+		CBB19BE723E3CA1F0010511C /* LogoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBB19BE623E3CA1F0010511C /* LogoVC.swift */; };
+		CBB19BEB23E3D0900010511C /* settingUpAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = CBB19BEA23E3D0900010511C /* settingUpAnimation.json */; };
 		CBBDE7AE238353A40040A296 /* UserInfo + FriendInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBBDE7AD238353A40040A296 /* UserInfo + FriendInfo.swift */; };
 		CBCC30802383634C00E36E39 /* UsersListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCC307F2383634C00E36E39 /* UsersListVC.swift */; };
 		CBCC3084238365B500E36E39 /* UsersListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCC3083238365B500E36E39 /* UsersListCell.swift */; };
@@ -174,6 +176,8 @@
 		CBAA928A23DFD3DE00572978 /* AuthBackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthBackButton.swift; sourceTree = "<group>"; };
 		CBAB592B2381E49600078B7D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CBAC237C23AC4A5200FCBED9 /* ToolsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolsCell.swift; sourceTree = "<group>"; };
+		CBB19BE623E3CA1F0010511C /* LogoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoVC.swift; sourceTree = "<group>"; };
+		CBB19BEA23E3D0900010511C /* settingUpAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = settingUpAnimation.json; sourceTree = "<group>"; };
 		CBBDE7AD238353A40040A296 /* UserInfo + FriendInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UserInfo + FriendInfo.swift"; sourceTree = "<group>"; };
 		CBCC307F2383634C00E36E39 /* UsersListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersListVC.swift; sourceTree = "<group>"; };
 		CBCC3083238365B500E36E39 /* UsersListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersListCell.swift; sourceTree = "<group>"; };
@@ -369,6 +373,7 @@
 			children = (
 				CB4F587B23D626690086C5BB /* WelcomeVC.swift */,
 				CB4F587D23D633C60086C5BB /* WelcomeCell.swift */,
+				CBB19BE623E3CA1F0010511C /* LogoVC.swift */,
 			);
 			path = "Welcome Screen";
 			sourceTree = "<group>";
@@ -429,6 +434,7 @@
 		CBD040F023A32B0E005FBD5A /* Animations */ = {
 			isa = PBXGroup;
 			children = (
+				CBB19BEA23E3D0900010511C /* settingUpAnimation.json */,
 				CB5189D323E25F7C00165A63 /* loadingAnimation.json */,
 				CBFCFAE123D939E50038BD06 /* slideInstructions.json */,
 				CB84CD8B23C1198B0000605D /* audioWave.json */,
@@ -630,6 +636,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CBB19BEB23E3D0900010511C /* settingUpAnimation.json in Resources */,
 				CBFCFAE223D939E50038BD06 /* slideInstructions.json in Resources */,
 				CBF907F32380B83600EF8925 /* Assets.xcassets in Resources */,
 				CBD040EF23A30D15005FBD5A /* recentTyping.json in Resources */,
@@ -735,6 +742,7 @@
 				CB4CC233239DD71B0086DEA9 /* Calendar + Extension.swift in Sources */,
 				CB4E539223CE963A0000F33B /* MapsNetworking.swift in Sources */,
 				CBCC3084238365B500E36E39 /* UsersListCell.swift in Sources */,
+				CBB19BE723E3CA1F0010511C /* LogoVC.swift in Sources */,
 				CBF644FD2381D384004830C6 /* ContactsCell.swift in Sources */,
 				CB50E72623C262000055BF78 /* ChatAudio.swift in Sources */,
 				CB09181B23B6B81C00293E77 /* MessageView.swift in Sources */,

@@ -15,8 +15,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let sceneWindow = (scene as? UIWindowScene) else { return }
-        FirebaseApp.configure()
         window = UIWindow(windowScene: sceneWindow)
+        window?.rootViewController = LogoVC()
+        window?.makeKeyAndVisible()
+        FirebaseApp.configure()
         if Auth.auth().currentUser != nil{
             print("signedIn")
             let uid = Auth.auth().currentUser?.uid
