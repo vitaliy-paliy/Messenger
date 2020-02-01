@@ -77,6 +77,7 @@ class SignUpView: UIView {
         nameTextField.selectedLineColor = AppColors.mainColor
         nameTextField.lineColor = .lightGray
         nameTextField.autocorrectionType = .no
+        nameTextField.textContentType = .oneTimeCode
         let constraints = [
             nameTextField.centerXAnchor.constraint(equalTo: centerXAnchor),
             nameTextField.topAnchor.constraint(equalTo: topAnchor, constant: 48),
@@ -96,6 +97,7 @@ class SignUpView: UIView {
         emailTextField.lineColor = .lightGray
         emailTextField.autocapitalizationType = .none
         emailTextField.autocorrectionType = .no
+        emailTextField.textContentType = .oneTimeCode
         let constraints = [
             emailTextField.centerXAnchor.constraint(equalTo: centerXAnchor),
             emailTextField.topAnchor.constraint(equalTo: nameTextField.bottomAnchor, constant: 8),

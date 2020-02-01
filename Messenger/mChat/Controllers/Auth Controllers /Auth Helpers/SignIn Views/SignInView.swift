@@ -72,6 +72,8 @@ class SignInView: UIView {
         emailTextField.selectedLineColor = AppColors.mainColor
         emailTextField.lineColor = .lightGray
         emailTextField.autocapitalizationType = .none
+        emailTextField.autocorrectionType = .no
+        emailTextField.textContentType = .oneTimeCode
         let constraints = [
             emailTextField.centerXAnchor.constraint(equalTo: centerXAnchor),
             emailTextField.topAnchor.constraint(equalTo: topAnchor, constant: 64),
@@ -87,9 +89,11 @@ class SignInView: UIView {
         passwordTextField.placeholder = "PASSWORD"
         passwordTextField.delegate = controller
         passwordTextField.font = UIFont.boldSystemFont(ofSize: 14)
-        passwordTextField.isSecureTextEntry = true
         passwordTextField.selectedLineColor = AppColors.mainColor
         passwordTextField.lineColor = .lightGray
+        passwordTextField.autocorrectionType = .no
+        passwordTextField.isSecureTextEntry = true
+        passwordTextField.textContentType = .oneTimeCode
         let constraints = [
             passwordTextField.centerXAnchor.constraint(equalTo: centerXAnchor),
             passwordTextField.topAnchor.constraint(equalTo: emailTextField.bottomAnchor, constant: 16),

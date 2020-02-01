@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Firebase
 
 class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     

@@ -11,35 +11,35 @@ import Lottie
 
 class NetworkingLoadingIndicator {
     
-    var mainController: UIViewController!
+    let window = UIApplication.shared.windows[0]
     var blurView = UIVisualEffectView()
     var animationView = AnimationView()
     var loadingView = UIView()
     var loadingLabel = UILabel()
-    
-    init(_ mainController: UIViewController) {
-        self.mainController = mainController
-    }
     
     func endLoadingAnimation(){
         animationView.removeFromSuperview()
         blurView.removeFromSuperview()
     }
     
-    func setupLoadingView() {
-        mainController.view.addSubview(blurView)
-        blurView.frame = mainController.view.frame
+    func startLoadingAnimation() {
+        window.addSubview(blurView)
+        blurView.frame = window.frame
         blurView.effect = UIBlurEffect(style: .dark)
+        setupLoadingView()
+        setupAnimationView()
+        setupLoadingLabel()
+    }
+    
+    private func setupLoadingView() {
         blurView.contentView.addSubview(loadingView)
         loadingView.translatesAutoresizingMaskIntoConstraints = false
         loadingView.backgroundColor = .white
         loadingView.layer.cornerRadius = 75
         loadingView.layer.masksToBounds = true
-        setupAnimationView()
-        setupLoadingLabel()
         let constraints = [
-            loadingView.centerYAnchor.constraint(equalTo: mainController.view.centerYAnchor),
-            loadingView.centerXAnchor.constraint(equalTo: mainController.view.centerXAnchor),
+            loadingView.centerYAnchor.constraint(equalTo: window.centerYAnchor),
+            loadingView.centerXAnchor.constraint(equalTo: window.centerXAnchor),
             loadingView.widthAnchor.constraint(equalToConstant: 150),
             loadingView.heightAnchor.constraint(equalToConstant: 150)
         ]

@@ -21,16 +21,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         FirebaseApp.configure()
         if Auth.auth().currentUser != nil{
             print("signedIn")
-            let uid = Auth.auth().currentUser?.uid
-            Constants.db.reference().child("users").child(uid!).observeSingleEvent(of: .value) { (snapshot) in
-                guard let snap = snapshot.value as? [String: AnyObject] else { return }
-                CurrentUser.name = snap["name"] as? String
-                CurrentUser.email = snap["email"] as? String
-                CurrentUser.profileImage = snap["profileImage"] as? String
-                CurrentUser.uid = uid
-                CurrentUser.isMapLocationEnabled = snap["isMapLocationEnabled"] as? Bool
-                ChatKit.map.showsUserLocation = true
-                ChatKit.startUpdatingUserLocation()
+            let authNetworking = AuthNetworking(nil)
+            let uid = Auth.auth().currentUser!.uid
+            authNetworking.setupUserInfo(uid) {
                 self.window?.rootViewController = ChatTabBar()
                 self.window?.makeKeyAndVisible()
             }

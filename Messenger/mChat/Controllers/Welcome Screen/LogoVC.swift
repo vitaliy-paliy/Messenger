@@ -29,12 +29,12 @@ class LogoVC: UIViewController {
         view.addSubview(logoImage)
         logoImage.translatesAutoresizingMaskIntoConstraints = false
         logoImage.image = UIImage(named: "Logo-Light")
-        logoImage.layer.cornerRadius = 125
+        logoImage.layer.cornerRadius = 75
         logoImage.layer.masksToBounds = true
         let constraints = [
             logoImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            logoImage.heightAnchor.constraint(equalToConstant: 250),
-            logoImage.widthAnchor.constraint(equalToConstant: 250),
+            logoImage.heightAnchor.constraint(equalToConstant: 150),
+            logoImage.widthAnchor.constraint(equalToConstant: 150),
             logoImage.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -view.frame.midY/4)
         ]
         NSLayoutConstraint.activate(constraints)
@@ -45,7 +45,7 @@ class LogoVC: UIViewController {
         view.addSubview(logoLabel)
         logoLabel.translatesAutoresizingMaskIntoConstraints = false
         logoLabel.text = "mChat"
-        logoLabel.font = UIFont.boldSystemFont(ofSize: 40)
+        logoLabel.font = UIFont.boldSystemFont(ofSize: 32)
         logoLabel.textColor = .white
         let constraints =  [
             logoLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
