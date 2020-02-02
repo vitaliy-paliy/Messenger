@@ -48,21 +48,20 @@ class NewConversationVC: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
-    func setupTableView(){
+    func setupTableView() {
         view.addSubview(tableView)
+        tableView.translatesAutoresizingMaskIntoConstraints = false
+        tableView.rowHeight = 80
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.rowHeight = 90
-        tableView.contentInset = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
-        tableView.separatorStyle = .none
         tableView.backgroundColor = .clear
+        tableView.tableFooterView = UIView(frame: .zero)
         tableView.register(NewConversationCell.self, forCellReuseIdentifier: "NewConversationCell")
-        tableView.translatesAutoresizingMaskIntoConstraints = false
         let constraints = [
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ]
         NSLayoutConstraint.activate(constraints)
     }

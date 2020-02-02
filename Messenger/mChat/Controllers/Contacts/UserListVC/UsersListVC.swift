@@ -9,8 +9,9 @@
 import UIKit
 
 class UsersListVC: UIViewController {
-
+    
     var users = [FriendInfo]()
+    var userListNetworking = UserListNetworking()
     var tableView = UITableView()
     
     override func viewDidLoad() {
@@ -18,35 +19,26 @@ class UsersListVC: UIViewController {
         view.backgroundColor = .white
         navigationController?.navigationBar.tintColor = .black
         setupTableView()
+        getUsersList()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = true
-        fetchUsers()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         tabBarController?.tabBar.isHidden = false
-//        users = []
     }
- 
-    func fetchUsers(){
-        Constants.db.reference().child("users").observe(.childAdded) { (snapshot) in
-            var user = FriendInfo()
-            guard let values = snapshot.value as? [String: Any] else { return }
-            user.email = values["email"] as? String
-            user.profileImage = values["profileImage"] as? String
-            user.name = values["name"] as? String
-            user.id = snapshot.key
-            if user.id != CurrentUser.uid {
-                self.users.append(user)
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
+    
+    func getUsersList() {
+        userListNetworking.fetchUsers { usersList in
+            let sortedUserList = Array(usersList.values).sorted { (friend1, friend2) -> Bool in
+                return friend1.name < friend2.name
             }
-            
+            self.users = sortedUserList
+            self.tableView.reloadData()
         }
     }
     
@@ -93,5 +85,14 @@ extension UsersListVC: UITableViewDelegate, UITableViewDataSource {
         controller.modalPresentationStyle = .fullScreen
         show(controller, sender: nil)
     }
-
+ 
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard let sView = scrollView as? UITableView else { return }
+        if sView.contentOffset.y + sView.adjustedContentInset.top == 0 {
+            if !userListNetworking.loadMore {
+                getUsersList()
+            }
+        }
+    }
+    
 }
