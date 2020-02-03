@@ -12,17 +12,17 @@ class MapSettingsButton: UIButton {
     
     var mapsVC: MapsVC!
     
-    init(mapsVC: MapsVC, topConstant: CGFloat) {
+    init(mapsVC: MapsVC) {
         super.init(frame: .zero)
         self.mapsVC = mapsVC
-        setupSettingsButton(topConstant)
+        setupSettingsButton()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupSettingsButton(_ topConst: CGFloat){
+    func setupSettingsButton(){
         mapsVC.view.addSubview(self)
         translatesAutoresizingMaskIntoConstraints = false
         tintColor = .white
@@ -34,7 +34,7 @@ class MapSettingsButton: UIButton {
         addTarget(mapsVC, action: #selector(mapsVC.openMapsSettings), for: .touchUpInside)
         let constraints = [
             trailingAnchor.constraint(equalTo: mapsVC.view.trailingAnchor, constant: -8),
-            topAnchor.constraint(equalTo: mapsVC.view.topAnchor, constant: topConst),
+            topAnchor.constraint(equalTo: mapsVC.view.safeAreaLayoutGuide.topAnchor, constant: 4),
             widthAnchor.constraint(equalToConstant: 45),
             heightAnchor.constraint(equalToConstant: 45),
         ]

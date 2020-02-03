@@ -86,13 +86,4 @@ extension UsersListVC: UITableViewDelegate, UITableViewDataSource {
         show(controller, sender: nil)
     }
  
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        guard let sView = scrollView as? UITableView else { return }
-        if sView.contentOffset.y + sView.adjustedContentInset.top == 0 {
-            if !userListNetworking.loadMore {
-                getUsersList()
-            }
-        }
-    }
-    
 }

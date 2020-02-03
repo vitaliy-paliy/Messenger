@@ -27,6 +27,7 @@ class MapsVC: UIViewController, UIGestureRecognizerDelegate{
         super.viewDidLoad()
         checkStatus()
         userMapHandler()
+        setupControllButtons()
         navigationController?.interactivePopGestureRecognizer?.delegate = self
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
@@ -56,17 +57,11 @@ class MapsVC: UIViewController, UIGestureRecognizerDelegate{
         navigationController?.navigationBar.isHidden = false
     }
     
-    override func viewSafeAreaInsetsDidChange() {
-        super.viewSafeAreaInsetsDidChange()
-        if view.safeAreaInsets.top > 20 {
-            exitButton = MapExitButton(mapsVC: self, topConst: 35)
-            settingsButton = MapSettingsButton(mapsVC: self, topConstant: 35)
-        }else{
-            exitButton = MapExitButton(mapsVC: self, topConst: 20)
-            settingsButton = MapSettingsButton(mapsVC: self, topConstant: 20)
-        }
+    func setupControllButtons() {
+        exitButton = MapExitButton(mapsVC: self)
+        settingsButton = MapSettingsButton(mapsVC: self)
     }
-        
+    
     func setupMapView(){
         view.addSubview(mapView)
         mapView.frame = view.bounds

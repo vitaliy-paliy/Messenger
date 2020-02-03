@@ -12,19 +12,9 @@ import Firebase
 class UserListNetworking {
         
     var userList = [String: FriendInfo]()
-    var loadMore = false
     
     func fetchUsers(completion: @escaping (_ userList: [String:FriendInfo]) -> Void){
-        // Add Pagination
-        var ref: DatabaseQuery!
-        var usersCount: UInt = 8
-        let firstUser = Array(userList.values).first
-        if firstUser == nil {
-            ref = Database.database().reference().child("users").queryOrderedByKey().queryLimited(toLast: usersCount)
-        }else{
-            ref = Database.database().reference().child("users").child(firstUser!.id).queryOrderedByKey().queryLimited(toLast: usersCount)
-        }
-        ref.observeSingleEvent(of: .value) { (snap) in
+        Database.database().reference().child("users").observeSingleEvent(of: .value) { (snap) in
             for child in snap.children {
                 var user = FriendInfo()
                 guard let snapshot = child as? DataSnapshot else { return }
