@@ -32,7 +32,7 @@ class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     func setupGradientView() {
-        let _ = AuthGradientView(self, true)
+        let _ = GradientLogoView(self, true)
     }
     
     func setupRegistrationInfoView(){

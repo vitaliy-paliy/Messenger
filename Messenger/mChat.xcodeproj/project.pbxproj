@@ -32,6 +32,7 @@
 		CB4E539223CE963A0000F33B /* MapsNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4E539123CE963A0000F33B /* MapsNetworking.swift */; };
 		CB4F587C23D626690086C5BB /* WelcomeVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4F587B23D626690086C5BB /* WelcomeVC.swift */; };
 		CB4F587E23D633C60086C5BB /* WelcomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4F587D23D633C60086C5BB /* WelcomeCell.swift */; };
+		CB4FA83823E9058200FBE0A3 /* UserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4FA83723E9058200FBE0A3 /* UserInfoView.swift */; };
 		CB4FEA9023CA446F006B8B08 /* UserInfoTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4FEA8F23CA446F006B8B08 /* UserInfoTab.swift */; };
 		CB4FEA9423CA6E18006B8B08 /* MapStylesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4FEA9323CA6E18006B8B08 /* MapStylesCell.swift */; };
 		CB4FEA9823CA7370006B8B08 /* StylesCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB4FEA9723CA7370006B8B08 /* StylesCollectionViewCell.swift */; };
@@ -68,7 +69,7 @@
 		CB99D08723D5397E008645D6 /* AuthNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99D08623D5397E008645D6 /* AuthNetworking.swift */; };
 		CBAA926F23DF88FB00572978 /* AuthKeyboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAA926E23DF88FB00572978 /* AuthKeyboardHandler.swift */; };
 		CBAA927423DF905300572978 /* HandleSignInViewDelegate + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAA927323DF905300572978 /* HandleSignInViewDelegate + Extension.swift */; };
-		CBAA927923DF930500572978 /* AuthGradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAA927823DF930500572978 /* AuthGradientView.swift */; };
+		CBAA927923DF930500572978 /* GradientLogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAA927823DF930500572978 /* GradientLogoView.swift */; };
 		CBAA927E23DF981500572978 /* SignInLogoAnimation.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAA927D23DF981500572978 /* SignInLogoAnimation.swift */; };
 		CBAA928023DFA10C00572978 /* SignInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAA927F23DFA10C00572978 /* SignInView.swift */; };
 		CBAA928223DFBC1F00572978 /* SignUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAA928123DFBC1F00572978 /* SignUpView.swift */; };
@@ -132,6 +133,7 @@
 		CB4E539123CE963A0000F33B /* MapsNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapsNetworking.swift; sourceTree = "<group>"; };
 		CB4F587B23D626690086C5BB /* WelcomeVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeVC.swift; sourceTree = "<group>"; };
 		CB4F587D23D633C60086C5BB /* WelcomeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeCell.swift; sourceTree = "<group>"; };
+		CB4FA83723E9058200FBE0A3 /* UserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoView.swift; sourceTree = "<group>"; };
 		CB4FEA8F23CA446F006B8B08 /* UserInfoTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoTab.swift; sourceTree = "<group>"; };
 		CB4FEA9323CA6E18006B8B08 /* MapStylesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapStylesCell.swift; sourceTree = "<group>"; };
 		CB4FEA9723CA7370006B8B08 /* StylesCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StylesCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -168,7 +170,7 @@
 		CB99D08623D5397E008645D6 /* AuthNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNetworking.swift; sourceTree = "<group>"; };
 		CBAA926E23DF88FB00572978 /* AuthKeyboardHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthKeyboardHandler.swift; sourceTree = "<group>"; };
 		CBAA927323DF905300572978 /* HandleSignInViewDelegate + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HandleSignInViewDelegate + Extension.swift"; sourceTree = "<group>"; };
-		CBAA927823DF930500572978 /* AuthGradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthGradientView.swift; sourceTree = "<group>"; };
+		CBAA927823DF930500572978 /* GradientLogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientLogoView.swift; sourceTree = "<group>"; };
 		CBAA927D23DF981500572978 /* SignInLogoAnimation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInLogoAnimation.swift; sourceTree = "<group>"; };
 		CBAA927F23DFA10C00572978 /* SignInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInView.swift; sourceTree = "<group>"; };
 		CBAA928123DFBC1F00572978 /* SignUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpView.swift; sourceTree = "<group>"; };
@@ -249,9 +251,9 @@
 			isa = PBXGroup;
 			children = (
 				CB2717372381E775003A4D46 /* Helpers.swift */,
-				CBF05E4423A086A400EF295F /* NavigationItem + Extension.swift */,
 				CB27173A2381ECB1003A4D46 /* Constants.swift */,
 				CB4CC232239DD71B0086DEA9 /* Calendar + Extension.swift */,
+				CBF05E4423A086A400EF295F /* NavigationItem + Extension.swift */,
 			);
 			path = "Helper Tools";
 			sourceTree = "<group>";
@@ -270,6 +272,7 @@
 			isa = PBXGroup;
 			children = (
 				CBCC30852383722500E36E39 /* AddFriendVC.swift */,
+				CB4FA83723E9058200FBE0A3 /* UserInfoView.swift */,
 			);
 			path = AddNewFriendVC;
 			sourceTree = "<group>";
@@ -294,6 +297,14 @@
 				CB4FEA8F23CA446F006B8B08 /* UserInfoTab.swift */,
 			);
 			path = MapAnnotationViews;
+			sourceTree = "<group>";
+		};
+		CB4FA83623E902B000FBE0A3 /* StandardViews */ = {
+			isa = PBXGroup;
+			children = (
+				CBAA927823DF930500572978 /* GradientLogoView.swift */,
+			);
+			path = StandardViews;
 			sourceTree = "<group>";
 		};
 		CB50E72923C29B540055BF78 /* NewConversations */ = {
@@ -387,7 +398,6 @@
 				CBAA928723DFD32900572978 /* ProfileImageVC */,
 				CBAA927C23DF97BC00572978 /* SignIn Views */,
 				CBAA927B23DF97B200572978 /* SignUp Views */,
-				CBAA927823DF930500572978 /* AuthGradientView.swift */,
 				CBAA927323DF905300572978 /* HandleSignInViewDelegate + Extension.swift */,
 				CBAA926E23DF88FB00572978 /* AuthKeyboardHandler.swift */,
 				CB99D08623D5397E008645D6 /* AuthNetworking.swift */,
@@ -543,6 +553,7 @@
 			children = (
 				CB8916FC23BA8CFE0019CBE9 /* Networking */,
 				CB2717392381E789003A4D46 /* Helper Tools */,
+				CB4FA83623E902B000FBE0A3 /* StandardViews */,
 				CBF907E92380B83500EF8925 /* AppDelegate.swift */,
 				CBF907EB2380B83500EF8925 /* SceneDelegate.swift */,
 				CBF907F72380B83600EF8925 /* Info.plist */,
@@ -709,6 +720,7 @@
 				CBAA928B23DFD3DE00572978 /* AuthBackButton.swift in Sources */,
 				CBAA928423DFC0A400572978 /* EmailValidation + Extension.swift in Sources */,
 				CB08304B238709BD002A1861 /* ChatVC.swift in Sources */,
+				CB4FA83823E9058200FBE0A3 /* UserInfoView.swift in Sources */,
 				CB513C3723BE6C1300BE8907 /* ChatCollectionView + Extension.swift in Sources */,
 				CBF907EA2380B83500EF8925 /* AppDelegate.swift in Sources */,
 				CB4FEA9423CA6E18006B8B08 /* MapStylesCell.swift in Sources */,
@@ -724,7 +736,7 @@
 				CB513C3E23BE872A00BE8907 /* FriendInfoToolsCell.swift in Sources */,
 				CB2717382381E775003A4D46 /* Helpers.swift in Sources */,
 				CB2580BB23CFA19C00F9B088 /* MGLMapDelegate+ Extension.swift in Sources */,
-				CBAA927923DF930500572978 /* AuthGradientView.swift in Sources */,
+				CBAA927923DF930500572978 /* GradientLogoView.swift in Sources */,
 				CB1B3F8323C92616000858DF /* FriendAnnotationView.swift in Sources */,
 				CBDBAE5723BC42AC00A56746 /* MessageCollectionView.swift in Sources */,
 				CB82EA9123C666D0002FD857 /* MapSettingsCell.swift in Sources */,

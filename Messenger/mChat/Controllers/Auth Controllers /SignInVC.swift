@@ -33,7 +33,7 @@ class SignInVC: UIViewController, UITextFieldDelegate {
         
     func setupUI(){
         view.backgroundColor = .white
-        let _ = AuthGradientView(self, false)
+        let _ = GradientLogoView(self, false)
         loginView = SignInView(self)
         let _ = SignInLogoAnimation(self)
         setupLoginButton()

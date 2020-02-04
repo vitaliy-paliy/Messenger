@@ -38,7 +38,7 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
     }
     
     func setupGradientView() {
-        let _ = AuthGradientView(self, true)
+        let _ = GradientLogoView(self, true)
     }
     
     func setupRegisterView() {

@@ -1,5 +1,5 @@
 //
-//  AuthGradientView.swift
+//  GradientLogoView.swift
 //  mChat
 //
 //  Created by Vitaliy Paliy on 1/27/20.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AuthGradientView: UIView{
+class GradientLogoView: UIView{
     
     var controller: UIViewController!
     

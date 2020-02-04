@@ -58,7 +58,7 @@ class ContactsVC: UIViewController {
         self.tableView.reloadData()
     }
     
-    func setupaddButton(){
+    func setupaddButton() {
         var addButton = UIBarButtonItem()
         let buttonView = UIButton(type: .system)
         buttonView.setImage(UIImage(systemName: "plus"), for: .normal)

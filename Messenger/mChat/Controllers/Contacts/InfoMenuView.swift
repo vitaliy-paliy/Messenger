@@ -168,9 +168,8 @@ class InfoMenuView: UIView {
         stackView.alpha = 0
     }
     
-    func setupInfoMenuButtons(_ imageName: String) -> ContactsAnimationButton {
-        let button = ContactsAnimationButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
-        button.friendInfo = friend
+    func setupInfoMenuButtons(_ imageName: String) -> UIButton {
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         button.tintColor = .black
         button.setImage(UIImage(systemName: imageName), for: .normal)
         button.layer.cornerRadius = button.frame.size.width / 2

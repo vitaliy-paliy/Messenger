@@ -26,7 +26,7 @@ class MapSettingsButton: UIButton {
         mapsVC.view.addSubview(self)
         translatesAutoresizingMaskIntoConstraints = false
         tintColor = .white
-        setImage(UIImage(systemName: "gear"), for: .normal)
+        setBackgroundImage(UIImage(systemName: "gear"), for: .normal)
         tintColor = .white
         layer.shadowColor = UIColor.white.cgColor
         layer.shadowRadius = 10
@@ -35,8 +35,8 @@ class MapSettingsButton: UIButton {
         let constraints = [
             trailingAnchor.constraint(equalTo: mapsVC.view.trailingAnchor, constant: -8),
             topAnchor.constraint(equalTo: mapsVC.view.safeAreaLayoutGuide.topAnchor, constant: 4),
-            widthAnchor.constraint(equalToConstant: 45),
-            heightAnchor.constraint(equalToConstant: 45),
+            widthAnchor.constraint(equalToConstant: 32),
+            heightAnchor.constraint(equalToConstant: 32),
         ]
         NSLayoutConstraint.activate(constraints)
     }

@@ -25,7 +25,7 @@ class MapExitButton: UIButton {
     func setupExitButton(){
         mapsVC.view.addSubview(self)
         translatesAutoresizingMaskIntoConstraints = false
-        setImage(UIImage(systemName: "arrow.left.circle.fill"), for: .normal)
+        setBackgroundImage(UIImage(systemName: "arrow.left.circle.fill"), for: .normal)
         tintColor = .white
         layer.shadowColor = UIColor.white.cgColor
         layer.shadowRadius = 10
@@ -34,8 +34,8 @@ class MapExitButton: UIButton {
         let constraints = [
             leadingAnchor.constraint(equalTo: mapsVC.view.leadingAnchor, constant: 8),
             topAnchor.constraint(equalTo: mapsVC.view.safeAreaLayoutGuide.topAnchor, constant: 4),
-            widthAnchor.constraint(equalToConstant: 45),
-            heightAnchor.constraint(equalToConstant: 45),
+            widthAnchor.constraint(equalToConstant: 32),
+            heightAnchor.constraint(equalToConstant: 32),
         ]
         NSLayoutConstraint.activate(constraints)
     }
