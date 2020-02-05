@@ -10,6 +10,7 @@
 		AB84247D3884D7F997D67FD0 /* Pods_mChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E1467D72B76AF7D9B11C55A /* Pods_mChat.framework */; };
 		CB08304B238709BD002A1861 /* ChatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB08304A238709BD002A1861 /* ChatVC.swift */; };
 		CB09181B23B6B81C00293E77 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB09181A23B6B81B00293E77 /* MessageView.swift */; };
+		CB18D68223EA560E00903E4D /* AddFriendNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB18D68123EA560E00903E4D /* AddFriendNetworking.swift */; };
 		CB1B3F7F23C8FDCE000858DF /* AnnotationPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1B3F7E23C8FDCE000858DF /* AnnotationPin.swift */; };
 		CB1B3F8123C903D0000858DF /* CurrentUserAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1B3F8023C903D0000858DF /* CurrentUserAnnotationView.swift */; };
 		CB1B3F8323C92616000858DF /* FriendAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1B3F8223C92616000858DF /* FriendAnnotationView.swift */; };
@@ -111,6 +112,7 @@
 		AF45AF9736070E7C6E1CC18D /* Pods-mChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mChat.debug.xcconfig"; path = "Target Support Files/Pods-mChat/Pods-mChat.debug.xcconfig"; sourceTree = "<group>"; };
 		CB08304A238709BD002A1861 /* ChatVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
 		CB09181A23B6B81B00293E77 /* MessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
+		CB18D68123EA560E00903E4D /* AddFriendNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendNetworking.swift; sourceTree = "<group>"; };
 		CB1B3F7E23C8FDCE000858DF /* AnnotationPin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationPin.swift; sourceTree = "<group>"; };
 		CB1B3F8023C903D0000858DF /* CurrentUserAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUserAnnotationView.swift; sourceTree = "<group>"; };
 		CB1B3F8223C92616000858DF /* FriendAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendAnnotationView.swift; sourceTree = "<group>"; };
@@ -273,6 +275,7 @@
 			children = (
 				CBCC30852383722500E36E39 /* AddFriendVC.swift */,
 				CB4FA83723E9058200FBE0A3 /* UserInfoView.swift */,
+				CB18D68123EA560E00903E4D /* AddFriendNetworking.swift */,
 			);
 			path = AddNewFriendVC;
 			sourceTree = "<group>";
@@ -793,6 +796,7 @@
 				CB4E41F523BD7BE200D476E5 /* ToolsMenu.swift in Sources */,
 				CBFC53B92387259E00CC4C91 /* Messages.swift in Sources */,
 				CB513C4423BEBB4B00BE8907 /* SharedMediaCell.swift in Sources */,
+				CB18D68223EA560E00903E4D /* AddFriendNetworking.swift in Sources */,
 				CB65C64C2383326300F2B5A3 /* ProfileCell.swift in Sources */,
 				CBAA927423DF905300572978 /* HandleSignInViewDelegate + Extension.swift in Sources */,
 				CBBDE7AE238353A40040A296 /* UserInfo + FriendInfo.swift in Sources */,

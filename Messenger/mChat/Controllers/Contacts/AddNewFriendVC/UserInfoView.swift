@@ -11,10 +11,11 @@ import UIKit
 class UserInfoView: UIView{
     
     var controller: AddFriendVC!
-    
     let imageView = UIImageView()
     let nameLabel = UILabel()
     let emailLabel = UILabel()
+    let addButton = UIButton(type: .system)
+
     
     init(_ controller: AddFriendVC) {
         super.init(frame: .zero)
@@ -22,6 +23,7 @@ class UserInfoView: UIView{
         setupUserProfileImage()
         setupNameLabel()
         setupEmailLabel()
+        setupAddButton()
     }
     
     required init?(coder: NSCoder) {
@@ -70,5 +72,24 @@ class UserInfoView: UIView{
         NSLayoutConstraint.activate(constraints)
     }
     
+    func setupAddButton() {
+        controller.view.addSubview(addButton)
+        addButton.translatesAutoresizingMaskIntoConstraints = false
+        addButton.setTitle("Add Friend", for: .normal)
+        addButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        addButton.backgroundColor = .green
+        addButton.tintColor = .white
+        addButton.layer.cornerRadius = 16
+        addButton.layer.masksToBounds = true
+        addButton.addTarget(controller, action: #selector(controller.addButtonPressed), for: .touchUpInside)
+        let constraints = [
+            addButton.centerXAnchor.constraint(equalTo: controller.view.centerXAnchor),
+            addButton.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 8),
+            addButton.widthAnchor.constraint(equalToConstant: 200),
+            addButton.heightAnchor.constraint(equalToConstant: 35),
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+
     
 }

@@ -12,7 +12,9 @@ import Firebase
 class AddFriendVC: UIViewController{
     
     var friend: FriendInfo!
-        
+    var addButton: UIButton!
+    var addFriendNetworking: AddFriendNetworking!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -30,6 +32,10 @@ class AddFriendVC: UIViewController{
         navigationController?.navigationBar.isHidden = false
     }
     
+    func setupNetworking() {
+        
+    }
+    
     func setupUI(){
         navigationController?.navigationBar.tintColor = .black
         view.backgroundColor = .white
@@ -43,9 +49,9 @@ class AddFriendVC: UIViewController{
     }
     
     func setupUserInfoView(){
-        let _ = UserInfoView(self)
+        let infoView = UserInfoView(self)
+        addButton = infoView.addButton
     }
-    
     
     func setupExitButton() {
         let exitButton = UIButton(type: .system)
@@ -65,6 +71,18 @@ class AddFriendVC: UIViewController{
     
     @objc func exitButtonPressed() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    
+    @objc func addButtonPressed() {
+        if addButton.titleLabel?.text == "Add Friend" {
+            addButton.setTitle("Requested", for: .normal)
+            addButton.backgroundColor = .gray
+        }else{
+            addButton.backgroundColor = .green
+            addButton.setTitle("Add Friend", for: .normal)
+        }
+        
     }
     
 }
