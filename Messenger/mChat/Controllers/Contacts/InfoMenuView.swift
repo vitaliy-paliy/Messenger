@@ -207,7 +207,7 @@ class InfoMenuView: UIView {
     @objc func removeFriend() {
         let controller = AddFriendVC()
         controller.modalPresentationStyle = .fullScreen
-        controller.friend = friend
+        controller.user = friend
         exitInfoMenuHandler()
         contactsVC.show(controller, sender: nil)
     }

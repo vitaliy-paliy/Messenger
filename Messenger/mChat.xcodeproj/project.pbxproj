@@ -10,6 +10,8 @@
 		AB84247D3884D7F997D67FD0 /* Pods_mChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E1467D72B76AF7D9B11C55A /* Pods_mChat.framework */; };
 		CB08304B238709BD002A1861 /* ChatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB08304A238709BD002A1861 /* ChatVC.swift */; };
 		CB09181B23B6B81C00293E77 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB09181A23B6B81B00293E77 /* MessageView.swift */; };
+		CB16022B23EBA49B0091AF40 /* FriendRequestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB16022A23EBA49B0091AF40 /* FriendRequestVC.swift */; };
+		CB16022D23EBA80B0091AF40 /* FriendRequestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB16022C23EBA80B0091AF40 /* FriendRequestCell.swift */; };
 		CB18D68223EA560E00903E4D /* AddFriendNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB18D68123EA560E00903E4D /* AddFriendNetworking.swift */; };
 		CB1B3F7F23C8FDCE000858DF /* AnnotationPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1B3F7E23C8FDCE000858DF /* AnnotationPin.swift */; };
 		CB1B3F8123C903D0000858DF /* CurrentUserAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1B3F8023C903D0000858DF /* CurrentUserAnnotationView.swift */; };
@@ -112,6 +114,8 @@
 		AF45AF9736070E7C6E1CC18D /* Pods-mChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mChat.debug.xcconfig"; path = "Target Support Files/Pods-mChat/Pods-mChat.debug.xcconfig"; sourceTree = "<group>"; };
 		CB08304A238709BD002A1861 /* ChatVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
 		CB09181A23B6B81B00293E77 /* MessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
+		CB16022A23EBA49B0091AF40 /* FriendRequestVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestVC.swift; sourceTree = "<group>"; };
+		CB16022C23EBA80B0091AF40 /* FriendRequestCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRequestCell.swift; sourceTree = "<group>"; };
 		CB18D68123EA560E00903E4D /* AddFriendNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendNetworking.swift; sourceTree = "<group>"; };
 		CB1B3F7E23C8FDCE000858DF /* AnnotationPin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationPin.swift; sourceTree = "<group>"; };
 		CB1B3F8023C903D0000858DF /* CurrentUserAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUserAnnotationView.swift; sourceTree = "<group>"; };
@@ -502,6 +506,8 @@
 				CBF644FC2381D384004830C6 /* ContactsCell.swift */,
 				CB47B66823D248FF00329470 /* InfoMenuView.swift */,
 				CB99D07B23D4D268008645D6 /* ContactsTableView + Extension.swift */,
+				CB16022A23EBA49B0091AF40 /* FriendRequestVC.swift */,
+				CB16022C23EBA80B0091AF40 /* FriendRequestCell.swift */,
 				CB47B66623D2487700329470 /* UserListVC */,
 				CB47B66723D2489B00329470 /* AddNewFriendVC */,
 			);
@@ -739,6 +745,7 @@
 				CB513C3E23BE872A00BE8907 /* FriendInfoToolsCell.swift in Sources */,
 				CB2717382381E775003A4D46 /* Helpers.swift in Sources */,
 				CB2580BB23CFA19C00F9B088 /* MGLMapDelegate+ Extension.swift in Sources */,
+				CB16022D23EBA80B0091AF40 /* FriendRequestCell.swift in Sources */,
 				CBAA927923DF930500572978 /* GradientLogoView.swift in Sources */,
 				CB1B3F8323C92616000858DF /* FriendAnnotationView.swift in Sources */,
 				CBDBAE5723BC42AC00A56746 /* MessageCollectionView.swift in Sources */,
@@ -748,6 +755,7 @@
 				CB4CF77B23943B3600AC2E31 /* NewConversationVC.swift in Sources */,
 				CB513C3B23BE717300BE8907 /* FriendInformationVC.swift in Sources */,
 				CB4B6F7D23BBB6A400CDA4B3 /* UserResponse.swift in Sources */,
+				CB16022B23EBA49B0091AF40 /* FriendRequestVC.swift in Sources */,
 				CB639E0323D0E000000748A0 /* ContactsNetworking.swift in Sources */,
 				CB902B4623CEA96D0091221D /* ScrollToSelectedUserProtocol + Extension.swift in Sources */,
 				CBDBAE5323BC1D5E00A56746 /* MessageContainer.swift in Sources */,

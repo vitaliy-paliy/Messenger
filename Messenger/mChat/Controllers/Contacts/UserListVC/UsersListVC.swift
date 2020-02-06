@@ -81,7 +81,7 @@ extension UsersListVC: UITableViewDelegate, UITableViewDataSource {
         let selectedUser = users[indexPath.row]
         tableView.deselectRow(at: indexPath, animated: true)
         let controller = AddFriendVC()
-        controller.friend = selectedUser
+        controller.user = selectedUser
         controller.modalPresentationStyle = .fullScreen
         show(controller, sender: nil)
     }

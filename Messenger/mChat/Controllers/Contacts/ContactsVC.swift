@@ -22,6 +22,7 @@ class ContactsVC: UIViewController {
         view.backgroundColor = .white
         setupTableView()
         setupaddButton()
+        setupFriendRequest()
         contactsNetworking.observeFriendList()
         contactsNetworking.contactsVC = self
     }
@@ -66,6 +67,17 @@ class ContactsVC: UIViewController {
         buttonView.addTarget(self, action: #selector(addButtonPressed), for: .touchUpInside)
         addButton = UIBarButtonItem(customView: buttonView)
         navigationItem.rightBarButtonItem = addButton
+    }
+    
+    func setupFriendRequest() {
+        let friendRequestButton = UIBarButtonItem(image: UIImage(systemName: "person.2.fill"), style: .plain, target: self, action: #selector(friendRequestPressed))
+        friendRequestButton.tintColor = .black
+        navigationItem.leftBarButtonItem = friendRequestButton
+    }
+    
+    @objc func friendRequestPressed() {
+        let friendRequestVC = FriendRequestVC()
+        show(friendRequestVC, sender: nil)
     }
     
     @objc func addButtonPressed(){

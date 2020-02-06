@@ -34,7 +34,7 @@ class UserInfoView: UIView{
     func setupUserProfileImage() {
         controller.view.addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.loadImage(url: controller.friend.profileImage)
+        imageView.loadImage(url: controller.user.profileImage)
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 60
         imageView.layer.masksToBounds = true
@@ -50,7 +50,7 @@ class UserInfoView: UIView{
     func setupNameLabel() {
         controller.view.addSubview(nameLabel)
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        nameLabel.text = controller.friend.name.uppercased()
+        nameLabel.text = controller.user.name.uppercased()
         nameLabel.font = UIFont.boldSystemFont(ofSize: 18)
         let constraints = [
             nameLabel.centerXAnchor.constraint(equalTo: controller.view.centerXAnchor),
@@ -62,7 +62,7 @@ class UserInfoView: UIView{
     func setupEmailLabel() {
         controller.view.addSubview(emailLabel)
         emailLabel.translatesAutoresizingMaskIntoConstraints = false
-        emailLabel.text = controller.friend.email.uppercased()
+        emailLabel.text = controller.user.email.uppercased()
         emailLabel.font = UIFont.boldSystemFont(ofSize: 14)
         emailLabel.textColor = .lightGray
         let constraints = [
@@ -75,9 +75,9 @@ class UserInfoView: UIView{
     func setupAddButton() {
         controller.view.addSubview(addButton)
         addButton.translatesAutoresizingMaskIntoConstraints = false
-        addButton.setTitle("Add Friend", for: .normal)
+        addButton.backgroundColor = AppColors.mainColor
         addButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-        addButton.backgroundColor = .green
+        addButton.isEnabled = false
         addButton.tintColor = .white
         addButton.layer.cornerRadius = 16
         addButton.layer.masksToBounds = true

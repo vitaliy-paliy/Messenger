@@ -11,13 +11,14 @@ import Firebase
 
 class AddFriendVC: UIViewController{
     
-    var friend: FriendInfo!
+    var user: FriendInfo!
     var addButton: UIButton!
-    var addFriendNetworking: AddFriendNetworking!
+    var addFriendNetworking = AddFriendNetworking()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupNetworking()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -33,7 +34,9 @@ class AddFriendVC: UIViewController{
     }
     
     func setupNetworking() {
-        
+        addFriendNetworking.controller = self
+        addFriendNetworking.friend = user
+        addFriendNetworking.checkFriend()
     }
     
     func setupUI(){
@@ -82,7 +85,7 @@ class AddFriendVC: UIViewController{
             addButton.backgroundColor = .green
             addButton.setTitle("Add Friend", for: .normal)
         }
-        
+        addFriendNetworking.checkFriendship()
     }
     
 }

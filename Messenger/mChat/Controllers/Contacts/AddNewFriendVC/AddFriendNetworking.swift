@@ -13,31 +13,45 @@ class AddFriendNetworking {
     
     var isFriend = false
     var friend: FriendInfo!
+    var controller: AddFriendVC!
     
-    func addAsFriend(){
-        let user = Database.database().reference().child("friendsList").child(CurrentUser.uid).child(friend.id).child(self.friend.id)
-        let friend = Database.database().reference().child("friendsList").child(self.friend.id).child(CurrentUser.uid).child(CurrentUser.uid)
+    func checkFriendship(){
         if !isFriend {
-            updateFriendship(user: user, friend: friend, status: !isFriend)
+            addAsFriend()
         }else{
-            user.removeValue()
-            friend.removeValue()
-            isFriend = false
+            removeFriend()
         }
     }
     
-    func updateFriendship(user: DatabaseReference, friend: DatabaseReference, status: Bool){
-        user.setValue(status)
-        friend.setValue(status)
-        isFriend = status
+    func addAsFriend(){
+        let userRef = Database.database().reference().child("friendsList").child(CurrentUser.uid).child(friend.id).child(self.friend.id)
+        let friendRef = Database.database().reference().child("friendsList").child(self.friend.id).child(CurrentUser.uid).child(CurrentUser.uid)
+        userRef.setValue(true)
+        friendRef.setValue(true)
+        isFriend = true
+    }
+    
+    func removeFriend() {
+        let userRef = Database.database().reference().child("friendsList").child(CurrentUser.uid).child(friend.id).child(self.friend.id)
+        let friendRef = Database.database().reference().child("friendsList").child(self.friend.id).child(CurrentUser.uid).child(CurrentUser.uid)
+        userRef.removeValue()
+        friendRef.removeValue()
+        isFriend = false
     }
     
     
     func checkFriend(){
         Database.database().reference().child("friendsList").child(CurrentUser.uid).child(friend.id).observe(.value) { (snapshot) in
-            guard let values = snapshot.value as? [String: Any] else { return }
+            self.controller.addButton.isEnabled = true
+            guard let values = snapshot.value as? [String: Any] else {
+                self.controller.addButton.setTitle("Add Friend", for: .normal)
+                self.controller.addButton.backgroundColor = .green
+                return
+            }
             let f = values
             if f[self.friend.id] as? Bool != nil && f[self.friend.id] as? Bool == true {
+                self.controller.addButton.backgroundColor = .red
+                self.controller.addButton.setTitle("Remove Friend", for: .normal)
                 self.isFriend = true
             }
         }
