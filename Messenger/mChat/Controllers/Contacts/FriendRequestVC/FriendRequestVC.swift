@@ -10,9 +10,13 @@ import UIKit
 
 class FriendRequestVC: UIViewController {
     
+    let tableView = UITableView()
+    var friendRequests = [FriendInfo]()
+    var friendRequestNetworking = FriendRequestNetworking()
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        fetchRequests()
         view.backgroundColor = .red
         navigationController?.navigationBar.tintColor = .black
         navigationItem.title = "Friend Requests"
@@ -29,9 +33,12 @@ class FriendRequestVC: UIViewController {
         tabBarController?.tabBar.isHidden = false
     }
     
+    func fetchRequests() {
+        friendRequestNetworking.controller = self
+        friendRequestNetworking.setupFriendRequests()
+    }
     
     func setupTableView() {
-        let tableView = UITableView()
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self
@@ -47,19 +54,35 @@ class FriendRequestVC: UIViewController {
         ]
         NSLayoutConstraint.activate(constraints)
     }
-    
+ 
+    func addButtonPressed(cell: FriendRequestCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let friend = friendRequests[indexPath.row]
+        friendRequestNetworking.addAsFriend(friend) {
+            cell.acceptButton.isEnabled = true
+            cell.declineButton.isEnabled = true
+            self.friendRequests.remove(at: indexPath.row)
+            self.tableView.reloadData()
+        }
+    }
     
 }
 
 extension FriendRequestVC: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return friendRequests.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FriendRequestCell") as! FriendRequestCell
+        cell.controller = self
+        let user = friendRequests[indexPath.row]
+        cell.nameLabel.text = user.name.uppercased()
+        cell.emailLabel.text = user.email.uppercased()
+        cell.profileImage.loadImage(url: user.profileImage)
         return cell
     }
-    
+
 }
+//

@@ -10,10 +10,20 @@ import UIKit
 
 class FriendRequestCell: UITableViewCell {
     
+    var controller: FriendRequestVC!
+    var nameLabel = UILabel()
+    var emailLabel = UILabel()
+    var profileImage = UIImageView()
+    let acceptButton = UIButton(type: .system)
+    let declineButton = UIButton(type: .system)
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupAcceptButton()
         setupDeclineButton()
+        setupProfileImage()
+        setupNameLabel()
+        setupEmailLabel()
     }
     
     required init?(coder: NSCoder) {
@@ -21,7 +31,6 @@ class FriendRequestCell: UITableViewCell {
     }
     
     func setupAcceptButton() {
-        let acceptButton = UIButton(type: .system)
         addSubview(acceptButton)
         acceptButton.translatesAutoresizingMaskIntoConstraints = false
         acceptButton.setTitle("ACCEPT", for: .normal)
@@ -35,7 +44,7 @@ class FriendRequestCell: UITableViewCell {
         acceptButton.addTarget(self, action: #selector(addButtonPressed), for: .touchUpInside)
         let constraints = [
             acceptButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            acceptButton.centerYAnchor.constraint(equalTo: centerYAnchor, constant: -16),
+            acceptButton.bottomAnchor.constraint(equalTo: centerYAnchor),
             acceptButton.widthAnchor.constraint(equalToConstant: 75),
             acceptButton.heightAnchor.constraint(equalToConstant: 25)
         ]
@@ -43,7 +52,6 @@ class FriendRequestCell: UITableViewCell {
     }
     
     func setupDeclineButton() {
-        let declineButton = UIButton(type: .system)
         addSubview(declineButton)
         declineButton.translatesAutoresizingMaskIntoConstraints = false
         declineButton.setTitle("DECLINE", for: .normal)
@@ -52,7 +60,7 @@ class FriendRequestCell: UITableViewCell {
         declineButton.addTarget(self, action: #selector(declineButtonPressed), for: .touchUpInside)
         let constraints = [
             declineButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            declineButton.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 8),
+            declineButton.topAnchor.constraint(equalTo: centerYAnchor),
             declineButton.widthAnchor.constraint(equalToConstant: 75),
             declineButton.heightAnchor.constraint(equalToConstant: 25)
         ]
@@ -61,6 +69,9 @@ class FriendRequestCell: UITableViewCell {
     
     @objc func addButtonPressed() {
         print("Add")
+        acceptButton.isEnabled = false
+        declineButton.isEnabled = false
+        controller.addButtonPressed(cell: self)
     }
     
     @objc func declineButtonPressed() {
@@ -76,6 +87,44 @@ class FriendRequestCell: UITableViewCell {
         gradient.endPoint = CGPoint(x: 0, y: 1)
         gradient.locations = [0, 1]
         return gradient
+    }
+        
+    func setupProfileImage() {
+        addSubview(profileImage)
+        profileImage.translatesAutoresizingMaskIntoConstraints = false
+        profileImage.layer.cornerRadius = 30
+        profileImage.layer.masksToBounds = true
+        profileImage.contentMode = .scaleAspectFill
+        let constraints = [
+            profileImage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
+            profileImage.centerYAnchor.constraint(equalTo: centerYAnchor),
+            profileImage.widthAnchor.constraint(equalToConstant: 60),
+            profileImage.heightAnchor.constraint(equalToConstant: 60)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    func setupNameLabel() {
+        addSubview(nameLabel)
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        nameLabel.font = UIFont.boldSystemFont(ofSize: 14)
+        let constraints = [
+            nameLabel.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 8),
+            nameLabel.bottomAnchor.constraint(equalTo: centerYAnchor),
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    func setupEmailLabel() {
+        addSubview(emailLabel)
+        emailLabel.translatesAutoresizingMaskIntoConstraints = false
+        emailLabel.textColor = .lightGray
+        emailLabel.font = UIFont.boldSystemFont(ofSize: 12)
+        let constraints = [
+            emailLabel.leadingAnchor.constraint(equalTo: profileImage.trailingAnchor, constant: 8),
+            emailLabel.topAnchor.constraint(equalTo: centerYAnchor),
+        ]
+        NSLayoutConstraint.activate(constraints)
     }
     
 }

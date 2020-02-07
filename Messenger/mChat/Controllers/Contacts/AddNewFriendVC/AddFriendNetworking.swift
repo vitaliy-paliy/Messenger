@@ -23,12 +23,9 @@ class AddFriendNetworking {
         }
     }
     
-    func addAsFriend(){
-        let userRef = Database.database().reference().child("friendsList").child(CurrentUser.uid).child(friend.id).child(self.friend.id)
-        let friendRef = Database.database().reference().child("friendsList").child(self.friend.id).child(CurrentUser.uid).child(CurrentUser.uid)
-        userRef.setValue(true)
-        friendRef.setValue(true)
-        isFriend = true
+    func addAsFriend() {
+        let ref = Database.database().reference().child("friendsList").child("friendRequests").child(friend.id).child(CurrentUser.uid)
+        ref.setValue(CurrentUser.uid)
     }
     
     func removeFriend() {
