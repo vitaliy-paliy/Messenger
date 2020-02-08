@@ -11,20 +11,11 @@ import Firebase
 
 class AddFriendNetworking {
     
-    var isFriend = false
     var friend: FriendInfo!
     var controller: AddFriendVC!
     
-    func checkFriendship(){
-        if !isFriend {
-            addAsFriend()
-        }else{
-            removeFriend()
-        }
-    }
-    
     func addAsFriend() {
-        let ref = Database.database().reference().child("friendsList").child("friendRequests").child(friend.id).child(CurrentUser.uid)
+        let ref = Database.database().reference().child("friendsList").child("friendRequests").child(friend.id).child(CurrentUser.uid).child(CurrentUser.uid)
         ref.setValue(CurrentUser.uid)
     }
     
@@ -33,11 +24,19 @@ class AddFriendNetworking {
         let friendRef = Database.database().reference().child("friendsList").child(self.friend.id).child(CurrentUser.uid).child(CurrentUser.uid)
         userRef.removeValue()
         friendRef.removeValue()
-        isFriend = false
     }
     
-    
     func checkFriend(){
+        checkForFriendRequest {
+            self.checkFriendship()
+        }
+    }
+    
+    func removeFriendRequest() {
+        Database.database().reference().child("friendsList").child("friendRequests").child(friend.id).child(CurrentUser.uid).child(CurrentUser.uid).removeValue()
+    }
+    
+    func checkFriendship() {
         Database.database().reference().child("friendsList").child(CurrentUser.uid).child(friend.id).observe(.value) { (snapshot) in
             self.controller.addButton.isEnabled = true
             guard let values = snapshot.value as? [String: Any] else {
@@ -49,8 +48,16 @@ class AddFriendNetworking {
             if f[self.friend.id] as? Bool != nil && f[self.friend.id] as? Bool == true {
                 self.controller.addButton.backgroundColor = .red
                 self.controller.addButton.setTitle("Remove Friend", for: .normal)
-                self.isFriend = true
             }
+        }
+    }
+    
+    func checkForFriendRequest(completion: @escaping () -> Void) {
+        Database.database().reference().child("friendsList").child("friendRequests").child(friend.id).child(CurrentUser.uid).observeSingleEvent(of: .value) { (snap) in
+            guard let _ = snap.value as? [String: Any] else { return completion() }
+            self.controller.addButton.setTitle("Requested", for: .normal)
+            self.controller.addButton.isEnabled = true
+            self.controller.addButton.backgroundColor = .gray
         }
     }
     

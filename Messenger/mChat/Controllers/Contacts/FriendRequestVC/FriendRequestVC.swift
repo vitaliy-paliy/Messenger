@@ -85,4 +85,3 @@ extension FriendRequestVC: UITableViewDataSource, UITableViewDelegate {
     }
 
 }
-//

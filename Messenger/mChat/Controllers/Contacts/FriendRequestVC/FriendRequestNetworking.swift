@@ -35,10 +35,8 @@ class FriendRequestNetworking {
             Database.database().reference().child("users").child(key).observeSingleEvent(of: .value) { (snap) in
                 guard let values = snap.value as? [String: Any] else { return }
                 self.setupFriendInfo(for: key, values)
-                if key == self.friendKeys[self.friendKeys.count - 1] {
-                    self.controller.friendRequests = Array(self.groupedUsers.values)
-                    self.controller.tableView.reloadData()
-                }
+                self.controller.friendRequests = Array(self.groupedUsers.values)
+                self.controller.tableView.reloadData()
             }
         }
     }
@@ -60,7 +58,7 @@ class FriendRequestNetworking {
         let friendRef = Database.database().reference().child("friendsList").child(friend.id).child(CurrentUser.uid).child(CurrentUser.uid)
         userRef.setValue(true)
         friendRef.setValue(true)
-        Database.database().reference().child("friendsList").child("friendRequests").child(CurrentUser.uid).child(friend.id).removeValue { (error, ref) in
+        Database.database().reference().child("friendsList").child("friendRequests").child(CurrentUser.uid).child(friend.id).child(friend.id).removeValue { (error, ref) in
             return completion()
         }
     }

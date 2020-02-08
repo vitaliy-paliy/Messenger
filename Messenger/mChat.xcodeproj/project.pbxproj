@@ -280,8 +280,8 @@
 			isa = PBXGroup;
 			children = (
 				CBCC30852383722500E36E39 /* AddFriendVC.swift */,
-				CB4FA83723E9058200FBE0A3 /* UserInfoView.swift */,
 				CB18D68123EA560E00903E4D /* AddFriendNetworking.swift */,
+				CB4FA83723E9058200FBE0A3 /* UserInfoView.swift */,
 			);
 			path = AddNewFriendVC;
 			sourceTree = "<group>";

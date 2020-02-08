@@ -82,10 +82,13 @@ class AddFriendVC: UIViewController{
             addButton.setTitle("Requested", for: .normal)
             addButton.backgroundColor = .gray
         }else{
+            addFriendNetworking.removeFriendRequest()
+            addFriendNetworking.removeFriend()
             addButton.backgroundColor = .green
             addButton.setTitle("Add Friend", for: .normal)
+            return
         }
-        addFriendNetworking.checkFriendship()
+        addFriendNetworking.addAsFriend()
     }
     
 }
