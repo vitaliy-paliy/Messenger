@@ -15,6 +15,7 @@ class ContactsVC: UIViewController {
     var tableView = UITableView()
     var blurView = UIVisualEffectView()
     var infoMenuView: InfoMenuView!
+    var tabBarBadge: UITabBarItem!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,6 +26,9 @@ class ContactsVC: UIViewController {
         setupFriendRequest()
         contactsNetworking.observeFriendList()
         contactsNetworking.contactsVC = self
+        if let tabItems = tabBarController?.tabBar.items {
+            tabBarBadge = tabItems[0]
+        }
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -70,9 +74,9 @@ class ContactsVC: UIViewController {
     }
     
     func setupFriendRequest() {
-        let friendRequestButton = UIBarButtonItem(image: UIImage(systemName: "person.2.fill"), style: .plain, target: self, action: #selector(friendRequestPressed))
-        friendRequestButton.tintColor = .black
-        navigationItem.leftBarButtonItem = friendRequestButton
+        let buttonView = RequestButtonView.setupButton(self)
+        let requestButton = UIBarButtonItem(customView: buttonView)
+        navigationItem.leftBarButtonItem = requestButton
     }
     
     @objc func friendRequestPressed() {
@@ -90,6 +94,12 @@ class ContactsVC: UIViewController {
         cell.isHidden = true
         tableView.isUserInteractionEnabled = false
         infoMenuView = InfoMenuView(cell: cell, cellFrame: cellFrame, friend: friend, contactsVC: self)
+    }
+    
+    func setupContactsBadge(_ numOfRequests: Int) {
+        tabBarBadge.badgeValue = nil
+        if numOfRequests == 0 { return }
+        tabBarBadge.badgeValue = "\(numOfRequests)"
     }
     
 }

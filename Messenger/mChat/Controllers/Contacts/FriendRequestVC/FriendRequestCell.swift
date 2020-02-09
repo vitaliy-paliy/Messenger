@@ -68,14 +68,12 @@ class FriendRequestCell: UITableViewCell {
     }
     
     @objc func addButtonPressed() {
-        print("Add")
-        acceptButton.isEnabled = false
-        declineButton.isEnabled = false
         controller.addButtonPressed(cell: self)
     }
     
     @objc func declineButtonPressed() {
         print("Decline")
+        controller.declineButtonPressed(cell: self)
     }
     
     func setupGradientLayer() -> CAGradientLayer {

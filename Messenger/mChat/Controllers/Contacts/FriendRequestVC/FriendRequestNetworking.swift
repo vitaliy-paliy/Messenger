@@ -15,9 +15,8 @@ class FriendRequestNetworking {
     var friendKeys = [String]()
     var groupedUsers = [String:FriendInfo]()
     
-    func loadRequests(completion: @escaping() -> Void){
-        friendKeys = []
-        Database.database().reference().child("friendsList").child("friendRequests").child(CurrentUser.uid).observe(.value) { (snap) in
+    func loadRequests(completion: @escaping() -> Void) {
+        Database.database().reference().child("friendsList").child("friendRequests").child(CurrentUser.uid).observeSingleEvent(of: .value) { (snap) in
             guard let values = snap.value as? [String:Any] else { return }
             self.friendKeys.append(contentsOf: Array(values.keys))
             return completion()
@@ -58,7 +57,20 @@ class FriendRequestNetworking {
         let friendRef = Database.database().reference().child("friendsList").child(friend.id).child(CurrentUser.uid).child(CurrentUser.uid)
         userRef.setValue(true)
         friendRef.setValue(true)
-        Database.database().reference().child("friendsList").child("friendRequests").child(CurrentUser.uid).child(friend.id).child(friend.id).removeValue { (error, ref) in
+        self.removeRequestFromDB(friend) {
+            return completion()
+        }
+    }
+    
+    func declineUser(_ userToDelete: FriendInfo, completion: @escaping() -> Void) {
+        self.removeRequestFromDB(userToDelete) {
+            return completion()
+        }
+    }
+    
+    func removeRequestFromDB(_ user: FriendInfo, completion: @escaping () -> Void) {
+        self.groupedUsers.removeValue(forKey: user.id)
+        Database.database().reference().child("friendsList").child("friendRequests").child(CurrentUser.uid).child(user.id).child(user.id).removeValue { (error, ref) in
             return completion()
         }
     }

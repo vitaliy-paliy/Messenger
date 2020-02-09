@@ -16,6 +16,7 @@ class ContactsNetworking {
     var groupedFriends = [String: FriendInfo]()
     
     func observeFriendList(){
+        observeFriendRequests()
         Database.database().reference().child("friendsList").child(CurrentUser.uid).observeSingleEvent(of: .value) { (snap) in
             guard let friends = snap.value as? [String: Any] else {
                 self.observeFriendActions()
@@ -105,6 +106,14 @@ class ContactsNetworking {
         friend.lastLogin = values["lastLogin"] as? NSNumber
         friend.isMapLocationEnabled = values["isMapLocationEnabled"] as? Bool
         groupedFriends[key] = friend
+    }
+    
+    func observeFriendRequests() {
+        Database.database().reference().child("friendsList").child("friendRequests").child(CurrentUser.uid).observe(.value) { (snap) in
+            print(snap.childrenCount)
+            let numOfRequests = Int(snap.childrenCount)
+            self.contactsVC.setupContactsBadge(numOfRequests)
+        }
     }
     
 }

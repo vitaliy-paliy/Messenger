@@ -9,17 +9,6 @@
 import UIKit
 import Lottie
 
-class AppColors {
-    static var mainColor = UIColor(red: 100/255, green: 90/255, blue: 255/255, alpha: 1)
-    static var secondaryColor = UIColor(red: 140/255, green: 135/255, blue: 255/255, alpha: 0.5)
-}
-
-struct WelcomePage {
-    let imageName: String?
-    let topicText: String?
-    let descriptionText: String?
-}
-
 class WelcomeVC: UIViewController {
     
     let welcomePages = [

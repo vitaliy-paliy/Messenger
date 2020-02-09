@@ -11,6 +11,9 @@ import UIKit
 class WelcomeCell: UICollectionViewCell {
     
     var welcomeVC: WelcomeVC!
+    var topicImage = UIImageView()
+    var topicLabel = UILabel()
+    var descriptionLabel = UILabel()
     
     var page: WelcomePage? {
         didSet {
@@ -28,11 +31,7 @@ class WelcomeCell: UICollectionViewCell {
             }
         }
     }
-    
-    var topicImage = UIImageView()
-    var topicLabel = UILabel()
-    var descriptionLabel = UILabel()
-    
+        
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupTopicImage()

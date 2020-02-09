@@ -59,8 +59,15 @@ class FriendRequestVC: UIViewController {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         let friend = friendRequests[indexPath.row]
         friendRequestNetworking.addAsFriend(friend) {
-            cell.acceptButton.isEnabled = true
-            cell.declineButton.isEnabled = true
+            self.friendRequests.remove(at: indexPath.row)
+            self.tableView.reloadData()
+        }
+    }
+    
+    func declineButtonPressed(cell: FriendRequestCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let userToDelete = friendRequests[indexPath.row]
+        friendRequestNetworking.declineUser(userToDelete) {
             self.friendRequests.remove(at: indexPath.row)
             self.tableView.reloadData()
         }
