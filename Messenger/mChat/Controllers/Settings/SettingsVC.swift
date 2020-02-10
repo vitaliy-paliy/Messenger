@@ -32,7 +32,7 @@ class SettingsVC: UIViewController {
     }
     
     func setupLeftNavButton(){
-        logoutButton.setTitle("Logout", for: .normal)
+        logoutButton.setTitle("Sign out", for: .normal)
         logoutButton.titleLabel?.font = UIFont(name: "Helvetica Neue", size: 18)
         logoutButton.setTitleColor(.systemRed, for: .normal)
         logoutButton.addTarget(self, action: #selector(logoutButtonPressed), for: .touchUpInside)
@@ -125,11 +125,13 @@ extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
             let item = settingsItems[indexPath.row]
             if item == "Appearance"{
                 print("TODO: Appearance")
+                let controller = AppearanceVC()
+                show(controller, sender: nil)
             }else if item == "Saved Messages"{
                 print("TODO: Saved Messages")
             }else{
-                let mapSettings = MapsSettingsVC()
-                show(mapSettings, sender: self)
+                let controller = MapsSettingsVC()
+                show(controller, sender: self)
             }
         }
     }

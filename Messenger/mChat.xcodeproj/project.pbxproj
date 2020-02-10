@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AB84247D3884D7F997D67FD0 /* Pods_mChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1E1467D72B76AF7D9B11C55A /* Pods_mChat.framework */; };
+		3E7D8C610004FC3A7444AEDC /* Pods_mChat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 81E0CE7D50105C233057110C /* Pods_mChat.framework */; };
 		CB08304B238709BD002A1861 /* ChatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB08304A238709BD002A1861 /* ChatVC.swift */; };
 		CB09181B23B6B81C00293E77 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB09181A23B6B81B00293E77 /* MessageView.swift */; };
 		CB16022B23EBA49B0091AF40 /* FriendRequestVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB16022A23EBA49B0091AF40 /* FriendRequestVC.swift */; };
@@ -97,6 +97,7 @@
 		CBDBAE5723BC42AC00A56746 /* MessageCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDBAE5623BC42AC00A56746 /* MessageCollectionView.swift */; };
 		CBDBAE5923BC456400A56746 /* ProfileImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDBAE5823BC456400A56746 /* ProfileImageButton.swift */; };
 		CBDCE64723E665A000981DDE /* UserListNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDCE64623E665A000981DDE /* UserListNetworking.swift */; };
+		CBECFED523F0C863005FAB35 /* AppearanceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBECFED423F0C863005FAB35 /* AppearanceVC.swift */; };
 		CBF05E4523A086A400EF295F /* NavigationItem + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF05E4423A086A400EF295F /* NavigationItem + Extension.swift */; };
 		CBF644F12381C204004830C6 /* ChatTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF644F02381C204004830C6 /* ChatTabBar.swift */; };
 		CBF644F42381C23A004830C6 /* ContactsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF644F32381C23A004830C6 /* ContactsVC.swift */; };
@@ -113,8 +114,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1E1467D72B76AF7D9B11C55A /* Pods_mChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_mChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		48926AE7A16A24E1AD9C9C6B /* Pods-mChat.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mChat.release.xcconfig"; path = "Target Support Files/Pods-mChat/Pods-mChat.release.xcconfig"; sourceTree = "<group>"; };
+		81E0CE7D50105C233057110C /* Pods_mChat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_mChat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AF45AF9736070E7C6E1CC18D /* Pods-mChat.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-mChat.debug.xcconfig"; path = "Target Support Files/Pods-mChat/Pods-mChat.debug.xcconfig"; sourceTree = "<group>"; };
 		CB08304A238709BD002A1861 /* ChatVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
 		CB09181A23B6B81B00293E77 /* MessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
@@ -205,6 +206,7 @@
 		CBDBAE5623BC42AC00A56746 /* MessageCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCollectionView.swift; sourceTree = "<group>"; };
 		CBDBAE5823BC456400A56746 /* ProfileImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageButton.swift; sourceTree = "<group>"; };
 		CBDCE64623E665A000981DDE /* UserListNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListNetworking.swift; sourceTree = "<group>"; };
+		CBECFED423F0C863005FAB35 /* AppearanceVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceVC.swift; sourceTree = "<group>"; };
 		CBF05E4423A086A400EF295F /* NavigationItem + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationItem + Extension.swift"; sourceTree = "<group>"; };
 		CBF644F02381C204004830C6 /* ChatTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTabBar.swift; sourceTree = "<group>"; };
 		CBF644F32381C23A004830C6 /* ContactsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsVC.swift; sourceTree = "<group>"; };
@@ -227,7 +229,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AB84247D3884D7F997D67FD0 /* Pods_mChat.framework in Frameworks */,
+				3E7D8C610004FC3A7444AEDC /* Pods_mChat.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -246,7 +248,7 @@
 		7CBB701A277C65DACB4D718C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				1E1467D72B76AF7D9B11C55A /* Pods_mChat.framework */,
+				81E0CE7D50105C233057110C /* Pods_mChat.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -507,6 +509,14 @@
 			path = ChatView;
 			sourceTree = "<group>";
 		};
+		CBECFED623F0CC0D005FAB35 /* AppearanceVC */ = {
+			isa = PBXGroup;
+			children = (
+				CBECFED423F0C863005FAB35 /* AppearanceVC.swift */,
+			);
+			path = AppearanceVC;
+			sourceTree = "<group>";
+		};
 		CBF644F22381C216004830C6 /* Auth Controllers  */ = {
 			isa = PBXGroup;
 			children = (
@@ -555,6 +565,7 @@
 				CBF644FA2381C28D004830C6 /* SettingsVC.swift */,
 				CB65C64B2383326300F2B5A3 /* ProfileCell.swift */,
 				CB82EA8C23C65845002FD857 /* SettingsCell.swift */,
+				CBECFED623F0CC0D005FAB35 /* AppearanceVC */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -827,6 +838,7 @@
 				CBFC53B92387259E00CC4C91 /* Messages.swift in Sources */,
 				CB513C4423BEBB4B00BE8907 /* SharedMediaCell.swift in Sources */,
 				CB18D68223EA560E00903E4D /* AddFriendNetworking.swift in Sources */,
+				CBECFED523F0C863005FAB35 /* AppearanceVC.swift in Sources */,
 				CB65C64C2383326300F2B5A3 /* ProfileCell.swift in Sources */,
 				CBAA927423DF905300572978 /* HandleSignInViewDelegate + Extension.swift in Sources */,
 				CBBDE7AE238353A40040A296 /* UserInfo + FriendInfo.swift in Sources */,

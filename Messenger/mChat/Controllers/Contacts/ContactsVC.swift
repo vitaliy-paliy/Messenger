@@ -16,6 +16,7 @@ class ContactsVC: UIViewController {
     var blurView = UIVisualEffectView()
     var infoMenuView: InfoMenuView!
     var tabBarBadge: UITabBarItem!
+    var requestButtonView: RequestButtonView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,7 +53,6 @@ class ContactsVC: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ]
         NSLayoutConstraint.activate(constraints)
-        
     }
         
     func handleReload(_ friends: [FriendInfo]){
@@ -65,7 +65,7 @@ class ContactsVC: UIViewController {
     
     func setupaddButton() {
         var addButton = UIBarButtonItem()
-        let buttonView = UIButton(type: .system)
+        let buttonView = UIButton()
         buttonView.setImage(UIImage(systemName: "plus"), for: .normal)
         buttonView.tintColor = .black
         buttonView.addTarget(self, action: #selector(addButtonPressed), for: .touchUpInside)
@@ -74,8 +74,8 @@ class ContactsVC: UIViewController {
     }
     
     func setupFriendRequest() {
-        let buttonView = RequestButtonView.setupButton(self)
-        let requestButton = UIBarButtonItem(customView: buttonView)
+        requestButtonView = RequestButtonView(self)
+        let requestButton = UIBarButtonItem(customView: requestButtonView)
         navigationItem.leftBarButtonItem = requestButton
     }
     
@@ -98,8 +98,16 @@ class ContactsVC: UIViewController {
     
     func setupContactsBadge(_ numOfRequests: Int) {
         tabBarBadge.badgeValue = nil
-        if numOfRequests == 0 { return }
+        requestButtonView.circleView.isHidden = false
+        if numOfRequests == 0 {
+            requestButtonView.circleView.isHidden = true
+            return
+        }else if numOfRequests > 9 {
+            requestButtonView.requestNumLabel.text = "+9"
+        }
+        
         tabBarBadge.badgeValue = "\(numOfRequests)"
+        requestButtonView.requestNumLabel.text = "\(numOfRequests)"
     }
     
 }
