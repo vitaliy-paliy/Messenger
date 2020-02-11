@@ -58,6 +58,8 @@
 		CB644C2523A2FFC7003094DF /* chatTyping.json in Resources */ = {isa = PBXBuildFile; fileRef = CB644C2323A2FFC7003094DF /* chatTyping.json */; };
 		CB65C64723831EA300F2B5A3 /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB65C64623831EA300F2B5A3 /* CurrentUser.swift */; };
 		CB65C64C2383326300F2B5A3 /* ProfileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB65C64B2383326300F2B5A3 /* ProfileCell.swift */; };
+		CB7ACB2B23F21CBC00DBE0FF /* ChatAppearenceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7ACB2A23F21CBC00DBE0FF /* ChatAppearenceCell.swift */; };
+		CB7ACB2D23F2220D00DBE0FF /* ChatBubblesAppearenceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB7ACB2C23F2220D00DBE0FF /* ChatBubblesAppearenceCell.swift */; };
 		CB82EA8623C4E907002FD857 /* ConvTableView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB82EA8523C4E907002FD857 /* ConvTableView + Extension.swift */; };
 		CB82EA8823C4EC9B002FD857 /* NewConvSelectedProtocol + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB82EA8723C4EC9B002FD857 /* NewConvSelectedProtocol + Extension.swift */; };
 		CB82EA8B23C63F34002FD857 /* MapsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB82EA8A23C63F34002FD857 /* MapsVC.swift */; };
@@ -167,6 +169,8 @@
 		CB644C2323A2FFC7003094DF /* chatTyping.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = chatTyping.json; sourceTree = "<group>"; };
 		CB65C64623831EA300F2B5A3 /* CurrentUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
 		CB65C64B2383326300F2B5A3 /* ProfileCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileCell.swift; sourceTree = "<group>"; };
+		CB7ACB2A23F21CBC00DBE0FF /* ChatAppearenceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatAppearenceCell.swift; sourceTree = "<group>"; };
+		CB7ACB2C23F2220D00DBE0FF /* ChatBubblesAppearenceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatBubblesAppearenceCell.swift; sourceTree = "<group>"; };
 		CB82EA8523C4E907002FD857 /* ConvTableView + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ConvTableView + Extension.swift"; sourceTree = "<group>"; };
 		CB82EA8723C4EC9B002FD857 /* NewConvSelectedProtocol + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NewConvSelectedProtocol + Extension.swift"; sourceTree = "<group>"; };
 		CB82EA8A23C63F34002FD857 /* MapsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapsVC.swift; sourceTree = "<group>"; };
@@ -513,6 +517,8 @@
 			isa = PBXGroup;
 			children = (
 				CBECFED423F0C863005FAB35 /* AppearanceVC.swift */,
+				CB7ACB2A23F21CBC00DBE0FF /* ChatAppearenceCell.swift */,
+				CB7ACB2C23F2220D00DBE0FF /* ChatBubblesAppearenceCell.swift */,
 			);
 			path = AppearanceVC;
 			sourceTree = "<group>";
@@ -781,6 +787,7 @@
 				CBAA927923DF930500572978 /* GradientLogoView.swift in Sources */,
 				CB1B3F8323C92616000858DF /* FriendAnnotationView.swift in Sources */,
 				CBDBAE5723BC42AC00A56746 /* MessageCollectionView.swift in Sources */,
+				CB7ACB2B23F21CBC00DBE0FF /* ChatAppearenceCell.swift in Sources */,
 				CB82EA9123C666D0002FD857 /* MapSettingsCell.swift in Sources */,
 				CBF907EC2380B83500EF8925 /* SceneDelegate.swift in Sources */,
 				CB513C3923BE6CB900BE8907 /* ForwardToSend + Protocol.swift in Sources */,
@@ -795,6 +802,7 @@
 				CBAA928223DFBC1F00572978 /* SignUpView.swift in Sources */,
 				CB4FEA9023CA446F006B8B08 /* UserInfoTab.swift in Sources */,
 				CBF644F72381C26B004830C6 /* ConversationsVC.swift in Sources */,
+				CB7ACB2D23F2220D00DBE0FF /* ChatBubblesAppearenceCell.swift in Sources */,
 				CB513C4023BE8C7F00BE8907 /* FriendInformationCell.swift in Sources */,
 				CB82EA8B23C63F34002FD857 /* MapsVC.swift in Sources */,
 				CB4CC233239DD71B0086DEA9 /* Calendar + Extension.swift in Sources */,

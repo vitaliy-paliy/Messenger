@@ -14,8 +14,9 @@ class AppearanceVC: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .red
+        view.backgroundColor = UIColor(white: 0.95, alpha: 1)
         navigationController?.navigationBar.tintColor = .black
+        navigationItem.title = "Appearance"
         setupTableView()
     }
     
@@ -35,6 +36,8 @@ class AppearanceVC: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.tableFooterView = UIView(frame: .zero)
+        tableView.backgroundColor = .clear
+        tableView.register(ChatAppearenceCell.self, forCellReuseIdentifier: "ChatAppearenceCell")
         let constraints = [
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -53,7 +56,7 @@ extension AppearanceVC: UITableViewDelegate, UITableViewDataSource {
         headerView.backgroundColor = UIColor(white: 0.95, alpha: 1)
         if section == 0 {
             let textLabel = UILabel()
-            textLabel.text = "THIS IS TEST"
+            textLabel.text = "CHAT VIEW SAMPLE"
             textLabel.textColor = .gray
             textLabel.font = UIFont(name: "Helvetica Neue", size: 14)
             textLabel.numberOfLines = 0
@@ -61,8 +64,7 @@ extension AppearanceVC: UITableViewDelegate, UITableViewDataSource {
             textLabel.translatesAutoresizingMaskIntoConstraints = false
             let constraints = [
                 textLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 8),
-                textLabel.trailingAnchor.constraint(equalTo: headerView.trailingAnchor, constant: -8),
-                textLabel.centerYAnchor.constraint(equalTo: headerView.centerYAnchor)
+                textLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -4)
             ]
             NSLayoutConstraint.activate(constraints)
         }
@@ -70,18 +72,44 @@ extension AppearanceVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if section == 0 { return 45 } else { return 15 }
+        return returnHeaderHeight(section)
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 3
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return returnSectionNumOfCells(section)
+    }
+    
+    func returnSectionNumOfCells(_ section: Int) -> Int {
+        if section == 0 {
+            return 1
+        }else if section == 1{
+            return 4
+        }else{
+            return 2
+        }
+    }
+    
+    func returnHeaderHeight(_ section: Int) -> CGFloat {
+        if section == 0 {
+            return 45
+        }else if section == 1 {
+            return 15
+        }else{
+            return 5
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.section == 0 {
+            tableView.rowHeight = 160
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ChatAppearenceCell") as! ChatAppearenceCell
+            return cell
+        }
+        tableView.rowHeight = 44
         return UITableViewCell()
     }
     
