@@ -11,6 +11,7 @@ import UIKit
 class AppearanceVC: UIViewController {
     
     var tableView = UITableView()
+    var appearanceSettings = ["Incoming Color", "Outcoming Color","Chat Background"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +38,9 @@ class AppearanceVC: UIViewController {
         tableView.dataSource = self
         tableView.tableFooterView = UIView(frame: .zero)
         tableView.backgroundColor = .clear
+        tableView.isScrollEnabled = false
         tableView.register(ChatAppearenceCell.self, forCellReuseIdentifier: "ChatAppearenceCell")
+        tableView.register(SetupChatAppearenceCell.self, forCellReuseIdentifier: "SetupChatAppearenceCell")
         let constraints = [
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -56,7 +59,7 @@ extension AppearanceVC: UITableViewDelegate, UITableViewDataSource {
         headerView.backgroundColor = UIColor(white: 0.95, alpha: 1)
         if section == 0 {
             let textLabel = UILabel()
-            textLabel.text = "CHAT VIEW SAMPLE"
+            textLabel.text = "CHAT VIEW"
             textLabel.textColor = .gray
             textLabel.font = UIFont(name: "Helvetica Neue", size: 14)
             textLabel.numberOfLines = 0
@@ -76,7 +79,7 @@ extension AppearanceVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return 2
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -86,20 +89,16 @@ extension AppearanceVC: UITableViewDelegate, UITableViewDataSource {
     func returnSectionNumOfCells(_ section: Int) -> Int {
         if section == 0 {
             return 1
-        }else if section == 1{
-            return 4
         }else{
-            return 2
+            return 3
         }
     }
     
     func returnHeaderHeight(_ section: Int) -> CGFloat {
         if section == 0 {
             return 45
-        }else if section == 1 {
-            return 15
         }else{
-            return 5
+            return 15
         }
     }
     
@@ -108,9 +107,13 @@ extension AppearanceVC: UITableViewDelegate, UITableViewDataSource {
             tableView.rowHeight = 160
             let cell = tableView.dequeueReusableCell(withIdentifier: "ChatAppearenceCell") as! ChatAppearenceCell
             return cell
+        }else{
+            tableView.rowHeight = 100
+            let cell = tableView.dequeueReusableCell(withIdentifier: "SetupChatAppearenceCell") as! SetupChatAppearenceCell
+            let item = appearanceSettings[indexPath.row]
+            cell.item = item
+            return cell
         }
-        tableView.rowHeight = 44
-        return UITableViewCell()
     }
     
 }
