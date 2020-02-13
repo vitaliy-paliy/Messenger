@@ -12,10 +12,15 @@ class ChatAppearenceCell: UITableViewCell{
     
     var collectionView: UICollectionView!
     
+    var appearenceVC: AppearanceVC! {
+        didSet {
+            setupCollectionView()
+        }
+    }
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .red
-        setupCollectionView()
     }
     
     required init?(coder: NSCoder) {
@@ -52,6 +57,7 @@ extension ChatAppearenceCell: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ChatBubblesAppearenceCell", for: indexPath) as! ChatBubblesAppearenceCell
+        cell.appearenceVC = appearenceVC
         return cell
     }
     

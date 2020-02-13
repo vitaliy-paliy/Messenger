@@ -9,10 +9,11 @@
 import UIKit
 
 class ColorPickerCollectionViewCell: UICollectionViewCell {
-    
+        
     override init(frame: CGRect) {
         super.init(frame: frame)
         layer.cornerRadius = 25
+        layer.borderWidth = 5
         layer.masksToBounds = true
     }
     

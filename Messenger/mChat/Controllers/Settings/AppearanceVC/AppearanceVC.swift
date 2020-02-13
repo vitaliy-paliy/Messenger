@@ -12,6 +12,7 @@ class AppearanceVC: UIViewController {
     
     var tableView = UITableView()
     var appearanceSettings = ["Incoming Color", "Outcoming Color","Chat Background"]
+    var chatBubblesAppearence = ChatBubblesAppearenceCell()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -106,11 +107,14 @@ extension AppearanceVC: UITableViewDelegate, UITableViewDataSource {
         if indexPath.section == 0 {
             tableView.rowHeight = 160
             let cell = tableView.dequeueReusableCell(withIdentifier: "ChatAppearenceCell") as! ChatAppearenceCell
+            cell.appearenceVC = self
             return cell
         }else{
             tableView.rowHeight = 100
             let cell = tableView.dequeueReusableCell(withIdentifier: "SetupChatAppearenceCell") as! SetupChatAppearenceCell
             let item = appearanceSettings[indexPath.row]
+            cell.selectionStyle = .none
+            cell.appearenceVC = self
             cell.item = item
             return cell
         }

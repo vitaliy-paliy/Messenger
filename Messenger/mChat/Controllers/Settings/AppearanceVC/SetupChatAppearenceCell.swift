@@ -8,46 +8,38 @@
 
 import UIKit
 
+struct AvailableColors {
+    var selectedIncomingColor: UIColor!
+    var selectedOutcomingColor: UIColor!
+    var selectedBackgroundColor: UIColor!
+}
+
 class SetupChatAppearenceCell: UITableViewCell {
 
     var collectionView: UICollectionView!
     let cellLabel = UILabel()
-    
-    var colors: [UIColor] = [
+    var appearenceVC: AppearanceVC!
+    var colorsCollection = AvailableColors()
+    var colors = [
         UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1),
         UIColor(displayP3Red: 102/255, green: 190/255, blue: 200/255, alpha: 1),
         UIColor(displayP3Red: 125/255, green: 200/255, blue: 85/255, alpha: 1),
         UIColor(displayP3Red: 90/255, green: 190/255, blue: 125/255, alpha: 1),
         UIColor(displayP3Red: 86/255, green: 130/255, blue: 130/255, alpha: 1),
-        UIColor(displayP3Red: 127/255, green: 140/255, blue: 218/255, alpha: 1),
         UIColor(displayP3Red: 120/255, green: 54/255, blue: 220/255, alpha: 1),
+        UIColor(displayP3Red: 127/255, green: 140/255, blue: 218/255, alpha: 1),
         UIColor(displayP3Red: 240/255, green: 136/255, blue: 171/255, alpha: 1),
         UIColor(displayP3Red: 240/255, green: 131/255, blue: 64/255, alpha: 1),
-        UIColor(displayP3Red: 232/255, green: 78/255, blue: 84/255, alpha: 1),
+        UIColor(displayP3Red: 232/255, green: 78/255, blue: 84/255, alpha: 1)
     ]
     
     var item: String! {
         didSet {
             setupLabel(item)
             setupCollectionView()
-            if item == "IncomingColor" {
-                print("gi")
-            }else{
-                print("mo")
-            }
         }
     }
     
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-
     private func setupLabel(_ text: String) {
         addSubview(cellLabel)
         cellLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -97,11 +89,33 @@ extension SetupChatAppearenceCell: UICollectionViewDelegate, UICollectionViewDat
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ColorPickerCollectionViewCell", for: indexPath) as! ColorPickerCollectionViewCell
         let color = colors[indexPath.row]
         cell.backgroundColor = color
+        if colorsCollection.selectedIncomingColor != nil, colorsCollection.selectedIncomingColor == color {
+            cell.layer.borderColor = AppColors.mainColor.cgColor
+            return cell
+        }else if colorsCollection.selectedOutcomingColor != nil, colorsCollection.selectedOutcomingColor == color {
+            cell.layer.borderColor = AppColors.mainColor.cgColor
+            return cell
+        }else if colorsCollection.selectedBackgroundColor != nil, colorsCollection.selectedBackgroundColor == color {
+            cell.layer.borderColor = AppColors.mainColor.cgColor
+            return cell
+        }
+        cell.layer.borderColor = UIColor(white: 0.95, alpha: 0.3).cgColor
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("hi")
+        let cell = collectionView.cellForItem(at: indexPath) as! ColorPickerCollectionViewCell
+        if cellLabel.text == "Incoming Color" {
+            colorsCollection.selectedIncomingColor = cell.backgroundColor ?? UIColor()
+            appearenceVC.chatBubblesAppearence.incomingView.backgroundColor = colorsCollection.selectedIncomingColor
+        }else if cellLabel.text == "Outcoming Color" {
+            colorsCollection.selectedOutcomingColor = cell.backgroundColor ?? UIColor()
+            appearenceVC.chatBubblesAppearence.outcomingView.backgroundColor = colorsCollection.selectedOutcomingColor
+        }else {
+            colorsCollection.selectedBackgroundColor = cell.backgroundColor ?? UIColor()
+            appearenceVC.chatBubblesAppearence.backgroundColor = colorsCollection.selectedBackgroundColor
+        }
+        collectionView.reloadData()
     }
     
 }

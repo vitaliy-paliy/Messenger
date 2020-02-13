@@ -15,6 +15,12 @@ class ChatBubblesAppearenceCell: UICollectionViewCell {
     let outcomingView = UIView()
     let outcomingLabel = UILabel()
     
+    var appearenceVC: AppearanceVC! {
+        didSet {
+            appearenceVC.chatBubblesAppearence = self
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .green
