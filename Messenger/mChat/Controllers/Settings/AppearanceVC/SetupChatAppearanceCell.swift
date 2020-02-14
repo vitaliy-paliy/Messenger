@@ -1,5 +1,5 @@
 //
-//  SetupChatAppearenceCell.swift
+//  SetupChatAppearanceCell.swift
 //  mChat
 //
 //  Created by Vitaliy Paliy on 2/11/20.
@@ -14,13 +14,14 @@ struct AvailableColors {
     var selectedBackgroundColor: UIColor!
 }
 
-class SetupChatAppearenceCell: UITableViewCell {
+class SetupChatAppearanceCell: UITableViewCell {
 
     var collectionView: UICollectionView!
     let cellLabel = UILabel()
     var appearenceVC: AppearanceVC!
     var colorsCollection = AvailableColors()
     var colors = [
+        .black,
         UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1),
         UIColor(displayP3Red: 102/255, green: 190/255, blue: 200/255, alpha: 1),
         UIColor(displayP3Red: 125/255, green: 200/255, blue: 85/255, alpha: 1),
@@ -35,6 +36,10 @@ class SetupChatAppearenceCell: UITableViewCell {
     
     var item: String! {
         didSet {
+            if item == "Restore to Default Views" {
+                setupRestoreViews()
+                return
+            }
             setupLabel(item)
             setupCollectionView()
         }
@@ -72,10 +77,24 @@ class SetupChatAppearenceCell: UITableViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
+    private func setupRestoreViews() {
+        let label = UILabel()
+        addSubview(label)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Restore to default settings"
+        label.textColor = .red
+        label.font = UIFont.systemFont(ofSize: 16)
+        let constraints = [
+            label.centerYAnchor.constraint(equalTo: centerYAnchor),
+            label.centerXAnchor.constraint(equalTo: centerXAnchor)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
     
 }
 
-extension SetupChatAppearenceCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
+extension SetupChatAppearanceCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return colors.count
@@ -88,7 +107,13 @@ extension SetupChatAppearenceCell: UICollectionViewDelegate, UICollectionViewDat
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ColorPickerCollectionViewCell", for: indexPath) as! ColorPickerCollectionViewCell
         let color = colors[indexPath.row]
-        cell.backgroundColor = color
+        if color == .black {
+            cell.setupPickerImage()
+            cell.backgroundColor = .white
+        }else{
+            cell.backgroundColor = color
+            cell.removePickerImage()
+        }
         if colorsCollection.selectedIncomingColor != nil, colorsCollection.selectedIncomingColor == color {
             cell.layer.borderColor = AppColors.mainColor.cgColor
             return cell
@@ -105,6 +130,10 @@ extension SetupChatAppearenceCell: UICollectionViewDelegate, UICollectionViewDat
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! ColorPickerCollectionViewCell
+        if cell.backgroundColor == .white {
+            print("Do something")
+            return
+        }
         if cellLabel.text == "Incoming Color" {
             colorsCollection.selectedIncomingColor = cell.backgroundColor ?? UIColor()
             appearenceVC.chatBubblesAppearence.incomingView.backgroundColor = colorsCollection.selectedIncomingColor
@@ -112,6 +141,7 @@ extension SetupChatAppearenceCell: UICollectionViewDelegate, UICollectionViewDat
             colorsCollection.selectedOutcomingColor = cell.backgroundColor ?? UIColor()
             appearenceVC.chatBubblesAppearence.outcomingView.backgroundColor = colorsCollection.selectedOutcomingColor
         }else {
+            appearenceVC.chatBubblesAppearence.gradient.removeFromSuperlayer()
             colorsCollection.selectedBackgroundColor = cell.backgroundColor ?? UIColor()
             appearenceVC.chatBubblesAppearence.backgroundColor = colorsCollection.selectedBackgroundColor
         }

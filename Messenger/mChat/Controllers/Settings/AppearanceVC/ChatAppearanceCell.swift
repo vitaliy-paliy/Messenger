@@ -1,5 +1,5 @@
 //
-//  ChatAppearenceCell.swift
+//  ChatAppearanceCell.swift
 //  mChat
 //
 //  Created by Vitaliy Paliy on 2/10/20.
@@ -8,11 +8,11 @@
 
 import UIKit
 
-class ChatAppearenceCell: UITableViewCell{
+class ChatAppearanceCell: UITableViewCell{
     
     var collectionView: UICollectionView!
     
-    var appearenceVC: AppearanceVC! {
+    var appearanceVC: AppearanceVC! {
         didSet {
             setupCollectionView()
         }
@@ -33,7 +33,7 @@ class ChatAppearenceCell: UITableViewCell{
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.register(ChatBubblesAppearenceCell.self, forCellWithReuseIdentifier: "ChatBubblesAppearenceCell")
+        collectionView.register(ChatBubblesAppearanceCell.self, forCellWithReuseIdentifier: "ChatBubblesAppearanceCell")
         let constraints = [
             collectionView.leadingAnchor.constraint(equalTo: leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -45,7 +45,7 @@ class ChatAppearenceCell: UITableViewCell{
         
 }
 
-extension ChatAppearenceCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension ChatAppearanceCell: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 1
@@ -56,8 +56,8 @@ extension ChatAppearenceCell: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ChatBubblesAppearenceCell", for: indexPath) as! ChatBubblesAppearenceCell
-        cell.appearenceVC = appearenceVC
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ChatBubblesAppearanceCell", for: indexPath) as! ChatBubblesAppearanceCell
+        cell.appearanceVC = appearanceVC
         return cell
     }
     

@@ -12,7 +12,7 @@ class AppearanceVC: UIViewController {
     
     var tableView = UITableView()
     var appearanceSettings = ["Incoming Color", "Outcoming Color","Chat Background"]
-    var chatBubblesAppearence = ChatBubblesAppearenceCell()
+    var chatBubblesAppearence = ChatBubblesAppearanceCell()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,8 +40,8 @@ class AppearanceVC: UIViewController {
         tableView.tableFooterView = UIView(frame: .zero)
         tableView.backgroundColor = .clear
         tableView.isScrollEnabled = false
-        tableView.register(ChatAppearenceCell.self, forCellReuseIdentifier: "ChatAppearenceCell")
-        tableView.register(SetupChatAppearenceCell.self, forCellReuseIdentifier: "SetupChatAppearenceCell")
+        tableView.register(ChatAppearanceCell.self, forCellReuseIdentifier: "ChatAppearanceCell")
+        tableView.register(SetupChatAppearanceCell.self, forCellReuseIdentifier: "SetupChatAppearanceCell")
         let constraints = [
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -80,7 +80,7 @@ extension AppearanceVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 3
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -88,10 +88,10 @@ extension AppearanceVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func returnSectionNumOfCells(_ section: Int) -> Int {
-        if section == 0 {
-            return 1
-        }else{
+        if section == 1 {
             return 3
+        }else{
+            return 1
         }
     }
     
@@ -106,18 +106,28 @@ extension AppearanceVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
             tableView.rowHeight = 160
-            let cell = tableView.dequeueReusableCell(withIdentifier: "ChatAppearenceCell") as! ChatAppearenceCell
-            cell.appearenceVC = self
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ChatAppearanceCell") as! ChatAppearanceCell
+            cell.appearanceVC = self
             return cell
-        }else{
+        }else if indexPath.section == 1{
             tableView.rowHeight = 100
-            let cell = tableView.dequeueReusableCell(withIdentifier: "SetupChatAppearenceCell") as! SetupChatAppearenceCell
+            let cell = tableView.dequeueReusableCell(withIdentifier: "SetupChatAppearanceCell") as! SetupChatAppearanceCell
             let item = appearanceSettings[indexPath.row]
             cell.selectionStyle = .none
             cell.appearenceVC = self
             cell.item = item
             return cell
+        }else{
+            tableView.rowHeight = 44
+            let cell = tableView.dequeueReusableCell(withIdentifier: "SetupChatAppearanceCell") as! SetupChatAppearanceCell
+            cell.item = "Restore to Default Views"
+            return cell
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard indexPath.section == 2 else { return }
+        chatBubblesAppearence.setupStandardBackground()
     }
     
 }

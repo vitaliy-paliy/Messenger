@@ -9,7 +9,9 @@
 import UIKit
 
 class ColorPickerCollectionViewCell: UICollectionViewCell {
-        
+       
+    var pickerImage = UIImageView()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         layer.cornerRadius = 25
@@ -21,6 +23,22 @@ class ColorPickerCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func setupPickerImage() {
+        addSubview(pickerImage)
+        pickerImage.translatesAutoresizingMaskIntoConstraints = false
+        pickerImage.contentMode = .scaleAspectFill
+        pickerImage.image = UIImage(named: "art_pallete")
+        let constraints = [
+            pickerImage.leadingAnchor.constraint(equalTo: leadingAnchor),
+            pickerImage.trailingAnchor.constraint(equalTo: trailingAnchor),
+            pickerImage.topAnchor.constraint(equalTo: topAnchor),
+            pickerImage.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
     
+    func removePickerImage() {
+        pickerImage.removeFromSuperview()
+    }
     
 }

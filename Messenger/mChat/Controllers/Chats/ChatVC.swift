@@ -27,8 +27,8 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupChatBackground()
         setupChat()
-        view.backgroundColor = UIColor(white: 0.95, alpha: 1)
         notificationCenterHandler()
     }
 
@@ -44,6 +44,12 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+    
+    func setupChatBackground() {
+        let gradient = setupGradientLayer()
+        gradient.frame = view.frame
+        view.layer.insertSublayer(gradient, at: 0)
     }
     
     override func viewSafeAreaInsetsDidChange() {

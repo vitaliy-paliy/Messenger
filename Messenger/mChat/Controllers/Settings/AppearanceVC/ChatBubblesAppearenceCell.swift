@@ -1,5 +1,5 @@
 //
-//  ChatBubblesAppearenceCell.swift
+//  ChatBubblesAppearanceCell.swift
 //  mChat
 //
 //  Created by Vitaliy Paliy on 2/10/20.
@@ -8,24 +8,32 @@
 
 import UIKit
 
-class ChatBubblesAppearenceCell: UICollectionViewCell {
+class ChatBubblesAppearanceCell: UICollectionViewCell {
     
+    let gradient = UIViewController.init().setupGradientLayer()
     let incomingView = UIView()
     let incomingLabel = UILabel()
     let outcomingView = UIView()
     let outcomingLabel = UILabel()
     
-    var appearenceVC: AppearanceVC! {
+    var appearanceVC: AppearanceVC! {
         didSet {
-            appearenceVC.chatBubblesAppearence = self
+            appearanceVC.chatBubblesAppearence = self
         }
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .green
+        setupStandardBackground()
         setupIncomingView()
         setupOutcomingView()
+    }
+    
+    func setupStandardBackground() {
+        gradient.frame = frame
+        layer.insertSublayer(gradient, at: 0)
+        incomingView.backgroundColor = .white
+        outcomingView.backgroundColor = UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1)
     }
     
     required init?(coder: NSCoder) {
@@ -37,7 +45,6 @@ class ChatBubblesAppearenceCell: UICollectionViewCell {
         incomingView.translatesAutoresizingMaskIntoConstraints = false
         incomingView.layer.cornerRadius = 16
         incomingView.layer.masksToBounds = true
-        incomingView.backgroundColor = .white
         let constraints = [
             incomingView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
             incomingView.topAnchor.constraint(equalTo: topAnchor, constant: 16),
@@ -53,7 +60,6 @@ class ChatBubblesAppearenceCell: UICollectionViewCell {
         outcomingView.translatesAutoresizingMaskIntoConstraints = false
         outcomingView.layer.cornerRadius = 16
         outcomingView.layer.masksToBounds = true
-        outcomingView.backgroundColor = UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1)
         let constraints = [
             outcomingView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
             outcomingView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
