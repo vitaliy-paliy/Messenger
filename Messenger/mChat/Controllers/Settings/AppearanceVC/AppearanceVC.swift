@@ -7,12 +7,16 @@
 //
 
 import UIKit
+import ChromaColorPicker
 
-class AppearanceVC: UIViewController {
-    
+class AppearanceVC: UIViewController, ChromaColorPickerDelegate {
+            
     var tableView = UITableView()
     var appearanceSettings = ["Incoming Color", "Outcoming Color","Chat Background"]
     var chatBubblesAppearence = ChatBubblesAppearanceCell()
+    var chatAppearanceCell = SetupChatAppearanceCell()
+    let blurView = UIVisualEffectView()
+    let colorPicker = ChromaColorPicker()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,6 +53,55 @@ class AppearanceVC: UIViewController {
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ]
         NSLayoutConstraint.activate(constraints)
+    }
+ 
+    func openCustomColorPickerView(_ cell: SetupChatAppearanceCell) {
+        chatAppearanceCell = cell
+        navigationController?.navigationBar.isHidden = true
+        setupBlurView()
+        view.addSubview(colorPicker)
+        colorPicker.delegate = self
+        colorPicker.translatesAutoresizingMaskIntoConstraints = false
+        colorPicker.padding = 0
+        colorPicker.backgroundColor = .clear
+        colorPicker.hexLabel.isHidden = true
+        let constraints = [
+            colorPicker.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            colorPicker.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            colorPicker.widthAnchor.constraint(equalToConstant: 300),
+            colorPicker.heightAnchor.constraint(equalToConstant: 300)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    func setupBlurView(){
+        blurView.frame = view.frame
+        blurView.effect = UIBlurEffect(style: .dark)
+        view.addSubview(blurView)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(blurViewTapped))
+        blurView.addGestureRecognizer(tap)
+    }
+    
+    @objc func blurViewTapped() {
+        blurView.removeFromSuperview()
+        navigationController?.navigationBar.isHidden = false
+        colorPicker.removeFromSuperview()
+    }
+    
+    func colorPickerDidChooseColor(_ colorPicker: ChromaColorPicker, color: UIColor) {
+        blurViewTapped()
+        changeAppearanceColor(color)
+    }
+    
+    func changeAppearanceColor(_ color: UIColor) {
+        if chatAppearanceCell.cellLabel.text == "Incoming Color" {
+            chatBubblesAppearence.incomingView.backgroundColor = color
+        }else if chatAppearanceCell.cellLabel.text == "Outcoming Color"{
+            chatBubblesAppearence.outcomingView.backgroundColor = color
+        }else{
+            chatBubblesAppearence.gradient.removeFromSuperlayer()
+            chatBubblesAppearence.backgroundColor = color
+        }
     }
     
 }

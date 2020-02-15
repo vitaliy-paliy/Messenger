@@ -15,7 +15,6 @@ class ColorPickerCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         layer.cornerRadius = 25
-        layer.borderWidth = 5
         layer.masksToBounds = true
     }
     
@@ -27,7 +26,7 @@ class ColorPickerCollectionViewCell: UICollectionViewCell {
         addSubview(pickerImage)
         pickerImage.translatesAutoresizingMaskIntoConstraints = false
         pickerImage.contentMode = .scaleAspectFill
-        pickerImage.image = UIImage(named: "art_pallete")
+        pickerImage.image = UIImage(named: "customColor")
         let constraints = [
             pickerImage.leadingAnchor.constraint(equalTo: leadingAnchor),
             pickerImage.trailingAnchor.constraint(equalTo: trailingAnchor),

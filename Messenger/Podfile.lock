@@ -1,4 +1,5 @@
 PODS:
+  - ChromaColorPicker (1.8.0)
   - Firebase/Analytics (6.15.0):
     - Firebase/Core
   - Firebase/Auth (6.15.0):
@@ -104,6 +105,7 @@ PODS:
   - SkyFloatingLabelTextField (3.8.0)
 
 DEPENDENCIES:
+  - ChromaColorPicker
   - Firebase/Analytics
   - Firebase/Auth
   - Firebase/Core
@@ -116,6 +118,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - ChromaColorPicker
     - Firebase
     - FirebaseAnalytics
     - FirebaseAuth
@@ -142,6 +145,7 @@ SPEC REPOS:
     - SkyFloatingLabelTextField
 
 SPEC CHECKSUMS:
+  ChromaColorPicker: 2e47f5acb805d53350fb7af1b511bc534b38ee31
   Firebase: 5d77105d9740a07ca6b16927ca971db7e860faaf
   FirebaseAnalytics: e83e64b1231dedcd9ddd4bdecd9bcfd6ba341679
   FirebaseAuth: ce45d7c5d46bed90159f3a73b6efbe8976ed3573
@@ -167,6 +171,6 @@ SPEC CHECKSUMS:
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   SkyFloatingLabelTextField: 5a338412114808e961fe2d14ea2c5452c8b6e4aa
 
-PODFILE CHECKSUM: 47768e4b59d658857995ba97e79a33372c011ef4
+PODFILE CHECKSUM: 83547bf74e7f4f65d138fd2d8e516f8f3d32393b
 
 COCOAPODS: 1.8.4

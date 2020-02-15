@@ -112,6 +112,7 @@ extension SetupChatAppearanceCell: UICollectionViewDelegate, UICollectionViewDat
             cell.backgroundColor = .white
         }else{
             cell.backgroundColor = color
+            cell.layer.borderWidth = 5
             cell.removePickerImage()
         }
         if colorsCollection.selectedIncomingColor != nil, colorsCollection.selectedIncomingColor == color {
@@ -131,7 +132,7 @@ extension SetupChatAppearanceCell: UICollectionViewDelegate, UICollectionViewDat
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cell = collectionView.cellForItem(at: indexPath) as! ColorPickerCollectionViewCell
         if cell.backgroundColor == .white {
-            print("Do something")
+            appearenceVC.openCustomColorPickerView(self)
             return
         }
         if cellLabel.text == "Incoming Color" {
