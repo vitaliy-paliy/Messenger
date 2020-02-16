@@ -32,8 +32,8 @@ class ChatBubblesAppearanceCell: UICollectionViewCell {
     func setupStandardBackground() {
         gradient.frame = frame
         layer.insertSublayer(gradient, at: 0)
-        incomingView.backgroundColor = .white
-        outcomingView.backgroundColor = UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1)
+        incomingView.backgroundColor = AppColors.selectedIncomingColor
+        outcomingView.backgroundColor = AppColors.selectedOutcomingColor
     }
     
     required init?(coder: NSCoder) {

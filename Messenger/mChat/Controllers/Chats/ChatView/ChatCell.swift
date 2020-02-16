@@ -28,9 +28,9 @@ class ChatCell: UICollectionViewCell {
     
     var isIncoming: Bool! {
         didSet{
-            messageBackground.backgroundColor = isIncoming ?  .white  : UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1)
+            messageBackground.backgroundColor = isIncoming ?  AppColors.selectedIncomingColor  : AppColors.selectedOutcomingColor
             message.textColor = isIncoming ? .black : .white
-            let userColor = isIncoming ? UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1) : .white
+            let userColor = isIncoming ? AppColors.selectedOutcomingColor : AppColors.selectedIncomingColor
             responseLine.backgroundColor = userColor
             responseNameLabel.textColor = userColor
             responseTextMessage.textColor = userColor

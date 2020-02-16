@@ -20,7 +20,7 @@ extension ChatVC {
     }
     
     func responseMessageLine(_ message: Messages, _ fN: String?){
-        userResponse.lineView.backgroundColor = UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1)
+        userResponse.lineView.backgroundColor = AppColors.selectedOutcomingColor
         userResponse.lineView.layer.cornerRadius = 1
         userResponse.lineView.layer.masksToBounds = true
         messageContainer.addSubview(userResponse.lineView)
@@ -81,7 +81,7 @@ extension ChatVC {
         messageContainer.addSubview(userResponse.nameLabel)
         userResponse.nameLabel.translatesAutoresizingMaskIntoConstraints = false
         userResponse.nameLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 16)
-        userResponse.nameLabel.textColor = UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1)
+        userResponse.nameLabel.textColor = AppColors.selectedOutcomingColor
         userResponse.nameLabel.text = name
         userResponse.nameLabelConstraint = userResponse.nameLabel.leadingAnchor.constraint(equalTo: userResponse.lineView.trailingAnchor, constant: 8)
         let constraints = [

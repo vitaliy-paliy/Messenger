@@ -8,18 +8,12 @@
 
 import UIKit
 
-struct AvailableColors {
-    var selectedIncomingColor: UIColor!
-    var selectedOutcomingColor: UIColor!
-    var selectedBackgroundColor: UIColor!
-}
-
 class SetupChatAppearanceCell: UITableViewCell {
 
     var collectionView: UICollectionView!
     let cellLabel = UILabel()
     var appearenceVC: AppearanceVC!
-    var colorsCollection = AvailableColors()
+    
     var colors = [
         .black,
         UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1),
@@ -115,13 +109,13 @@ extension SetupChatAppearanceCell: UICollectionViewDelegate, UICollectionViewDat
             cell.layer.borderWidth = 5
             cell.removePickerImage()
         }
-        if colorsCollection.selectedIncomingColor != nil, colorsCollection.selectedIncomingColor == color {
+        if AppColors.selectedIncomingColor == color {
             cell.layer.borderColor = AppColors.mainColor.cgColor
             return cell
-        }else if colorsCollection.selectedOutcomingColor != nil, colorsCollection.selectedOutcomingColor == color {
+        }else if AppColors.selectedOutcomingColor == color {
             cell.layer.borderColor = AppColors.mainColor.cgColor
             return cell
-        }else if colorsCollection.selectedBackgroundColor != nil, colorsCollection.selectedBackgroundColor == color {
+        }else if AppColors.selectedBackgroundColor == color {
             cell.layer.borderColor = AppColors.mainColor.cgColor
             return cell
         }
@@ -136,15 +130,15 @@ extension SetupChatAppearanceCell: UICollectionViewDelegate, UICollectionViewDat
             return
         }
         if cellLabel.text == "Incoming Color" {
-            colorsCollection.selectedIncomingColor = cell.backgroundColor ?? UIColor()
-            appearenceVC.chatBubblesAppearence.incomingView.backgroundColor = colorsCollection.selectedIncomingColor
+            AppColors.selectedIncomingColor = cell.backgroundColor ?? UIColor.white
+            appearenceVC.chatBubblesAppearence.incomingView.backgroundColor = AppColors.selectedIncomingColor
         }else if cellLabel.text == "Outcoming Color" {
-            colorsCollection.selectedOutcomingColor = cell.backgroundColor ?? UIColor()
-            appearenceVC.chatBubblesAppearence.outcomingView.backgroundColor = colorsCollection.selectedOutcomingColor
+            AppColors.selectedOutcomingColor = cell.backgroundColor ?? UIColor.white
+            appearenceVC.chatBubblesAppearence.outcomingView.backgroundColor = AppColors.selectedOutcomingColor
         }else {
             appearenceVC.chatBubblesAppearence.gradient.removeFromSuperlayer()
-            colorsCollection.selectedBackgroundColor = cell.backgroundColor ?? UIColor()
-            appearenceVC.chatBubblesAppearence.backgroundColor = colorsCollection.selectedBackgroundColor
+            AppColors.selectedBackgroundColor = cell.backgroundColor ?? UIColor.white
+            appearenceVC.chatBubblesAppearence.backgroundColor = AppColors.selectedBackgroundColor
         }
         collectionView.reloadData()
     }
