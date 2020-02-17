@@ -24,16 +24,16 @@ class ChatBubblesAppearanceCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupStandardBackground()
+        setupStandardColors()
         setupIncomingView()
         setupOutcomingView()
     }
     
-    func setupStandardBackground() {
+    func setupStandardColors() {
         gradient.frame = frame
         layer.insertSublayer(gradient, at: 0)
-        incomingView.backgroundColor = AppColors.selectedIncomingColor
-        outcomingView.backgroundColor = AppColors.selectedOutcomingColor
+        incomingView.backgroundColor = .white
+        outcomingView.backgroundColor = UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1)
     }
     
     required init?(coder: NSCoder) {

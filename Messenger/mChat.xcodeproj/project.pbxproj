@@ -309,6 +309,7 @@
 				CB16022A23EBA49B0091AF40 /* FriendRequestVC.swift */,
 				CB4C15F423ECF43500B964D8 /* FriendRequestNetworking.swift */,
 				CB16022C23EBA80B0091AF40 /* FriendRequestCell.swift */,
+				CB1EA19623EF9FB500751953 /* RequestButtonView.swift */,
 			);
 			path = FriendRequestVC;
 			sourceTree = "<group>";
@@ -544,7 +545,6 @@
 			isa = PBXGroup;
 			children = (
 				CBF644F32381C23A004830C6 /* ContactsVC.swift */,
-				CB1EA19623EF9FB500751953 /* RequestButtonView.swift */,
 				CB639E0223D0E000000748A0 /* ContactsNetworking.swift */,
 				CBF644FC2381D384004830C6 /* ContactsCell.swift */,
 				CB47B66823D248FF00329470 /* InfoMenuView.swift */,

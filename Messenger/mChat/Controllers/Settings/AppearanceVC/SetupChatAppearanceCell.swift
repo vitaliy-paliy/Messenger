@@ -109,13 +109,13 @@ extension SetupChatAppearanceCell: UICollectionViewDelegate, UICollectionViewDat
             cell.layer.borderWidth = 5
             cell.removePickerImage()
         }
-        if AppColors.selectedIncomingColor == color {
+        if AppColors.selectedIncomingColor == color, cellLabel.text == "Incoming Color"{
             cell.layer.borderColor = AppColors.mainColor.cgColor
             return cell
-        }else if AppColors.selectedOutcomingColor == color {
+        }else if AppColors.selectedOutcomingColor == color, cellLabel.text == "Outcoming Color"{
             cell.layer.borderColor = AppColors.mainColor.cgColor
             return cell
-        }else if AppColors.selectedBackgroundColor == color {
+        }else if AppColors.selectedBackgroundColor == color, cellLabel.text == "Chat Background"{
             cell.layer.borderColor = AppColors.mainColor.cgColor
             return cell
         }

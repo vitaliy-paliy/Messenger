@@ -40,8 +40,8 @@ class RequestButtonView: UIButton {
         circleView.layer.masksToBounds = true
         circleView.isHidden = true
         let constraints = [
-            circleView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 12),
-            circleView.topAnchor.constraint(equalTo: topAnchor, constant: -6),
+            circleView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 14),
+            circleView.topAnchor.constraint(equalTo: topAnchor, constant: -10),
             circleView.widthAnchor.constraint(equalToConstant: 18),
             circleView.heightAnchor.constraint(equalToConstant: 18),
         ]
@@ -49,7 +49,7 @@ class RequestButtonView: UIButton {
     }
     
     private func setupRequestNumberLabel() {
-        addSubview(requestNumLabel)
+        circleView.addSubview(requestNumLabel)
         requestNumLabel.translatesAutoresizingMaskIntoConstraints = false
         requestNumLabel.textColor = .white
         requestNumLabel.font = UIFont.boldSystemFont(ofSize: 12)

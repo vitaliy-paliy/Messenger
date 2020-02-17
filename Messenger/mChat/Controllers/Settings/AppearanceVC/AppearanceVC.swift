@@ -180,7 +180,8 @@ extension AppearanceVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard indexPath.section == 2 else { return }
-        chatBubblesAppearence.setupStandardBackground()
+        tableView.deselectRow(at: indexPath, animated: true)
+        chatBubblesAppearence.setupStandardColors()
     }
     
 }
