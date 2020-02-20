@@ -14,4 +14,6 @@ class AppColors {
     static var selectedIncomingColor = UIColor.white
     static var selectedOutcomingColor = UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1)
     static var selectedBackgroundColor = UIColor(white: 0.95, alpha: 1)
+    static var selectedIncomingTextColor = UIColor.black
+    static var selectedOutcomingTextColor = UIColor.white
 }

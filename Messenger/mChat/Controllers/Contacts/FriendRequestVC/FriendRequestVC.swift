@@ -54,7 +54,7 @@ class FriendRequestVC: UIViewController {
         ]
         NSLayoutConstraint.activate(constraints)
     }
- 
+     
     func addButtonPressed(cell: FriendRequestCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         let friend = friendRequests[indexPath.row]

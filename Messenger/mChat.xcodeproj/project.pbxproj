@@ -93,6 +93,9 @@
 		CBCC30802383634C00E36E39 /* UsersListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCC307F2383634C00E36E39 /* UsersListVC.swift */; };
 		CBCC3084238365B500E36E39 /* UsersListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCC3083238365B500E36E39 /* UsersListCell.swift */; };
 		CBCC30862383722500E36E39 /* AddFriendVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCC30852383722500E36E39 /* AddFriendVC.swift */; };
+		CBCF41A423FE14A8007B8245 /* ChatColorPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCF41A323FE14A8007B8245 /* ChatColorPickerCell.swift */; };
+		CBCF41A623FE1D2D007B8245 /* SelectViewColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCF41A523FE1D2D007B8245 /* SelectViewColorCell.swift */; };
+		CBCF41A823FE1F26007B8245 /* ChatViewColorPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCF41A723FE1F26007B8245 /* ChatViewColorPickerCell.swift */; };
 		CBD040EF23A30D15005FBD5A /* recentTyping.json in Resources */ = {isa = PBXBuildFile; fileRef = CBD040EE23A30D15005FBD5A /* recentTyping.json */; };
 		CBDBAE5323BC1D5E00A56746 /* MessageContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDBAE5223BC1D5E00A56746 /* MessageContainer.swift */; };
 		CBDBAE5523BC3C9200A56746 /* LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDBAE5423BC3C9200A56746 /* LoadingIndicator.swift */; };
@@ -101,8 +104,6 @@
 		CBDCE64723E665A000981DDE /* UserListNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDCE64623E665A000981DDE /* UserListNetworking.swift */; };
 		CBECFED523F0C863005FAB35 /* AppearanceVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBECFED423F0C863005FAB35 /* AppearanceVC.swift */; };
 		CBF05E4523A086A400EF295F /* NavigationItem + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF05E4423A086A400EF295F /* NavigationItem + Extension.swift */; };
-		CBF10A7A23F38ABD00B59EF8 /* SetupChatAppearanceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF10A7923F38ABD00B59EF8 /* SetupChatAppearanceCell.swift */; };
-		CBF10A7C23F390C600B59EF8 /* ColorPickerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF10A7B23F390C600B59EF8 /* ColorPickerCollectionViewCell.swift */; };
 		CBF644F12381C204004830C6 /* ChatTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF644F02381C204004830C6 /* ChatTabBar.swift */; };
 		CBF644F42381C23A004830C6 /* ContactsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF644F32381C23A004830C6 /* ContactsVC.swift */; };
 		CBF644F72381C26B004830C6 /* ConversationsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBF644F62381C26B004830C6 /* ConversationsVC.swift */; };
@@ -206,6 +207,9 @@
 		CBCC307F2383634C00E36E39 /* UsersListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersListVC.swift; sourceTree = "<group>"; };
 		CBCC3083238365B500E36E39 /* UsersListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersListCell.swift; sourceTree = "<group>"; };
 		CBCC30852383722500E36E39 /* AddFriendVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendVC.swift; sourceTree = "<group>"; };
+		CBCF41A323FE14A8007B8245 /* ChatColorPickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatColorPickerCell.swift; sourceTree = "<group>"; };
+		CBCF41A523FE1D2D007B8245 /* SelectViewColorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectViewColorCell.swift; sourceTree = "<group>"; };
+		CBCF41A723FE1F26007B8245 /* ChatViewColorPickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewColorPickerCell.swift; sourceTree = "<group>"; };
 		CBD040EE23A30D15005FBD5A /* recentTyping.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = recentTyping.json; sourceTree = "<group>"; };
 		CBDBAE5223BC1D5E00A56746 /* MessageContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageContainer.swift; sourceTree = "<group>"; };
 		CBDBAE5423BC3C9200A56746 /* LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicator.swift; sourceTree = "<group>"; };
@@ -214,8 +218,6 @@
 		CBDCE64623E665A000981DDE /* UserListNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserListNetworking.swift; sourceTree = "<group>"; };
 		CBECFED423F0C863005FAB35 /* AppearanceVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppearanceVC.swift; sourceTree = "<group>"; };
 		CBF05E4423A086A400EF295F /* NavigationItem + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NavigationItem + Extension.swift"; sourceTree = "<group>"; };
-		CBF10A7923F38ABD00B59EF8 /* SetupChatAppearanceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetupChatAppearanceCell.swift; sourceTree = "<group>"; };
-		CBF10A7B23F390C600B59EF8 /* ColorPickerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPickerCollectionViewCell.swift; sourceTree = "<group>"; };
 		CBF644F02381C204004830C6 /* ChatTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTabBar.swift; sourceTree = "<group>"; };
 		CBF644F32381C23A004830C6 /* ContactsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsVC.swift; sourceTree = "<group>"; };
 		CBF644F62381C26B004830C6 /* ConversationsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationsVC.swift; sourceTree = "<group>"; };
@@ -524,8 +526,9 @@
 				CBECFED423F0C863005FAB35 /* AppearanceVC.swift */,
 				CB7ACB2A23F21CBC00DBE0FF /* ChatAppearanceCell.swift */,
 				CB7ACB2C23F2220D00DBE0FF /* ChatBubblesAppearenceCell.swift */,
-				CBF10A7923F38ABD00B59EF8 /* SetupChatAppearanceCell.swift */,
-				CBF10A7B23F390C600B59EF8 /* ColorPickerCollectionViewCell.swift */,
+				CBCF41A323FE14A8007B8245 /* ChatColorPickerCell.swift */,
+				CBCF41A523FE1D2D007B8245 /* SelectViewColorCell.swift */,
+				CBCF41A723FE1F26007B8245 /* ChatViewColorPickerCell.swift */,
 			);
 			path = AppearanceVC;
 			sourceTree = "<group>";
@@ -798,12 +801,14 @@
 				CBF907EC2380B83500EF8925 /* SceneDelegate.swift in Sources */,
 				CB513C3923BE6CB900BE8907 /* ForwardToSend + Protocol.swift in Sources */,
 				CB4CF77B23943B3600AC2E31 /* NewConversationVC.swift in Sources */,
+				CBCF41A423FE14A8007B8245 /* ChatColorPickerCell.swift in Sources */,
 				CB513C3B23BE717300BE8907 /* FriendInformationVC.swift in Sources */,
 				CB4B6F7D23BBB6A400CDA4B3 /* UserResponse.swift in Sources */,
 				CB16022B23EBA49B0091AF40 /* FriendRequestVC.swift in Sources */,
 				CB639E0323D0E000000748A0 /* ContactsNetworking.swift in Sources */,
 				CB902B4623CEA96D0091221D /* ScrollToSelectedUserProtocol + Extension.swift in Sources */,
 				CBDBAE5323BC1D5E00A56746 /* MessageContainer.swift in Sources */,
+				CBCF41A623FE1D2D007B8245 /* SelectViewColorCell.swift in Sources */,
 				CB27173D2381EFFA003A4D46 /* SelectProfileImageVC.swift in Sources */,
 				CBAA928223DFBC1F00572978 /* SignUpView.swift in Sources */,
 				CB4FEA9023CA446F006B8B08 /* UserInfoTab.swift in Sources */,
@@ -814,7 +819,6 @@
 				CB4CC233239DD71B0086DEA9 /* Calendar + Extension.swift in Sources */,
 				CB4E539223CE963A0000F33B /* MapsNetworking.swift in Sources */,
 				CBCC3084238365B500E36E39 /* UsersListCell.swift in Sources */,
-				CBF10A7A23F38ABD00B59EF8 /* SetupChatAppearanceCell.swift in Sources */,
 				CBB19BE723E3CA1F0010511C /* LogoVC.swift in Sources */,
 				CBF644FD2381D384004830C6 /* ContactsCell.swift in Sources */,
 				CB50E72623C262000055BF78 /* ChatAudio.swift in Sources */,
@@ -838,6 +842,7 @@
 				CB4FEA9823CA7370006B8B08 /* StylesCollectionViewCell.swift in Sources */,
 				CB2580BD23CFAE1200F9B088 /* MapExitButton.swift in Sources */,
 				CBF644F42381C23A004830C6 /* ContactsVC.swift in Sources */,
+				CBCF41A823FE1F26007B8245 /* ChatViewColorPickerCell.swift in Sources */,
 				CB99D08723D5397E008645D6 /* AuthNetworking.swift in Sources */,
 				CB8916FE23BA8D1D0019CBE9 /* ChatKit.swift in Sources */,
 				CBDCE64723E665A000981DDE /* UserListNetworking.swift in Sources */,
@@ -849,7 +854,6 @@
 				CB5189D623E268FD00165A63 /* NetworkingLoadingIndicator.swift in Sources */,
 				CB1EA19323EF8B0800751953 /* AppColors.swift in Sources */,
 				CB513C4223BEB14E00BE8907 /* SharedMediaVC.swift in Sources */,
-				CBF10A7C23F390C600B59EF8 /* ColorPickerCollectionViewCell.swift in Sources */,
 				CB4E41F523BD7BE200D476E5 /* ToolsMenu.swift in Sources */,
 				CBFC53B92387259E00CC4C91 /* Messages.swift in Sources */,
 				CB513C4423BEBB4B00BE8907 /* SharedMediaCell.swift in Sources */,

@@ -7,16 +7,13 @@
 //
 
 import UIKit
-import ChromaColorPicker
 
-class AppearanceVC: UIViewController, ChromaColorPickerDelegate {
-            
+class AppearanceVC: UIViewController{
+    
     var tableView = UITableView()
     var appearanceSettings = ["Incoming Color", "Outcoming Color","Chat Background"]
     var chatBubblesAppearence = ChatBubblesAppearanceCell()
-    var chatAppearanceCell = SetupChatAppearanceCell()
     let blurView = UIVisualEffectView()
-    let colorPicker = ChromaColorPicker()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,9 +40,9 @@ class AppearanceVC: UIViewController, ChromaColorPickerDelegate {
         tableView.dataSource = self
         tableView.tableFooterView = UIView(frame: .zero)
         tableView.backgroundColor = .clear
-        tableView.isScrollEnabled = false
         tableView.register(ChatAppearanceCell.self, forCellReuseIdentifier: "ChatAppearanceCell")
-        tableView.register(SetupChatAppearanceCell.self, forCellReuseIdentifier: "SetupChatAppearanceCell")
+        tableView.register(ChatColorPickerCell.self, forCellReuseIdentifier: "ChatColorPickerCell")
+        tableView.register(SelectViewColorCell.self, forCellReuseIdentifier: "SelectViewColorCell")
         let constraints = [
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -54,71 +51,22 @@ class AppearanceVC: UIViewController, ChromaColorPickerDelegate {
         ]
         NSLayoutConstraint.activate(constraints)
     }
- 
-    func openCustomColorPickerView(_ cell: SetupChatAppearanceCell) {
-        chatAppearanceCell = cell
-        navigationController?.navigationBar.isHidden = true
-        setupBlurView()
-        view.addSubview(colorPicker)
-        colorPicker.delegate = self
-        colorPicker.translatesAutoresizingMaskIntoConstraints = false
-        colorPicker.padding = 0
-        colorPicker.backgroundColor = .clear
-        colorPicker.hexLabel.isHidden = true
-        let constraints = [
-            colorPicker.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            colorPicker.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            colorPicker.widthAnchor.constraint(equalToConstant: 300),
-            colorPicker.heightAnchor.constraint(equalToConstant: 300)
-        ]
-        NSLayoutConstraint.activate(constraints)
-    }
-    
-    func setupBlurView(){
-        blurView.frame = view.frame
-        blurView.effect = UIBlurEffect(style: .dark)
-        view.addSubview(blurView)
-        let tap = UITapGestureRecognizer(target: self, action: #selector(blurViewTapped))
-        blurView.addGestureRecognizer(tap)
-    }
-    
-    @objc func blurViewTapped() {
-        blurView.removeFromSuperview()
-        navigationController?.navigationBar.isHidden = false
-        colorPicker.removeFromSuperview()
-    }
-    
-    func colorPickerDidChooseColor(_ colorPicker: ChromaColorPicker, color: UIColor) {
-        blurViewTapped()
-        changeAppearanceColor(color)
-    }
-    
-    func changeAppearanceColor(_ color: UIColor) {
-        if chatAppearanceCell.cellLabel.text == "Incoming Color" {
-            chatBubblesAppearence.incomingView.backgroundColor = color
-        }else if chatAppearanceCell.cellLabel.text == "Outcoming Color"{
-            chatBubblesAppearence.outcomingView.backgroundColor = color
-        }else{
-            chatBubblesAppearence.gradient.removeFromSuperlayer()
-            chatBubblesAppearence.backgroundColor = color
-        }
-    }
     
 }
 
 extension AppearanceVC: UITableViewDelegate, UITableViewDataSource {
-        
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
         headerView.backgroundColor = UIColor(white: 0.95, alpha: 1)
         if section == 0 {
             let textLabel = UILabel()
-            textLabel.text = "CHAT VIEW"
             textLabel.textColor = .gray
             textLabel.font = UIFont(name: "Helvetica Neue", size: 14)
             textLabel.numberOfLines = 0
             headerView.addSubview(textLabel)
             textLabel.translatesAutoresizingMaskIntoConstraints = false
+            textLabel.text = "CHAT VIEW"
             let constraints = [
                 textLabel.leadingAnchor.constraint(equalTo: headerView.leadingAnchor, constant: 8),
                 textLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -4)
@@ -142,7 +90,7 @@ extension AppearanceVC: UITableViewDelegate, UITableViewDataSource {
     
     func returnSectionNumOfCells(_ section: Int) -> Int {
         if section == 1 {
-            return 3
+            return 1
         }else{
             return 1
         }
@@ -152,7 +100,7 @@ extension AppearanceVC: UITableViewDelegate, UITableViewDataSource {
         if section == 0 {
             return 45
         }else{
-            return 15
+            return 5
         }
     }
     
@@ -163,19 +111,15 @@ extension AppearanceVC: UITableViewDelegate, UITableViewDataSource {
             cell.appearanceVC = self
             return cell
         }else if indexPath.section == 1{
-            tableView.rowHeight = 100
-            let cell = tableView.dequeueReusableCell(withIdentifier: "SetupChatAppearanceCell") as! SetupChatAppearanceCell
-            let item = appearanceSettings[indexPath.row]
-            cell.selectionStyle = .none
-            cell.appearenceVC = self
-            cell.item = item
+            tableView.rowHeight = 300
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ChatColorPickerCell") as! ChatColorPickerCell
             return cell
         }else{
-            tableView.rowHeight = 44
-            let cell = tableView.dequeueReusableCell(withIdentifier: "SetupChatAppearanceCell") as! SetupChatAppearanceCell
-            cell.item = "Restore to Default Views"
+            tableView.rowHeight = 100
+            let cell = tableView.dequeueReusableCell(withIdentifier: "SelectViewColorCell") as! SelectViewColorCell
             return cell
         }
+
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

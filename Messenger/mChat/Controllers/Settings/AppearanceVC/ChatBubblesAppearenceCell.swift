@@ -21,7 +21,7 @@ class ChatBubblesAppearanceCell: UICollectionViewCell {
             appearanceVC.chatBubblesAppearence = self
         }
     }
-    
+        
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupStandardColors()
@@ -32,10 +32,10 @@ class ChatBubblesAppearanceCell: UICollectionViewCell {
     func setupStandardColors() {
         gradient.frame = frame
         layer.insertSublayer(gradient, at: 0)
-        incomingView.backgroundColor = .white
-        outcomingView.backgroundColor = UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1)
+        incomingView.backgroundColor = AppColors.selectedIncomingColor
+        outcomingView.backgroundColor = AppColors.selectedOutcomingColor
     }
-    
+        
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -74,7 +74,7 @@ class ChatBubblesAppearanceCell: UICollectionViewCell {
         incomingView.addSubview(incomingLabel)
         incomingLabel.translatesAutoresizingMaskIntoConstraints = false
         incomingLabel.text = "Hey, how are you? Nice to see you here!🙂"
-        incomingLabel.textColor = .black
+        incomingLabel.textColor = AppColors.selectedIncomingTextColor
         incomingLabel.numberOfLines = 0
         incomingLabel.font = UIFont(name: "Helvetica Neue", size: 16)
         let constraints = [
@@ -89,7 +89,7 @@ class ChatBubblesAppearanceCell: UICollectionViewCell {
         outcomingView.addSubview(outcomingLabel)
         outcomingLabel.translatesAutoresizingMaskIntoConstraints = false
         outcomingLabel.text = "Hey! I'm great. Do you want to go to the movies tonight?"
-        outcomingLabel.textColor = .white
+        outcomingLabel.textColor = AppColors.selectedOutcomingTextColor
         outcomingLabel.numberOfLines = 0
         outcomingLabel.font = UIFont(name: "Helvetica Neue", size: 16)
         let constraints = [

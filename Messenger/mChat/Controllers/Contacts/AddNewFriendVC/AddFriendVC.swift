@@ -14,6 +14,7 @@ class AddFriendVC: UIViewController{
     var user: FriendInfo!
     var addButton: UIButton!
     var addFriendNetworking = AddFriendNetworking()
+    var loadingIndicator: UIActivityIndicatorView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,6 +55,7 @@ class AddFriendVC: UIViewController{
     func setupUserInfoView(){
         let infoView = UserInfoView(self)
         addButton = infoView.addButton
+        loadingIndicator = infoView.loadingIndicator
     }
     
     func setupExitButton() {

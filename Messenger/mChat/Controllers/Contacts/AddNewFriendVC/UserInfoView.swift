@@ -15,7 +15,8 @@ class UserInfoView: UIView{
     let nameLabel = UILabel()
     let emailLabel = UILabel()
     let addButton = UIButton(type: .system)
-
+    let loadingIndicator = UIActivityIndicatorView(style: .medium)
+    
     
     init(_ controller: AddFriendVC) {
         super.init(frame: .zero)
@@ -24,6 +25,7 @@ class UserInfoView: UIView{
         setupNameLabel()
         setupEmailLabel()
         setupAddButton()
+        setupLoadingIndicator()
     }
     
     required init?(coder: NSCoder) {
@@ -31,7 +33,7 @@ class UserInfoView: UIView{
     }
     
     
-    func setupUserProfileImage() {
+    private func setupUserProfileImage() {
         controller.view.addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.loadImage(url: controller.user.profileImage)
@@ -47,7 +49,7 @@ class UserInfoView: UIView{
         NSLayoutConstraint.activate(constraints)
     }
     
-    func setupNameLabel() {
+    private func setupNameLabel() {
         controller.view.addSubview(nameLabel)
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.text = controller.user.name.uppercased()
@@ -59,7 +61,7 @@ class UserInfoView: UIView{
         NSLayoutConstraint.activate(constraints)
     }
     
-    func setupEmailLabel() {
+    private func setupEmailLabel() {
         controller.view.addSubview(emailLabel)
         emailLabel.translatesAutoresizingMaskIntoConstraints = false
         emailLabel.text = controller.user.email.uppercased()
@@ -72,12 +74,12 @@ class UserInfoView: UIView{
         NSLayoutConstraint.activate(constraints)
     }
     
-    func setupAddButton() {
+    private func setupAddButton() {
         controller.view.addSubview(addButton)
         addButton.translatesAutoresizingMaskIntoConstraints = false
         addButton.backgroundColor = AppColors.mainColor
         addButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
-        addButton.isEnabled = false
+        addButton.isHidden = true
         addButton.tintColor = .white
         addButton.layer.cornerRadius = 16
         addButton.layer.masksToBounds = true
@@ -91,5 +93,20 @@ class UserInfoView: UIView{
         NSLayoutConstraint.activate(constraints)
     }
 
+    private func setupLoadingIndicator() {
+        controller.view.addSubview(loadingIndicator)
+        loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
+        loadingIndicator.startAnimating()
+        loadingIndicator.hidesWhenStopped = true
+        loadingIndicator.color = AppColors.mainColor
+        let constraints = [
+            loadingIndicator.centerXAnchor.constraint(equalTo: controller.view.centerXAnchor),
+            loadingIndicator.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 8),
+            loadingIndicator.widthAnchor.constraint(equalToConstant: 35),
+            loadingIndicator.heightAnchor.constraint(equalToConstant: 35),
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
     
 }

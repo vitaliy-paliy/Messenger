@@ -1,5 +1,4 @@
 PODS:
-  - ChromaColorPicker (1.8.0)
   - Firebase/Analytics (6.15.0):
     - Firebase/Core
   - Firebase/Auth (6.15.0):
@@ -90,9 +89,12 @@ PODS:
   - GoogleUtilities/UserDefaults (6.5.0):
     - GoogleUtilities/Logger
   - GTMSessionFetcher/Core (1.3.1)
+  - IGColorPicker (0.4.3):
+    - M13Checkbox
   - leveldb-library (1.22)
   - lottie-ios (3.1.5)
   - LTHRadioButton (1.2.3)
+  - M13Checkbox (3.4.0)
   - Mapbox-iOS-SDK (5.6.1):
     - MapboxMobileEvents (= 0.10.2)
   - MapboxMobileEvents (0.10.2)
@@ -105,12 +107,12 @@ PODS:
   - SkyFloatingLabelTextField (3.8.0)
 
 DEPENDENCIES:
-  - ChromaColorPicker
   - Firebase/Analytics
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Database
   - Firebase/Storage
+  - IGColorPicker
   - lottie-ios
   - LTHRadioButton
   - Mapbox-iOS-SDK (~> 5.6)
@@ -118,7 +120,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - ChromaColorPicker
     - Firebase
     - FirebaseAnalytics
     - FirebaseAuth
@@ -135,9 +136,11 @@ SPEC REPOS:
     - GoogleDataTransportCCTSupport
     - GoogleUtilities
     - GTMSessionFetcher
+    - IGColorPicker
     - leveldb-library
     - lottie-ios
     - LTHRadioButton
+    - M13Checkbox
     - Mapbox-iOS-SDK
     - MapboxMobileEvents
     - nanopb
@@ -145,7 +148,6 @@ SPEC REPOS:
     - SkyFloatingLabelTextField
 
 SPEC CHECKSUMS:
-  ChromaColorPicker: 2e47f5acb805d53350fb7af1b511bc534b38ee31
   Firebase: 5d77105d9740a07ca6b16927ca971db7e860faaf
   FirebaseAnalytics: e83e64b1231dedcd9ddd4bdecd9bcfd6ba341679
   FirebaseAuth: ce45d7c5d46bed90159f3a73b6efbe8976ed3573
@@ -162,15 +164,17 @@ SPEC CHECKSUMS:
   GoogleDataTransportCCTSupport: cad3cd6cdbdbad6b5c2c9206ec413402755faaaa
   GoogleUtilities: f8de7ddf8c706f58e9b405d53e38bbdaa2731e5a
   GTMSessionFetcher: cea130bbfe5a7edc8d06d3f0d17288c32ffe9925
+  IGColorPicker: f6034f8629aa90cce308a76ecc0fdf2afed0bf34
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
   lottie-ios: 32bf84389337d86fbc8b12266e88452e0abf1dee
   LTHRadioButton: b20980614572f7911272a6b8aa79ec0fdc9a74d4
+  M13Checkbox: 6f59404540ac98ba83a3d1afac335895a40c6a5d
   Mapbox-iOS-SDK: b31bd62a5dd5b7e688eab787acd3d093a122f4d6
   MapboxMobileEvents: 2bc0ca2eedb627b73cf403258dce2b2fa98074a6
   nanopb: 18003b5e52dab79db540fe93fe9579f399bd1ccd
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   SkyFloatingLabelTextField: 5a338412114808e961fe2d14ea2c5452c8b6e4aa
 
-PODFILE CHECKSUM: 83547bf74e7f4f65d138fd2d8e516f8f3d32393b
+PODFILE CHECKSUM: 4aa7b6d6e9a017028811f9d906c04c3c7c4e64e7
 
 COCOAPODS: 1.8.4

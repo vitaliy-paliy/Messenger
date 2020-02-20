@@ -38,7 +38,8 @@ class AddFriendNetworking {
     
     func checkFriendship() {
         Database.database().reference().child("friendsList").child(CurrentUser.uid).child(friend.id).observe(.value) { (snapshot) in
-            self.controller.addButton.isEnabled = true
+            self.controller.addButton.isHidden = false
+            self.controller.loadingIndicator.stopAnimating()
             guard let values = snapshot.value as? [String: Any] else {
                 self.controller.addButton.setTitle("Add Friend", for: .normal)
                 self.controller.addButton.backgroundColor = .green
@@ -56,7 +57,8 @@ class AddFriendNetworking {
         Database.database().reference().child("friendsList").child("friendRequests").child(friend.id).child(CurrentUser.uid).observeSingleEvent(of: .value) { (snap) in
             guard let _ = snap.value as? [String: Any] else { return completion() }
             self.controller.addButton.setTitle("Requested", for: .normal)
-            self.controller.addButton.isEnabled = true
+            self.controller.addButton.isHidden = false
+            self.controller.loadingIndicator.stopAnimating()
             self.controller.addButton.backgroundColor = .gray
         }
     }
