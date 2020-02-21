@@ -11,9 +11,8 @@ import UIKit
 class AppearanceVC: UIViewController{
     
     var tableView = UITableView()
-    var appearanceSettings = ["Incoming Color", "Outcoming Color","Chat Background"]
     var chatBubblesAppearence = ChatBubblesAppearanceCell()
-    let blurView = UIVisualEffectView()
+    var selectedView: String!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -113,10 +112,12 @@ extension AppearanceVC: UITableViewDelegate, UITableViewDataSource {
         }else if indexPath.section == 1{
             tableView.rowHeight = 300
             let cell = tableView.dequeueReusableCell(withIdentifier: "ChatColorPickerCell") as! ChatColorPickerCell
+            cell.controller = self
             return cell
         }else{
             tableView.rowHeight = 100
             let cell = tableView.dequeueReusableCell(withIdentifier: "SelectViewColorCell") as! SelectViewColorCell
+            cell.controller = self
             return cell
         }
 

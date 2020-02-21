@@ -12,7 +12,7 @@ import IGColorPicker
 class ChatColorPickerCell: UITableViewCell, ColorPickerViewDelegate {
        
     var colorPicker = ColorPickerView()
-    
+    var controller: AppearanceVC!
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -26,7 +26,9 @@ class ChatColorPickerCell: UITableViewCell, ColorPickerViewDelegate {
     func setupColorPicker() {
         addSubview(colorPicker)
         colorPicker.translatesAutoresizingMaskIntoConstraints = false
-        colorPicker.colors.remove(at: colorPicker.colors.count - 1)
+        colorPicker.colors.append(.white)
+        colorPicker.backgroundColor = UIColor(white: 0.95, alpha: 1)
+        colorPicker.delegate = self
         let constraints = [
             colorPicker.leadingAnchor.constraint(equalTo: leadingAnchor),
             colorPicker.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -37,7 +39,28 @@ class ChatColorPickerCell: UITableViewCell, ColorPickerViewDelegate {
     }
     
     func colorPickerView(_ colorPickerView: ColorPickerView, didSelectItemAt indexPath: IndexPath) {
+        print("HI")
+        updateAppColors(colorPickerView.colors[indexPath.row])
+    }
         
+    func updateAppColors(_ color: UIColor) {
+        guard controller.selectedView != nil else { return }
+        if controller.selectedView == "Chat Incoming Color" {
+            AppColors.selectedIncomingColor = color
+            controller.chatBubblesAppearence.incomingView.backgroundColor = color
+        }else if controller.selectedView == "Chat Outcoming Color"{
+            AppColors.selectedOutcomingColor = color
+            controller.chatBubblesAppearence.outcomingView.backgroundColor = color
+        }else if controller.selectedView == "Chat Background Color" {
+            AppColors.selectedBackgroundColor = color
+            controller.chatBubblesAppearence.backgroundColor = color
+        }else if controller.selectedView == "Text Incoming Color" {
+            AppColors.selectedIncomingTextColor = color
+            controller.chatBubblesAppearence.incomingLabel.textColor = color
+        }else if controller.selectedView == "Text Outcoming Color" {
+            AppColors.selectedOutcomingTextColor = color
+            controller.chatBubblesAppearence.outcomingLabel.textColor = color
+        }
     }
     
     
