@@ -47,9 +47,13 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     }
     
     func setupChatBackground() {
-        let gradient = setupGradientLayer()
-        gradient.frame = view.frame
-        view.layer.insertSublayer(gradient, at: 0)
+        if AppColors.selectedBackgroundColor == UIColor(white: 0.95, alpha: 1) {
+            let gradient = setupGradientLayer()
+            gradient.frame = view.frame
+            view.layer.insertSublayer(gradient, at: 0)
+        }else{
+            view.backgroundColor = AppColors.selectedBackgroundColor
+        }
     }
     
     override func viewSafeAreaInsetsDidChange() {

@@ -39,7 +39,6 @@ class ChatColorPickerCell: UITableViewCell, ColorPickerViewDelegate {
     }
     
     func colorPickerView(_ colorPickerView: ColorPickerView, didSelectItemAt indexPath: IndexPath) {
-        print("HI")
         updateAppColors(colorPickerView.colors[indexPath.row])
     }
         
@@ -54,6 +53,7 @@ class ChatColorPickerCell: UITableViewCell, ColorPickerViewDelegate {
         }else if controller.selectedView == "Chat Background Color" {
             AppColors.selectedBackgroundColor = color
             controller.chatBubblesAppearence.backgroundColor = color
+            controller.chatBubblesAppearence.gradient.removeFromSuperlayer()
         }else if controller.selectedView == "Text Incoming Color" {
             AppColors.selectedIncomingTextColor = color
             controller.chatBubblesAppearence.incomingLabel.textColor = color

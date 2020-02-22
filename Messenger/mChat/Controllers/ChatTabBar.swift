@@ -18,9 +18,6 @@ class ChatTabBar: UITabBarController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        let gradient = setupGradientLayer()
-//        gradient.frame = view.frame
-//        tabBar.layer.insertSublayer(gradient, at: 0)
         setupVC()
         tabBar.barTintColor = UIColor(displayP3Red: 247/255, green: 247/255, blue: 247/255, alpha: 1)
         tabBar.tintColor = .black

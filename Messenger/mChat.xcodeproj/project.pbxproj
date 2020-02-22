@@ -96,6 +96,7 @@
 		CBCF41A423FE14A8007B8245 /* ChatColorPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCF41A323FE14A8007B8245 /* ChatColorPickerCell.swift */; };
 		CBCF41A623FE1D2D007B8245 /* SelectViewColorCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCF41A523FE1D2D007B8245 /* SelectViewColorCell.swift */; };
 		CBCF41A823FE1F26007B8245 /* ChatViewColorPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCF41A723FE1F26007B8245 /* ChatViewColorPickerCell.swift */; };
+		CBCFB56D2400B7EC009FCE8C /* RestoreDefaultColorsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCFB56C2400B7EC009FCE8C /* RestoreDefaultColorsCell.swift */; };
 		CBD040EF23A30D15005FBD5A /* recentTyping.json in Resources */ = {isa = PBXBuildFile; fileRef = CBD040EE23A30D15005FBD5A /* recentTyping.json */; };
 		CBDBAE5323BC1D5E00A56746 /* MessageContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDBAE5223BC1D5E00A56746 /* MessageContainer.swift */; };
 		CBDBAE5523BC3C9200A56746 /* LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDBAE5423BC3C9200A56746 /* LoadingIndicator.swift */; };
@@ -210,6 +211,7 @@
 		CBCF41A323FE14A8007B8245 /* ChatColorPickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatColorPickerCell.swift; sourceTree = "<group>"; };
 		CBCF41A523FE1D2D007B8245 /* SelectViewColorCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectViewColorCell.swift; sourceTree = "<group>"; };
 		CBCF41A723FE1F26007B8245 /* ChatViewColorPickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewColorPickerCell.swift; sourceTree = "<group>"; };
+		CBCFB56C2400B7EC009FCE8C /* RestoreDefaultColorsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreDefaultColorsCell.swift; sourceTree = "<group>"; };
 		CBD040EE23A30D15005FBD5A /* recentTyping.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = recentTyping.json; sourceTree = "<group>"; };
 		CBDBAE5223BC1D5E00A56746 /* MessageContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageContainer.swift; sourceTree = "<group>"; };
 		CBDBAE5423BC3C9200A56746 /* LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicator.swift; sourceTree = "<group>"; };
@@ -529,6 +531,7 @@
 				CBCF41A323FE14A8007B8245 /* ChatColorPickerCell.swift */,
 				CBCF41A523FE1D2D007B8245 /* SelectViewColorCell.swift */,
 				CBCF41A723FE1F26007B8245 /* ChatViewColorPickerCell.swift */,
+				CBCFB56C2400B7EC009FCE8C /* RestoreDefaultColorsCell.swift */,
 			);
 			path = AppearanceVC;
 			sourceTree = "<group>";
@@ -806,6 +809,7 @@
 				CB4B6F7D23BBB6A400CDA4B3 /* UserResponse.swift in Sources */,
 				CB16022B23EBA49B0091AF40 /* FriendRequestVC.swift in Sources */,
 				CB639E0323D0E000000748A0 /* ContactsNetworking.swift in Sources */,
+				CBCFB56D2400B7EC009FCE8C /* RestoreDefaultColorsCell.swift in Sources */,
 				CB902B4623CEA96D0091221D /* ScrollToSelectedUserProtocol + Extension.swift in Sources */,
 				CBDBAE5323BC1D5E00A56746 /* MessageContainer.swift in Sources */,
 				CBCF41A623FE1D2D007B8245 /* SelectViewColorCell.swift in Sources */,

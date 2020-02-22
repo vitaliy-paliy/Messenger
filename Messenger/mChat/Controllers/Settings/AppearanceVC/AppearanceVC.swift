@@ -42,6 +42,7 @@ class AppearanceVC: UIViewController{
         tableView.register(ChatAppearanceCell.self, forCellReuseIdentifier: "ChatAppearanceCell")
         tableView.register(ChatColorPickerCell.self, forCellReuseIdentifier: "ChatColorPickerCell")
         tableView.register(SelectViewColorCell.self, forCellReuseIdentifier: "SelectViewColorCell")
+        tableView.register(RestoreToDefaultColorsCell.self, forCellReuseIdentifier: "RestoreToDefaultColorsCell")
         let constraints = [
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -80,7 +81,7 @@ extension AppearanceVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return 4
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -88,11 +89,7 @@ extension AppearanceVC: UITableViewDelegate, UITableViewDataSource {
     }
     
     func returnSectionNumOfCells(_ section: Int) -> Int {
-        if section == 1 {
-            return 1
-        }else{
-            return 1
-        }
+        return 1
     }
     
     func returnHeaderHeight(_ section: Int) -> CGFloat {
@@ -114,19 +111,32 @@ extension AppearanceVC: UITableViewDelegate, UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "ChatColorPickerCell") as! ChatColorPickerCell
             cell.controller = self
             return cell
-        }else{
+        }else if indexPath.section == 2{
             tableView.rowHeight = 100
             let cell = tableView.dequeueReusableCell(withIdentifier: "SelectViewColorCell") as! SelectViewColorCell
             cell.controller = self
+            return cell
+        }else{
+            tableView.rowHeight = 44
+            let cell = tableView.dequeueReusableCell(withIdentifier: "RestoreToDefaultColorsCell") as! RestoreToDefaultColorsCell
             return cell
         }
 
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard indexPath.section == 2 else { return }
-        tableView.deselectRow(at: indexPath, animated: true)
-        chatBubblesAppearence.setupStandardColors()
+        if indexPath.section == 2 {
+            tableView.deselectRow(at: indexPath, animated: true)
+            chatBubblesAppearence.setupStandardColors()
+        }else if indexPath.section == 3 {
+            tableView.deselectRow(at: indexPath, animated: true)
+            AppColors.selectedIncomingColor = UIColor.white
+            AppColors.selectedOutcomingColor = UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1)
+            AppColors.selectedBackgroundColor = UIColor(white: 0.95, alpha: 1)
+            AppColors.selectedIncomingTextColor = UIColor.black
+            AppColors.selectedOutcomingTextColor = UIColor.white
+            tableView.reloadData()
+        }
     }
     
 }

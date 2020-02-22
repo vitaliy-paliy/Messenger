@@ -24,7 +24,13 @@ class ChatBubblesAppearanceCell: UICollectionViewCell {
         
     override init(frame: CGRect) {
         super.init(frame: frame)
-        setupStandardColors()
+        incomingView.backgroundColor = AppColors.selectedIncomingColor
+        outcomingView.backgroundColor = AppColors.selectedOutcomingColor
+        if AppColors.selectedBackgroundColor == UIColor(white: 0.95, alpha: 1) {
+            setupStandardColors()
+        }else{
+            backgroundColor = AppColors.selectedBackgroundColor
+        }
         setupIncomingView()
         setupOutcomingView()
     }
@@ -32,10 +38,10 @@ class ChatBubblesAppearanceCell: UICollectionViewCell {
     func setupStandardColors() {
         gradient.frame = frame
         layer.insertSublayer(gradient, at: 0)
-        incomingView.backgroundColor = AppColors.selectedIncomingColor
-        outcomingView.backgroundColor = AppColors.selectedOutcomingColor
     }
-        
+     
+    
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
