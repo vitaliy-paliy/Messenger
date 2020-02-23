@@ -58,7 +58,7 @@ class WelcomeVC: UIViewController {
         skipButton.translatesAutoresizingMaskIntoConstraints = false
         skipButton.setTitle("SKIP", for: .normal)
         skipButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
-        skipButton.tintColor = AppColors.mainColor
+        skipButton.tintColor = ThemeColors.mainColor
         skipButton.addTarget(self, action: #selector(skipButtonPressed), for: .touchUpInside)
         let constraints = [
             skipButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 8),
@@ -72,8 +72,8 @@ class WelcomeVC: UIViewController {
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         pageControl.currentPage = 0
         pageControl.numberOfPages = welcomePages.count
-        pageControl.currentPageIndicatorTintColor = AppColors.mainColor
-        pageControl.pageIndicatorTintColor = AppColors.secondaryColor
+        pageControl.currentPageIndicatorTintColor = ThemeColors.mainColor
+        pageControl.pageIndicatorTintColor = ThemeColors.secondaryColor
         pageControl.isUserInteractionEnabled = false
         let constraints = [
             pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),

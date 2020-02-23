@@ -56,7 +56,7 @@ class SelectViewColorCell: UITableViewCell, UICollectionViewDelegate, UICollecti
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ChatViewColorPickerCell", for: indexPath) as! ChatViewColorPickerCell
         let colorName = colorViews[indexPath.row]
         if controller.selectedView != nil, controller.selectedView == colorName {
-            cell.layer.borderColor = AppColors.mainColor.cgColor
+            cell.layer.borderColor = ThemeColors.mainColor.cgColor
             cell.layer.borderWidth = 3
         }else{
             cell.layer.borderWidth = 0

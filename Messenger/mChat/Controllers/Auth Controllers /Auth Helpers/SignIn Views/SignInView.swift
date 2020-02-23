@@ -69,7 +69,7 @@ class SignInView: UIView {
         emailTextField.placeholder = "EMAIL"
         emailTextField.delegate = controller
         emailTextField.font = UIFont.boldSystemFont(ofSize: 14)
-        emailTextField.selectedLineColor = AppColors.mainColor
+        emailTextField.selectedLineColor = ThemeColors.mainColor
         emailTextField.lineColor = .lightGray
         emailTextField.autocapitalizationType = .none
         emailTextField.autocorrectionType = .no
@@ -89,7 +89,7 @@ class SignInView: UIView {
         passwordTextField.placeholder = "PASSWORD"
         passwordTextField.delegate = controller
         passwordTextField.font = UIFont.boldSystemFont(ofSize: 14)
-        passwordTextField.selectedLineColor = AppColors.mainColor
+        passwordTextField.selectedLineColor = ThemeColors.mainColor
         passwordTextField.lineColor = .lightGray
         passwordTextField.autocorrectionType = .no
         passwordTextField.isSecureTextEntry = true

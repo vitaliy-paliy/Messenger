@@ -43,7 +43,7 @@ class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, U
         view.addSubview(continueButton)
         continueButton.translatesAutoresizingMaskIntoConstraints = false
         continueButton.setTitle("CONTINUE", for: .normal)
-        continueButton.tintColor = AppColors.mainColor
+        continueButton.tintColor = ThemeColors.mainColor
         continueButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         continueButton.addTarget(self, action: #selector(continueButtonPressed), for: .touchUpInside)
         let constraints = [

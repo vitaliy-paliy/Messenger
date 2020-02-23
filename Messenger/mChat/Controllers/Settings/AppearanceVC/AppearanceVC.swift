@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class AppearanceVC: UIViewController{
     
@@ -50,6 +51,17 @@ class AppearanceVC: UIViewController{
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ]
         NSLayoutConstraint.activate(constraints)
+    }
+    
+    func resetColors() {
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "AppColors")
+        let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+        do{
+            try context.execute(batchDeleteRequest)
+        }catch{
+            print(error.localizedDescription)
+        }
     }
     
 }
@@ -130,11 +142,12 @@ extension AppearanceVC: UITableViewDelegate, UITableViewDataSource {
             chatBubblesAppearence.setupStandardColors()
         }else if indexPath.section == 3 {
             tableView.deselectRow(at: indexPath, animated: true)
-            AppColors.selectedIncomingColor = UIColor.white
-            AppColors.selectedOutcomingColor = UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1)
-            AppColors.selectedBackgroundColor = UIColor(white: 0.95, alpha: 1)
-            AppColors.selectedIncomingTextColor = UIColor.black
-            AppColors.selectedOutcomingTextColor = UIColor.white
+            ThemeColors.selectedIncomingColor = UIColor.white
+            ThemeColors.selectedOutcomingColor = UIColor(displayP3Red: 71/255, green: 171/255, blue: 232/255, alpha: 1)
+            ThemeColors.selectedBackgroundColor = UIColor(white: 0.95, alpha: 1)
+            ThemeColors.selectedIncomingTextColor = UIColor.black
+            ThemeColors.selectedOutcomingTextColor = UIColor.white
+            resetColors()
             tableView.reloadData()
         }
     }

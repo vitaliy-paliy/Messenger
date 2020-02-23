@@ -47,12 +47,12 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     }
     
     func setupChatBackground() {
-        if AppColors.selectedBackgroundColor == UIColor(white: 0.95, alpha: 1) {
+        if ThemeColors.selectedBackgroundColor == UIColor(white: 0.95, alpha: 1) {
             let gradient = setupGradientLayer()
             gradient.frame = view.frame
             view.layer.insertSublayer(gradient, at: 0)
         }else{
-            view.backgroundColor = AppColors.selectedBackgroundColor
+            view.backgroundColor = ThemeColors.selectedBackgroundColor
         }
     }
     

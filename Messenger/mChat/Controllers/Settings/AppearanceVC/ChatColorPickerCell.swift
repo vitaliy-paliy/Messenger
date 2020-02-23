@@ -8,9 +8,10 @@
 
 import UIKit
 import IGColorPicker
+import CoreData
 
 class ChatColorPickerCell: UITableViewCell, ColorPickerViewDelegate {
-       
+    
     var colorPicker = ColorPickerView()
     var controller: AppearanceVC!
     
@@ -41,27 +42,43 @@ class ChatColorPickerCell: UITableViewCell, ColorPickerViewDelegate {
     func colorPickerView(_ colorPickerView: ColorPickerView, didSelectItemAt indexPath: IndexPath) {
         updateAppColors(colorPickerView.colors[indexPath.row])
     }
-        
+    
     func updateAppColors(_ color: UIColor) {
         guard controller.selectedView != nil else { return }
         if controller.selectedView == "Chat Incoming Color" {
-            AppColors.selectedIncomingColor = color
+            ThemeColors.selectedIncomingColor = color
             controller.chatBubblesAppearence.incomingView.backgroundColor = color
+            updateColorsHandler(color, "selectedIncomingColor")
         }else if controller.selectedView == "Chat Outcoming Color"{
-            AppColors.selectedOutcomingColor = color
+            ThemeColors.selectedOutcomingColor = color
             controller.chatBubblesAppearence.outcomingView.backgroundColor = color
+            updateColorsHandler(color, "selectedOutcomingColor")
         }else if controller.selectedView == "Chat Background Color" {
-            AppColors.selectedBackgroundColor = color
+            ThemeColors.selectedBackgroundColor = color
             controller.chatBubblesAppearence.backgroundColor = color
             controller.chatBubblesAppearence.gradient.removeFromSuperlayer()
+            updateColorsHandler(color, "selectedBackgroundColor")
         }else if controller.selectedView == "Text Incoming Color" {
-            AppColors.selectedIncomingTextColor = color
+            ThemeColors.selectedIncomingTextColor = color
             controller.chatBubblesAppearence.incomingLabel.textColor = color
+            updateColorsHandler(color, "selectedIncomingTextColor")
         }else if controller.selectedView == "Text Outcoming Color" {
-            AppColors.selectedOutcomingTextColor = color
+            ThemeColors.selectedOutcomingTextColor = color
             controller.chatBubblesAppearence.outcomingLabel.textColor = color
+            updateColorsHandler(color, "selectedOutcomingTextColor")
         }
     }
     
+    func updateColorsHandler(_ selectedColor: UIColor, _ key: String) {
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let entity = NSEntityDescription.entity(forEntityName: "AppColors", in: context)
+        let newEntity = NSManagedObject(entity: entity!, insertInto: context)
+        newEntity.setValue(selectedColor, forKey: key)
+        do{
+            try context.save()
+        }catch{
+            print(error.localizedDescription)
+        }
+    }
     
 }

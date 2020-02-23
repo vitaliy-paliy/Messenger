@@ -66,7 +66,7 @@ class NetworkingLoadingIndicator {
         loadingLabel.translatesAutoresizingMaskIntoConstraints = false
         loadingLabel.text = "LOADING"
         loadingLabel.font = UIFont.boldSystemFont(ofSize: 16)
-        loadingLabel.textColor = AppColors.mainColor
+        loadingLabel.textColor = ThemeColors.mainColor
         let constraints = [
             loadingLabel.centerXAnchor.constraint(equalTo: loadingView.centerXAnchor),
             loadingLabel.bottomAnchor.constraint(equalTo: loadingView.bottomAnchor, constant: -18),

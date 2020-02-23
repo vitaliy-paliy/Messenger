@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import CoreData
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
@@ -19,6 +20,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window?.rootViewController = LogoVC()
         window?.makeKeyAndVisible()
         FirebaseApp.configure()
+        getAppColors()
         if Auth.auth().currentUser != nil{
             print("signedIn")
             let authNetworking = AuthNetworking(nil)
@@ -32,6 +34,34 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             window?.makeKeyAndVisible()
         }
         activityObservers()
+    }
+    
+    func getAppColors() {
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "AppColors")
+        request.returnsObjectsAsFaults = false
+        do{
+            let result = try context.fetch(request)
+            for data in result as! [NSManagedObject] {
+                if data.value(forKey: "selectedIncomingColor") != nil {
+                    ThemeColors.selectedIncomingColor = data.value(forKey: "selectedIncomingColor") as! UIColor
+                }
+                if data.value(forKey: "selectedOutcomingColor") != nil {
+                    ThemeColors.selectedOutcomingColor = data.value(forKey: "selectedOutcomingColor") as! UIColor
+                }
+                if data.value(forKey: "selectedBackgroundColor") != nil {
+                    ThemeColors.selectedBackgroundColor = data.value(forKey: "selectedBackgroundColor") as! UIColor
+                }
+                if data.value(forKey: "selectedIncomingTextColor") != nil {
+                    ThemeColors.selectedIncomingTextColor = data.value(forKey: "selectedIncomingTextColor") as! UIColor
+                }
+                if data.value(forKey: "selectedOutcomingTextColor") != nil {
+                    ThemeColors.selectedOutcomingTextColor = data.value(forKey: "selectedOutcomingTextColor") as! UIColor
+                }
+            }
+        }catch{
+            // Standard app colors will be loaded
+        }
     }
     
     func activityObservers(){

@@ -16,7 +16,6 @@
 		CB1B3F7F23C8FDCE000858DF /* AnnotationPin.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1B3F7E23C8FDCE000858DF /* AnnotationPin.swift */; };
 		CB1B3F8123C903D0000858DF /* CurrentUserAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1B3F8023C903D0000858DF /* CurrentUserAnnotationView.swift */; };
 		CB1B3F8323C92616000858DF /* FriendAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1B3F8223C92616000858DF /* FriendAnnotationView.swift */; };
-		CB1EA19323EF8B0800751953 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1EA19223EF8B0800751953 /* AppColors.swift */; };
 		CB1EA19523EF8B4D00751953 /* WelcomeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1EA19423EF8B4C00751953 /* WelcomeModel.swift */; };
 		CB1EA19723EF9FB500751953 /* RequestButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB1EA19623EF9FB500751953 /* RequestButtonView.swift */; };
 		CB21413623E0E7F900EFE433 /* RegistrationInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB21413523E0E7F900EFE433 /* RegistrationInfoView.swift */; };
@@ -98,6 +97,10 @@
 		CBCF41A823FE1F26007B8245 /* ChatViewColorPickerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCF41A723FE1F26007B8245 /* ChatViewColorPickerCell.swift */; };
 		CBCFB56D2400B7EC009FCE8C /* RestoreDefaultColorsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBCFB56C2400B7EC009FCE8C /* RestoreDefaultColorsCell.swift */; };
 		CBD040EF23A30D15005FBD5A /* recentTyping.json in Resources */ = {isa = PBXBuildFile; fileRef = CBD040EE23A30D15005FBD5A /* recentTyping.json */; };
+		CBD941C52401EB7300B3E4A7 /* ThemeColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD941C42401EB7300B3E4A7 /* ThemeColors.swift */; };
+		CBD941C82401ED1800B3E4A7 /* mChat.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CBD941C62401ED1800B3E4A7 /* mChat.xcdatamodeld */; };
+		CBD941CF2401F59B00B3E4A7 /* AppColors+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD941CD2401F59B00B3E4A7 /* AppColors+CoreDataClass.swift */; };
+		CBD941D02401F59B00B3E4A7 /* AppColors+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD941CE2401F59B00B3E4A7 /* AppColors+CoreDataProperties.swift */; };
 		CBDBAE5323BC1D5E00A56746 /* MessageContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDBAE5223BC1D5E00A56746 /* MessageContainer.swift */; };
 		CBDBAE5523BC3C9200A56746 /* LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDBAE5423BC3C9200A56746 /* LoadingIndicator.swift */; };
 		CBDBAE5723BC42AC00A56746 /* MessageCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDBAE5623BC42AC00A56746 /* MessageCollectionView.swift */; };
@@ -131,7 +134,6 @@
 		CB1B3F7E23C8FDCE000858DF /* AnnotationPin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationPin.swift; sourceTree = "<group>"; };
 		CB1B3F8023C903D0000858DF /* CurrentUserAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUserAnnotationView.swift; sourceTree = "<group>"; };
 		CB1B3F8223C92616000858DF /* FriendAnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendAnnotationView.swift; sourceTree = "<group>"; };
-		CB1EA19223EF8B0800751953 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
 		CB1EA19423EF8B4C00751953 /* WelcomeModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeModel.swift; sourceTree = "<group>"; };
 		CB1EA19623EF9FB500751953 /* RequestButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestButtonView.swift; sourceTree = "<group>"; };
 		CB21413523E0E7F900EFE433 /* RegistrationInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegistrationInfoView.swift; sourceTree = "<group>"; };
@@ -213,6 +215,10 @@
 		CBCF41A723FE1F26007B8245 /* ChatViewColorPickerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewColorPickerCell.swift; sourceTree = "<group>"; };
 		CBCFB56C2400B7EC009FCE8C /* RestoreDefaultColorsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestoreDefaultColorsCell.swift; sourceTree = "<group>"; };
 		CBD040EE23A30D15005FBD5A /* recentTyping.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = recentTyping.json; sourceTree = "<group>"; };
+		CBD941C42401EB7300B3E4A7 /* ThemeColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeColors.swift; sourceTree = "<group>"; };
+		CBD941C72401ED1800B3E4A7 /* mChat.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = mChat.xcdatamodel; sourceTree = "<group>"; };
+		CBD941CD2401F59B00B3E4A7 /* AppColors+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "AppColors+CoreDataClass.swift"; path = "/Users/vitaliypaliy/Desktop/mChat/Messenger/mChat/App Design Helpers + CoreData model/AppColors+CoreDataClass.swift"; sourceTree = "<absolute>"; };
+		CBD941CE2401F59B00B3E4A7 /* AppColors+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "AppColors+CoreDataProperties.swift"; path = "/Users/vitaliypaliy/Desktop/mChat/Messenger/mChat/App Design Helpers + CoreData model/AppColors+CoreDataProperties.swift"; sourceTree = "<absolute>"; };
 		CBDBAE5223BC1D5E00A56746 /* MessageContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageContainer.swift; sourceTree = "<group>"; };
 		CBDBAE5423BC3C9200A56746 /* LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicator.swift; sourceTree = "<group>"; };
 		CBDBAE5623BC42AC00A56746 /* MessageCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCollectionView.swift; sourceTree = "<group>"; };
@@ -278,7 +284,6 @@
 		CB2717392381E789003A4D46 /* Helper Tools */ = {
 			isa = PBXGroup;
 			children = (
-				CB1EA19223EF8B0800751953 /* AppColors.swift */,
 				CB2717372381E775003A4D46 /* Helpers.swift */,
 				CB27173A2381ECB1003A4D46 /* Constants.swift */,
 				CB4CC232239DD71B0086DEA9 /* Calendar + Extension.swift */,
@@ -340,12 +345,16 @@
 			path = MapAnnotationViews;
 			sourceTree = "<group>";
 		};
-		CB4FA83623E902B000FBE0A3 /* StandardViews */ = {
+		CB4FA83623E902B000FBE0A3 /* App Design Helpers + CoreData model */ = {
 			isa = PBXGroup;
 			children = (
+				CBD941CD2401F59B00B3E4A7 /* AppColors+CoreDataClass.swift */,
+				CBD941CE2401F59B00B3E4A7 /* AppColors+CoreDataProperties.swift */,
+				CBD941C42401EB7300B3E4A7 /* ThemeColors.swift */,
 				CBAA927823DF930500572978 /* GradientLogoView.swift */,
+				CBD941C62401ED1800B3E4A7 /* mChat.xcdatamodeld */,
 			);
-			path = StandardViews;
+			path = "App Design Helpers + CoreData model";
 			sourceTree = "<group>";
 		};
 		CB50E72923C29B540055BF78 /* NewConversations */ = {
@@ -611,7 +620,7 @@
 			children = (
 				CB8916FC23BA8CFE0019CBE9 /* Networking */,
 				CB2717392381E789003A4D46 /* Helper Tools */,
-				CB4FA83623E902B000FBE0A3 /* StandardViews */,
+				CB4FA83623E902B000FBE0A3 /* App Design Helpers + CoreData model */,
 				CBF907E92380B83500EF8925 /* AppDelegate.swift */,
 				CBF907EB2380B83500EF8925 /* SceneDelegate.swift */,
 				CBF907F72380B83600EF8925 /* Info.plist */,
@@ -778,6 +787,7 @@
 				CBAA928B23DFD3DE00572978 /* AuthBackButton.swift in Sources */,
 				CB4C15F523ECF43500B964D8 /* FriendRequestNetworking.swift in Sources */,
 				CBAA928423DFC0A400572978 /* EmailValidation + Extension.swift in Sources */,
+				CBD941C82401ED1800B3E4A7 /* mChat.xcdatamodeld in Sources */,
 				CB08304B238709BD002A1861 /* ChatVC.swift in Sources */,
 				CB4FA83823E9058200FBE0A3 /* UserInfoView.swift in Sources */,
 				CB513C3723BE6C1300BE8907 /* ChatCollectionView + Extension.swift in Sources */,
@@ -789,6 +799,8 @@
 				CBFC53BB23873B5600CC4C91 /* ConverstaionsCell.swift in Sources */,
 				CBF644F12381C204004830C6 /* ChatTabBar.swift in Sources */,
 				CB21413623E0E7F900EFE433 /* RegistrationInfoView.swift in Sources */,
+				CBD941CF2401F59B00B3E4A7 /* AppColors+CoreDataClass.swift in Sources */,
+				CBD941C52401EB7300B3E4A7 /* ThemeColors.swift in Sources */,
 				CB47B66923D248FF00329470 /* InfoMenuView.swift in Sources */,
 				CB89170123BA93490019CBE9 /* ChatNetworking.swift in Sources */,
 				CBAA927E23DF981500572978 /* SignInLogoAnimation.swift in Sources */,
@@ -815,6 +827,7 @@
 				CBCF41A623FE1D2D007B8245 /* SelectViewColorCell.swift in Sources */,
 				CB27173D2381EFFA003A4D46 /* SelectProfileImageVC.swift in Sources */,
 				CBAA928223DFBC1F00572978 /* SignUpView.swift in Sources */,
+				CBD941D02401F59B00B3E4A7 /* AppColors+CoreDataProperties.swift in Sources */,
 				CB4FEA9023CA446F006B8B08 /* UserInfoTab.swift in Sources */,
 				CBF644F72381C26B004830C6 /* ConversationsVC.swift in Sources */,
 				CB7ACB2D23F2220D00DBE0FF /* ChatBubblesAppearenceCell.swift in Sources */,
@@ -856,7 +869,6 @@
 				CB2580BF23CFAF3100F9B088 /* MapSettingsButton.swift in Sources */,
 				CBDBAE5923BC456400A56746 /* ProfileImageButton.swift in Sources */,
 				CB5189D623E268FD00165A63 /* NetworkingLoadingIndicator.swift in Sources */,
-				CB1EA19323EF8B0800751953 /* AppColors.swift in Sources */,
 				CB513C4223BEB14E00BE8907 /* SharedMediaVC.swift in Sources */,
 				CB4E41F523BD7BE200D476E5 /* ToolsMenu.swift in Sources */,
 				CBFC53B92387259E00CC4C91 /* Messages.swift in Sources */,
@@ -1049,6 +1061,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		CBD941C62401ED1800B3E4A7 /* mChat.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				CBD941C72401ED1800B3E4A7 /* mChat.xcdatamodel */,
+			);
+			currentVersion = CBD941C72401ED1800B3E4A7 /* mChat.xcdatamodel */;
+			path = mChat.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = CBF907DE2380B83500EF8925 /* Project object */;
 }

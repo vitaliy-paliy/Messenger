@@ -74,7 +74,7 @@ class SignUpView: UIView {
         nameTextField.placeholder = "Name"
         nameTextField.delegate = controller
         nameTextField.font = UIFont(name: "Alata", size: 18)
-        nameTextField.selectedLineColor = AppColors.mainColor
+        nameTextField.selectedLineColor = ThemeColors.mainColor
         nameTextField.lineColor = .lightGray
         nameTextField.autocorrectionType = .no
         nameTextField.textContentType = .oneTimeCode
@@ -93,7 +93,7 @@ class SignUpView: UIView {
         emailTextField.placeholder = "Email"
         emailTextField.delegate = controller
         emailTextField.font = UIFont(name: "Alata", size: 18)
-        emailTextField.selectedLineColor = AppColors.mainColor
+        emailTextField.selectedLineColor = ThemeColors.mainColor
         emailTextField.lineColor = .lightGray
         emailTextField.autocapitalizationType = .none
         emailTextField.autocorrectionType = .no
@@ -113,7 +113,7 @@ class SignUpView: UIView {
         passwordTextField.placeholder = "Password"
         passwordTextField.delegate = controller
         passwordTextField.font = UIFont(name: "Alata", size: 18)
-        passwordTextField.selectedLineColor = AppColors.mainColor
+        passwordTextField.selectedLineColor = ThemeColors.mainColor
         passwordTextField.lineColor = .lightGray
         passwordTextField.autocorrectionType = .no
         passwordTextField.isSecureTextEntry = true

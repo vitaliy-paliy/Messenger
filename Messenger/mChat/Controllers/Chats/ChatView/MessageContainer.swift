@@ -177,7 +177,7 @@ class MessageContainer: UIView, UITextViewDelegate{
         addSubview(actionCircle)
         actionCircle.isHidden = true
         actionCircle.translatesAutoresizingMaskIntoConstraints = false
-        actionCircle.backgroundColor = AppColors.selectedOutcomingColor
+        actionCircle.backgroundColor = ThemeColors.selectedOutcomingColor
         actionCircle.layer.cornerRadius = 3
         actionCircle.layer.masksToBounds = true
         let constraints = [

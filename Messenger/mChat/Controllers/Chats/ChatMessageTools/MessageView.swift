@@ -104,7 +104,7 @@ class MessageView: UIView{
     }
     
     func setupRepLine(){
-        responseLine.backgroundColor = AppColors.selectedOutcomingColor
+        responseLine.backgroundColor = ThemeColors.selectedOutcomingColor
         addSubview(responseLine)
         responseLine.translatesAutoresizingMaskIntoConstraints = false
         responseLine.backgroundColor = cell.responseLine.backgroundColor

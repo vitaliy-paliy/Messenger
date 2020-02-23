@@ -24,12 +24,12 @@ class ChatBubblesAppearanceCell: UICollectionViewCell {
         
     override init(frame: CGRect) {
         super.init(frame: frame)
-        incomingView.backgroundColor = AppColors.selectedIncomingColor
-        outcomingView.backgroundColor = AppColors.selectedOutcomingColor
-        if AppColors.selectedBackgroundColor == UIColor(white: 0.95, alpha: 1) {
+        incomingView.backgroundColor = ThemeColors.selectedIncomingColor
+        outcomingView.backgroundColor = ThemeColors.selectedOutcomingColor
+        if ThemeColors.selectedBackgroundColor == UIColor(white: 0.95, alpha: 1) {
             setupStandardColors()
         }else{
-            backgroundColor = AppColors.selectedBackgroundColor
+            backgroundColor = ThemeColors.selectedBackgroundColor
         }
         setupIncomingView()
         setupOutcomingView()
@@ -80,7 +80,7 @@ class ChatBubblesAppearanceCell: UICollectionViewCell {
         incomingView.addSubview(incomingLabel)
         incomingLabel.translatesAutoresizingMaskIntoConstraints = false
         incomingLabel.text = "Hey, how are you? Nice to see you here!🙂"
-        incomingLabel.textColor = AppColors.selectedIncomingTextColor
+        incomingLabel.textColor = ThemeColors.selectedIncomingTextColor
         incomingLabel.numberOfLines = 0
         incomingLabel.font = UIFont(name: "Helvetica Neue", size: 16)
         let constraints = [
@@ -95,7 +95,7 @@ class ChatBubblesAppearanceCell: UICollectionViewCell {
         outcomingView.addSubview(outcomingLabel)
         outcomingLabel.translatesAutoresizingMaskIntoConstraints = false
         outcomingLabel.text = "Hey! I'm great. Do you want to go to the movies tonight?"
-        outcomingLabel.textColor = AppColors.selectedOutcomingTextColor
+        outcomingLabel.textColor = ThemeColors.selectedOutcomingTextColor
         outcomingLabel.numberOfLines = 0
         outcomingLabel.font = UIFont(name: "Helvetica Neue", size: 16)
         let constraints = [

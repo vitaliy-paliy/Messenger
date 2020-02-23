@@ -77,7 +77,7 @@ class UserInfoView: UIView{
     private func setupAddButton() {
         controller.view.addSubview(addButton)
         addButton.translatesAutoresizingMaskIntoConstraints = false
-        addButton.backgroundColor = AppColors.mainColor
+        addButton.backgroundColor = ThemeColors.mainColor
         addButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         addButton.isHidden = true
         addButton.tintColor = .white
@@ -98,7 +98,7 @@ class UserInfoView: UIView{
         loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
         loadingIndicator.startAnimating()
         loadingIndicator.hidesWhenStopped = true
-        loadingIndicator.color = AppColors.mainColor
+        loadingIndicator.color = ThemeColors.mainColor
         let constraints = [
             loadingIndicator.centerXAnchor.constraint(equalTo: controller.view.centerXAnchor),
             loadingIndicator.topAnchor.constraint(equalTo: emailLabel.bottomAnchor, constant: 8),
