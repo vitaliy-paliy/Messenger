@@ -35,6 +35,9 @@ class FriendRequestNetworking {
                 guard let values = snap.value as? [String: Any] else { return }
                 self.setupFriendInfo(for: key, values)
                 self.controller.friendRequests = Array(self.groupedUsers.values)
+                self.controller.friendRequests.sort { (friend1, friend2) -> Bool in
+                    return friend1.name < friend2.name
+                }
                 self.controller.tableView.reloadData()
             }
         }

@@ -99,8 +99,6 @@
 		CBD040EF23A30D15005FBD5A /* recentTyping.json in Resources */ = {isa = PBXBuildFile; fileRef = CBD040EE23A30D15005FBD5A /* recentTyping.json */; };
 		CBD941C52401EB7300B3E4A7 /* ThemeColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD941C42401EB7300B3E4A7 /* ThemeColors.swift */; };
 		CBD941C82401ED1800B3E4A7 /* mChat.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = CBD941C62401ED1800B3E4A7 /* mChat.xcdatamodeld */; };
-		CBD941CF2401F59B00B3E4A7 /* AppColors+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD941CD2401F59B00B3E4A7 /* AppColors+CoreDataClass.swift */; };
-		CBD941D02401F59B00B3E4A7 /* AppColors+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBD941CE2401F59B00B3E4A7 /* AppColors+CoreDataProperties.swift */; };
 		CBDBAE5323BC1D5E00A56746 /* MessageContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDBAE5223BC1D5E00A56746 /* MessageContainer.swift */; };
 		CBDBAE5523BC3C9200A56746 /* LoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDBAE5423BC3C9200A56746 /* LoadingIndicator.swift */; };
 		CBDBAE5723BC42AC00A56746 /* MessageCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBDBAE5623BC42AC00A56746 /* MessageCollectionView.swift */; };
@@ -217,8 +215,6 @@
 		CBD040EE23A30D15005FBD5A /* recentTyping.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = recentTyping.json; sourceTree = "<group>"; };
 		CBD941C42401EB7300B3E4A7 /* ThemeColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeColors.swift; sourceTree = "<group>"; };
 		CBD941C72401ED1800B3E4A7 /* mChat.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = mChat.xcdatamodel; sourceTree = "<group>"; };
-		CBD941CD2401F59B00B3E4A7 /* AppColors+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "AppColors+CoreDataClass.swift"; path = "/Users/vitaliypaliy/Desktop/mChat/Messenger/mChat/App Design Helpers + CoreData model/AppColors+CoreDataClass.swift"; sourceTree = "<absolute>"; };
-		CBD941CE2401F59B00B3E4A7 /* AppColors+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = "AppColors+CoreDataProperties.swift"; path = "/Users/vitaliypaliy/Desktop/mChat/Messenger/mChat/App Design Helpers + CoreData model/AppColors+CoreDataProperties.swift"; sourceTree = "<absolute>"; };
 		CBDBAE5223BC1D5E00A56746 /* MessageContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageContainer.swift; sourceTree = "<group>"; };
 		CBDBAE5423BC3C9200A56746 /* LoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingIndicator.swift; sourceTree = "<group>"; };
 		CBDBAE5623BC42AC00A56746 /* MessageCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCollectionView.swift; sourceTree = "<group>"; };
@@ -348,8 +344,6 @@
 		CB4FA83623E902B000FBE0A3 /* App Design Helpers + CoreData model */ = {
 			isa = PBXGroup;
 			children = (
-				CBD941CD2401F59B00B3E4A7 /* AppColors+CoreDataClass.swift */,
-				CBD941CE2401F59B00B3E4A7 /* AppColors+CoreDataProperties.swift */,
 				CBD941C42401EB7300B3E4A7 /* ThemeColors.swift */,
 				CBAA927823DF930500572978 /* GradientLogoView.swift */,
 				CBD941C62401ED1800B3E4A7 /* mChat.xcdatamodeld */,
@@ -618,13 +612,13 @@
 		CBF907E82380B83500EF8925 /* mChat */ = {
 			isa = PBXGroup;
 			children = (
-				CB8916FC23BA8CFE0019CBE9 /* Networking */,
-				CB2717392381E789003A4D46 /* Helper Tools */,
-				CB4FA83623E902B000FBE0A3 /* App Design Helpers + CoreData model */,
 				CBF907E92380B83500EF8925 /* AppDelegate.swift */,
 				CBF907EB2380B83500EF8925 /* SceneDelegate.swift */,
 				CBF907F72380B83600EF8925 /* Info.plist */,
 				CBAB592B2381E49600078B7D /* GoogleService-Info.plist */,
+				CB8916FC23BA8CFE0019CBE9 /* Networking */,
+				CB2717392381E789003A4D46 /* Helper Tools */,
+				CB4FA83623E902B000FBE0A3 /* App Design Helpers + CoreData model */,
 				CB65C64A23831EBC00F2B5A3 /* Model */,
 				CBF908002380C56100EF8925 /* Assets */,
 				CBF907FF2380C55100EF8925 /* Controllers */,
@@ -799,7 +793,6 @@
 				CBFC53BB23873B5600CC4C91 /* ConverstaionsCell.swift in Sources */,
 				CBF644F12381C204004830C6 /* ChatTabBar.swift in Sources */,
 				CB21413623E0E7F900EFE433 /* RegistrationInfoView.swift in Sources */,
-				CBD941CF2401F59B00B3E4A7 /* AppColors+CoreDataClass.swift in Sources */,
 				CBD941C52401EB7300B3E4A7 /* ThemeColors.swift in Sources */,
 				CB47B66923D248FF00329470 /* InfoMenuView.swift in Sources */,
 				CB89170123BA93490019CBE9 /* ChatNetworking.swift in Sources */,
@@ -827,7 +820,6 @@
 				CBCF41A623FE1D2D007B8245 /* SelectViewColorCell.swift in Sources */,
 				CB27173D2381EFFA003A4D46 /* SelectProfileImageVC.swift in Sources */,
 				CBAA928223DFBC1F00572978 /* SignUpView.swift in Sources */,
-				CBD941D02401F59B00B3E4A7 /* AppColors+CoreDataProperties.swift in Sources */,
 				CB4FEA9023CA446F006B8B08 /* UserInfoTab.swift in Sources */,
 				CBF644F72381C26B004830C6 /* ConversationsVC.swift in Sources */,
 				CB7ACB2D23F2220D00DBE0FF /* ChatBubblesAppearenceCell.swift in Sources */,

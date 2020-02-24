@@ -15,7 +15,7 @@ class SettingsVC: UIViewController {
     var tableView = UITableView()
     
     var settingsItems = ["Saved Messages", "Appearance", "Maps"]
-    var settingsImages = ["folder.fill", "paintbrush.fill","map.fill"]
+    var settingsImages = ["bookmark_icon", "paint_icon","map_icon"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -107,7 +107,7 @@ extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
             let item = settingsItems[indexPath.row]
             let itemImg = settingsImages[indexPath.row]
             cell.settingsLabel.text = item
-            cell.settingsImage.image = UIImage(systemName: itemImg)
+            cell.settingsImage.image = UIImage(named: itemImg)
             if item == "Appearance" {
                 cell.settingsImage.tintColor = .orange
             }else if item == "Maps"{

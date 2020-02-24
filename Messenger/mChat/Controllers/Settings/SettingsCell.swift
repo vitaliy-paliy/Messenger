@@ -29,8 +29,8 @@ class SettingsCell: UITableViewCell {
         let constraints = [
             settingsImage.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
             settingsImage.centerYAnchor.constraint(equalTo: centerYAnchor),
-            settingsImage.widthAnchor.constraint(equalToConstant: 20),
-            settingsImage.heightAnchor.constraint(equalToConstant: 20)
+            settingsImage.widthAnchor.constraint(equalToConstant: 32),
+            settingsImage.heightAnchor.constraint(equalToConstant: 32)
         ]
         NSLayoutConstraint.activate(constraints)
     }

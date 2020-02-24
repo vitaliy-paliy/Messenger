@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15508" systemVersion="19A602" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
-    <entity name="AppColors" representedClassName=".AppColors" syncable="YES">
+    <entity name="AppColors" representedClassName="AppColors" syncable="YES" codeGenerationType="class">
         <attribute name="selectedBackgroundColor" optional="YES" attributeType="Transformable" valueTransformerName=""/>
         <attribute name="selectedIncomingColor" optional="YES" attributeType="Transformable" valueTransformerName=""/>
         <attribute name="selectedIncomingTextColor" optional="YES" attributeType="Transformable" valueTransformerName=""/>

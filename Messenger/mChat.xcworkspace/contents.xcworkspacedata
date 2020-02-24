@@ -2,12 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:/Users/vitaliypaliy/Desktop/mChat/Messenger/mChat/App Design Helpers + CoreData model/AppColors+CoreDataClass.swift">
-   </FileRef>
-   <FileRef
-      location = "group:/Users/vitaliypaliy/Desktop/mChat/Messenger/mChat/App Design Helpers + CoreData model/AppColors+CoreDataProperties.swift">
-   </FileRef>
-   <FileRef
       location = "group:mChat.xcodeproj">
    </FileRef>
    <FileRef
