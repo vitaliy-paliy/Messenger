@@ -29,7 +29,7 @@ class MessageCollectionView: UICollectionView, UIGestureRecognizerDelegate{
         delegate = chatVC
         dataSource = chatVC
         backgroundColor = .clear
-        contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 8, right: 0)
+        contentInset = UIEdgeInsets(top: 8, left: 0, bottom: 32, right: 0)
         register(ChatCell.self, forCellWithReuseIdentifier: "ChatCell")
         let constraints = [
             topAnchor.constraint(equalTo: chatVC.view.topAnchor),

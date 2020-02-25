@@ -36,8 +36,26 @@ extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
                 cell.unreadMessageView.isHidden = true
             }
         }
+        for friend in Friends.list {
+            if recent.determineUser() == friend.id {
+                cell.friendName.text = friend.name
+                cell.profileImage.loadImage(url: friend.profileImage)
+                if friend.isOnline{
+                    cell.isOnlineView.isHidden = false
+                }else{
+                    cell.isOnlineView.isHidden = true
+                }
+            }
+        }
         observeIsUserTypingHandler(recent, cell)
-        loadFriendsHandler(recent, cell)
+        cell.checkmark.image = UIImage(named: "checkmark_icon")
+        if recent.sender == CurrentUser.uid {
+            Database.database().reference().child("messages").child("unread-Messages").child(recent.determineUser()).child(CurrentUser.uid).removeAllObservers()
+            observeIsUserSeenMessage(recent, cell)
+            cell.checkmark.isHidden = false
+        }else{
+            cell.checkmark.isHidden = true
+        }
         let date = NSDate(timeIntervalSince1970: recent.time.doubleValue)
         cell.timeLabel.text = calendar.calculateTimePassed(date: date)
         if recent.mediaUrl != nil {
@@ -53,14 +71,14 @@ extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let chat = messages[indexPath.row]
-        for usr in friends {
+        for usr in Friends.list {
             if usr.id == chat.determineUser() {
                 nextControllerHandler(usr: usr)
                 break
             }
         }
     }
-    
+        
     func observeIsUserTypingHandler(_ recent: Messages, _ cell: ConversationsCell){
         convNetworking.observeIsUserTyping(recent.determineUser()) { (isTyping, friendId) in
             if isTyping && cell.message.determineUser() == friendId {
@@ -73,16 +91,12 @@ extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
-    func loadFriendsHandler(_ recent: Messages, _ cell: ConversationsCell){
-        convNetworking.loadFriends(recent) { (friend) in
-            if cell.message.determineUser() != friend.id { return }
-            self.friends.append(friend)
-            cell.friendName.text = friend.name
-            cell.profileImage.loadImage(url: friend.profileImage)
-            if friend.isOnline{
-                cell.isOnlineView.isHidden = false
+    func observeIsUserSeenMessage(_ recent: Messages, _ cell: ConversationsCell) {
+        convNetworking.observeUserSeenMessage(cell.message.determineUser()) { (num) in
+            if num == 0 {
+                cell.checkmark.image = UIImage(named: "doubleCheckmark_icon")
             }else{
-                cell.isOnlineView.isHidden = true
+                cell.checkmark.image = UIImage(named: "checkmark_icon")
             }
         }
     }

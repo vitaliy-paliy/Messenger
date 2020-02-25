@@ -73,6 +73,7 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     }
     
     func setupChat(){
+        chatNetworking.chatVC = self
         chatNetworking.friend = friend
         setupChatNavBar()
         fetchMessages()
@@ -190,6 +191,7 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     }
     
     func observeMessageActions(){
+        chatNetworking.observeUserMessageSeen()
         let ref = Database.database().reference().child("messages").child(CurrentUser.uid).child(friend.id)
         ref.observe(.childRemoved) { (snap) in
             self.chatNetworking.deleteMessageHandler(self.messages, for: snap) { (index) in

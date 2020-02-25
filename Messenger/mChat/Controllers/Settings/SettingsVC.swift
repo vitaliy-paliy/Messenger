@@ -108,11 +108,6 @@ extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
             let itemImg = settingsImages[indexPath.row]
             cell.settingsLabel.text = item
             cell.settingsImage.image = UIImage(named: itemImg)
-            if item == "Appearance" {
-                cell.settingsImage.tintColor = .orange
-            }else if item == "Maps"{
-                cell.settingsImage.tintColor = .systemGreen
-            }
             return cell
         }
     }

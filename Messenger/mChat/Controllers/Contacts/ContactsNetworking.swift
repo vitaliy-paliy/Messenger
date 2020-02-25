@@ -53,9 +53,9 @@ class ContactsNetworking {
         Database.database().reference().child("friendsList").child(CurrentUser.uid).observe(.childRemoved) { (snap) in
             let friendToRemove = snap.key
             var index = 0
-            for friend in self.contactsVC.friendsList {
+            for friend in Friends.list {
                 if friend.id == friendToRemove {
-                    self.contactsVC.friendsList.remove(at: index)
+                    Friends.list.remove(at: index)
                     self.removeFriendFromArray(friendToRemove)
                     self.contactsVC.tableView.reloadData()
                     return

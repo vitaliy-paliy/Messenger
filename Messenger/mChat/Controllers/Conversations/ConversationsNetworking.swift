@@ -137,6 +137,13 @@ class ConversationsNetworking {
         }
     }
     
+    func observeUserSeenMessage(_ friendId: String, completion: @escaping(_ userSeenMessagesCount: Int) -> Void){
+        let ref = Database.database().reference().child("messages").child("unread-Messages").child(friendId).child(CurrentUser.uid)
+        ref.observe(.value) { (snap) in
+            return completion(Int(snap.childrenCount))
+        }
+    }
+
     func observeIsUserTyping(_ friendId: String, completion: @escaping (_ isTyping: Bool, _ friendId: String) -> Void){
         let ref = Database.database().reference().child("userActions").child(friendId).child(CurrentUser.uid)
         ref.observe(.value) { (snap) in
@@ -149,7 +156,6 @@ class ConversationsNetworking {
     
     func removeConvObservers(){
         for message in convVC.messages {
-            Database.database().reference().child("userActions").child(message.determineUser()).child(CurrentUser.uid).removeAllObservers()
             Database.database().reference().child("users").child(message.determineUser()).removeAllObservers()
         }
     }

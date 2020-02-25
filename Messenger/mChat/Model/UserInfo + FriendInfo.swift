@@ -18,6 +18,10 @@ struct FriendInfo {
     var isMapLocationEnabled: Bool!
 }
 
+class Friends {
+    static var list = [FriendInfo]()
+}
+
 struct FriendActivity{
     var isTyping: Bool!
     var friendId: String!

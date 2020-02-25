@@ -12,12 +12,13 @@ import Firebase
 class ChatNetworking {
     
     private let audioCache = NSCache<NSString, NSData>()
-    
     var friend: FriendInfo!
     var loadMore = false
     var lastMessageReached = false
+    var messageStatus = "Sent"
     var scrollToIndex = [Messages]()
     var timer = Timer()
+    var chatVC: ChatVC!
     
     func getMessages(_ v: UIView, _ m: [Messages], completion: @escaping(_ newMessages: [Messages], _ mOrder: Bool) -> Void){
         var nodeRef: DatabaseQuery
@@ -224,6 +225,17 @@ class ChatNetworking {
     
     func removeObserves(){
         Database.database().reference().child("messages").child("unread-Messages").child(CurrentUser.uid).child(friend.id).removeAllObservers()
+    }
+     
+    func observeUserMessageSeen() {
+        Database.database().reference().child("messages").child("unread-Messages").child(friend.id).child(CurrentUser.uid).observe(.value) { (snap) in
+            if Int(snap.childrenCount) > 0 {
+                self.messageStatus = "Sent"
+            }else{
+                self.messageStatus = "Seen"
+                self.chatVC.collectionView.reloadData()
+            }
+        }
     }
     
 }

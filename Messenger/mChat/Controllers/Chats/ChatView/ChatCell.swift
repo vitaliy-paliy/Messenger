@@ -20,6 +20,7 @@ class ChatCell: UICollectionViewCell {
     var backgroundWidthAnchor: NSLayoutConstraint!
     var outcomingMessage: NSLayoutConstraint!
     var incomingMessage: NSLayoutConstraint!
+    var activityLabel = UILabel()
     
     var audioPlayButton = UIButton(type: .system)
     var durationLabel = UILabel()
@@ -53,6 +54,7 @@ class ChatCell: UICollectionViewCell {
         setupBackgroundView()
         setupMessage()
         setupMediaMessage()
+        setupActivityLabel()
     }
     
     required init?(coder: NSCoder) {
@@ -106,6 +108,19 @@ class ChatCell: UICollectionViewCell {
             mediaMessage.centerYAnchor.constraint(equalTo: messageBackground.centerYAnchor),
             mediaMessage.widthAnchor.constraint(equalTo: messageBackground.widthAnchor),
             mediaMessage.heightAnchor.constraint(equalTo: messageBackground.heightAnchor)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    private func setupActivityLabel() {
+        addSubview(activityLabel)
+        activityLabel.translatesAutoresizingMaskIntoConstraints = false
+        activityLabel.isHidden = false
+        activityLabel.font = UIFont.boldSystemFont(ofSize: 11)
+        activityLabel.textColor = ThemeColors.selectedOutcomingColor
+        let constraints = [
+            activityLabel.trailingAnchor.constraint(equalTo: messageBackground.trailingAnchor, constant: -4),
+            activityLabel.topAnchor.constraint(equalTo: messageBackground.bottomAnchor, constant: 2),
         ]
         NSLayoutConstraint.activate(constraints)
     }

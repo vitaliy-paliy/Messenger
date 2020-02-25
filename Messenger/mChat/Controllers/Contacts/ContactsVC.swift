@@ -11,7 +11,6 @@ import UIKit
 class ContactsVC: UIViewController {
     
     var contactsNetworking = ContactsNetworking()
-    var friendsList = [FriendInfo]()
     var tableView = UITableView()
     var blurView = UIVisualEffectView()
     var infoMenuView: InfoMenuView!
@@ -56,8 +55,8 @@ class ContactsVC: UIViewController {
     }
         
     func handleReload(_ friends: [FriendInfo]){
-        friendsList = friends
-        friendsList.sort { (friend1, friend2) -> Bool in
+        Friends.list = friends
+        Friends.list.sort { (friend1, friend2) -> Bool in
             return friend1.name < friend2.name
         }
         self.tableView.reloadData()

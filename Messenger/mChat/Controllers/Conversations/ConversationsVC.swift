@@ -13,7 +13,6 @@ class ConversationsVC: UIViewController {
     
     var convNetworking = ConversationsNetworking()
     var messages = [Messages]()
-    var friends = [FriendInfo]()
     var tableView = UITableView()
     let calendar = Calendar(identifier: .gregorian)
     var newConversationButton = UIBarButtonItem()
@@ -34,6 +33,11 @@ class ConversationsVC: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         tabBarController?.tabBar.isHidden = false
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
     }
     
     func setupTableView() {
@@ -84,7 +88,6 @@ class ConversationsVC: UIViewController {
             return message1.time.intValue > message2.time.intValue
         }
         tableView.reloadData()
-        friends = []
     }
     
     func observeMessageActions() {

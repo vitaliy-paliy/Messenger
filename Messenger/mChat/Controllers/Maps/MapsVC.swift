@@ -13,7 +13,6 @@ import Mapbox
 class MapsVC: UIViewController, UIGestureRecognizerDelegate{
     
     var mapNetworking = MapsNetworking()
-    var friends = [FriendInfo]()
     var isFriendSelected = false
     var selectedFriend = FriendInfo()
     var friendCoordinates = [String: CLLocationCoordinate2D]()
@@ -46,7 +45,7 @@ class MapsVC: UIViewController, UIGestureRecognizerDelegate{
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         mapNetworking.mapsVC = self
-        mapNetworking.observeFriendsList()
+        mapNetworking.observeFriendLocation()
         tabBarController?.tabBar.isHidden = true
         navigationController?.navigationBar.isHidden = true
     }

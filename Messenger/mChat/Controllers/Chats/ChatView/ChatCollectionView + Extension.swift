@@ -92,6 +92,13 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             cell.removeReplyOutlets()
         }
         
+        if message.sender == CurrentUser.uid && message.id == messages.last?.id {
+            cell.activityLabel.isHidden = false
+            cell.activityLabel.text = chatNetworking.messageStatus
+        }else{
+            cell.activityLabel.isHidden = true
+        }
+        
         return cell
     }
     

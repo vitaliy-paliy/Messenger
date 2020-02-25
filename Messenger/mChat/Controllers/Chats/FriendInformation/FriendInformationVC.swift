@@ -71,11 +71,6 @@ class FriendInformationVC: UIViewController, UITableViewDelegate, UITableViewDat
             let image = toolsImages[indexPath.row]
             cell.toolName.text = tool
             cell.toolImage.image = UIImage(named: image)
-            if tool == "Send Message"{
-                cell.toolImage.tintColor = .orange
-            }else if tool == "Open Maps"{
-                cell.toolImage.tintColor = .systemGreen
-            }
             return cell
         }
     }

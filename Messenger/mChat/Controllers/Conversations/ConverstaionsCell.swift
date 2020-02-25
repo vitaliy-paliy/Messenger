@@ -22,6 +22,7 @@ class ConversationsCell: UITableViewCell {
     let typingAnimation = AnimationView()
     var unreadMessageView = UIView()
     var unreadLabel = UILabel()
+    var checkmark = UIImageView()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -34,6 +35,7 @@ class ConversationsCell: UITableViewCell {
         setupIsOnlineImage()
         setupUserTypingView()
         setupUnreadMessagesView()
+        setupCheckmark()
     }
     
     required init?(coder: NSCoder) {
@@ -168,6 +170,22 @@ class ConversationsCell: UITableViewCell {
             unreadMessageView.heightAnchor.constraint(equalToConstant: 20),
             unreadLabel.centerXAnchor.constraint(equalTo: unreadMessageView.centerXAnchor),
             unreadLabel.centerYAnchor.constraint(equalTo: unreadMessageView.centerYAnchor),
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    func setupCheckmark() {
+        addSubview(checkmark)
+        checkmark.isHidden = true
+        checkmark.translatesAutoresizingMaskIntoConstraints = false
+        checkmark.image = UIImage(named: "checkmark_icon")
+        checkmark.contentMode = .scaleAspectFit
+        checkmark.tintColor = .black
+        let constraints = [
+            checkmark.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
+            checkmark.centerYAnchor.constraint(equalTo: centerYAnchor),
+            checkmark.heightAnchor.constraint(equalToConstant: 18),
+            checkmark.widthAnchor.constraint(equalToConstant: 18)
         ]
         NSLayoutConstraint.activate(constraints)
     }
