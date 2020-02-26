@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Lottie
 
 class ContactsVC: UIViewController {
     
@@ -16,16 +17,18 @@ class ContactsVC: UIViewController {
     var infoMenuView: InfoMenuView!
     var tabBarBadge: UITabBarItem!
     var requestButtonView: RequestButtonView!
+    var blankLoadingView = AnimationView(animation: Animation.named("blankLoadingAnim"))
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Contacts"
         view.backgroundColor = .white
         setupTableView()
+        setupBlankView(blankLoadingView)
         setupaddButton()
         setupFriendRequest()
-        contactsNetworking.observeFriendList()
         contactsNetworking.contactsVC = self
+        contactsNetworking.observeFriendList()
         if let tabItems = tabBarController?.tabBar.items {
             tabBarBadge = tabItems[0]
         }

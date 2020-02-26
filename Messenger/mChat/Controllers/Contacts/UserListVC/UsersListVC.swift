@@ -7,12 +7,14 @@
 //
 
 import UIKit
+import Lottie
 
 class UsersListVC: UIViewController {
     
     var users = [FriendInfo]()
     var userListNetworking = UserListNetworking()
     var tableView = UITableView()
+    var blankLoadingView = AnimationView(animation: Animation.named("blankLoadingAnim"))
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,6 +22,7 @@ class UsersListVC: UIViewController {
         navigationController?.navigationBar.tintColor = .black
         setupTableView()
         getUsersList()
+        setupBlankView(blankLoadingView)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -38,6 +41,7 @@ class UsersListVC: UIViewController {
                 return friend1.name < friend2.name
             }
             self.users = sortedUserList
+            self.blankLoadingView.isHidden = true
             self.tableView.reloadData()
         }
     }

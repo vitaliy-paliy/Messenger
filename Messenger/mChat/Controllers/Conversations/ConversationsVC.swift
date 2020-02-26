@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import Lottie
 
 class ConversationsVC: UIViewController {
     
@@ -17,6 +18,7 @@ class ConversationsVC: UIViewController {
     let calendar = Calendar(identifier: .gregorian)
     var newConversationButton = UIBarButtonItem()
     var tabBarBadge: UITabBarItem!
+    var blankLoadingView = AnimationView(animation: Animation.named("blankLoadingAnim"))
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,18 +30,14 @@ class ConversationsVC: UIViewController {
         loadConversations()
         setupNewConversationButton()
         setupTableView()
+        setupBlankView(blankLoadingView)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         tabBarController?.tabBar.isHidden = false
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
         
-    }
-    
     func setupTableView() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -76,6 +74,7 @@ class ConversationsVC: UIViewController {
     }
     
     func loadMessagesHandler(_ newMessages: [Messages]?) {
+        blankLoadingView.isHidden = true
         if let newMessages = newMessages {
             handleReload(newMessages)
         }

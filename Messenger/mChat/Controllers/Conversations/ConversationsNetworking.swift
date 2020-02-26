@@ -18,6 +18,7 @@ class ConversationsNetworking {
     var totalUnread = Int()
     
     func observeFriendsList() {
+        convVC.blankLoadingView.isHidden = false
         Database.database().reference().child("friendsList").child(CurrentUser.uid).observeSingleEvent(of: .value) { (snap) in
             for child in snap.children{
                 guard let snapshot = child as? DataSnapshot else { return }

@@ -16,6 +16,7 @@ class ContactsNetworking {
     var groupedFriends = [String: FriendInfo]()
     
     func observeFriendList(){
+        contactsVC.blankLoadingView.isHidden = false
         observeFriendRequests()
         Database.database().reference().child("friendsList").child(CurrentUser.uid).observeSingleEvent(of: .value) { (snap) in
             guard let friends = snap.value as? [String: Any] else {
@@ -30,6 +31,7 @@ class ContactsNetworking {
     }
     
     func observeFriendActions(){
+        contactsVC.blankLoadingView.isHidden = true
         observeNewFriend()
         observeRemovedFriends()
     }

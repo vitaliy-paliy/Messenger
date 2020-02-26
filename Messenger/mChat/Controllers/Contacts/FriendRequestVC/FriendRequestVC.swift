@@ -7,12 +7,14 @@
 //
 
 import UIKit
+import Lottie
 
 class FriendRequestVC: UIViewController {
     
     let tableView = UITableView()
     var friendRequests = [FriendInfo]()
     var friendRequestNetworking = FriendRequestNetworking()
+    var blankLoadingView = AnimationView(animation: Animation.named("blankLoadingAnim"))
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,6 +23,7 @@ class FriendRequestVC: UIViewController {
         navigationController?.navigationBar.tintColor = .black
         navigationItem.title = "Friend Requests"
         setupTableView()
+        setupBlankView(blankLoadingView)
     }
     
     override func viewWillAppear(_ animated: Bool) {

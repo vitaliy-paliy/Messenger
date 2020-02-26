@@ -38,6 +38,7 @@ class FriendRequestNetworking {
                 self.controller.friendRequests.sort { (friend1, friend2) -> Bool in
                     return friend1.name < friend2.name
                 }
+                self.controller.blankLoadingView.isHidden = true
                 self.controller.tableView.reloadData()
             }
         }

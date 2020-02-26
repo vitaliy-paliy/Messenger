@@ -16,7 +16,7 @@ class SettingsVC: UIViewController {
     
     var settingsItems = ["Saved Messages", "Appearance", "Maps"]
     var settingsImages = ["bookmark_icon", "paint_icon","map_icon"]
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Settings"
@@ -71,6 +71,10 @@ class SettingsVC: UIViewController {
         
     }
     
+    func changeProfileImage() {
+        print("TODO: Change Profile Image")
+    }
+    
 }
 
 extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
@@ -100,6 +104,7 @@ extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
             cell.emailLabel.text = CurrentUser.email
             cell.nameLabel.text = CurrentUser.name
             cell.profileImage.loadImage(url: CurrentUser.profileImage)
+            cell.settingsVC = self
             return cell
         }else{
             tableView.rowHeight = 45
@@ -115,7 +120,8 @@ extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.section == 0{
-            print("TODO: Changing password etc.")
+            let controller = CurrentUserVC()
+            show(controller, sender: self)
         }else{
             let item = settingsItems[indexPath.row]
             if item == "Appearance"{

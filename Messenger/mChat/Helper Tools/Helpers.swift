@@ -8,8 +8,25 @@
 
 import UIKit
 import Firebase
+import Lottie
 
 extension UIViewController {
+    
+    func setupBlankView(_ blankLoadingView: AnimationView) {
+        view.addSubview(blankLoadingView)
+        blankLoadingView.translatesAutoresizingMaskIntoConstraints = false
+        blankLoadingView.backgroundColor = .white
+        blankLoadingView.play()
+        blankLoadingView.loopMode = .loop
+        blankLoadingView.backgroundBehavior = .pauseAndRestore
+        let constraints = [
+            blankLoadingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            blankLoadingView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            blankLoadingView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            blankLoadingView.topAnchor.constraint(equalTo: view.topAnchor)
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
     
     func setupGradientLayer() -> CAGradientLayer {
         let gradient = CAGradientLayer()

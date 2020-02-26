@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import AVFoundation
+import Lottie
 
 class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationControllerDelegate, AVAudioRecorderDelegate {
     
@@ -22,6 +23,7 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     var collectionView: MessageCollectionView!
     var messageContainer: MessageContainer!
     var refreshIndicator: MessageLoadingIndicator!
+    var blankLoadingView = AnimationView(animation: Animation.named("chatLoadingAnim"))
     
     let calendar = Calendar(identifier: .gregorian)
     
@@ -70,6 +72,23 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
         collectionView = MessageCollectionView(collectionViewLayout: UICollectionViewFlowLayout.init(), chatVC: self)
         refreshIndicator = MessageLoadingIndicator(frame: view.frame, const: topConst, chatVC: self)
         hideKeyboardOnTap()
+        setupChatBlankView()
+    }
+    
+    func setupChatBlankView() {
+        view.addSubview(blankLoadingView)
+        blankLoadingView.translatesAutoresizingMaskIntoConstraints = false
+        blankLoadingView.backgroundColor = .white
+        blankLoadingView.play()
+        blankLoadingView.loopMode = .loop
+        blankLoadingView.backgroundBehavior = .pauseAndRestore
+        let constraints = [
+            blankLoadingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            blankLoadingView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            blankLoadingView.bottomAnchor.constraint(equalTo: messageContainer.topAnchor),
+            blankLoadingView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor)
+        ]
+        NSLayoutConstraint.activate(constraints)
     }
     
     func setupChat(){
@@ -207,6 +226,7 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
                     self.scrollToTheBottom(animated: true)
                 }
             }
+            self.blankLoadingView.isHidden = true
         }
     }
     
