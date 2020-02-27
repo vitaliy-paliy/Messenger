@@ -25,7 +25,6 @@ class AuthKeyboardHandler {
         guard let height = kFrame?.height, let duration = kDuration else { return }
         if !keyboardIsShown {
             view.frame.origin.y -= height
-            print("HELLEO")
         }
         keyboardIsShown = true
         UIView.animate(withDuration: duration) {

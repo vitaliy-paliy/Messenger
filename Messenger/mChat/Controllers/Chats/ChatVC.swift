@@ -210,6 +210,7 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     }
     
     func observeMessageActions(){
+        self.blankLoadingView.isHidden = true
         chatNetworking.observeUserMessageSeen()
         let ref = Database.database().reference().child("messages").child(CurrentUser.uid).child(friend.id)
         ref.observe(.childRemoved) { (snap) in
@@ -226,7 +227,6 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
                     self.scrollToTheBottom(animated: true)
                 }
             }
-            self.blankLoadingView.isHidden = true
         }
     }
     

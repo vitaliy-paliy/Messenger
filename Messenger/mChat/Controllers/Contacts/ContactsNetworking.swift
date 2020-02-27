@@ -79,6 +79,7 @@ class ContactsNetworking {
     
     func getFriendInfo(){
         for key in friendKeys {
+            print(key)
             Database.database().reference().child("users").child(key).observeSingleEvent(of: .value) { (snap) in
                 guard let values = snap.value as? [String: Any] else { return }
                 self.setupFriendInfo(for: key, values)

@@ -9,14 +9,14 @@
 import UIKit
 import Firebase
 
-class SettingsVC: UIViewController {
+class SettingsVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     var logoutButton = UIButton(type: .system)
     var tableView = UITableView()
     
     var settingsItems = ["Saved Messages", "Appearance", "Maps"]
     var settingsImages = ["bookmark_icon", "paint_icon","map_icon"]
-        
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Settings"
@@ -63,6 +63,10 @@ class SettingsVC: UIViewController {
             try Auth.auth().signOut()
             let controller = SignInVC()
             ChatKit.mapTimer.invalidate()
+            Friends.list = []
+            Database.database().reference().child("friendsList").child(CurrentUser.uid).removeAllObservers()
+            Database.database().reference().child("users").removeAllObservers()
+            Database.database().reference().child("userActions").removeAllObservers()
             view.window?.rootViewController = controller
             view.window?.makeKeyAndVisible()
         }catch{
@@ -72,7 +76,66 @@ class SettingsVC: UIViewController {
     }
     
     func changeProfileImage() {
-        print("TODO: Change Profile Image")
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Take Photo", style: .default, handler: { (alertAction) in
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                imagePicker.sourceType = .camera
+                self.present(imagePicker, animated: true, completion: nil)
+            }
+        }))
+        alert.addAction(UIAlertAction(title: "Open Photo Library", style: .default, handler: { (alertAction) in
+            imagePicker.sourceType = .photoLibrary
+            self.present(imagePicker, animated: true, completion: nil)
+        }))
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        cancelAction.setValue(UIColor.systemRed, forKey: "titleTextColor")
+        alert.addAction(cancelAction)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        guard let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
+        uploadImageToStorage(originalImage) { (url, error) in
+            guard error == nil , let url = url else { return }
+            self.updateCurrentUserInfo(url)
+        }
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+    
+    func uploadImageToStorage(_ image: UIImage, completion: @escaping (_ imageUrl: URL?, _ error: Error?) -> Void) {
+        let uniqueName = NSUUID().uuidString
+        let storageRef = Storage.storage().reference().child("ProfileImages").child("\(uniqueName).jpg")
+        if let uploadData = image.jpegData(compressionQuality: 0.1) {
+            storageRef.putData(uploadData, metadata: nil) { (metaData, error) in
+                if let error = error { return completion(nil, error) }
+                storageRef.downloadURL { (url, error) in
+                    if let error = error { return completion(nil, error) }
+                    if let url = url { return completion(url, nil) }
+                }
+            }
+        }
+    }
+    
+    func updateCurrentUserInfo(_ url: URL) {
+        Database.database().reference().child("users").child(CurrentUser.uid).updateChildValues(["profileImage":url.absoluteString]) { (error, databaseRef) in
+            guard error == nil else { return }
+            self.removeOldStorageImage()
+            CurrentUser.profileImage = url.absoluteString
+            self.tableView.reloadData()
+        }
+    }
+    
+    func removeOldStorageImage() {
+        Storage.storage().reference(forURL: CurrentUser.profileImage).delete { (error) in
+            guard error == nil else { return }
+            print("Deleted")
+        }
     }
     
 }

@@ -15,6 +15,7 @@ class FriendRequestVC: UIViewController {
     var friendRequests = [FriendInfo]()
     var friendRequestNetworking = FriendRequestNetworking()
     var blankLoadingView = AnimationView(animation: Animation.named("blankLoadingAnim"))
+    var emptyLabel = UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +25,7 @@ class FriendRequestVC: UIViewController {
         navigationItem.title = "Friend Requests"
         setupTableView()
         setupBlankView(blankLoadingView)
+        setupEmptyView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -36,9 +38,28 @@ class FriendRequestVC: UIViewController {
         tabBarController?.tabBar.isHidden = false
     }
     
+    func setupEmptyView() {
+        view.addSubview(emptyLabel)
+        emptyLabel.translatesAutoresizingMaskIntoConstraints = false
+        emptyLabel.textColor = .gray
+        emptyLabel.font = UIFont.boldSystemFont(ofSize: 24)
+        emptyLabel.text = "EMPTY"
+        emptyLabel.isHidden = true
+        let constraints = [
+            emptyLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            emptyLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        ]
+        NSLayoutConstraint.activate(constraints)
+        
+    }
+    
     func fetchRequests() {
         friendRequestNetworking.controller = self
-        friendRequestNetworking.setupFriendRequests()
+        friendRequestNetworking.setupFriendRequests {
+            if self.friendRequestNetworking.friendKeys.count == 0 {
+                self.emptyLabel.isHidden = false
+            }
+        }
     }
     
     func setupTableView() {

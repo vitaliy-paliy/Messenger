@@ -78,6 +78,7 @@
 		CB99D07C23D4D268008645D6 /* ContactsTableView + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99D07B23D4D268008645D6 /* ContactsTableView + Extension.swift */; };
 		CB99D08523D5003A008645D6 /* Alata-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB99D08423D5003A008645D6 /* Alata-Regular.ttf */; };
 		CB99D08723D5397E008645D6 /* AuthNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99D08623D5397E008645D6 /* AuthNetworking.swift */; };
+		CBA70BF4240720C1006B3638 /* EmptyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA70BF3240720C1006B3638 /* EmptyListView.swift */; };
 		CBAA926F23DF88FB00572978 /* AuthKeyboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAA926E23DF88FB00572978 /* AuthKeyboardHandler.swift */; };
 		CBAA927423DF905300572978 /* HandleSignInViewDelegate + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAA927323DF905300572978 /* HandleSignInViewDelegate + Extension.swift */; };
 		CBAA927923DF930500572978 /* GradientLogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAA927823DF930500572978 /* GradientLogoView.swift */; };
@@ -197,6 +198,7 @@
 		CB99D07B23D4D268008645D6 /* ContactsTableView + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ContactsTableView + Extension.swift"; sourceTree = "<group>"; };
 		CB99D08423D5003A008645D6 /* Alata-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Alata-Regular.ttf"; sourceTree = "<group>"; };
 		CB99D08623D5397E008645D6 /* AuthNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNetworking.swift; sourceTree = "<group>"; };
+		CBA70BF3240720C1006B3638 /* EmptyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyListView.swift; sourceTree = "<group>"; };
 		CBAA926E23DF88FB00572978 /* AuthKeyboardHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthKeyboardHandler.swift; sourceTree = "<group>"; };
 		CBAA927323DF905300572978 /* HandleSignInViewDelegate + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HandleSignInViewDelegate + Extension.swift"; sourceTree = "<group>"; };
 		CBAA927823DF930500572978 /* GradientLogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientLogoView.swift; sourceTree = "<group>"; };
@@ -352,6 +354,7 @@
 			children = (
 				CBD941C42401EB7300B3E4A7 /* ThemeColors.swift */,
 				CBAA927823DF930500572978 /* GradientLogoView.swift */,
+				CBA70BF3240720C1006B3638 /* EmptyListView.swift */,
 				CBD941C62401ED1800B3E4A7 /* mChat.xcdatamodeld */,
 			);
 			path = "App Design Helpers + CoreData model";
@@ -854,6 +857,7 @@
 				CB50E72B23C29B710055BF78 /* ConversationsNetworking.swift in Sources */,
 				CB1B3F8123C903D0000858DF /* CurrentUserAnnotationView.swift in Sources */,
 				CB1B3F7F23C8FDCE000858DF /* AnnotationPin.swift in Sources */,
+				CBA70BF4240720C1006B3638 /* EmptyListView.swift in Sources */,
 				CB99D07C23D4D268008645D6 /* ContactsTableView + Extension.swift in Sources */,
 				CBCC30862383722500E36E39 /* AddFriendVC.swift in Sources */,
 				CBF907FE2380B8CE00EF8925 /* SignInVC.swift in Sources */,

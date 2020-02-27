@@ -19,6 +19,7 @@ class ConversationsVC: UIViewController {
     var newConversationButton = UIBarButtonItem()
     var tabBarBadge: UITabBarItem!
     var blankLoadingView = AnimationView(animation: Animation.named("blankLoadingAnim"))
+    var emptyListView: EmptyListView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,9 +29,7 @@ class ConversationsVC: UIViewController {
             tabBarBadge = tabItems[1]
         }
         loadConversations()
-        setupNewConversationButton()
-        setupTableView()
-        setupBlankView(blankLoadingView)
+        setupUI()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -38,6 +37,13 @@ class ConversationsVC: UIViewController {
         tabBarController?.tabBar.isHidden = false
     }
         
+    func setupUI(){
+        setupNewConversationButton()
+        setupTableView()
+        emptyListView = EmptyListView(nil, self, false)
+        setupBlankView(blankLoadingView)
+    }
+    
     func setupTableView() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -83,6 +89,10 @@ class ConversationsVC: UIViewController {
     
     func handleReload(_ newMessages: [Messages]) {
         messages = newMessages
+        if messages.count != 0 {
+            emptyListView.isHidden = true
+            emptyListView.emptyButton.isHidden = true
+        }
         messages.sort { (message1, message2) -> Bool in
             return message1.time.intValue > message2.time.intValue
         }

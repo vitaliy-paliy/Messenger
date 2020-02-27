@@ -229,9 +229,11 @@ class ChatNetworking {
      
     func observeUserMessageSeen() {
         Database.database().reference().child("messages").child("unread-Messages").child(friend.id).child(CurrentUser.uid).observe(.value) { (snap) in
-            if Int(snap.childrenCount) > 0 {
+            if Int(snap.childrenCount) > 0{
                 self.messageStatus = "Sent"
             }else{
+                guard self.chatVC.messages.count != 0 else { return }
+                print("SEEN MESSAGE")
                 self.messageStatus = "Seen"
                 self.chatVC.collectionView.reloadData()
             }
