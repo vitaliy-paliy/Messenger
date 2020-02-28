@@ -14,21 +14,39 @@ class SharedMediaVC: UIViewController, UICollectionViewDelegate, UICollectionVie
     var friend: FriendInfo!
     var sharedMedia = [String]()
     var collectionView: UICollectionView!
+    var emptyLabel = UILabel()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Shared Media"
         setupCollectionView()
+        setupEmptyView()
         getSharedMedia()
     }
     
     func getSharedMedia(){
         Database.database().reference().child("messages").child(CurrentUser.uid).child(friend.id).observe(.childAdded) { (snap) in
+            self.emptyLabel.isHidden = false
             guard let values = snap.value as? [String: Any] else { return }
             guard let mediaUrl = values["mediaUrl"] as? String else { return }
             self.sharedMedia.insert(mediaUrl, at: 0)
+            if self.sharedMedia.count != 0 { self.emptyLabel.isHidden = true }
             self.collectionView.reloadData()
         }
+    }
+    
+    func setupEmptyView() {
+        view.addSubview(emptyLabel)
+        emptyLabel.translatesAutoresizingMaskIntoConstraints = false
+        emptyLabel.textColor = .gray
+        emptyLabel.font = UIFont.boldSystemFont(ofSize: 24)
+        emptyLabel.text = "EMPTY"
+        emptyLabel.isHidden = true
+        let constraints = [
+            emptyLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            emptyLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        ]
+        NSLayoutConstraint.activate(constraints)
     }
     
     func setupCollectionView(){

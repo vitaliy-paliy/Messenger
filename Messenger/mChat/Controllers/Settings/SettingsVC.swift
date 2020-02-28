@@ -35,7 +35,7 @@ class SettingsVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         logoutButton.setTitle("Sign out", for: .normal)
         logoutButton.titleLabel?.font = UIFont(name: "Helvetica Neue", size: 18)
         logoutButton.setTitleColor(.systemRed, for: .normal)
-        logoutButton.addTarget(self, action: #selector(logoutButtonPressed), for: .touchUpInside)
+        logoutButton.addTarget(self, action: #selector(setupLogoutView), for: .touchUpInside)
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: logoutButton)
     }
     
@@ -55,6 +55,16 @@ class SettingsVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ]
         NSLayoutConstraint.activate(constraints)
+    }
+    
+    @objc func setupLogoutView() {
+        let alert = UIAlertController(title: "Sign Out", message: "Are you sure you want to sign out?", preferredStyle: .alert)
+        let exitAction = UIAlertAction(title: "Exit", style: .destructive) { (true) in
+            self.logoutButtonPressed()
+        }
+        alert.addAction(UIAlertAction(title: "Cancel", style: .default, handler: nil))
+        alert.addAction(exitAction)
+        present(alert, animated: true, completion: nil)
     }
     
     @objc func logoutButtonPressed(){

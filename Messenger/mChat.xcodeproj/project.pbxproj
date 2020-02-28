@@ -79,6 +79,9 @@
 		CB99D08523D5003A008645D6 /* Alata-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = CB99D08423D5003A008645D6 /* Alata-Regular.ttf */; };
 		CB99D08723D5397E008645D6 /* AuthNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB99D08623D5397E008645D6 /* AuthNetworking.swift */; };
 		CBA70BF4240720C1006B3638 /* EmptyListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA70BF3240720C1006B3638 /* EmptyListView.swift */; };
+		CBA70BF624089FDA006B3638 /* ChangePasswordVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA70BF524089FDA006B3638 /* ChangePasswordVC.swift */; };
+		CBA70BF824089FE5006B3638 /* ChangeEmailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBA70BF724089FE5006B3638 /* ChangeEmailVC.swift */; };
+		CBA70BFA2408A28C006B3638 /* changeInfo_anim.json in Resources */ = {isa = PBXBuildFile; fileRef = CBA70BF92408A28C006B3638 /* changeInfo_anim.json */; };
 		CBAA926F23DF88FB00572978 /* AuthKeyboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAA926E23DF88FB00572978 /* AuthKeyboardHandler.swift */; };
 		CBAA927423DF905300572978 /* HandleSignInViewDelegate + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAA927323DF905300572978 /* HandleSignInViewDelegate + Extension.swift */; };
 		CBAA927923DF930500572978 /* GradientLogoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CBAA927823DF930500572978 /* GradientLogoView.swift */; };
@@ -199,6 +202,9 @@
 		CB99D08423D5003A008645D6 /* Alata-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Alata-Regular.ttf"; sourceTree = "<group>"; };
 		CB99D08623D5397E008645D6 /* AuthNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNetworking.swift; sourceTree = "<group>"; };
 		CBA70BF3240720C1006B3638 /* EmptyListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyListView.swift; sourceTree = "<group>"; };
+		CBA70BF524089FDA006B3638 /* ChangePasswordVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordVC.swift; sourceTree = "<group>"; };
+		CBA70BF724089FE5006B3638 /* ChangeEmailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeEmailVC.swift; sourceTree = "<group>"; };
+		CBA70BF92408A28C006B3638 /* changeInfo_anim.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = changeInfo_anim.json; sourceTree = "<group>"; };
 		CBAA926E23DF88FB00572978 /* AuthKeyboardHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthKeyboardHandler.swift; sourceTree = "<group>"; };
 		CBAA927323DF905300572978 /* HandleSignInViewDelegate + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HandleSignInViewDelegate + Extension.swift"; sourceTree = "<group>"; };
 		CBAA927823DF930500572978 /* GradientLogoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientLogoView.swift; sourceTree = "<group>"; };
@@ -509,6 +515,7 @@
 				CBD040EE23A30D15005FBD5A /* recentTyping.json */,
 				CB7CC35C2405F074001B0923 /* blankLoadingAnim.json */,
 				CB7CC35E2405FA5C001B0923 /* chatLoadingAnim.json */,
+				CBA70BF92408A28C006B3638 /* changeInfo_anim.json */,
 			);
 			path = Animations;
 			sourceTree = "<group>";
@@ -599,6 +606,8 @@
 				CB82EA8C23C65845002FD857 /* SettingsCell.swift */,
 				CB7CC3602405FE85001B0923 /* CurrentUserVC.swift */,
 				CBECFED623F0CC0D005FAB35 /* AppearanceVC */,
+				CBA70BF524089FDA006B3638 /* ChangePasswordVC.swift */,
+				CBA70BF724089FE5006B3638 /* ChangeEmailVC.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -725,6 +734,7 @@
 			files = (
 				CB7CC35D2405F074001B0923 /* blankLoadingAnim.json in Resources */,
 				CBB19BEB23E3D0900010511C /* settingUpAnimation.json in Resources */,
+				CBA70BFA2408A28C006B3638 /* changeInfo_anim.json in Resources */,
 				CBFCFAE223D939E50038BD06 /* slideInstructions.json in Resources */,
 				CBF907F32380B83600EF8925 /* Assets.xcassets in Resources */,
 				CBD040EF23A30D15005FBD5A /* recentTyping.json in Resources */,
@@ -858,6 +868,7 @@
 				CB1B3F8123C903D0000858DF /* CurrentUserAnnotationView.swift in Sources */,
 				CB1B3F7F23C8FDCE000858DF /* AnnotationPin.swift in Sources */,
 				CBA70BF4240720C1006B3638 /* EmptyListView.swift in Sources */,
+				CBA70BF824089FE5006B3638 /* ChangeEmailVC.swift in Sources */,
 				CB99D07C23D4D268008645D6 /* ContactsTableView + Extension.swift in Sources */,
 				CBCC30862383722500E36E39 /* AddFriendVC.swift in Sources */,
 				CBF907FE2380B8CE00EF8925 /* SignInVC.swift in Sources */,
@@ -869,6 +880,7 @@
 				CBF644F42381C23A004830C6 /* ContactsVC.swift in Sources */,
 				CBCF41A823FE1F26007B8245 /* ChatViewColorPickerCell.swift in Sources */,
 				CB99D08723D5397E008645D6 /* AuthNetworking.swift in Sources */,
+				CBA70BF624089FDA006B3638 /* ChangePasswordVC.swift in Sources */,
 				CB8916FE23BA8D1D0019CBE9 /* ChatKit.swift in Sources */,
 				CBDCE64723E665A000981DDE /* UserListNetworking.swift in Sources */,
 				CBAA928023DFA10C00572978 /* SignInView.swift in Sources */,
