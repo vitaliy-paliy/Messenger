@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 struct MapStyles {
     var name: String
@@ -24,6 +25,15 @@ class MapStylesCell: UITableViewCell, UICollectionViewDelegate, UICollectionView
     var mapStyles = [MapStyles]()
     
     var mapStyleImages = ["Streets Style","Light Style","Dark Style","Satellite Style","Satellite Light Style","Satellite Dark Style"]
+    
+    var mapUrls = [
+        "Streets Style":"mapbox://styles/mapbox/streets-v11",
+        "Light Style":"mapbox://styles/mapbox/light-v10",
+        "Dark Style":"mapbox://styles/mapbox/dark-v10",
+        "Satellite Style":"mapbox://styles/mapbox/satellite-v9",
+        "Satellite Light Style":"mapbox://styles/mapbox/navigation-preview-day-v4",
+        "Satellite Dark Style":"mapbox://styles/mapbox/navigation-preview-night-v4"
+    ]
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -72,12 +82,12 @@ class MapStylesCell: UITableViewCell, UICollectionViewDelegate, UICollectionView
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "StylesCollectionViewCell", for: indexPath) as! StylesCollectionViewCell
-        let style = mapStyles[indexPath.row]
-        
-        if style.selected != nil {
-            cell.radioButton.select()
+        let style = mapStyles[indexPath.row]      
+        if mapUrls[style.name] == ThemeColors.selectedMapUrl {
+            cell.layer.borderColor = ThemeColors.mainColor.cgColor
+            cell.layer.borderWidth = 2
         }else{
-            cell.radioButton.deselect()
+            cell.layer.borderWidth = 0
         }
         cell.imageView.image = UIImage(named: style.name)
         cell.nameLabel.text = style.name
@@ -89,7 +99,22 @@ class MapStylesCell: UITableViewCell, UICollectionViewDelegate, UICollectionView
             mapStyles[s].selected = nil
         }
         mapStyles[indexPath.row].selected = mapStyles[indexPath.row].name
+        ThemeColors.selectedMapUrl = mapUrls[mapStyles[indexPath.row].name] ?? "mapbox://styles/mapbox/streets-v11"
+        updateColorsHandler(mapUrls[mapStyles[indexPath.row].name] ?? "mapbox://styles/mapbox/streets-v11")
         collectionView.reloadData()
+    }
+        
+    
+    func updateColorsHandler(_ mapUrl: String) {
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        let entity = NSEntityDescription.entity(forEntityName: "AppColors", in: context)
+        let newEntity = NSManagedObject(entity: entity!, insertInto: context)
+        newEntity.setValue(mapUrl, forKey: "selectedMapUrl")
+        do{
+            try context.save()
+        }catch{
+            print(error.localizedDescription)
+        }
     }
     
 }

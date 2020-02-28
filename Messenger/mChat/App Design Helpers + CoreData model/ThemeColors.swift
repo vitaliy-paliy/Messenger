@@ -16,4 +16,5 @@ class ThemeColors {
     static var selectedBackgroundColor = UIColor(white: 0.95, alpha: 1)
     static var selectedIncomingTextColor = UIColor.black
     static var selectedOutcomingTextColor = UIColor.white
+    static var selectedMapUrl = "mapbox://styles/mapbox/streets-v11"
 }

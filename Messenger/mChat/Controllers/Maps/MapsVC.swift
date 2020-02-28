@@ -73,7 +73,7 @@ class MapsVC: UIViewController, UIGestureRecognizerDelegate{
             mapView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ]
         NSLayoutConstraint.activate(constraints)
-        mapView.styleURL = URL(string: "mapbox://styles/mapbox/streets-v11")
+        mapView.styleURL = URL(string: ThemeColors.selectedMapUrl)
         mapView.delegate = self
         mapView.allowsRotating = false
         mapView.logoView.isHidden = true

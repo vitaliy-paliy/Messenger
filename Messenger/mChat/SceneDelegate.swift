@@ -58,6 +58,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 if data.value(forKey: "selectedOutcomingTextColor") != nil {
                     ThemeColors.selectedOutcomingTextColor = data.value(forKey: "selectedOutcomingTextColor") as! UIColor
                 }
+                if data.value(forKey: "selectedMapUrl") != nil {
+                    ThemeColors.selectedMapUrl = data.value(forKey: "selectedMapUrl") as! String
+                }
             }
         }catch{
             // Standard app colors will be loaded

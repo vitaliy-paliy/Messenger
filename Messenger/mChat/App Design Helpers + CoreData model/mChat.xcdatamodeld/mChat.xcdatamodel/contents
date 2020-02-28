@@ -4,10 +4,11 @@
         <attribute name="selectedBackgroundColor" optional="YES" attributeType="Transformable" valueTransformerName=""/>
         <attribute name="selectedIncomingColor" optional="YES" attributeType="Transformable" valueTransformerName=""/>
         <attribute name="selectedIncomingTextColor" optional="YES" attributeType="Transformable" valueTransformerName=""/>
+        <attribute name="selectedMapUrl" optional="YES" attributeType="String"/>
         <attribute name="selectedOutcomingColor" optional="YES" attributeType="Transformable" valueTransformerName=""/>
         <attribute name="selectedOutcomingTextColor" optional="YES" attributeType="Transformable" valueTransformerName=""/>
     </entity>
     <elements>
-        <element name="AppColors" positionX="-54" positionY="-9" width="128" height="118"/>
+        <element name="AppColors" positionX="-54" positionY="-9" width="128" height="133"/>
     </elements>
 </model>

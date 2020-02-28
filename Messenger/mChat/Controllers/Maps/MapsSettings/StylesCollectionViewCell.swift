@@ -7,13 +7,11 @@
 //
 
 import UIKit
-import LTHRadioButton
 
 class StylesCollectionViewCell: UICollectionViewCell {
     
     var imageView = UIImageView()
     var nameLabel = UILabel()
-    var radioButton = LTHRadioButton(diameter: 16, selectedColor: .black, deselectedColor: .lightGray)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -23,7 +21,6 @@ class StylesCollectionViewCell: UICollectionViewCell {
         layer.shadowRadius = 10
         setupNameLabel()
         setupImageView()
-        setupRadioButton()
     }
 
     func setupImageView(){
@@ -51,19 +48,6 @@ class StylesCollectionViewCell: UICollectionViewCell {
             nameLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16)
         ]
         NSLayoutConstraint.activate(constraints)
-    }
-    
-    func setupRadioButton(){
-        addSubview(radioButton)
-        radioButton.translatesAutoresizingMaskIntoConstraints = false
-        let constraints = [
-            radioButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-            radioButton.bottomAnchor.constraint(equalTo: bottomAnchor),
-            radioButton.widthAnchor.constraint(equalToConstant: 16),
-            radioButton.heightAnchor.constraint(equalToConstant: 16)
-        ]
-        NSLayoutConstraint.activate(constraints)
-                
     }
     
     required init?(coder: NSCoder) {

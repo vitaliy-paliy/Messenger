@@ -53,6 +53,7 @@
 		CB513C4423BEBB4B00BE8907 /* SharedMediaCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB513C4323BEBB4B00BE8907 /* SharedMediaCell.swift */; };
 		CB5189D423E25F7C00165A63 /* loadingAnimation.json in Resources */ = {isa = PBXBuildFile; fileRef = CB5189D323E25F7C00165A63 /* loadingAnimation.json */; };
 		CB5189D623E268FD00165A63 /* NetworkingLoadingIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5189D523E268FD00165A63 /* NetworkingLoadingIndicator.swift */; };
+		CB5273D12409B80200AA23A6 /* CurrentUserNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB5273D02409B80100AA23A6 /* CurrentUserNetworking.swift */; };
 		CB639E0323D0E000000748A0 /* ContactsNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB639E0223D0E000000748A0 /* ContactsNetworking.swift */; };
 		CB644C2523A2FFC7003094DF /* chatTyping.json in Resources */ = {isa = PBXBuildFile; fileRef = CB644C2323A2FFC7003094DF /* chatTyping.json */; };
 		CB65C64723831EA300F2B5A3 /* CurrentUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = CB65C64623831EA300F2B5A3 /* CurrentUser.swift */; };
@@ -176,6 +177,7 @@
 		CB513C4323BEBB4B00BE8907 /* SharedMediaCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedMediaCell.swift; sourceTree = "<group>"; };
 		CB5189D323E25F7C00165A63 /* loadingAnimation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = loadingAnimation.json; sourceTree = "<group>"; };
 		CB5189D523E268FD00165A63 /* NetworkingLoadingIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingLoadingIndicator.swift; sourceTree = "<group>"; };
+		CB5273D02409B80100AA23A6 /* CurrentUserNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUserNetworking.swift; sourceTree = "<group>"; };
 		CB639E0223D0E000000748A0 /* ContactsNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactsNetworking.swift; sourceTree = "<group>"; };
 		CB644C2323A2FFC7003094DF /* chatTyping.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = chatTyping.json; sourceTree = "<group>"; };
 		CB65C64623831EA300F2B5A3 /* CurrentUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentUser.swift; sourceTree = "<group>"; };
@@ -385,6 +387,17 @@
 				CB513C4323BEBB4B00BE8907 /* SharedMediaCell.swift */,
 			);
 			path = FriendInformation;
+			sourceTree = "<group>";
+		};
+		CB5273CF2409B72700AA23A6 /* CurrentUserVC */ = {
+			isa = PBXGroup;
+			children = (
+				CB7CC3602405FE85001B0923 /* CurrentUserVC.swift */,
+				CB5273D02409B80100AA23A6 /* CurrentUserNetworking.swift */,
+				CBA70BF524089FDA006B3638 /* ChangePasswordVC.swift */,
+				CBA70BF724089FE5006B3638 /* ChangeEmailVC.swift */,
+			);
+			path = CurrentUserVC;
 			sourceTree = "<group>";
 		};
 		CB65C64A23831EBC00F2B5A3 /* Model */ = {
@@ -604,10 +617,8 @@
 				CBF644FA2381C28D004830C6 /* SettingsVC.swift */,
 				CB65C64B2383326300F2B5A3 /* ProfileCell.swift */,
 				CB82EA8C23C65845002FD857 /* SettingsCell.swift */,
-				CB7CC3602405FE85001B0923 /* CurrentUserVC.swift */,
+				CB5273CF2409B72700AA23A6 /* CurrentUserVC */,
 				CBECFED623F0CC0D005FAB35 /* AppearanceVC */,
-				CBA70BF524089FDA006B3638 /* ChangePasswordVC.swift */,
-				CBA70BF724089FE5006B3638 /* ChangeEmailVC.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -808,6 +819,7 @@
 				CBD941C82401ED1800B3E4A7 /* mChat.xcdatamodeld in Sources */,
 				CB08304B238709BD002A1861 /* ChatVC.swift in Sources */,
 				CB4FA83823E9058200FBE0A3 /* UserInfoView.swift in Sources */,
+				CB5273D12409B80200AA23A6 /* CurrentUserNetworking.swift in Sources */,
 				CB513C3723BE6C1300BE8907 /* ChatCollectionView + Extension.swift in Sources */,
 				CBF907EA2380B83500EF8925 /* AppDelegate.swift in Sources */,
 				CB4FEA9423CA6E18006B8B08 /* MapStylesCell.swift in Sources */,
