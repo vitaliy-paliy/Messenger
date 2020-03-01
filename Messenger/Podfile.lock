@@ -113,7 +113,7 @@ DEPENDENCIES:
   - Firebase/Storage
   - IGColorPicker
   - lottie-ios
-  - Mapbox-iOS-SDK (~> 5.6)
+  - Mapbox-iOS-SDK
   - SkyFloatingLabelTextField
 
 SPEC REPOS:
@@ -171,6 +171,6 @@ SPEC CHECKSUMS:
   PromisesObjC: c119f3cd559f50b7ae681fa59dc1acd19173b7e6
   SkyFloatingLabelTextField: 5a338412114808e961fe2d14ea2c5452c8b6e4aa
 
-PODFILE CHECKSUM: 9c6e1d76bd55cc20f64a10a7388a71b71f8f5ad8
+PODFILE CHECKSUM: ba0d97aad01bb3a293019874540e44cdf2a4d1be
 
 COCOAPODS: 1.8.4

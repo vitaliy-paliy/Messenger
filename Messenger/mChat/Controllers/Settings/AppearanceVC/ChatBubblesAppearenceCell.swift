@@ -26,11 +26,7 @@ class ChatBubblesAppearanceCell: UICollectionViewCell {
         super.init(frame: frame)
         incomingView.backgroundColor = ThemeColors.selectedIncomingColor
         outcomingView.backgroundColor = ThemeColors.selectedOutcomingColor
-        if ThemeColors.selectedBackgroundColor == UIColor(white: 0.95, alpha: 1) {
-            setupStandardColors()
-        }else{
-            backgroundColor = ThemeColors.selectedBackgroundColor
-        }
+        backgroundColor = ThemeColors.selectedBackgroundColor
         setupIncomingView()
         setupOutcomingView()
     }

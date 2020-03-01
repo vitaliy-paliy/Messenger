@@ -15,6 +15,6 @@ pod 'Firebase/Storage'
 pod 'lottie-ios'
 pod 'SkyFloatingLabelTextField'
 pod 'IGColorPicker'
-pod 'Mapbox-iOS-SDK', '~> 5.6’
+pod 'Mapbox-iOS-SDK'
 
 end

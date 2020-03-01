@@ -17,9 +17,9 @@ class AppearanceVC: UIViewController{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(white: 0.95, alpha: 1)
         navigationController?.navigationBar.tintColor = .black
         navigationItem.title = "Appearance"
+        view.backgroundColor = .white
         setupTableView()
     }
     
@@ -70,8 +70,8 @@ extension AppearanceVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
-        headerView.backgroundColor = UIColor(white: 0.95, alpha: 1)
         if section == 0 {
+            headerView.backgroundColor = UIColor.systemBackground
             let textLabel = UILabel()
             textLabel.textColor = .gray
             textLabel.font = UIFont(name: "Helvetica Neue", size: 14)
@@ -84,6 +84,8 @@ extension AppearanceVC: UITableViewDelegate, UITableViewDataSource {
                 textLabel.bottomAnchor.constraint(equalTo: headerView.bottomAnchor, constant: -4)
             ]
             NSLayoutConstraint.activate(constraints)
+        }else if section > 1{
+            headerView.backgroundColor = UIColor(white: 0.95, alpha: 1)
         }
         return headerView
     }

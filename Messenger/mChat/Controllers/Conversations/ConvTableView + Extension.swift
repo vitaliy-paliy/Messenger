@@ -85,8 +85,12 @@ extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
                 cell.recentMessage.isHidden = true
                 cell.timeLabel.isHidden = true
                 cell.isTypingView.isHidden = false
+                cell.checkmark.isHidden = true
             }else{
                 self.setupNoTypingCell(cell)
+                if cell.message.sender == CurrentUser.uid{
+                    cell.checkmark.isHidden = false
+                }
             }
         }
     }

@@ -35,6 +35,8 @@ class MapStylesCell: UITableViewCell, UICollectionViewDelegate, UICollectionView
         "Satellite Dark Style":"mapbox://styles/mapbox/navigation-preview-night-v4"
     ]
     
+    var mapsVC: MapsVC?
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupData()
@@ -101,6 +103,7 @@ class MapStylesCell: UITableViewCell, UICollectionViewDelegate, UICollectionView
         mapStyles[indexPath.row].selected = mapStyles[indexPath.row].name
         ThemeColors.selectedMapUrl = mapUrls[mapStyles[indexPath.row].name] ?? "mapbox://styles/mapbox/streets-v11"
         updateColorsHandler(mapUrls[mapStyles[indexPath.row].name] ?? "mapbox://styles/mapbox/streets-v11")
+        mapsVC?.updateMapStyle()
         collectionView.reloadData()
     }
         

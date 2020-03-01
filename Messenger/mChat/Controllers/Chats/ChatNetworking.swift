@@ -108,6 +108,7 @@ class ChatNetworking {
     }
     
     func sendMediaMessage(url: String, _ image: UIImage, _ id: String){
+        messageStatus = "Sent"
         let senderRef = Constants.db.reference().child("messages").child(CurrentUser.uid).child(friend.id).childByAutoId()
         let friendRef = Constants.db.reference().child("messages").child(friend.id).child(CurrentUser.uid).child(senderRef.key!)
         guard let messageId = senderRef.key else { return }
@@ -120,6 +121,7 @@ class ChatNetworking {
     }
     
     func sendMessageHandler(senderRef: DatabaseReference, friendRef: DatabaseReference, values: [String: Any], completion: @escaping (_ error: Error?) -> Void){
+        messageStatus = "Sent"
         senderRef.updateChildValues(values) { (error, ref) in
             if let error = error {
                 completion(error)
@@ -189,6 +191,7 @@ class ChatNetworking {
     }
     
     private func sendAudioMessage(with url: String, and id: String) {
+        messageStatus = "Sent"
         let senderRef = Constants.db.reference().child("messages").child(CurrentUser.uid).child(friend.id).childByAutoId()
         let friendRef = Constants.db.reference().child("messages").child(friend.id).child(CurrentUser.uid).child(senderRef.key!)
         guard let messageId = senderRef.key else { return }
@@ -233,7 +236,6 @@ class ChatNetworking {
                 self.messageStatus = "Sent"
             }else{
                 guard self.chatVC.messages.count != 0 else { return }
-                print("SEEN MESSAGE")
                 self.messageStatus = "Seen"
                 self.chatVC.collectionView.reloadData()
             }

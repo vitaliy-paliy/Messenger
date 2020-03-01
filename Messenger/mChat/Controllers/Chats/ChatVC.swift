@@ -29,7 +29,7 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupChatBackground()
+        view.backgroundColor = ThemeColors.selectedBackgroundColor
         setupChat()
         notificationCenterHandler()
     }
@@ -46,16 +46,6 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     
     deinit {
         NotificationCenter.default.removeObserver(self)
-    }
-    
-    func setupChatBackground() {
-        if ThemeColors.selectedBackgroundColor == UIColor(white: 0.95, alpha: 1) {
-            let gradient = setupGradientLayer()
-            gradient.frame = view.frame
-            view.layer.insertSublayer(gradient, at: 0)
-        }else{
-            view.backgroundColor = ThemeColors.selectedBackgroundColor
-        }
     }
     
     override func viewSafeAreaInsetsDidChange() {
@@ -111,7 +101,23 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     }
 
     @objc func clipImageButtonPressed() {
-        openImagePicker(type: .photoLibrary)
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        alert.addAction(UIAlertAction(title: "Take Photo", style: .default, handler: { (alertAction) in
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                imagePicker.sourceType = .camera
+                self.present(imagePicker, animated: true, completion: nil)
+            }
+        }))
+        alert.addAction(UIAlertAction(title: "Open Photo Library", style: .default, handler: { (alertAction) in
+            imagePicker.sourceType = .photoLibrary
+            self.present(imagePicker, animated: true, completion: nil)
+        }))
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        cancelAction.setValue(UIColor.systemRed, forKey: "titleTextColor")
+        alert.addAction(cancelAction)
+        present(alert, animated: true, completion: nil)
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -119,13 +125,6 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
             chatNetworking.uploadImage(image: originalImage)
             dismiss(animated: true, completion: nil)
         }
-    }
-    
-    func openImagePicker(type: UIImagePickerController.SourceType){
-        let picker = UIImagePickerController()
-        picker.delegate = self
-        picker.sourceType = type
-        present(picker, animated: true, completion: nil)
     }
     
     @objc func sendButtonPressed(){

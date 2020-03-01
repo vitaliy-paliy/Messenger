@@ -198,7 +198,6 @@ extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
         }else{
             let item = settingsItems[indexPath.row]
             if item == "Appearance"{
-                print("TODO: Appearance")
                 let controller = AppearanceVC()
                 show(controller, sender: nil)
             }else if item == "Saved Messages"{

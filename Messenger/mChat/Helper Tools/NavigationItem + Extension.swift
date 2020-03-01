@@ -29,13 +29,18 @@ extension UINavigationItem {
         let title = setupTitleLabel(navTitle)
         let animationView = UIView()
         let animation = setupAnimationView()
+        let typingLabel = setupTypingLabel()
         animationView.addSubview(animation)
+        animationView.addSubview(typingLabel)
+        typingLabel.translatesAutoresizingMaskIntoConstraints = false
         animation.translatesAutoresizingMaskIntoConstraints = false
         let constraints = [
-            animation.widthAnchor.constraint(equalToConstant: 70),
-            animation.heightAnchor.constraint(equalToConstant: 70),
-            animation.centerXAnchor.constraint(equalTo: animationView.centerXAnchor),
+            animation.widthAnchor.constraint(equalToConstant: 60),
+            animation.heightAnchor.constraint(equalToConstant: 60),
+            animation.trailingAnchor.constraint(equalTo: animationView.centerXAnchor, constant: 4),
             animation.centerYAnchor.constraint(equalTo: animationView.centerYAnchor),
+            typingLabel.centerYAnchor.constraint(equalTo: animation.centerYAnchor),
+            typingLabel.leadingAnchor.constraint(equalTo: animationView.centerXAnchor, constant: -4),
         ]
         NSLayoutConstraint.activate(constraints)
         let stackView = setupStackView(view1: title, view2: animationView)
@@ -57,6 +62,14 @@ extension UINavigationItem {
         typingAnimation.loopMode = .loop
         typingAnimation.backgroundBehavior = .pauseAndRestore
         return typingAnimation
+    }
+    
+    private func setupTypingLabel() -> UILabel{
+        let typingLabel = UILabel()
+        typingLabel.text = "typing".uppercased()
+        typingLabel.font = UIFont.boldSystemFont(ofSize: 13)
+        typingLabel.textColor = .gray
+        return typingLabel
     }
     
     private func setupStackView(view1: UIView, view2: UIView) -> UIStackView{

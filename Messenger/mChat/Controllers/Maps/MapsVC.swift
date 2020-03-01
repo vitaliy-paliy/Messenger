@@ -10,7 +10,11 @@ import UIKit
 import Firebase
 import Mapbox
 
-class MapsVC: UIViewController, UIGestureRecognizerDelegate{
+protocol MapStyleDelegate {
+    func updateMapStyle()
+}
+
+class MapsVC: UIViewController, UIGestureRecognizerDelegate, MapStyleDelegate {
     
     var mapNetworking = MapsNetworking()
     var isFriendSelected = false
@@ -30,18 +34,7 @@ class MapsVC: UIViewController, UIGestureRecognizerDelegate{
         navigationController?.interactivePopGestureRecognizer?.delegate = self
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
-    
-    func checkStatus(){
-        switch CLLocationManager.authorizationStatus() {
-        case .authorizedWhenInUse:
-            setupMapView()
-        case .denied:
-            deniedAlertController()
-        default:
-            break
-        }
-    }
-    
+        
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         mapNetworking.mapsVC = self
@@ -54,6 +47,21 @@ class MapsVC: UIViewController, UIGestureRecognizerDelegate{
         super.viewWillDisappear(animated)
         tabBarController?.tabBar.isHidden = false
         navigationController?.navigationBar.isHidden = false
+    }
+    
+    func checkStatus(){
+        switch CLLocationManager.authorizationStatus() {
+        case .authorizedWhenInUse:
+            setupMapView()
+        case .denied:
+            deniedAlertController()
+        default:
+            break
+        }
+    }
+    
+    func updateMapStyle() {
+        mapView.styleURL = URL(string: ThemeColors.selectedMapUrl)
     }
     
     func setupControllButtons() {
@@ -83,7 +91,6 @@ class MapsVC: UIViewController, UIGestureRecognizerDelegate{
     
     func userMapHandler(){
         if !ChatKit.mapTimer.isValid {
-            print("Is Valid")
             ChatKit.map.showsUserLocation = true
             ChatKit.startUpdatingUserLocation()
         }
@@ -96,6 +103,7 @@ class MapsVC: UIViewController, UIGestureRecognizerDelegate{
     @objc func openMapsSettings(){
         let controller = MapsSettingsVC()
         controller.isMapOpened = true
+        controller.mapsVC = self    
         present(UINavigationController(rootViewController: controller),animated: true, completion: nil)
     }
     

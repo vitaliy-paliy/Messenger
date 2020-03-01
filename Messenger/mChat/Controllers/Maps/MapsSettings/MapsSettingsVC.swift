@@ -13,6 +13,7 @@ class MapsSettingsVC: UIViewController {
     
     var tableView = UITableView()
     var isMapOpened = false
+    var mapsVC: MapsVC?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -140,6 +141,7 @@ extension MapsSettingsVC: UITableViewDelegate, UITableViewDataSource {
             tableView.rowHeight = 250
             let cell = tableView.dequeueReusableCell(withIdentifier: "MapStylesCell") as! MapStylesCell
             cell.selectionStyle = .default
+            cell.mapsVC = mapsVC
             return cell
         }
     }
