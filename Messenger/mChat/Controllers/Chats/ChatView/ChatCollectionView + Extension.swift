@@ -63,6 +63,12 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
             cell.mediaMessage.isHidden = true
         }
         
+        if message.videoUrl != nil {
+            cell.playButton.isHidden = false
+        }else{
+            cell.playButton.isHidden = true
+        }
+        
         if message.audioUrl != nil {
             guard let url = URL(string: message.audioUrl!) else { return cell }
             cell.backgroundWidthAnchor.constant = 120

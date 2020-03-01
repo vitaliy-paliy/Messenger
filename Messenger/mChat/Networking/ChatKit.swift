@@ -46,6 +46,7 @@ class ChatKit {
         message.repMID = values["repMID"] as? String
         message.repSender = values["repSender"] as? String
         message.storageID = values["storageID"] as? String
+        message.videoUrl = values["videoUrl"] as? String
         return message
     }
         

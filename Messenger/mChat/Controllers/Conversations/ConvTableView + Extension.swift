@@ -58,7 +58,7 @@ extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
         }
         let date = NSDate(timeIntervalSince1970: recent.time.doubleValue)
         cell.timeLabel.text = calendar.calculateTimePassed(date: date)
-        if recent.mediaUrl != nil {
+        if recent.mediaUrl != nil || recent.videoUrl != nil {
             cell.recentMessage.text = "[Media Message]"
         }else if recent.audioUrl != nil {
             cell.recentMessage.text = "[Audio Message]"

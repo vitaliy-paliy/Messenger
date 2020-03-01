@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 import Firebase
 
 class ChatNetworking {
@@ -86,7 +87,7 @@ class ChatNetworking {
         }
     }
     
-    func uploadImage(image: UIImage){
+    func uploadImage(image: UIImage, completion: @escaping (_ storageRef: StorageReference, _ image: UIImage, _ name: String) -> Void){
         let mediaName = NSUUID().uuidString
         let storageRef = Storage.storage().reference().child("message-img").child(mediaName)
         if let jpegName = image.jpegData(compressionQuality: 0.1) {
@@ -95,12 +96,12 @@ class ChatNetworking {
                     print(error.localizedDescription)
                     return
                 }
-                self.downloadImage(storageRef, image, mediaName)
+                return completion(storageRef, image, mediaName)
             }
         }
     }
     
-    private func downloadImage(_ ref: StorageReference, _ image: UIImage, _ id: String) {
+    func downloadImage(_ ref: StorageReference, _ image: UIImage, _ id: String) {
         ref.downloadURL { (url, error) in
             guard let url = url else { return }
             self.sendMediaMessage(url: url.absoluteString, image, id)
@@ -109,8 +110,8 @@ class ChatNetworking {
     
     func sendMediaMessage(url: String, _ image: UIImage, _ id: String){
         messageStatus = "Sent"
-        let senderRef = Constants.db.reference().child("messages").child(CurrentUser.uid).child(friend.id).childByAutoId()
-        let friendRef = Constants.db.reference().child("messages").child(friend.id).child(CurrentUser.uid).child(senderRef.key!)
+        let senderRef = Database.database().reference().child("messages").child(CurrentUser.uid).child(friend.id).childByAutoId()
+        let friendRef = Database.database().reference().child("messages").child(friend.id).child(CurrentUser.uid).child(senderRef.key!)
         guard let messageId = senderRef.key else { return }
         let values = ["sender": CurrentUser.uid!, "time": Date().timeIntervalSince1970, "recipient": friend.id!, "mediaUrl": url, "width": image.size.width, "height": image.size.height, "messageId": messageId, "storageID": id] as [String: Any]
         senderRef.updateChildValues(values)
@@ -179,11 +180,11 @@ class ChatNetworking {
                 print(error.localizedDescription)
                 return
             }
-            self.downloadAudioUrl(storageRef, file, audioName)
+            self.downloadAudioUrl(storageRef, audioName)
         })
     }
     
-    private func downloadAudioUrl(_ ref: StorageReference, _ data: Data, _ id: String){
+    private func downloadAudioUrl(_ ref: StorageReference, _ id: String){
         ref.downloadURL { (url, error) in
             guard let url = url else { return }
             self.sendAudioMessage(with: url.absoluteString, and: id)
@@ -192,8 +193,8 @@ class ChatNetworking {
     
     private func sendAudioMessage(with url: String, and id: String) {
         messageStatus = "Sent"
-        let senderRef = Constants.db.reference().child("messages").child(CurrentUser.uid).child(friend.id).childByAutoId()
-        let friendRef = Constants.db.reference().child("messages").child(friend.id).child(CurrentUser.uid).child(senderRef.key!)
+        let senderRef = Database.database().reference().child("messages").child(CurrentUser.uid).child(friend.id).childByAutoId()
+        let friendRef = Database.database().reference().child("messages").child(friend.id).child(CurrentUser.uid).child(senderRef.key!)
         guard let messageId = senderRef.key else { return }
         let values = ["sender": CurrentUser.uid!, "time": Date().timeIntervalSince1970, "recipient": friend.id!, "audioUrl": url,"messageId": messageId, "storageID": id] as [String: Any]
         senderRef.updateChildValues(values)
@@ -219,6 +220,62 @@ class ChatNetworking {
         task.resume()
     }
  
+    func uploadVideoFile(_ url: URL){
+        do{
+            let data = try Data(contentsOf: url)
+            let uniqueName = NSUUID().uuidString + ".mov"
+            let ref = Storage.storage().reference().child("message-Videos").child(uniqueName)
+            ref.putData(data, metadata: nil) { (metadata, error) in
+                if error != nil{
+                    self.chatVC.showAlert(title: "Error", message: error?.localizedDescription)
+                    return
+                }
+                self.downloadVideoFile(url, ref, id: uniqueName)
+            }
+        }catch{
+            print(error.localizedDescription)
+        }
+    }
+    
+    private func downloadVideoFile(_ oldURL: URL, _ ref: StorageReference, id: String) {
+        ref.downloadURL { (url, error) in
+            guard let url = url else { return }
+            if let image = self.getFirstImageVideoFrame(for: oldURL) {
+                self.uploadImage(image: image) { (storageRef, image, mediaName) in
+                    storageRef.downloadURL { (imageUrl, error) in
+                        guard let imageUrl = imageUrl else { return }
+                        self.handleSendVideoMessage(id, url.absoluteString, image, imageUrl.absoluteString)
+                    }
+                }
+            }
+        }
+    }
+    
+    private func handleSendVideoMessage(_ id: String, _ url: String, _ image: UIImage, _ imageUrl: String) {
+        messageStatus = "Sent"
+        let senderRef = Database.database().reference().child("messages").child(CurrentUser.uid).child(friend.id).childByAutoId()
+        let friendRef = Database.database().reference().child("messages").child(friend.id).child(CurrentUser.uid).child(senderRef.key!)
+        guard let messageId = senderRef.key else { return }
+        let values = ["sender": CurrentUser.uid!, "time": Date().timeIntervalSince1970, "recipient": friend.id!, "mediaUrl": imageUrl, "videoUrl": url,"messageId": messageId, "storageID": id, "width": image.size.width, "height": image.size.height] as [String: Any]
+        senderRef.updateChildValues(values)
+        friendRef.updateChildValues(values)
+        let unreadRef = Database.database().reference().child("messages").child("unread-Messages").child(self.friend.id).child(CurrentUser.uid).child(senderRef.key!)
+        let unreadValues = [senderRef.key: 1]
+        unreadRef.updateChildValues(unreadValues)
+    }
+    
+    private func getFirstImageVideoFrame(for url: URL) -> UIImage? {
+        let asset = AVAsset(url: url)
+        let generator = AVAssetImageGenerator(asset: asset)
+        do{
+            let cgImage = try generator.copyCGImage(at: CMTimeMake(value: 1, timescale: 60), actualTime: nil)
+            return UIImage(cgImage: cgImage)
+        }catch{
+            print(error.localizedDescription)
+        }
+        return nil
+    }
+    
     func readMessagesHandler(){
         let unreadRef = Database.database().reference().child("messages").child("unread-Messages").child(CurrentUser.uid).child(friend.id)
         unreadRef.observe(.childAdded) { (snap) in

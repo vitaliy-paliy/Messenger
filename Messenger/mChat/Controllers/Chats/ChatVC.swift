@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import AVFoundation
+import CoreServices
 import Lottie
 
 class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationControllerDelegate, AVAudioRecorderDelegate {
@@ -103,6 +104,7 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     @objc func clipImageButtonPressed() {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
+        imagePicker.mediaTypes = [kUTTypeImage as String, kUTTypeMovie as String]
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         alert.addAction(UIAlertAction(title: "Take Photo", style: .default, handler: { (alertAction) in
             if UIImagePickerController.isSourceTypeAvailable(.camera) {
@@ -122,7 +124,13 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
-            chatNetworking.uploadImage(image: originalImage)
+            chatNetworking.uploadImage(image: originalImage) { (storageRef, image, mediaName) in
+                self.chatNetworking.downloadImage(storageRef, image, mediaName)
+            }
+            dismiss(animated: true, completion: nil)
+        }
+        if let videoUrl = info[UIImagePickerController.InfoKey.mediaURL] as? URL {
+            chatNetworking.uploadVideoFile(videoUrl)
             dismiss(animated: true, completion: nil)
         }
     }
@@ -505,6 +513,17 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
         }else{
             chatAudio.audioPlayer?.pause()
         }
+    }
+    
+    func handlePlayVideo(_ message: Messages, _ cell: ChatCell) {
+//        if let url = URL(string: message.videoUrl) {
+//            let player = AVPlayer(url: url)
+//            player.play()
+//            let playerLayer = AVPlayerLayer(player: player)
+//            playerLayer.frame = cell.messageBackground.bounds
+//            cell.messageBackground.layer.addSublayer(playerLayer)
+//            print("Attempting to play video")
+//        }
     }
     
 }

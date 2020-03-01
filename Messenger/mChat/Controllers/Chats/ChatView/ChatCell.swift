@@ -21,6 +21,10 @@ class ChatCell: UICollectionViewCell {
     var outcomingMessage: NSLayoutConstraint!
     var incomingMessage: NSLayoutConstraint!
     var activityLabel = UILabel()
+    var playButton = UIButton(type: .system)
+    var playerLayer: AVPlayerLayer?
+    var videoPlayer: AVPlayer?
+    var activityIndicatorView = UIActivityIndicatorView(style: .large)
     
     var audioPlayButton = UIButton(type: .system)
     var durationLabel = UILabel()
@@ -55,13 +59,22 @@ class ChatCell: UICollectionViewCell {
         setupMessage()
         setupMediaMessage()
         setupActivityLabel()
+        setupPlayButton()
+        setupActivityIndicator()
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        playerLayer?.removeFromSuperlayer()
+        videoPlayer?.pause()
+        activityIndicatorView.stopAnimating()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupBackgroundView(){
+    private func setupBackgroundView() {
         messageBackground.translatesAutoresizingMaskIntoConstraints = false
         messageBackground.layer.cornerRadius = 12
         messageBackground.layer.masksToBounds = true
@@ -125,11 +138,60 @@ class ChatCell: UICollectionViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
+    private func setupActivityIndicator() {
+        messageBackground.addSubview(activityIndicatorView)
+        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicatorView.hidesWhenStopped = true
+        activityIndicatorView.color = .white
+        let constraints = [
+            activityIndicatorView.centerYAnchor.constraint(equalTo: messageBackground.centerYAnchor),
+            activityIndicatorView.centerXAnchor.constraint(equalTo: messageBackground.centerXAnchor),
+            activityIndicatorView.widthAnchor.constraint(equalToConstant: 50),
+            activityIndicatorView.heightAnchor.constraint(equalToConstant: 50),
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    private func setupPlayButton() {
+        messageBackground.addSubview(playButton)
+        playButton.translatesAutoresizingMaskIntoConstraints = false
+        playButton.setBackgroundImage(UIImage(systemName: "play.fill"), for: .normal)
+        playButton.addTarget(self, action: #selector(playButtonPressed), for: .touchUpInside)
+        playButton.tintColor = .white
+        let constraints = [
+            playButton.centerYAnchor.constraint(equalTo: messageBackground.centerYAnchor),
+            playButton.centerXAnchor.constraint(equalTo: messageBackground.centerXAnchor),
+            playButton.widthAnchor.constraint(equalToConstant: 50),
+            playButton.heightAnchor.constraint(equalToConstant: 50),
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    @objc func playButtonPressed(){
+        if let url = URL(string: msg!.videoUrl) {
+            videoPlayer = AVPlayer(url: url)
+            playerLayer = AVPlayerLayer(player: videoPlayer)
+            playerLayer?.frame = messageBackground.bounds
+            messageBackground.layer.addSublayer(playerLayer!)
+            videoPlayer?.play()
+            activityIndicatorView.startAnimating()
+            playButton.isHidden = true
+            NotificationCenter.default.addObserver(self, selector: #selector(playerDidFinishPlaying), name: .AVPlayerItemDidPlayToEndTime, object: nil)
+        }
+    }
+    
+    @objc func playerDidFinishPlaying() {
+        activityIndicatorView.stopAnimating()
+        playButton.isHidden = false
+        playerLayer?.removeFromSuperlayer()
+    }
+    
     @objc private func imageTappedHandler(tap: UITapGestureRecognizer){
+        guard msg?.videoUrl == nil else { return }
         let imageView = tap.view as? UIImageView
         chatVC.zoomImageHandler(image: imageView!)
     }
-       
+    
     func setupRepMessageView(_ friendName: String){
         self.handleRepMessageSetup(friendName)
     }
@@ -243,7 +305,7 @@ class ChatCell: UICollectionViewCell {
         responseView.removeFromSuperview()
         msgTopAnchor.isActive = true
     }
-
+    
     func setupAudioPlayButton(){
         audioPlayButton.isEnabled = false
         messageBackground.addSubview(audioPlayButton)
@@ -269,7 +331,7 @@ class ChatCell: UICollectionViewCell {
         ]
         NSLayoutConstraint.activate(constraints)
     }
-        
+    
     @objc func playAudioButtonPressed(){
         chatVC.handleUserPressedAudioButton(for: self)
     }
