@@ -71,6 +71,7 @@ class ContactsVC: UIViewController {
             return friend1.name < friend2.name
         }
         handleEmptyList()
+        Friends.convVC?.tableView.reloadData()
         self.tableView.reloadData()
     }
         

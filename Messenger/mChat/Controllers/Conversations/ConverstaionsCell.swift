@@ -49,7 +49,7 @@ class ConversationsCell: UITableViewCell {
         isOnlineView.layer.borderColor = UIColor.white.cgColor
         isOnlineView.layer.borderWidth = 2.5
         isOnlineView.layer.masksToBounds = true
-        isOnlineView.backgroundColor = UIColor(displayP3Red: 116/255, green: 195/255, blue: 168/255, alpha: 1)
+        isOnlineView.backgroundColor = UIColor(displayP3Red: 90/255, green: 180/255, blue: 55/255, alpha: 1)
         isOnlineView.translatesAutoresizingMaskIntoConstraints = false
         let constraints = [
             isOnlineView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 55),

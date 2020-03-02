@@ -20,6 +20,7 @@ struct FriendInfo {
 
 class Friends {
     static var list = [FriendInfo]()
+    static var convVC: ConversationsVC?
 }
 
 struct FriendActivity{

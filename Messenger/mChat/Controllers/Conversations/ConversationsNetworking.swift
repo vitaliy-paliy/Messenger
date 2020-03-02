@@ -121,6 +121,18 @@ class ConversationsNetworking {
         self.observeFriendActions()
     }
     
+    func observeDeletedMessages() {
+        for key in friendKeys {
+            Database.database().reference().child("messages").child(CurrentUser.uid).child(key).queryLimited(toLast: 1).observe(.childRemoved) { (snap) in
+                guard let values = snap.value as? [String: Any] else { return }
+                let message = ChatKit.setupUserMessage(for: values)
+                self.groupedMessages.removeValue(forKey: message.determineUser())
+                self.convVC.messages = Array(self.groupedMessages.values)
+                self.convVC.tableView.reloadData()
+            }
+        }
+    }
+    
     func loadFriends(_ recent: Messages,completion: @escaping (_ friend: FriendInfo) -> Void){
         let user = recent.determineUser()
         let ref = Database.database().reference().child("users").child(user)

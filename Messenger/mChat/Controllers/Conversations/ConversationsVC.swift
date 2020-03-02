@@ -42,6 +42,7 @@ class ConversationsVC: UIViewController {
         setupTableView()
         emptyListView = EmptyListView(nil, self, false)
         setupBlankView(blankLoadingView)
+        Friends.convVC = self
     }
     
     func setupTableView() {
@@ -100,6 +101,7 @@ class ConversationsVC: UIViewController {
     }
     
     func observeMessageActions() {
+        convNetworking.observeDeletedMessages()
         convNetworking.observeNewMessages { (newMessages) in
             self.handleReload(newMessages)
         }

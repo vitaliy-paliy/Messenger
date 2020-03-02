@@ -120,7 +120,7 @@ extension ChatVC {
     
     func setupResponseMediaM(_ message: Messages){
         let replyMediaLabel = UILabel()
-        replyMediaLabel.text = "Image"
+        replyMediaLabel.text = "Media"
         replyMediaLabel.textColor = .lightGray
         replyMediaLabel.font = UIFont(name: "Helvetica Neue", size: 15)
         messageContainer.addSubview(userResponse.mediaMessage)

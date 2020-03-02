@@ -66,7 +66,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             // Standard app colors will be loaded
         }
     }
-    
+        
     func activityObservers(){
         guard let user = Auth.auth().currentUser else { return }
         let ref = Database.database().reference()

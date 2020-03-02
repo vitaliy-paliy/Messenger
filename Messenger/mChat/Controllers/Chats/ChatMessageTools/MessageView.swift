@@ -144,7 +144,7 @@ class MessageView: UIView{
     
     func setupRepMediaMessage(_ url: String){
         let replyMediaLabel = UILabel()
-        replyMediaLabel.text = "Image"
+        replyMediaLabel.text = "Media"
         replyMediaLabel.textColor = cell.isIncoming ? .lightGray : .lightText
         replyMediaLabel.font = UIFont(name: "Helvetica Neue", size: 15)
         addSubview(responseMediaMessage)

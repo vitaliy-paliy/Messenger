@@ -20,9 +20,13 @@ class ToolsTB: UITableView, UITableViewDelegate, UITableViewDataSource {
     
     init(style: UITableView.Style, sV: ToolsMenu) {
         super.init(frame: sV.toolsView.frame, style: style)
+        selectedMessage = sV.message
+        if selectedMessage.mediaUrl != nil || selectedMessage.audioUrl != nil{
+            tools.remove(at: 2)
+            toolsImg.remove(at: 2)
+        }
         scrollView = sV
         chatView = sV.chatVC
-        selectedMessage = sV.message
         selectedCell = sV.selectedCell
         delegate = self
         dataSource = self

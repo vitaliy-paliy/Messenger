@@ -161,8 +161,8 @@ class ChatCell: UICollectionViewCell {
         let constraints = [
             playButton.centerYAnchor.constraint(equalTo: messageBackground.centerYAnchor),
             playButton.centerXAnchor.constraint(equalTo: messageBackground.centerXAnchor),
-            playButton.widthAnchor.constraint(equalToConstant: 50),
-            playButton.heightAnchor.constraint(equalToConstant: 50),
+            playButton.widthAnchor.constraint(equalToConstant: 35),
+            playButton.heightAnchor.constraint(equalToConstant: 35),
         ]
         NSLayoutConstraint.activate(constraints)
     }
@@ -172,11 +172,23 @@ class ChatCell: UICollectionViewCell {
             videoPlayer = AVPlayer(url: url)
             playerLayer = AVPlayerLayer(player: videoPlayer)
             playerLayer?.frame = messageBackground.bounds
+            let tap = UITapGestureRecognizer(target: self, action: #selector(pausePlayer))
+            messageBackground.isUserInteractionEnabled = true
+            messageBackground.addGestureRecognizer(tap)
             messageBackground.layer.addSublayer(playerLayer!)
             videoPlayer?.play()
             activityIndicatorView.startAnimating()
             playButton.isHidden = true
             NotificationCenter.default.addObserver(self, selector: #selector(playerDidFinishPlaying), name: .AVPlayerItemDidPlayToEndTime, object: nil)
+        }
+    }
+    
+    @objc func pausePlayer() {
+        guard msg?.videoUrl != nil else { return }
+        if videoPlayer?.rate != 0 {
+            videoPlayer?.pause()
+        }else{
+            videoPlayer?.play()
         }
     }
     
@@ -254,7 +266,7 @@ class ChatCell: UICollectionViewCell {
     
     private func setupReplyMediaMessage(_ url: String){
         let replyMediaLabel = UILabel()
-        replyMediaLabel.text = "Image"
+        replyMediaLabel.text = "Media"
         replyMediaLabel.font = UIFont(name: "Helvetica Neue", size: 15)
         replyMediaLabel.textColor = isIncoming ? .lightGray : .lightText
         messageBackground.addSubview(responseMediaMessage)

@@ -83,7 +83,11 @@ class ToolsMenu: UIScrollView {
     }
     
     func setupToolsView(){
-        toolsView.frame = CGRect(x: xValue, y: scrollYValue, width: 200, height: 200)
+        if message.mediaUrl != nil || message.audioUrl != nil {
+            toolsView.frame = CGRect(x: xValue, y: scrollYValue, width: 200, height: 150)
+        }else{
+            toolsView.frame = CGRect(x: xValue, y: scrollYValue, width: 200, height: 200)
+        }
         toolsView.backgroundColor = .white
         toolsView.layer.cornerRadius = 16
         toolsView.layer.masksToBounds = true

@@ -514,16 +514,5 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
             chatAudio.audioPlayer?.pause()
         }
     }
-    
-    func handlePlayVideo(_ message: Messages, _ cell: ChatCell) {
-//        if let url = URL(string: message.videoUrl) {
-//            let player = AVPlayer(url: url)
-//            player.play()
-//            let playerLayer = AVPlayerLayer(player: player)
-//            playerLayer.frame = cell.messageBackground.bounds
-//            cell.messageBackground.layer.addSublayer(playerLayer)
-//            print("Attempting to play video")
-//        }
-    }
-    
+        
 }

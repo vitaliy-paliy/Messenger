@@ -91,13 +91,14 @@ class ChatNetworking {
         let mediaName = NSUUID().uuidString
         let storageRef = Storage.storage().reference().child("message-img").child(mediaName)
         if let jpegName = image.jpegData(compressionQuality: 0.1) {
-            storageRef.putData(jpegName, metadata: nil) { (metadata, error) in
+            let uploadTask = storageRef.putData(jpegName, metadata: nil) { (metadata, error) in
                 if let error = error {
                     print(error.localizedDescription)
                     return
                 }
                 return completion(storageRef, image, mediaName)
             }
+            countTimeRemaining(uploadTask)
         }
     }
     
@@ -119,6 +120,7 @@ class ChatNetworking {
         let unreadRef = Database.database().reference().child("messages").child("unread-Messages").child(friend.id).child(CurrentUser.uid).child(senderRef.key!)
         let unreadValues = [senderRef.key: 1]
         unreadRef.updateChildValues(unreadValues)
+        updateNavBar(friend.name)
     }
     
     func sendMessageHandler(senderRef: DatabaseReference, friendRef: DatabaseReference, values: [String: Any], completion: @escaping (_ error: Error?) -> Void){
@@ -175,13 +177,35 @@ class ChatNetworking {
     func uploadAudio(file: Data){
         let audioName = NSUUID().uuidString
         let storageRef = Storage.storage().reference().child("message-Audio").child(audioName)
-        storageRef.putData(file, metadata: nil, completion: { (metadata, error) in
+        let uploadTask = storageRef.putData(file, metadata: nil, completion: { (metadata, error) in
             if let error = error {
                 print(error.localizedDescription)
                 return
             }
             self.downloadAudioUrl(storageRef, audioName)
         })
+        countTimeRemaining(uploadTask)
+    }
+    
+    private func countTimeRemaining(_ uploadTask: StorageUploadTask) {
+        uploadTask.observe(.progress) { (snap) in
+            guard let progress = snap.progress else { return }
+            let percentCompleted = 100.0 * Double(progress.completedUnitCount) / Double(progress.totalUnitCount)
+            var tempName = "Uploading File: \(round(100*percentCompleted)/100)% completed"
+            if percentCompleted == 100.0 {
+                tempName = "Almost done..."
+            }
+            self.updateNavBar(tempName)
+        }
+    }
+    
+    private func updateNavBar(_ tempName: String) {
+        let loginDate = NSDate(timeIntervalSince1970: friend.lastLogin.doubleValue)
+        if friend.isOnline {
+            chatVC.navigationItem.setNavTitles(navTitle: tempName, navSubtitle: "Online")
+        }else{
+            chatVC.navigationItem.setNavTitles(navTitle: tempName, navSubtitle: chatVC.calendar.calculateLastLogin(loginDate))
+        }
     }
     
     private func downloadAudioUrl(_ ref: StorageReference, _ id: String){
@@ -202,6 +226,7 @@ class ChatNetworking {
         let unreadRef = Database.database().reference().child("messages").child("unread-Messages").child(self.friend.id).child(CurrentUser.uid).child(senderRef.key!)
         let unreadValues = [senderRef.key: 1]
         unreadRef.updateChildValues(unreadValues)
+        updateNavBar(friend.name)
     }
     
     func downloadMessageAudio(with url: URL, completion: @escaping (_ data: Data?, _ error: Error?) -> Void){
@@ -225,13 +250,14 @@ class ChatNetworking {
             let data = try Data(contentsOf: url)
             let uniqueName = NSUUID().uuidString + ".mov"
             let ref = Storage.storage().reference().child("message-Videos").child(uniqueName)
-            ref.putData(data, metadata: nil) { (metadata, error) in
+            let uploadTask = ref.putData(data, metadata: nil) { (metadata, error) in
                 if error != nil{
                     self.chatVC.showAlert(title: "Error", message: error?.localizedDescription)
                     return
                 }
                 self.downloadVideoFile(url, ref, id: uniqueName)
             }
+            countTimeRemaining(uploadTask)
         }catch{
             print(error.localizedDescription)
         }
@@ -241,12 +267,16 @@ class ChatNetworking {
         ref.downloadURL { (url, error) in
             guard let url = url else { return }
             if let image = self.getFirstImageVideoFrame(for: oldURL) {
-                self.uploadImage(image: image) { (storageRef, image, mediaName) in
-                    storageRef.downloadURL { (imageUrl, error) in
-                        guard let imageUrl = imageUrl else { return }
-                        self.handleSendVideoMessage(id, url.absoluteString, image, imageUrl.absoluteString)
-                    }
-                }
+                self.handleDownloadVideoFile(image, url, id)
+            }
+        }
+    }
+    
+    private func handleDownloadVideoFile(_ image: UIImage, _ url: URL, _ id: String) {
+        self.uploadImage(image: image) { (storageRef, image, mediaName) in
+            storageRef.downloadURL { (imageUrl, error) in
+                guard let imageUrl = imageUrl else { return }
+                self.handleSendVideoMessage(id, url.absoluteString, image, imageUrl.absoluteString)
             }
         }
     }
@@ -262,6 +292,7 @@ class ChatNetworking {
         let unreadRef = Database.database().reference().child("messages").child("unread-Messages").child(self.friend.id).child(CurrentUser.uid).child(senderRef.key!)
         let unreadValues = [senderRef.key: 1]
         unreadRef.updateChildValues(unreadValues)
+        updateNavBar(friend.name)
     }
     
     private func getFirstImageVideoFrame(for url: URL) -> UIImage? {
