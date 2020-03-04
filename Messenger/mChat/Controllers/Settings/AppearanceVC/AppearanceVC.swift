@@ -11,9 +11,13 @@ import CoreData
 
 class AppearanceVC: UIViewController{
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var tableView = UITableView()
     var chatBubblesAppearence = ChatBubblesAppearanceCell()
     var selectedView: String!
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +36,8 @@ class AppearanceVC: UIViewController{
         super.viewWillDisappear(animated)
         tabBarController?.tabBar.isHidden = false
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupTableView() {
         view.addSubview(tableView)
@@ -53,6 +59,8 @@ class AppearanceVC: UIViewController{
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func resetColors() {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "AppColors")
@@ -64,9 +72,13 @@ class AppearanceVC: UIViewController{
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
 }
 
 extension AppearanceVC: UITableViewDelegate, UITableViewDataSource {
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
@@ -90,21 +102,31 @@ extension AppearanceVC: UITableViewDelegate, UITableViewDataSource {
         return headerView
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return returnHeaderHeight(section)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 4
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return returnSectionNumOfCells(section)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func returnSectionNumOfCells(_ section: Int) -> Int {
         return 1
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func returnHeaderHeight(_ section: Int) -> CGFloat {
         if section == 0 {
@@ -113,6 +135,8 @@ extension AppearanceVC: UITableViewDelegate, UITableViewDataSource {
             return 5
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
@@ -135,8 +159,9 @@ extension AppearanceVC: UITableViewDelegate, UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "RestoreToDefaultColorsCell") as! RestoreToDefaultColorsCell
             return cell
         }
-
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == 2 {
@@ -153,5 +178,7 @@ extension AppearanceVC: UITableViewDelegate, UITableViewDataSource {
             tableView.reloadData()
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

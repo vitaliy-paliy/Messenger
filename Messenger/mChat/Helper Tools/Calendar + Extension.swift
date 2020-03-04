@@ -10,6 +10,8 @@ import Foundation
 
 extension Calendar {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func calculateTimePassed(date: NSDate) -> String{
         let now = Date()
         let dataComponents = Calendar.current.dateComponents([.month, .day ,.hour, .minute], from: date as Date, to: now)
@@ -25,6 +27,8 @@ extension Calendar {
             return "just now"
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func calculateLastLogin(_ date: NSDate) -> String{
         let now = Date()
@@ -50,5 +54,7 @@ extension Calendar {
             return "just now"
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

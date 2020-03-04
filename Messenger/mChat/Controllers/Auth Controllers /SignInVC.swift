@@ -10,10 +10,15 @@ import UIKit
 
 class SignInVC: UIViewController, UITextFieldDelegate {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // SIGN IN VC.
+    
     var authNetworking: AuthNetworking!
     var authKeyboardHandler = AuthKeyboardHandler()
     var loginView: SignInView!
     var loginButton: AuthActionButton!
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,16 +26,20 @@ class SignInVC: UIViewController, UITextFieldDelegate {
         authKeyboardHandler.view = view
         authKeyboardHandler.notificationCenterHandler()
     }
-        
+    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         view.endEditing(true)
         return false
     }
-        
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupUI(){
         view.backgroundColor = .white
         let _ = GradientLogoView(self, false)
@@ -39,6 +48,9 @@ class SignInVC: UIViewController, UITextFieldDelegate {
         setupLoginButton()
         setupSignUpButton()
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MARK: TEXTFIELD VALIDATION
     
     func validateTF() -> String?{
         if loginView.emailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" || loginView.passwordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == ""{
@@ -52,6 +64,8 @@ class SignInVC: UIViewController, UITextFieldDelegate {
         return nil
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupLoginButton() {
         loginButton = AuthActionButton("SIGN IN", self)
         view.addSubview(loginButton)
@@ -64,6 +78,8 @@ class SignInVC: UIViewController, UITextFieldDelegate {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupSignUpButton() {
         let signUpButton = UIButton(type: .system)
@@ -85,6 +101,9 @@ class SignInVC: UIViewController, UITextFieldDelegate {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MARK: ANIMATION TO SIGN UP VIEW
+    
     @objc func signUpButtonPressed() {
         UIView.animate(withDuration: 0.2, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
             for subview in self.loginView.subviews {
@@ -98,6 +117,9 @@ class SignInVC: UIViewController, UITextFieldDelegate {
             self.present(controller, animated: false, completion: nil)
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MARK: LOGIN METHOD
     
     @objc func loginButtonPressed() {
         loginView.errorLabel.text = ""
@@ -113,6 +135,8 @@ class SignInVC: UIViewController, UITextFieldDelegate {
             self.loginView.errorLabel.text = error?.localizedDescription
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }
 

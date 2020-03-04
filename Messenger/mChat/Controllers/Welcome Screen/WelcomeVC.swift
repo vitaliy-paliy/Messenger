@@ -11,6 +11,9 @@ import Lottie
 
 class WelcomeVC: UIViewController {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // INFO ABOUT mChat
+    
     let welcomePages = [
         WelcomePage(imageName: "Logo-Light", topicText: "mChat", descriptionText: "The messaging app."),
         WelcomePage(imageName: "Chat", topicText: "Chat", descriptionText: "Contact your friends by sending them text, audio or media messages."),
@@ -23,6 +26,8 @@ class WelcomeVC: UIViewController {
     var pageControl = UIPageControl()
     var slideAnimView = AnimationView()
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -31,6 +36,8 @@ class WelcomeVC: UIViewController {
         setupPageControl()
         setupAnimView()
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupCollectionView() {
         let layout = UICollectionViewFlowLayout()
@@ -53,6 +60,8 @@ class WelcomeVC: UIViewController {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupSkipButton() {
         view.addSubview(skipButton)
         skipButton.translatesAutoresizingMaskIntoConstraints = false
@@ -66,6 +75,8 @@ class WelcomeVC: UIViewController {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupPageControl() {
         view.addSubview(pageControl)
@@ -83,6 +94,8 @@ class WelcomeVC: UIViewController {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupAnimView() {
         view.addSubview(slideAnimView)
         slideAnimView.translatesAutoresizingMaskIntoConstraints = false
@@ -99,12 +112,17 @@ class WelcomeVC: UIViewController {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     @objc func skipButtonPressed() {
         let indexPath = IndexPath(item: welcomePages.count - 1, section: 0)
         collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
         pageControl.currentPage = welcomePages.count - 1
         goToSignInController()
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MARK: ANIMATION TO SIGN IN VIEW
     
     func goToSignInController() {
         let transitionView = UIView(frame: CGRect(x: view.center.x, y: view.center.y, width: 100, height: 100))
@@ -120,6 +138,8 @@ class WelcomeVC: UIViewController {
             RunLoop.current.add(timer, forMode: .default)
         })
     }
+ 
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
  
     @objc func animateLogo(){
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
@@ -138,6 +158,8 @@ class WelcomeVC: UIViewController {
             self.animateLogoLabel()
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     @objc func animateLogoLabel(){
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 100))
@@ -158,51 +180,6 @@ class WelcomeVC: UIViewController {
         }
     }
     
-}
-
-extension WelcomeVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
-    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
-        let xValue = targetContentOffset.pointee.x
-        let pageNum = Int(xValue / view.frame.width)
-        pageControl.currentPage = pageNum
-        if pageNum != welcomePages.count - 1 {
-            skipButton.isHidden = false
-        }else{
-            goToSignInController()
-            skipButton.isHidden = true
-        }
-        if pageControl.currentPage > 0 { slideAnimView.isHidden = true } else { slideAnimView.isHidden = false }
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return welcomePages.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellId", for: indexPath) as! WelcomeCell
-        let welcomePage = welcomePages[indexPath.row]
-        cell.page = welcomePage
-        cell.welcomeVC = self
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width, height: view.frame.height)
-    }
-        
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        let welcomeCell = cell as! WelcomeCell
-        welcomeCell.topicImage.transform = CGAffineTransform(scaleX: 0.5, y: 0.5)
-        welcomeCell.descriptionLabel.transform = CGAffineTransform(translationX: view.frame.origin.x + view.frame.width/2, y: 0)
-        UIView.animate(withDuration: 0.8, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
-            welcomeCell.topicImage.transform = .identity
-            welcomeCell.descriptionLabel.transform = .identity
-        })
-    }
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

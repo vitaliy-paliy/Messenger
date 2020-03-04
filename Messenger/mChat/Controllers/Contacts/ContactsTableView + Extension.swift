@@ -10,9 +10,13 @@ import UIKit
 
 extension ContactsVC: UITableViewDataSource, UITableViewDelegate {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return Friends.list.count
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ContactsCell") as! ContactsCell
@@ -29,6 +33,8 @@ extension ContactsVC: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let friend = Friends.list[indexPath.row]
         if let cellFrame = tableView.cellForRow(at: indexPath)?.frame, let cell = tableView.cellForRow(at: indexPath){
@@ -36,5 +42,7 @@ extension ContactsVC: UITableViewDataSource, UITableViewDelegate {
             setupFriendInfoMenuView(cell as! ContactsCell, cellFrame: convertedFrame, friend: friend)
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

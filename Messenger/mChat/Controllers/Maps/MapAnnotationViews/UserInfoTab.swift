@@ -11,12 +11,16 @@ import Mapbox
 
 class UserInfoTab: UIView{
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var mapsVC = MapsVC()
     var pin: AnnotationPin!
     var profileImage = UIImageView()
     var nameLabel = UILabel()
     var lastSeenLabel = UILabel()
     var actionButton = UIButton()
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     init(annotation: MGLAnnotation) {
         let width = mapsVC.view.frame.width - 32
@@ -28,10 +32,12 @@ class UserInfoTab: UIView{
         setupLastSeenLabel()
         setupUserInfo(annotation)
     }
- 
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupUserInfo(_ annotation: MGLAnnotation){
         if let pin = annotation as? AnnotationPin {
@@ -51,6 +57,8 @@ class UserInfoTab: UIView{
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupInfoView() {
         backgroundColor = .white
         layer.cornerRadius = 16
@@ -60,6 +68,8 @@ class UserInfoTab: UIView{
         let width = mapsVC.view.frame.width - 32
         frame = CGRect(x: 16, y: yValue, width: width, height: 60)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupProfileImage(){
         addSubview(profileImage)
@@ -75,6 +85,8 @@ class UserInfoTab: UIView{
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupNameLabel(){
         addSubview(nameLabel)
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -85,6 +97,8 @@ class UserInfoTab: UIView{
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupLastSeenLabel() {
         addSubview(lastSeenLabel)
@@ -98,6 +112,8 @@ class UserInfoTab: UIView{
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupActionButton(){
         addSubview(actionButton)
         actionButton.tintColor = .black
@@ -108,5 +124,7 @@ class UserInfoTab: UIView{
         ]
         NSLayoutConstraint.activate(constraints)
     }
-     
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
 }

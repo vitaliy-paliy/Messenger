@@ -10,17 +10,23 @@ import UIKit
 
 class MapSettingsCell: UITableViewCell {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var switchButton = UISwitch()
+    
     var mapsSettingsVC = MapsSettingsVC()
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupSwitch(){
         addSubview(switchButton)
@@ -34,9 +40,12 @@ class MapSettingsCell: UITableViewCell {
             
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     @objc func switchClicked(){
         mapsSettingsVC.changeSwitchValue(switchButton)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

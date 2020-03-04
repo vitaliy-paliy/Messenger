@@ -8,9 +8,16 @@
 
 import UIKit
 
+// ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+
 let imgCache = NSCache<NSString, UIImage>()
 
+// UIIMAGEVIEW EXTENSION WHICH LOADS IMAGES FROM FIREBASE STORAGE AND CACHES THEM.
+
 extension UIImageView {
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // NETWORKING ACTIVITY INDICATOR
     
     private var activityIndicator: UIActivityIndicatorView {
         let activityIndicator = UIActivityIndicatorView()
@@ -25,6 +32,8 @@ extension UIImageView {
         NSLayoutConstraint.activate(constraints)
         return activityIndicator
     }
+
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func loadImage(url: String){
         self.image = nil
@@ -59,4 +68,7 @@ extension UIImageView {
         }
         task.resume()
     }
+    
 }
+
+// ---------------------------------------------------------------------------------------------------------------------------------------------------- //

@@ -11,14 +11,20 @@ import Firebase
 
 class AuthNetworking {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var mainController: UIViewController!
     
     var networkingLoadingIndicator = NetworkingLoadingIndicator()
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     init(_ mainController: UIViewController?){
         self.mainController = mainController
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MARK: SIGN IN METHOD
     
     func signIn(with email: String, and pass: String, completion: @escaping (_ error: Error?) -> Void){
         networkingLoadingIndicator.startLoadingAnimation()
@@ -32,6 +38,8 @@ class AuthNetworking {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func nextController(){
         guard let uid = Auth.auth().currentUser?.uid else { return }
         setupUserInfo(uid) {
@@ -42,6 +50,9 @@ class AuthNetworking {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MARK: SETUP USER INFO METHOD
+    
     func setupUserInfo(_ uid: String, completion: @escaping () -> Void) {
         Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value) { (snapshot) in
             guard let snap = snapshot.value as? [String: AnyObject] else { return }
@@ -50,7 +61,7 @@ class AuthNetworking {
             CurrentUser.profileImage = snap["profileImage"] as? String
             CurrentUser.uid = uid
             CurrentUser.isMapLocationEnabled = snap["isMapLocationEnabled"] as? Bool
-            Constants.activityObservers(isOnline: true)
+            UserActivity.observe(isOnline: true)
             if CurrentUser.isMapLocationEnabled {
                 ChatKit.map.showsUserLocation = true
                 ChatKit.startUpdatingUserLocation()
@@ -58,6 +69,8 @@ class AuthNetworking {
             return completion()
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func checkForExistingEmail(_ email: String, completion: @escaping (_ errorMessage: String?) -> Void) {
         networkingLoadingIndicator.startLoadingAnimation()
@@ -70,6 +83,9 @@ class AuthNetworking {
             }
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MARK: SIGN UP USER METHOD
     
     func registerUser(_ name: String, _ email: String, _ password: String, _ profileImage: UIImage?, completion: @escaping (_ error: String?) -> Void) {
         networkingLoadingIndicator.startLoadingAnimation()
@@ -88,6 +104,20 @@ class AuthNetworking {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
+    private func registerUserHandler(_ uid: String, _ values: [String:Any], completion: @escaping (_ error: Error?) -> Void) {
+        let usersRef = Database.database().reference().child("users").child(uid)
+        usersRef.updateChildValues(values) { (error, dataRef) in
+            if let error = error { return completion(error) }
+            print("User was successfuly saved into Firebase DB")
+            self.nextController()
+        }
+    }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MARK: UPLOAD IMAGE METHOD
+    
     private func uploadProfileImageToStorage(_ image: UIImage, completion: @escaping (_ imageUrl: URL?, _ error: Error?) -> Void) {
         let uniqueName = NSUUID().uuidString
         let storageRef = Storage.storage().reference().child("ProfileImages").child("\(uniqueName).jpg")
@@ -102,13 +132,6 @@ class AuthNetworking {
         }
     }
     
-    private func registerUserHandler(_ uid: String, _ values: [String:Any], completion: @escaping (_ error: Error?) -> Void) {
-        let usersRef = Constants.db.reference().child("users").child(uid)
-        usersRef.updateChildValues(values) { (error, dataRef) in
-            if let error = error { return completion(error) }
-            print("User was successfuly saved into Firebase DB")
-            self.nextController()
-        }
-    }
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

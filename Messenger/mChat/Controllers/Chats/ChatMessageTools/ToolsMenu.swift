@@ -10,6 +10,8 @@ import UIKit
 
 class ToolsMenu: UIScrollView {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var chatVC: ChatVC!
     var message: Messages!
     var selectedCell: ChatCell!
@@ -22,6 +24,8 @@ class ToolsMenu: UIScrollView {
     var xValue: CGFloat!
     var scrollYValue: CGFloat!
     var noScroll: Bool!
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     init(_ message: Messages, _ selectedCell: ChatCell, _ chatVC: ChatVC){
         super.init(frame: .zero)
@@ -43,6 +47,8 @@ class ToolsMenu: UIScrollView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func prepareMenuFrame(){
         xValue = messageFrame.origin.x
         if !selectedCell.isIncoming, messageFrame.width < 190 {
@@ -59,6 +65,8 @@ class ToolsMenu: UIScrollView {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupScrollView(){
         keyWindow.addSubview(self)
         frame = chatVC.view.frame
@@ -68,10 +76,14 @@ class ToolsMenu: UIScrollView {
         contentSize = CGSize(width: chatVC.view.frame.width, height: sHeight)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupMessageView(){
         messageView = MessageView(frame: messageFrame, cell: selectedCell, message: message, friendName: chatVC.friend.name)
         addSubview(messageView)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupBlurView(){
         blurView.effect = UIBlurEffect(style: .dark)
@@ -81,6 +93,8 @@ class ToolsMenu: UIScrollView {
         blurView.addGestureRecognizer(tapGesture)
         addSubview(blurView)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupToolsView(){
         if message.mediaUrl != nil || message.audioUrl != nil {
@@ -95,6 +109,8 @@ class ToolsMenu: UIScrollView {
         toolsView.addSubview(ToolsTB(style: .plain, sV: self))
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func toolMessageAppearance(){
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             if self.toolsView.frame.maxY > self.keyWindow.frame.maxY && self.noScroll{
@@ -107,10 +123,14 @@ class ToolsMenu: UIScrollView {
         })
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     @objc func blurViewTapped(){
          handleViewDismiss()
     }
 
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func handleViewDismiss(isDeleted: Bool? = nil, isReply: Bool? = nil, isForward: Bool? = nil){
         if isDeleted == nil {
             messageView.removeFromSuperview()
@@ -147,6 +167,8 @@ class ToolsMenu: UIScrollView {
         }
     }
 
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func animateToolsView(fV: CGFloat, tV: CGFloat) -> CABasicAnimation {
         let animation = CABasicAnimation(keyPath: "opacity")
         animation.fromValue = fV
@@ -156,5 +178,7 @@ class ToolsMenu: UIScrollView {
         animation.isRemovedOnCompletion = false
         return animation
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

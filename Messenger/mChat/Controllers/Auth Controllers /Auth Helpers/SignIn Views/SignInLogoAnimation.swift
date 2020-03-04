@@ -10,10 +10,14 @@ import UIKit
 
 class SignInLogoAnimation: UIImageView {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var logoView = UIView()
     var controller: SignInVC!
     let logoLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 100))
     let logoTransitionView = UIView()
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     init(_ controller: SignInVC) {
         super.init(frame: .zero)
@@ -25,6 +29,8 @@ class SignInLogoAnimation: UIImageView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupLogoView() {
         controller.view.addSubview(logoView)
@@ -42,6 +48,8 @@ class SignInLogoAnimation: UIImageView {
         
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupLogo(){
         frame = CGRect(x: 0, y: 0, width: 200, height: 200)
         controller.view.addSubview(self)
@@ -52,6 +60,8 @@ class SignInLogoAnimation: UIImageView {
         layer.masksToBounds = true
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupLogoTransitionView(){
         logoTransitionView.frame = controller.view.frame
         let gradient = controller.setupGradientLayer()
@@ -59,6 +69,8 @@ class SignInLogoAnimation: UIImageView {
         logoTransitionView.layer.addSublayer(gradient)
         controller.view.addSubview(logoTransitionView)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupLogoLabel() {
         logoLabel.center = CGPoint(x: controller.view.center.x, y: controller.view.center.y + 150)
@@ -69,6 +81,8 @@ class SignInLogoAnimation: UIImageView {
         controller.view.addSubview(logoLabel)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func animateTransition() {
         setupLogoTransitionView()
         setupLogo()
@@ -76,6 +90,8 @@ class SignInLogoAnimation: UIImageView {
         let timer = Timer(timeInterval: 0.1, target: self, selector: #selector(animateLogo), userInfo: nil, repeats: false)
         RunLoop.current.add(timer, forMode: .default)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     @objc func animateLogo(){
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
@@ -89,5 +105,7 @@ class SignInLogoAnimation: UIImageView {
             self.logoLabel.removeFromSuperview()
         }
     }
+ 
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

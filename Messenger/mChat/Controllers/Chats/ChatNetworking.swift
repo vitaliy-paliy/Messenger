@@ -12,7 +12,9 @@ import Firebase
 
 class ChatNetworking {
     
-    private let audioCache = NSCache<NSString, NSData>()
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
+    let audioCache = NSCache<NSString, NSData>()
     var friend: FriendInfo!
     var loadMore = false
     var lastMessageReached = false
@@ -20,6 +22,9 @@ class ChatNetworking {
     var scrollToIndex = [Messages]()
     var timer = Timer()
     var chatVC: ChatVC!
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MARK: GET MESSAGES METHOD
     
     func getMessages(_ v: UIView, _ m: [Messages], completion: @escaping(_ newMessages: [Messages], _ mOrder: Bool) -> Void){
         var nodeRef: DatabaseQuery
@@ -48,9 +53,10 @@ class ChatNetworking {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func deleteMessageHandler(_ messages: [Messages], for snap: DataSnapshot, completion: @escaping (_ index: Int) -> Void){
         var index = 0
-        print("Delete messages handler fired")
         for message in messages {
             if message.id == snap.key {
                 return completion(index)
@@ -58,6 +64,8 @@ class ChatNetworking {
             index += 1
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func removeMessageHandler(messageToRemove: Messages, completion: @escaping () -> Void){
         Database.database().reference().child("messages").child(CurrentUser.uid).child(friend.id).child(messageToRemove.id).removeValue { (error, ref) in
@@ -77,15 +85,18 @@ class ChatNetworking {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func newMessageRecievedHandler(_ messages: [Messages], for snap: DataSnapshot, completion: @escaping (_ message: Messages) -> Void){
         let status = messages.contains { (message) -> Bool in return message.id == snap.key }
         if !status {
-            print("New messages handler fired")
             guard let values = snap.value as? [String: Any] else { return }
             let newMessage = ChatKit.setupUserMessage(for: values)
             return completion(newMessage)
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func uploadImage(image: UIImage, completion: @escaping (_ storageRef: StorageReference, _ image: UIImage, _ name: String) -> Void){
         let mediaName = NSUUID().uuidString
@@ -102,12 +113,17 @@ class ChatNetworking {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func downloadImage(_ ref: StorageReference, _ image: UIImage, _ id: String) {
         ref.downloadURL { (url, error) in
             guard let url = url else { return }
             self.sendMediaMessage(url: url.absoluteString, image, id)
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MARK: SEND MEDIA MESSAGE METHOD
     
     func sendMediaMessage(url: String, _ image: UIImage, _ id: String){
         messageStatus = "Sent"
@@ -123,6 +139,9 @@ class ChatNetworking {
         updateNavBar(friend.name)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MARK: SEND TEXT MESSAGE METHOD
+    
     func sendMessageHandler(senderRef: DatabaseReference, friendRef: DatabaseReference, values: [String: Any], completion: @escaping (_ error: Error?) -> Void){
         messageStatus = "Sent"
         senderRef.updateChildValues(values) { (error, ref) in
@@ -137,6 +156,9 @@ class ChatNetworking {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MARK: OBSERVE USER TYPING METHOD
+    
     func observeIsUserTyping(completion: @escaping (_ friendActivity: FriendActivity) -> Void){
         readMessagesHandler()
         let db = Database.database().reference().child("userActions").child(friend.id).child(CurrentUser.uid)
@@ -149,6 +171,8 @@ class ChatNetworking {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func isTypingHandler(tV: UITextView){
         guard let friendId = friend.id , let user = CurrentUser.uid else { return }
         let userRef = Database.database().reference().child("userActions").child(CurrentUser.uid).child(friendId)
@@ -159,11 +183,15 @@ class ChatNetworking {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func disableIsTyping(){
         guard let friendId = friend.id , let user = CurrentUser.uid else { return }
         let userRef = Database.database().reference().child("userActions").child(CurrentUser.uid).child(friendId)
         userRef.updateChildValues(["isTyping": false, "fromFriend": user])
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func getMessageSender(message: Messages, completion: @escaping (_ sender: String) -> Void){
         Database.database().reference().child("messages").child(CurrentUser.uid).child(message.determineUser()).child(message.id).observeSingleEvent(of: .value) { (snap) in
@@ -173,6 +201,8 @@ class ChatNetworking {
             completion(sender)
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func uploadAudio(file: Data){
         let audioName = NSUUID().uuidString
@@ -187,6 +217,8 @@ class ChatNetworking {
         countTimeRemaining(uploadTask)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+
     private func countTimeRemaining(_ uploadTask: StorageUploadTask) {
         uploadTask.observe(.progress) { (snap) in
             guard let progress = snap.progress else { return }
@@ -199,6 +231,8 @@ class ChatNetworking {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     private func updateNavBar(_ tempName: String) {
         let loginDate = NSDate(timeIntervalSince1970: friend.lastLogin.doubleValue)
         if friend.isOnline {
@@ -208,12 +242,17 @@ class ChatNetworking {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     private func downloadAudioUrl(_ ref: StorageReference, _ id: String){
         ref.downloadURL { (url, error) in
             guard let url = url else { return }
             self.sendAudioMessage(with: url.absoluteString, and: id)
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MARK: SEND AUDIO MESSAGE METHOD
     
     private func sendAudioMessage(with url: String, and id: String) {
         messageStatus = "Sent"
@@ -228,6 +267,8 @@ class ChatNetworking {
         unreadRef.updateChildValues(unreadValues)
         updateNavBar(friend.name)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func downloadMessageAudio(with url: URL, completion: @escaping (_ data: Data?, _ error: Error?) -> Void){
         if let cachedData = audioCache.object(forKey: url.absoluteString as NSString) {
@@ -245,6 +286,8 @@ class ChatNetworking {
         task.resume()
     }
  
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func uploadVideoFile(_ url: URL){
         do{
             let data = try Data(contentsOf: url)
@@ -263,6 +306,8 @@ class ChatNetworking {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     private func downloadVideoFile(_ oldURL: URL, _ ref: StorageReference, id: String) {
         ref.downloadURL { (url, error) in
             guard let url = url else { return }
@@ -272,6 +317,8 @@ class ChatNetworking {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     private func handleDownloadVideoFile(_ image: UIImage, _ url: URL, _ id: String) {
         self.uploadImage(image: image) { (storageRef, image, mediaName) in
             storageRef.downloadURL { (imageUrl, error) in
@@ -280,6 +327,9 @@ class ChatNetworking {
             }
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MARK: SEND VIDEO MESSAGE METHOD
     
     private func handleSendVideoMessage(_ id: String, _ url: String, _ image: UIImage, _ imageUrl: String) {
         messageStatus = "Sent"
@@ -295,6 +345,8 @@ class ChatNetworking {
         updateNavBar(friend.name)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     private func getFirstImageVideoFrame(for url: URL) -> UIImage? {
         let asset = AVAsset(url: url)
         let generator = AVAssetImageGenerator(asset: asset)
@@ -307,6 +359,8 @@ class ChatNetworking {
         return nil
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func readMessagesHandler(){
         let unreadRef = Database.database().reference().child("messages").child("unread-Messages").child(CurrentUser.uid).child(friend.id)
         unreadRef.observe(.childAdded) { (snap) in
@@ -314,10 +368,14 @@ class ChatNetworking {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func removeObserves(){
         Database.database().reference().child("messages").child("unread-Messages").child(CurrentUser.uid).child(friend.id).removeAllObservers()
     }
      
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func observeUserMessageSeen() {
         Database.database().reference().child("messages").child("unread-Messages").child(friend.id).child(CurrentUser.uid).observe(.value) { (snap) in
             if Int(snap.childrenCount) > 0{
@@ -329,6 +387,8 @@ class ChatNetworking {
             }
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }
 

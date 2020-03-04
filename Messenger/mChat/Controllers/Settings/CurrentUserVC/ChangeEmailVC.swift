@@ -11,12 +11,16 @@ import Lottie
 
 class ChangeEmailVC: UIViewController {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var infoAnimView = AnimationView()
     var currentUserNetworking = CurrentUserNetworking()
     var newEmailTF = UITextField()
     var confirmNewEmailTF = UITextField()
     var infoLabel = UILabel()
     var changeButton = UIButton(type: .system)
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +39,8 @@ class ChangeEmailVC: UIViewController {
         tabBarController?.tabBar.isHidden = false
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupUI() {
         view.backgroundColor = .white
         navigationItem.title = "Change Email"
@@ -43,6 +49,8 @@ class ChangeEmailVC: UIViewController {
         setupNewEmailTF()
         setupChangeButton()
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupChangeInfoAnim() {
         view.addSubview(infoAnimView)
@@ -60,6 +68,8 @@ class ChangeEmailVC: UIViewController {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupInfoLabel() {
         view.addSubview(infoLabel)
         infoLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -76,7 +86,9 @@ class ChangeEmailVC: UIViewController {
         ]
         NSLayoutConstraint.activate(constraints)
     }
-        
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupNewEmailTF() {
         view.addSubview(newEmailTF)
         newEmailTF.translatesAutoresizingMaskIntoConstraints = false
@@ -92,6 +104,8 @@ class ChangeEmailVC: UIViewController {
         setupConfirmTF()
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupConfirmTF() {
         view.addSubview(confirmNewEmailTF)
         confirmNewEmailTF.translatesAutoresizingMaskIntoConstraints = false
@@ -106,6 +120,8 @@ class ChangeEmailVC: UIViewController {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupTF(_ textfield: UITextField) {
         textfield.borderStyle = .none
         textfield.backgroundColor = UIColor(white: 0.95, alpha: 1)
@@ -116,7 +132,9 @@ class ChangeEmailVC: UIViewController {
         textfield.leftView = paddingView
         textfield.leftViewMode = .always
     }
-        
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupChangeButton() {
         view.addSubview(changeButton)
         changeButton.translatesAutoresizingMaskIntoConstraints = false
@@ -139,16 +157,22 @@ class ChangeEmailVC: UIViewController {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func hideKeyboardOnTap() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     @objc func hideKeyboard(){
         view.endEditing(true)
     }
- 
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func checkTF() -> String?{
         if newEmailTF.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" || confirmNewEmailTF.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
             return "Make sure you fill in all fields."
@@ -164,6 +188,8 @@ class ChangeEmailVC: UIViewController {
         return nil
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     @objc func changeEmailButtonPressed() {
         if let errorMessage = checkTF() {
             showAlert(title: "Error", message: errorMessage)
@@ -172,6 +198,8 @@ class ChangeEmailVC: UIViewController {
         guard let newEmail = newEmailTF.text?.trimmingCharacters(in: .whitespacesAndNewlines) else { return }
         currentUserNetworking.changeEmail(newEmail)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }
 

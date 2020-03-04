@@ -11,8 +11,12 @@ import Mapbox
 
 class FriendAnnotationView: MGLAnnotationView {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     let size: CGFloat = 32
     let imageLayer = CALayer()
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     init(annotation: MGLAnnotation?, reuseIdentifier: String?, friend: FriendInfo) {
         super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
@@ -32,5 +36,7 @@ class FriendAnnotationView: MGLAnnotationView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

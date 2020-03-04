@@ -11,15 +11,21 @@ import Firebase
 
 extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupNoTypingCell(_ cell: ConversationsCell){
         cell.isTypingView.isHidden = true
         cell.recentMessage.isHidden = false
         cell.timeLabel.isHidden = false
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return messages.count
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ConversationsCell") as! ConversationsCell
@@ -68,6 +74,8 @@ extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         let chat = messages[indexPath.row]
@@ -79,6 +87,8 @@ extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
         }
     }
         
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func observeIsUserTypingHandler(_ recent: Messages, _ cell: ConversationsCell){
         convNetworking.observeIsUserTyping(recent.determineUser()) { (isTyping, friendId) in
             if isTyping && cell.message.determineUser() == friendId {
@@ -95,6 +105,8 @@ extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func observeIsUserSeenMessage(_ recent: Messages, _ cell: ConversationsCell) {
         convNetworking.observeUserSeenMessage(cell.message.determineUser()) { (num) in
             if num == 0 {
@@ -104,5 +116,7 @@ extension ConversationsVC: UITableViewDelegate, UITableViewDataSource {
             }
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

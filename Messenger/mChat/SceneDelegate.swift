@@ -14,6 +14,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     var window: UIWindow?
     
+    // ------------------------------------------------------------------------------------------------------------------------------------ //
+    // USER SETUP METHOD
+    
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let sceneWindow = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: sceneWindow)
@@ -22,7 +25,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         FirebaseApp.configure()
         getAppColors()
         if Auth.auth().currentUser != nil{
-            print("signedIn")
             let authNetworking = AuthNetworking(nil)
             let uid = Auth.auth().currentUser!.uid
             authNetworking.setupUserInfo(uid) {
@@ -35,6 +37,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         }
         activityObservers()
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // SETS UP THEME COLORS
     
     func getAppColors() {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -66,7 +71,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             // Standard app colors will be loaded
         }
     }
-        
+     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // SENDS DATA TO FIREBASE THAT THE USER SUCCESSFULLY LOGGED IN
+    
     func activityObservers(){
         guard let user = Auth.auth().currentUser else { return }
         let ref = Database.database().reference()
@@ -76,13 +84,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         userRef.child("lastLogin").setValue(Date().timeIntervalSince1970)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func sceneDidBecomeActive(_ scene: UIScene) {
-        Constants.activityObservers(isOnline: true)
+       UserActivity.observe(isOnline: true)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func sceneDidEnterBackground(_ scene: UIScene) {
-        Constants.activityObservers(isOnline: false)
+        UserActivity.observe(isOnline: false)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }
 

@@ -11,6 +11,8 @@ import Firebase
 
 class MessageView: UIView{
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var friendName: String!
     var cell: ChatCell!
     var message: Messages!
@@ -24,6 +26,8 @@ class MessageView: UIView{
     var audioPlayButton = UIButton(type: .system)
     var durationLabel = UILabel()
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     init(frame: CGRect, cell: ChatCell, message: Messages, friendName: String) {
         super.init(frame: frame)
         self.cell = cell
@@ -35,6 +39,8 @@ class MessageView: UIView{
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func showMessageMenu(){
         layer.cornerRadius = 12
@@ -52,6 +58,8 @@ class MessageView: UIView{
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupResponseView(){
         setupRepLine()
         setupRepName(name: message.repSender)
@@ -63,6 +71,8 @@ class MessageView: UIView{
             setupResponseAudioMessage()
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupMsgText() -> UILabel {
         messageView.text = message.message
@@ -86,6 +96,8 @@ class MessageView: UIView{
         return messageView
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupMsgMedia() -> UIImageView{
         mediaMessage.loadImage(url: message.mediaUrl)
         addSubview(mediaMessage)
@@ -103,6 +115,8 @@ class MessageView: UIView{
         return mediaMessage
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupRepLine(){
         responseLine.backgroundColor = ThemeColors.selectedOutcomingColor
         addSubview(responseLine)
@@ -117,11 +131,15 @@ class MessageView: UIView{
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupRepName(name: String){
         responseNameLabel.text = name
         responseNameLabel.textColor = cell.responseNameLabel.textColor
         responseNameLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 16)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupRepTextMessage(text: String){
         responseTextMessage.text = text
@@ -141,6 +159,8 @@ class MessageView: UIView{
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupRepMediaMessage(_ url: String){
         let replyMediaLabel = UILabel()
@@ -167,6 +187,8 @@ class MessageView: UIView{
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupResponseAudioMessage() {
         addSubview(responseAudioLabel)
         responseAudioLabel.text = "Audio Message"
@@ -185,6 +207,8 @@ class MessageView: UIView{
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupAudioPlayButton(){
         addSubview(audioPlayButton)
         audioPlayButton.isUserInteractionEnabled = false
@@ -201,6 +225,8 @@ class MessageView: UIView{
         setupAudioDurationLabel()
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupAudioDurationLabel(){
         addSubview(durationLabel)
         durationLabel.text = cell.durationLabel.text
@@ -213,5 +239,7 @@ class MessageView: UIView{
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

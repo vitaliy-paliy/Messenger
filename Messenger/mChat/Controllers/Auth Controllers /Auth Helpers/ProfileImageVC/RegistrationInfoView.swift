@@ -10,9 +10,13 @@ import UIKit
 
 class RegistrationInfoView: UIView {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var controller: SelectProfileImageVC!
     var changeImageButton = UIButton()
     var profileImage: UIImageView!
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     init(frame: CGRect, _ controller: SelectProfileImageVC, profileImage: UIImageView) {
         super.init(frame: frame)
@@ -25,6 +29,8 @@ class RegistrationInfoView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupProfileView() {
         controller.view.addSubview(profileImage)
@@ -40,6 +46,8 @@ class RegistrationInfoView: UIView {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupInfoLabels() {
         let nameLabel = UILabel()
@@ -62,6 +70,8 @@ class RegistrationInfoView: UIView {
         NSLayoutConstraint.activate(constraints)
         setupChangeImageButton(emailLabel)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupChangeImageButton(_ emailLabel: UILabel) {
         controller.view.addSubview(changeImageButton)
@@ -86,5 +96,7 @@ class RegistrationInfoView: UIView {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

@@ -10,6 +10,8 @@ import UIKit
 
 extension ChatVC {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func responseViewChangeAlpha(a: CGFloat){
         userResponse.lineView.alpha = a
         userResponse.nameLabel.alpha = a
@@ -18,6 +20,8 @@ extension ChatVC {
         userResponse.exitButton.alpha = a
         userResponse.audioMessage.alpha = a
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func responseMessageLine(_ message: Messages, _ fN: String?){
         userResponse.lineView.backgroundColor = ThemeColors.selectedOutcomingColor
@@ -42,6 +46,8 @@ extension ChatVC {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupExitResponseButton(){
         messageContainer.addSubview(userResponse.exitButton)
         userResponse.exitButton.translatesAutoresizingMaskIntoConstraints = false
@@ -56,6 +62,8 @@ extension ChatVC {
         userResponse.exitButton.addTarget(self, action: #selector(exitResponseButtonPressed), for: .touchUpInside)
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     @objc func exitResponseButtonPressed(){
         userResponse.responseStatus = false
@@ -76,6 +84,8 @@ extension ChatVC {
         
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func responseMessageName(for message: Messages, _ name: String){
         userResponse.messageSender = name
         messageContainer.addSubview(userResponse.nameLabel)
@@ -93,6 +103,8 @@ extension ChatVC {
         setupResponseMessage(message)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupResponseMessage(_ message: Messages){
         if message.mediaUrl != nil {
             setupResponseMediaM(message)
@@ -102,6 +114,8 @@ extension ChatVC {
             setupResponseTextM(message)
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupResponseTextM(_ message: Messages){
         messageContainer.addSubview(userResponse.messageLabel)
@@ -117,6 +131,8 @@ extension ChatVC {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupResponseMediaM(_ message: Messages){
         let replyMediaLabel = UILabel()
@@ -140,6 +156,8 @@ extension ChatVC {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupAudioMessage(){
         messageContainer.addSubview(userResponse.audioMessage)
         userResponse.audioMessage.translatesAutoresizingMaskIntoConstraints = false
@@ -154,5 +172,7 @@ extension ChatVC {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

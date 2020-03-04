@@ -10,9 +10,13 @@ import UIKit
 
 class NewConversationCell: UITableViewCell {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var profileImage = UIImageView()
     var friendName = UILabel()
     var friendEmail = UILabel()
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -25,6 +29,8 @@ class NewConversationCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupImage(){
         addSubview(profileImage)
@@ -40,7 +46,9 @@ class NewConversationCell: UITableViewCell {
         ]
         NSLayoutConstraint.activate(constraints)
     }
-        
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupNameLabel(){
         addSubview(friendName)
         friendName.textColor = .black
@@ -54,6 +62,8 @@ class NewConversationCell: UITableViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupEmailLabel(){
         addSubview(friendEmail)
         friendEmail.numberOfLines = 0
@@ -66,5 +76,7 @@ class NewConversationCell: UITableViewCell {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

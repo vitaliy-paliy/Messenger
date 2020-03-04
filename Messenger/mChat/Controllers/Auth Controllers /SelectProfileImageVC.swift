@@ -10,6 +10,8 @@ import UIKit
 
 class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // SelectProfileImageVC
     // User credentials
     
     var name: String!
@@ -21,6 +23,7 @@ class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, U
     var profileImage = UIImageView(image: UIImage(named: "DefaultUserImage"))
     var continueButton = UIButton(type: .system)
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,13 +34,19 @@ class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, U
         setupContinueButton()
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupGradientView() {
         let _ = GradientLogoView(self, true)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupRegistrationInfoView(){
         let _ = RegistrationInfoView(frame: view.frame, self, profileImage: profileImage)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupContinueButton() {
         view.addSubview(continueButton)
@@ -53,14 +62,21 @@ class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, U
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupBackButton() {
         let backButton = AuthBackButton(self)
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     @objc func backButtonPressed() {
         dismiss(animated: true, completion: nil)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MARK: CHANGE IMAGE METHOD
     
     @objc func changeImagePressed() {
         let imagePicker = UIImagePickerController()
@@ -82,6 +98,8 @@ class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, U
         present(alert, animated: true, completion: nil)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let editedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage {
             selectedImage = editedImage
@@ -94,9 +112,13 @@ class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, U
         dismiss(animated: true, completion: nil)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     @objc func continueButtonPressed(){
         authNetworking = AuthNetworking(self)
@@ -105,5 +127,7 @@ class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, U
             self.showAlert(title: "Error", message: error)
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

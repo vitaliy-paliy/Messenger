@@ -11,8 +11,12 @@ import Mapbox
 
 class CurrentUserAnnotationView: MGLUserLocationAnnotationView {
 
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     let size: CGFloat = 32
     let imageLayer = CALayer()
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override func update() {
         if frame.isNull {
@@ -29,5 +33,7 @@ class CurrentUserAnnotationView: MGLUserLocationAnnotationView {
         imageLayer.borderColor = UIColor.white.cgColor
         layer.addSublayer(imageLayer)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

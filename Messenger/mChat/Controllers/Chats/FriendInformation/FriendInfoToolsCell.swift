@@ -10,8 +10,12 @@ import UIKit
 
 class FriendInformationToolsCell: UITableViewCell {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var toolImage = UIImageView()
     var toolName = UILabel()
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -22,6 +26,8 @@ class FriendInformationToolsCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupToolImage(){
         addSubview(toolImage)
@@ -35,6 +41,8 @@ class FriendInformationToolsCell: UITableViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupToolName(){
         addSubview(toolName)
         toolName.translatesAutoresizingMaskIntoConstraints = false
@@ -45,5 +53,7 @@ class FriendInformationToolsCell: UITableViewCell {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

@@ -10,6 +10,8 @@ import UIKit
 
 class ProfileImageButton: UIButton {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     init(chatVC: ChatVC, url: String) {
         super.init(frame: .zero)
         setupProfileImage(url, chatVC)
@@ -18,6 +20,8 @@ class ProfileImageButton: UIButton {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupProfileImage(_ url: String, _ chatVC: ChatVC){
         let friendImageIcon = UIImageView()
@@ -36,4 +40,7 @@ class ProfileImageButton: UIButton {
         NSLayoutConstraint.activate(constraints)
         addTarget(chatVC, action: #selector(chatVC.profileImageTapped), for: .touchUpInside)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
 }

@@ -10,8 +10,12 @@ import Mapbox
 
 class AnnotationPin: MGLPointAnnotation {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var friend: FriendInfo!
     var calendar = Calendar(identifier: .gregorian)
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     init(_ coordinate: CLLocationCoordinate2D, _ friend: FriendInfo) {
         super.init()
@@ -29,5 +33,7 @@ class AnnotationPin: MGLPointAnnotation {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

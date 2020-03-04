@@ -12,8 +12,12 @@ import CoreData
 
 class ChatColorPickerCell: UITableViewCell, ColorPickerViewDelegate {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var colorPicker = ColorPickerView()
     var controller: AppearanceVC!
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -23,6 +27,8 @@ class ChatColorPickerCell: UITableViewCell, ColorPickerViewDelegate {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupColorPicker() {
         addSubview(colorPicker)
@@ -39,9 +45,13 @@ class ChatColorPickerCell: UITableViewCell, ColorPickerViewDelegate {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func colorPickerView(_ colorPickerView: ColorPickerView, didSelectItemAt indexPath: IndexPath) {
         updateAppColors(colorPickerView.colors[indexPath.row])
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func updateAppColors(_ color: UIColor) {
         guard controller.selectedView != nil else { return }
@@ -69,6 +79,8 @@ class ChatColorPickerCell: UITableViewCell, ColorPickerViewDelegate {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func updateColorsHandler(_ selectedColor: UIColor, _ key: String) {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         let entity = NSEntityDescription.entity(forEntityName: "AppColors", in: context)
@@ -80,5 +92,7 @@ class ChatColorPickerCell: UITableViewCell, ColorPickerViewDelegate {
             print(error.localizedDescription)
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

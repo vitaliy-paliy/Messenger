@@ -11,10 +11,14 @@ import Firebase
 
 class SharedMediaVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var friend: FriendInfo!
     var sharedMedia = [String]()
     var collectionView: UICollectionView!
     var emptyLabel = UILabel()
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +27,8 @@ class SharedMediaVC: UIViewController, UICollectionViewDelegate, UICollectionVie
         setupEmptyView()
         getSharedMedia()
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func getSharedMedia(){
         Database.database().reference().child("messages").child(CurrentUser.uid).child(friend.id).observe(.childAdded) { (snap) in
@@ -34,6 +40,8 @@ class SharedMediaVC: UIViewController, UICollectionViewDelegate, UICollectionVie
             self.collectionView.reloadData()
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupEmptyView() {
         view.addSubview(emptyLabel)
@@ -48,6 +56,8 @@ class SharedMediaVC: UIViewController, UICollectionViewDelegate, UICollectionVie
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupCollectionView(){
         let layout = UICollectionViewFlowLayout()
@@ -72,9 +82,13 @@ class SharedMediaVC: UIViewController, UICollectionViewDelegate, UICollectionVie
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return sharedMedia.count
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "sharedMediaCell", for: indexPath) as! SharedMediaCell
@@ -83,8 +97,12 @@ class SharedMediaVC: UIViewController, UICollectionViewDelegate, UICollectionVie
         return cell
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func zoomImageHandler(image: UIImageView){
         let _ = SelectedImageView(image, nil, self)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

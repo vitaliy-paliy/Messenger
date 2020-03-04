@@ -10,9 +10,13 @@ import UIKit
 
 class FriendInformationCell: UITableViewCell {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var nameLabel = UILabel()
     var onlineLabel = UILabel()
     var profileImage = UIImageView()
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -24,6 +28,8 @@ class FriendInformationCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupProfileImage(){
         addSubview(profileImage)
@@ -39,17 +45,23 @@ class FriendInformationCell: UITableViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupName(){
         handleLabelSetup(for: nameLabel, -20)
         nameLabel.font = UIFont(name: "Helvetica Neue", size: 18)
         nameLabel.textColor = .black
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupIsOnlineLabel(){
         handleLabelSetup(for: onlineLabel, 0)
         onlineLabel.font = UIFont(name: "Helvetica Neue", size: 16)
         onlineLabel.textColor = .lightGray
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func handleLabelSetup(for label: UILabel, _ const: CGFloat){
         addSubview(label)
@@ -61,5 +73,7 @@ class FriendInformationCell: UITableViewCell {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

@@ -10,6 +10,8 @@ import UIKit
 
 class ChatBubblesAppearanceCell: UICollectionViewCell {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     let gradient = UIViewController.init().setupGradientLayer()
     let incomingView = UIView()
     let incomingLabel = UILabel()
@@ -21,7 +23,9 @@ class ChatBubblesAppearanceCell: UICollectionViewCell {
             appearanceVC.chatBubblesAppearence = self
         }
     }
-        
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         incomingView.backgroundColor = ThemeColors.selectedIncomingColor
@@ -31,16 +35,18 @@ class ChatBubblesAppearanceCell: UICollectionViewCell {
         setupOutcomingView()
     }
     
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupStandardColors() {
         gradient.frame = frame
         layer.insertSublayer(gradient, at: 0)
     }
-     
     
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     private func setupIncomingView() {
         addSubview(incomingView)
@@ -57,6 +63,8 @@ class ChatBubblesAppearanceCell: UICollectionViewCell {
         setupIncomingLabel()
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     private func setupOutcomingView() {
         addSubview(outcomingView)
         outcomingView.translatesAutoresizingMaskIntoConstraints = false
@@ -72,6 +80,8 @@ class ChatBubblesAppearanceCell: UICollectionViewCell {
         setupOutcomingLabel()
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     private func setupIncomingLabel() {
         incomingView.addSubview(incomingLabel)
         incomingLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -86,7 +96,9 @@ class ChatBubblesAppearanceCell: UICollectionViewCell {
         ]
         NSLayoutConstraint.activate(constraints)
     }
-        
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     private func setupOutcomingLabel() {
         outcomingView.addSubview(outcomingLabel)
         outcomingLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -101,5 +113,7 @@ class ChatBubblesAppearanceCell: UICollectionViewCell {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

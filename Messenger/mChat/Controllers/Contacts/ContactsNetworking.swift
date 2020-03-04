@@ -11,9 +11,14 @@ import Firebase
 
 class ContactsNetworking {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var contactsVC: ContactsVC!
     var friendKeys = [String]()
     var groupedFriends = [String: FriendInfo]()
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // Observes user's friends list
     
     func observeFriendList(){
         contactsVC.blankLoadingView.isHidden = false
@@ -30,11 +35,15 @@ class ContactsNetworking {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func observeFriendActions(){
         contactsVC.blankLoadingView.isHidden = true
         observeNewFriend()
         observeRemovedFriends()
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func observeNewFriend(){
         Database.database().reference().child("friendsList").child(CurrentUser.uid).observe(.childAdded) { (snap) in
@@ -50,6 +59,8 @@ class ContactsNetworking {
             }
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func observeRemovedFriends(){
         Database.database().reference().child("friendsList").child(CurrentUser.uid).observe(.childRemoved) { (snap) in
@@ -67,6 +78,8 @@ class ContactsNetworking {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func removeFriendFromArray(_ friendToRemove: String){
         var index = 0
         for friend in friendKeys {
@@ -76,6 +89,9 @@ class ContactsNetworking {
             index += 1
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MARK: GET FRIEND INFO METHOD
     
     func getFriendInfo(){
         for key in friendKeys {
@@ -91,6 +107,8 @@ class ContactsNetworking {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func updateFriendInfo(_ key: String){
         Database.database().reference().child("users").child(key).observe(.value) { (snap) in
             guard let values = snap.value as? [String: Any] else { return }
@@ -98,6 +116,8 @@ class ContactsNetworking {
             self.contactsVC.handleReload(Array(self.groupedFriends.values))
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupFriendInfo(for key: String, _ values: [String: Any]){
         var friend = FriendInfo()
@@ -111,6 +131,8 @@ class ContactsNetworking {
         groupedFriends[key] = friend
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func observeFriendRequests() {
         Database.database().reference().child("friendsList").child("friendRequests").child(CurrentUser.uid).observe(.value) { (snap) in
             print(snap.childrenCount)
@@ -118,5 +140,7 @@ class ContactsNetworking {
             self.contactsVC.setupContactsBadge(numOfRequests)
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

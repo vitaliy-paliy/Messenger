@@ -10,8 +10,12 @@ import UIKit
 
 class StylesCollectionViewCell: UICollectionViewCell {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var imageView = UIImageView()
     var nameLabel = UILabel()
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -22,7 +26,13 @@ class StylesCollectionViewCell: UICollectionViewCell {
         setupNameLabel()
         setupImageView()
     }
-
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupImageView(){
         addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -38,6 +48,8 @@ class StylesCollectionViewCell: UICollectionViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupNameLabel() {
         addSubview(nameLabel)
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -49,10 +61,7 @@ class StylesCollectionViewCell: UICollectionViewCell {
         ]
         NSLayoutConstraint.activate(constraints)
     }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }
-

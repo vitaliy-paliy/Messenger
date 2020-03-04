@@ -10,8 +10,12 @@ import UIKit
 
 class CurrentUserVC: UIViewController {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     let tableView = UITableView()
-
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -29,6 +33,7 @@ class CurrentUserVC: UIViewController {
         tabBarController?.tabBar.isHidden = false
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupTableView() {
         view.addSubview(tableView)
@@ -45,10 +50,13 @@ class CurrentUserVC: UIViewController {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }
 
 extension CurrentUserVC: UITableViewDelegate, UITableViewDataSource {
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
@@ -70,17 +78,25 @@ extension CurrentUserVC: UITableViewDelegate, UITableViewDataSource {
         return headerView
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 { return 32 } else { return 15 }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
@@ -94,6 +110,8 @@ extension CurrentUserVC: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.section == 0{
@@ -104,5 +122,7 @@ extension CurrentUserVC: UITableViewDelegate, UITableViewDataSource {
             show(controller, sender: nil)
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

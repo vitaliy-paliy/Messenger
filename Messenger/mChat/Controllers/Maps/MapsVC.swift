@@ -7,14 +7,11 @@
 //
 
 import UIKit
-import Firebase
 import Mapbox
 
-protocol MapStyleDelegate {
-    func updateMapStyle()
-}
-
-class MapsVC: UIViewController, UIGestureRecognizerDelegate, MapStyleDelegate {
+class MapsVC: UIViewController, UIGestureRecognizerDelegate{
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     var mapNetworking = MapsNetworking()
     var isFriendSelected = false
@@ -26,6 +23,8 @@ class MapsVC: UIViewController, UIGestureRecognizerDelegate, MapStyleDelegate {
     var exitButton: MapExitButton!
     var settingsButton: MapSettingsButton!
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         checkStatus()
@@ -34,7 +33,7 @@ class MapsVC: UIViewController, UIGestureRecognizerDelegate, MapStyleDelegate {
         navigationController?.interactivePopGestureRecognizer?.delegate = self
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
     }
-        
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         mapNetworking.mapsVC = self
@@ -49,6 +48,8 @@ class MapsVC: UIViewController, UIGestureRecognizerDelegate, MapStyleDelegate {
         navigationController?.navigationBar.isHidden = false
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func checkStatus(){
         switch CLLocationManager.authorizationStatus() {
         case .authorizedWhenInUse:
@@ -60,14 +61,20 @@ class MapsVC: UIViewController, UIGestureRecognizerDelegate, MapStyleDelegate {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func updateMapStyle() {
         mapView.styleURL = URL(string: ThemeColors.selectedMapUrl)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupControllButtons() {
         exitButton = MapExitButton(mapsVC: self)
         settingsButton = MapSettingsButton(mapsVC: self)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupMapView(){
         view.addSubview(mapView)
@@ -89,6 +96,8 @@ class MapsVC: UIViewController, UIGestureRecognizerDelegate, MapStyleDelegate {
         
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func userMapHandler(){
         if !ChatKit.mapTimer.isValid {
             ChatKit.map.showsUserLocation = true
@@ -96,9 +105,13 @@ class MapsVC: UIViewController, UIGestureRecognizerDelegate, MapStyleDelegate {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     @objc func exitButtonPressed(){
         navigationController?.popViewController(animated: true)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     @objc func openMapsSettings(){
         let controller = MapsSettingsVC()
@@ -107,11 +120,15 @@ class MapsVC: UIViewController, UIGestureRecognizerDelegate, MapStyleDelegate {
         present(UINavigationController(rootViewController: controller),animated: true, completion: nil)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     @objc func openUserMessagesHandler(){
         let controller = ChatVC()
         controller.friend = selectedFriend
         navigationController?.pushViewController(controller, animated: true)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func presentingVC() -> UIViewController {
         var topController: UIViewController = UIApplication.shared.windows[0].rootViewController!
@@ -120,7 +137,9 @@ class MapsVC: UIViewController, UIGestureRecognizerDelegate, MapStyleDelegate {
         }
         return topController
     }
- 
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func deniedAlertController(){
         let alertController = UIAlertController(title: "Error", message: "To be able to see the map you need to change your location settings. To do this, go to Settings/Privacy/Location Services/mChat/ and allow location access. ", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { (alertAction) in
@@ -128,5 +147,7 @@ class MapsVC: UIViewController, UIGestureRecognizerDelegate, MapStyleDelegate {
         }))
         present(alertController, animated: true, completion: nil)
     }
-            
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
 }

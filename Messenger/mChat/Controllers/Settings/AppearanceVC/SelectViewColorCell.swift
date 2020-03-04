@@ -9,10 +9,14 @@
 import UIKit
 
 class SelectViewColorCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var collectionView: UICollectionView!
     var colorViews = ["Chat Incoming Color", "Chat Outcoming Color", "Chat Background Color", "Text Incoming Color", "Text Outcoming Color"]
     var controller: AppearanceVC!
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -22,6 +26,8 @@ class SelectViewColorCell: UITableViewCell, UICollectionViewDelegate, UICollecti
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupCollectionView() {
         let layout = UICollectionViewFlowLayout()
@@ -44,14 +50,20 @@ class SelectViewColorCell: UITableViewCell, UICollectionViewDelegate, UICollecti
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: frame.width/2.5, height: frame.height/2)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return colorViews.count
     }
-
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ChatViewColorPickerCell", for: indexPath) as! ChatViewColorPickerCell
         let colorName = colorViews[indexPath.row]
@@ -69,11 +81,14 @@ class SelectViewColorCell: UITableViewCell, UICollectionViewDelegate, UICollecti
         return cell
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let colorName = colorViews[indexPath.row]
         controller.selectedView = colorName
         collectionView.reloadData()
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

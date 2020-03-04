@@ -10,6 +10,8 @@ import AVFoundation
 
 class ChatCell: UICollectionViewCell {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var msg: Messages?
     var message = UILabel()
     var messageBackground = UIView()
@@ -44,6 +46,8 @@ class ChatCell: UICollectionViewCell {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     // Reply Outlets
     let responseView = UIView()
     let responseLine = UIView()
@@ -51,6 +55,8 @@ class ChatCell: UICollectionViewCell {
     let responseTextMessage = UILabel()
     let responseMediaMessage = UIImageView()
     let responseAudioMessage = UILabel()
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -74,6 +80,8 @@ class ChatCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     private func setupBackgroundView() {
         messageBackground.translatesAutoresizingMaskIntoConstraints = false
         messageBackground.layer.cornerRadius = 12
@@ -89,6 +97,8 @@ class ChatCell: UICollectionViewCell {
         outcomingMessage.isActive = true
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     private func setupMessage(){
         messageBackground.addSubview(message)
@@ -106,6 +116,8 @@ class ChatCell: UICollectionViewCell {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     private func setupMediaMessage(){
         messageBackground.addSubview(mediaMessage)
@@ -125,6 +137,8 @@ class ChatCell: UICollectionViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     private func setupActivityLabel() {
         addSubview(activityLabel)
         activityLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -137,6 +151,8 @@ class ChatCell: UICollectionViewCell {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     private func setupActivityIndicator() {
         messageBackground.addSubview(activityIndicatorView)
@@ -152,6 +168,8 @@ class ChatCell: UICollectionViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     private func setupPlayButton() {
         messageBackground.addSubview(playButton)
         playButton.translatesAutoresizingMaskIntoConstraints = false
@@ -166,6 +184,8 @@ class ChatCell: UICollectionViewCell {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     @objc func playButtonPressed(){
         if let url = URL(string: msg!.videoUrl) {
@@ -183,6 +203,8 @@ class ChatCell: UICollectionViewCell {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     @objc func pausePlayer() {
         guard msg?.videoUrl != nil else { return }
         if videoPlayer?.rate != 0 {
@@ -192,11 +214,15 @@ class ChatCell: UICollectionViewCell {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     @objc func playerDidFinishPlaying() {
         activityIndicatorView.stopAnimating()
         playButton.isHidden = false
         playerLayer?.removeFromSuperlayer()
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     @objc private func imageTappedHandler(tap: UITapGestureRecognizer){
         guard msg?.videoUrl == nil else { return }
@@ -204,9 +230,13 @@ class ChatCell: UICollectionViewCell {
         chatVC.zoomImageHandler(image: imageView!)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupRepMessageView(_ friendName: String){
         self.handleRepMessageSetup(friendName)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     private func handleRepMessageSetup(_ name: String){
         self.msgTopAnchor.isActive = false
@@ -229,6 +259,8 @@ class ChatCell: UICollectionViewCell {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     private func setupReplyLine(){
         messageBackground.addSubview(responseLine)
         responseLine.translatesAutoresizingMaskIntoConstraints = false
@@ -241,10 +273,14 @@ class ChatCell: UICollectionViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     private func setupReplyName(name: String){
         responseNameLabel.text = name
         responseNameLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 16)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     private func setupReplyTextMessage(text: String){
         responseTextMessage.text = text
@@ -263,6 +299,8 @@ class ChatCell: UICollectionViewCell {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     private func setupReplyMediaMessage(_ url: String){
         let replyMediaLabel = UILabel()
@@ -289,6 +327,8 @@ class ChatCell: UICollectionViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     private func setupResponseAudioMessage(){
         messageBackground.addSubview(responseAudioMessage)
         responseAudioMessage.translatesAutoresizingMaskIntoConstraints = false
@@ -307,6 +347,8 @@ class ChatCell: UICollectionViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func removeReplyOutlets(){
         replyMsgTopAnchor.isActive = false
         responseLine.removeFromSuperview()
@@ -317,6 +359,8 @@ class ChatCell: UICollectionViewCell {
         responseView.removeFromSuperview()
         msgTopAnchor.isActive = true
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupAudioPlayButton(){
         audioPlayButton.isEnabled = false
@@ -333,6 +377,8 @@ class ChatCell: UICollectionViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupAudioDurationLabel(){
         messageBackground.addSubview(durationLabel)
         durationLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 14)
@@ -344,9 +390,13 @@ class ChatCell: UICollectionViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     @objc func playAudioButtonPressed(){
         chatVC.handleUserPressedAudioButton(for: self)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     @objc func timerHandler(){
         if !audioPlayer.isPlaying {
@@ -360,9 +410,12 @@ class ChatCell: UICollectionViewCell {
         durationLabel.text = "\(minutes):\(seconds)"
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func timeFrom(seconds : Int) -> (Int, Int) {
         return ((seconds % 3600) / 60, (seconds % 3600) % 60)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

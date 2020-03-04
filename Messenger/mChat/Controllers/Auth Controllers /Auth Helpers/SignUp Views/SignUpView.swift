@@ -11,11 +11,15 @@ import SkyFloatingLabelTextField
 
 class SignUpView: UIView {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var controller: SignUpVC!
     var nameTextField = SkyFloatingLabelTextField()
     var emailTextField = SkyFloatingLabelTextField()
     var passwordTextField = SkyFloatingLabelTextField()
     var errorLabel = UILabel()
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     init(_ controller: SignUpVC) {
         super.init(frame: .zero)
@@ -26,6 +30,8 @@ class SignUpView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupRegisterView() {
         controller.view.addSubview(self)
@@ -52,6 +58,8 @@ class SignUpView: UIView {
         setupErrorLabel()
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupSignUpLabel() {
         let signUpLabel = UILabel()
         addSubview(signUpLabel)
@@ -67,6 +75,8 @@ class SignUpView: UIView {
         NSLayoutConstraint.activate(constraints)
         signUpLabel.alpha = 0
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupNameTextField() {
         addSubview(nameTextField)
@@ -86,6 +96,8 @@ class SignUpView: UIView {
         NSLayoutConstraint.activate(constraints)
         nameTextField.alpha = 0
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupEmailTextField() {
         addSubview(emailTextField)
@@ -107,6 +119,8 @@ class SignUpView: UIView {
         emailTextField.alpha = 0
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupPasswordTextField() {
         addSubview(passwordTextField)
         passwordTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -127,6 +141,8 @@ class SignUpView: UIView {
         passwordTextField.alpha = 0
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupErrorLabel() {
         addSubview(errorLabel)
         errorLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -142,6 +158,8 @@ class SignUpView: UIView {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     @objc func animateSignUpViews() {
         for registerView in subviews {
@@ -160,5 +178,7 @@ class SignUpView: UIView {
             self.controller.continueButton.alpha = 1
         })
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

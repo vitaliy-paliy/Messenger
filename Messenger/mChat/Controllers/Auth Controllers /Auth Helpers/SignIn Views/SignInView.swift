@@ -11,10 +11,14 @@ import SkyFloatingLabelTextField
 
 class SignInView: UIView {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var controller: SignInVC!
     var emailTextField = SkyFloatingLabelTextField()
     var passwordTextField = SkyFloatingLabelTextField()
     var errorLabel = UILabel()
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     init(_ controller: SignInVC) {
         super.init(frame: .zero)
@@ -25,6 +29,8 @@ class SignInView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupLoginView() {
         controller.view.addSubview(self)
@@ -48,6 +54,8 @@ class SignInView: UIView {
         setupErrorLabel()
     }
 
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupLoginLabel() {
         let loginLabel = UILabel()
         addSubview(loginLabel)
@@ -62,6 +70,8 @@ class SignInView: UIView {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupEmailTextField() {
         addSubview(emailTextField)
@@ -83,6 +93,8 @@ class SignInView: UIView {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupPasswordTextField() {
         addSubview(passwordTextField)
         passwordTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -103,6 +115,8 @@ class SignInView: UIView {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupErrorLabel() {
         addSubview(errorLabel)
         errorLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -119,5 +133,6 @@ class SignInView: UIView {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

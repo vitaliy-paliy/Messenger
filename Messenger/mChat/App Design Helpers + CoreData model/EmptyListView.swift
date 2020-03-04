@@ -10,12 +10,16 @@ import UIKit
 
 class EmptyListView: UIView{
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var convVC: ConversationsVC!
     var contactsVC: ContactsVC!
     var controller: UIViewController!
     let emptyImageView = UIImageView()
     let emptyLabel = UILabel()
     let emptyButton = UIButton(type: .system)
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     init(_ contactsVC: ContactsVC?, _ convVC: ConversationsVC? , _ status: Bool) {
         super.init(frame: .zero)
@@ -40,10 +44,12 @@ class EmptyListView: UIView{
             emptyButton.addTarget(self, action: #selector(convButtonPressed), for: .touchUpInside)
         }
     }
-    
+        
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     private func setupEmptyListView() {
         translatesAutoresizingMaskIntoConstraints = false
@@ -65,6 +71,8 @@ class EmptyListView: UIView{
         setupEmptyLabel()
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     private func setupEmptyLabel() {
         addSubview(emptyLabel)
         emptyLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -80,6 +88,8 @@ class EmptyListView: UIView{
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     private func setupGoToUserListButton() {
         emptyButton.translatesAutoresizingMaskIntoConstraints = false
@@ -98,6 +108,8 @@ class EmptyListView: UIView{
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     private func setupGradientLayer() -> CAGradientLayer {
         let gradient = CAGradientLayer()
         let topColor = UIColor(red: 100/255, green: 90/255, blue: 255/255, alpha: 1).cgColor
@@ -110,12 +122,18 @@ class EmptyListView: UIView{
         return gradient
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     @objc private func contactsButtonPressed() {
         contactsVC.addButtonPressed()
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     @objc private func convButtonPressed(){
         convVC.newConversationTapped()
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

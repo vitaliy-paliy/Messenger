@@ -11,12 +11,16 @@ import Firebase
 
 class ToolsTB: UITableView, UITableViewDelegate, UITableViewDataSource {
 
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var tools = ["Reply", "Forward", "Copy", "Delete"]
     var toolsImg = ["arrowshape.turn.up.left", "arrowshape.turn.up.right", "doc.on.doc", "trash"]
     var selectedMessage: Messages!
     var scrollView: ToolsMenu!
     var selectedCell: ChatCell!
     var chatView: ChatVC!
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     init(style: UITableView.Style, sV: ToolsMenu) {
         super.init(frame: sV.toolsView.frame, style: style)
@@ -45,6 +49,8 @@ class ToolsTB: UITableView, UITableViewDelegate, UITableViewDataSource {
         NSLayoutConstraint.activate(tableConstraints)
     }
 
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -53,6 +59,8 @@ class ToolsTB: UITableView, UITableViewDelegate, UITableViewDataSource {
         return tools.count
     }
 
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ToolsCell") as! ToolsCell
         let tool = tools[indexPath.row]
@@ -68,6 +76,8 @@ class ToolsTB: UITableView, UITableViewDelegate, UITableViewDataSource {
         return cell
     }
 
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let tool = tools[indexPath.row]
         let messageToForward = chatView.userResponse.messageToForward
@@ -89,6 +99,8 @@ class ToolsTB: UITableView, UITableViewDelegate, UITableViewDataSource {
         }
     }
 
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func removeHandler(){
         chatView.chatNetworking.removeMessageHandler(messageToRemove: selectedMessage) {
             self.scrollView.handleViewDismiss(isDeleted: true)
@@ -96,4 +108,6 @@ class ToolsTB: UITableView, UITableViewDelegate, UITableViewDataSource {
 
     }
 
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
 }

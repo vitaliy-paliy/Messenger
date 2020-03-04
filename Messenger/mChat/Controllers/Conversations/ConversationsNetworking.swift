@@ -11,11 +11,15 @@ import Firebase
 
 class ConversationsNetworking {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var convVC: ConversationsVC!
     var groupedMessages = [String: Messages]()
     var unreadMessages = [String: Int]()
     var friendKeys = [String]()
     var totalUnread = Int()
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func observeFriendsList() {
         convVC.blankLoadingView.isHidden = false
@@ -33,10 +37,14 @@ class ConversationsNetworking {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func observeFriendActions(){
         observeRemovedFriends()
         observeNewFriends()
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func observeRemovedFriends(){
         Database.database().reference().child("friendsList").child(CurrentUser.uid).observe(.childRemoved) { (snap) in
@@ -56,6 +64,8 @@ class ConversationsNetworking {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func observeNewFriends(){
         Database.database().reference().child("friendsList").child(CurrentUser.uid).observe(.childAdded) { (snap) in
             let friendToAdd = snap.key
@@ -72,6 +82,8 @@ class ConversationsNetworking {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func removeFriendFromArray(_ friendToRemove: String){
         var index = 0
         for friend in friendKeys {
@@ -81,6 +93,8 @@ class ConversationsNetworking {
             index += 1
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func messagesReference(){
         for key in friendKeys {
@@ -102,6 +116,8 @@ class ConversationsNetworking {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func observeNewMessages(completion: @escaping (_ newMessages: [Messages]) -> Void){
         for key in friendKeys {
             Database.database().reference().child("messages").child(CurrentUser.uid).child(key).queryLimited(toLast: 1).observe(.childAdded) { (snap) in
@@ -121,6 +137,8 @@ class ConversationsNetworking {
         self.observeFriendActions()
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func observeDeletedMessages() {
         for key in friendKeys {
             Database.database().reference().child("messages").child(CurrentUser.uid).child(key).queryLimited(toLast: 1).observe(.childRemoved) { (snap) in
@@ -132,6 +150,8 @@ class ConversationsNetworking {
             }
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func loadFriends(_ recent: Messages,completion: @escaping (_ friend: FriendInfo) -> Void){
         let user = recent.determineUser()
@@ -150,6 +170,8 @@ class ConversationsNetworking {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func observeUserSeenMessage(_ friendId: String, completion: @escaping(_ userSeenMessagesCount: Int) -> Void){
         let ref = Database.database().reference().child("messages").child("unread-Messages").child(friendId).child(CurrentUser.uid)
         ref.observe(.value) { (snap) in
@@ -157,6 +179,8 @@ class ConversationsNetworking {
         }
     }
 
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func observeIsUserTyping(_ friendId: String, completion: @escaping (_ isTyping: Bool, _ friendId: String) -> Void){
         let ref = Database.database().reference().child("userActions").child(friendId).child(CurrentUser.uid)
         ref.observe(.value) { (snap) in
@@ -167,11 +191,15 @@ class ConversationsNetworking {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func removeConvObservers(){
         for message in convVC.messages {
             Database.database().reference().child("users").child(message.determineUser()).removeAllObservers()
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func observeUnreadMessages(_ key: String, completion: @escaping(_ unreadMessages: [String: Int]) -> Void){
         Database.database().reference().child("messages").child("unread-Messages").child(CurrentUser.uid).child(key).observe(.value) { (snap) in
@@ -187,6 +215,8 @@ class ConversationsNetworking {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func addValueToBadge() {
         for m in self.unreadMessages.values {
             totalUnread += m
@@ -196,12 +226,16 @@ class ConversationsNetworking {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func removeValueFromBadge(_ key: String) {
         self.totalUnread -= self.unreadMessages[key] ?? 0
         if totalUnread == 0 {
             self.convVC.tabBarBadge.badgeValue = nil
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }
 

@@ -12,6 +12,8 @@ import Firebase
 
 class ConversationsCell: UITableViewCell {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var message: Messages!
     var profileImage = UIImageView()
     var friendName = UILabel()
@@ -23,6 +25,8 @@ class ConversationsCell: UITableViewCell {
     var unreadMessageView = UIView()
     var unreadLabel = UILabel()
     var checkmark = UIImageView()
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -42,6 +46,8 @@ class ConversationsCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupIsOnlineImage(){
         addSubview(isOnlineView)
         isOnlineView.isHidden = true
@@ -60,6 +66,8 @@ class ConversationsCell: UITableViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupImage(){
         addSubview(profileImage)
         profileImage.contentMode = .scaleAspectFill
@@ -75,6 +83,8 @@ class ConversationsCell: UITableViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupRecentMessage(){
         addSubview(recentMessage)
         recentMessage.textColor = .lightGray
@@ -87,6 +97,8 @@ class ConversationsCell: UITableViewCell {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupTimeLabel(){
         addSubview(timeLabel)
@@ -102,6 +114,8 @@ class ConversationsCell: UITableViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupNameLabel(){
         addSubview(friendName)
         friendName.textColor = .black
@@ -114,6 +128,8 @@ class ConversationsCell: UITableViewCell {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupUserTypingView(){
         isTypingView.isHidden = true
@@ -152,6 +168,8 @@ class ConversationsCell: UITableViewCell {
         typingAnimation.loopMode = .loop
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupUnreadMessagesView(){
         addSubview(unreadMessageView)
         unreadMessageView.isHidden = true
@@ -174,6 +192,8 @@ class ConversationsCell: UITableViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupCheckmark() {
         addSubview(checkmark)
         checkmark.isHidden = true
@@ -189,5 +209,7 @@ class ConversationsCell: UITableViewCell {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

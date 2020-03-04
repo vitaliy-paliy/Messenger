@@ -10,6 +10,8 @@ import UIKit
 
 class FriendInformationVC: UIViewController, UITableViewDelegate, UITableViewDataSource{
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     let calendar = Calendar(identifier: .gregorian)
     var friend: FriendInfo!
     var tableView = UITableView()
@@ -17,12 +19,16 @@ class FriendInformationVC: UIViewController, UITableViewDelegate, UITableViewDat
     var tools = ["Send Message", "Shared Media", "Open Maps"]
     var toolsImages = ["message_icon", "image_icon","map_icon"]
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Info"
         view.backgroundColor = .white
         setupTableView()
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupTableView(){
         view.addSubview(tableView)
@@ -41,14 +47,20 @@ class FriendInformationVC: UIViewController, UITableViewDelegate, UITableViewDat
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 { return 1 }
         return tools.count
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
@@ -75,6 +87,8 @@ class FriendInformationVC: UIViewController, UITableViewDelegate, UITableViewDat
         }
     }
 
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard indexPath.section != 0 else { return }
         tableView.deselectRow(at: indexPath, animated: true)
@@ -90,5 +104,7 @@ class FriendInformationVC: UIViewController, UITableViewDelegate, UITableViewDat
             show(controller, sender: self)
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

@@ -10,10 +10,14 @@ import UIKit
 
 class ContactsCell: UITableViewCell {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var profileImage = UIImageView()
     var friendName = UILabel()
     var friendEmail = UILabel()
     var isOnlineView = UIView()
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -32,6 +36,8 @@ class ContactsCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupImage(){
         profileImage.contentMode = .scaleAspectFill
         profileImage.layer.cornerRadius = 30
@@ -45,6 +51,8 @@ class ContactsCell: UITableViewCell {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupIsOnlineImage(){
         isOnlineView.layer.cornerRadius = 8
@@ -62,6 +70,8 @@ class ContactsCell: UITableViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupEmailLabel(){
         friendEmail.numberOfLines = 0
         friendEmail.adjustsFontSizeToFitWidth = true
@@ -75,6 +85,8 @@ class ContactsCell: UITableViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupNameLabel(){
         friendName.textColor = .black
         friendName.numberOfLines = 0
@@ -86,5 +98,7 @@ class ContactsCell: UITableViewCell {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

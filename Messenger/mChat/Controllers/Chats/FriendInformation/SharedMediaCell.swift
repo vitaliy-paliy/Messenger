@@ -10,8 +10,12 @@ import UIKit
 
 class SharedMediaCell: UICollectionViewCell {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var sharedMediaVC = SharedMediaVC()
     var imageView = UIImageView()
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -21,6 +25,8 @@ class SharedMediaCell: UICollectionViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupImageView(){
         addSubview(imageView)
@@ -37,9 +43,13 @@ class SharedMediaCell: UICollectionViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     @objc func imageTappedHandler(tap: UITapGestureRecognizer){
         let imageView = tap.view as? UIImageView
         sharedMediaVC.zoomImageHandler(image: imageView!)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

@@ -10,11 +10,15 @@ import UIKit
 
 class ProfileCell: UITableViewCell {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var profileImage = UIImageView()
     var nameLabel = UILabel()
     var emailLabel = UILabel()
     let darkBackground = UIView()
     var settingsVC: SettingsVC!
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -28,6 +32,8 @@ class ProfileCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
  
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     private func setupImage(){
         addSubview(profileImage)
         profileImage.contentMode = .scaleAspectFill
@@ -43,6 +49,8 @@ class ProfileCell: UITableViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     private func setupEmailLabel(){
         addSubview(emailLabel)
         emailLabel.numberOfLines = 0
@@ -56,6 +64,8 @@ class ProfileCell: UITableViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     private func setupNameLabel(){
         addSubview(nameLabel)
         nameLabel.textColor = .black
@@ -68,6 +78,8 @@ class ProfileCell: UITableViewCell {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     private func setupDarkBackground() {
         profileImage.addSubview(darkBackground)
@@ -87,6 +99,8 @@ class ProfileCell: UITableViewCell {
         setupChangeImageView()
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     private func setupChangeImageView() {
         let changeImageView = UIImageView()
         profileImage.addSubview(changeImageView)
@@ -103,8 +117,12 @@ class ProfileCell: UITableViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     @objc private func changeImageViewTouched() {
         settingsVC.changeProfileImage()
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

@@ -11,6 +11,9 @@ import Lottie
 
 extension UINavigationItem {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // EXTENSION FOR SETTING UP CHAT NAVIGATION BAR
+    
     func setNavTitles(navTitle: String, navSubtitle: String){
         let title = setupTitleLabel(navTitle)
         let subtitle = UILabel()
@@ -24,6 +27,8 @@ extension UINavigationItem {
         titleView = stackView
         
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupTypingNavTitle(navTitle: String){
         let title = setupTitleLabel(navTitle)
@@ -47,12 +52,16 @@ extension UINavigationItem {
         titleView = stackView
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupTitleLabel(_ text: String) -> UILabel{
         let title = UILabel()
         title.text = text
         title.font = UIFont(name: "HelveticaNeue-Medium", size: 18)
         return title
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     private func setupAnimationView() -> AnimationView{
         let typingAnimation = AnimationView()
@@ -64,6 +73,8 @@ extension UINavigationItem {
         return typingAnimation
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     private func setupTypingLabel() -> UILabel{
         let typingLabel = UILabel()
         typingLabel.text = "typing".uppercased()
@@ -71,6 +82,8 @@ extension UINavigationItem {
         typingLabel.textColor = .gray
         return typingLabel
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     private func setupStackView(view1: UIView, view2: UIView) -> UIStackView{
         let stackView = UIStackView(arrangedSubviews: [view1, view2])
@@ -83,5 +96,7 @@ extension UINavigationItem {
         view2.sizeToFit()
         return stackView
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

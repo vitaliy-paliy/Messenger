@@ -11,9 +11,13 @@ import Firebase
 
 class MapsSettingsVC: UIViewController {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var tableView = UITableView()
     var isMapOpened = false
     var mapsVC: MapsVC?
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,24 +28,34 @@ class MapsSettingsVC: UIViewController {
         view.backgroundColor = .white
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupBackButton(){
         let button = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(backButtonPressed))
         navigationItem.leftBarButtonItem = button
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     @objc func backButtonPressed(){
         dismiss(animated: true, completion: nil)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = true
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         tabBarController?.tabBar.isHidden = false
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupTableView(){
         view.addSubview(tableView)
@@ -62,6 +76,8 @@ class MapsSettingsVC: UIViewController {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func changeSwitchValue(_ button: UISwitch){
         if button.isOn{
             refreshIncognitoMode(to: false)
@@ -69,6 +85,8 @@ class MapsSettingsVC: UIViewController {
             refreshIncognitoMode(to: true)
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func refreshIncognitoMode(to status: Bool){
         let ref = Database.database().reference().child("users").child(CurrentUser.uid)
@@ -83,9 +101,13 @@ class MapsSettingsVC: UIViewController {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
 }
 
 extension MapsSettingsVC: UITableViewDelegate, UITableViewDataSource {
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
@@ -108,17 +130,25 @@ extension MapsSettingsVC: UITableViewDelegate, UITableViewDataSource {
         return headerView
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 { return 45 } else { return 15 }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func numberOfSections(in tableView: UITableView) -> Int {
         if isMapOpened { return 2 } else { return 3 }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         // If MapSettingsVC was opened in MapsVC then we should hide the "Open maps" row
@@ -146,6 +176,8 @@ extension MapsSettingsVC: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard indexPath.section == 1, !isMapOpened else { return }
         tableView.deselectRow(at: indexPath, animated: true)
@@ -154,5 +186,6 @@ extension MapsSettingsVC: UITableViewDelegate, UITableViewDataSource {
         show(controller, sender: nil)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

@@ -12,6 +12,8 @@ import Firebase
 
 class ChangePasswordVC: UIViewController{
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var infoAnimView = AnimationView()
     var infoLabel = UILabel()
     
@@ -20,6 +22,8 @@ class ChangePasswordVC: UIViewController{
     var confirmNewPasswordTF = UITextField()
     var changeButton = UIButton(type: .system)
     var currentUserNetworking = CurrentUserNetworking()
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +42,8 @@ class ChangePasswordVC: UIViewController{
         tabBarController?.tabBar.isHidden = false
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupUI() {
         view.backgroundColor = .white
         navigationItem.title = "Change Password"
@@ -46,6 +52,8 @@ class ChangePasswordVC: UIViewController{
         setupOldPasswordTF()
         setupChangeButton()
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupChangeInfoAnim() {
         view.addSubview(infoAnimView)
@@ -62,6 +70,8 @@ class ChangePasswordVC: UIViewController{
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupInfoLabel() {
         view.addSubview(infoLabel)
@@ -80,6 +90,8 @@ class ChangePasswordVC: UIViewController{
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupOldPasswordTF() {
         view.addSubview(oldPasswordTF)
         oldPasswordTF.translatesAutoresizingMaskIntoConstraints = false
@@ -94,6 +106,8 @@ class ChangePasswordVC: UIViewController{
         NSLayoutConstraint.activate(constraints)
         setupNewPasswordTF()
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupNewPasswordTF() {
         view.addSubview(newPasswordTF)
@@ -110,6 +124,8 @@ class ChangePasswordVC: UIViewController{
         setupConfirmTF()
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupConfirmTF() {
         view.addSubview(confirmNewPasswordTF)
         confirmNewPasswordTF.translatesAutoresizingMaskIntoConstraints = false
@@ -124,6 +140,8 @@ class ChangePasswordVC: UIViewController{
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupTF(_ textfield: UITextField) {
         textfield.borderStyle = .none
         textfield.backgroundColor = UIColor(white: 0.95, alpha: 1)
@@ -135,6 +153,8 @@ class ChangePasswordVC: UIViewController{
         textfield.leftView = paddingView
         textfield.leftViewMode = .always
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupChangeButton() {
         view.addSubview(changeButton)
@@ -158,6 +178,8 @@ class ChangePasswordVC: UIViewController{
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func checkTF() -> String? {
         if oldPasswordTF.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" || newPasswordTF.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" || confirmNewPasswordTF.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
             return "Make sure you fill in all fields."
@@ -174,6 +196,8 @@ class ChangePasswordVC: UIViewController{
         return nil
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     @objc func changePasswordButtonPressed() {
         if let errorMessage = checkTF(){
             showAlert(title: "Error", message: errorMessage)
@@ -184,14 +208,20 @@ class ChangePasswordVC: UIViewController{
         currentUserNetworking.changePassword(oldCredentials)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func hideKeyboardOnTap() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     @objc func hideKeyboard(){
         view.endEditing(true)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

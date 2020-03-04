@@ -11,11 +11,15 @@ import Firebase
 
 class SettingsVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var logoutButton = UIButton(type: .system)
     var tableView = UITableView()
     
-    var settingsItems = ["Saved Messages", "Appearance", "Maps"]
-    var settingsImages = ["bookmark_icon", "paint_icon","map_icon"]
+    var settingsItems = ["Appearance", "Maps"]
+    var settingsImages = ["paint_icon","map_icon"]
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +35,8 @@ class SettingsVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         tabBarController?.tabBar.isHidden = false
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupLeftNavButton(){
         logoutButton.setTitle("Sign out", for: .normal)
         logoutButton.titleLabel?.font = UIFont(name: "Helvetica Neue", size: 18)
@@ -38,6 +44,8 @@ class SettingsVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         logoutButton.addTarget(self, action: #selector(setupLogoutView), for: .touchUpInside)
         navigationItem.leftBarButtonItem = UIBarButtonItem(customView: logoutButton)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupTableView(){
         view.addSubview(tableView)
@@ -57,6 +65,8 @@ class SettingsVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     @objc func setupLogoutView() {
         let alert = UIAlertController(title: "Sign Out", message: "Are you sure you want to sign out?", preferredStyle: .alert)
         let exitAction = UIAlertAction(title: "Exit", style: .destructive) { (true) in
@@ -67,9 +77,11 @@ class SettingsVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         present(alert, animated: true, completion: nil)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     @objc func logoutButtonPressed(){
         do{
-            Constants.activityObservers(isOnline: false)
+            UserActivity.observe(isOnline: false)
             try Auth.auth().signOut()
             let controller = SignInVC()
             ChatKit.mapTimer.invalidate()
@@ -84,6 +96,8 @@ class SettingsVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         }
         
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func changeProfileImage() {
         let imagePicker = UIImagePickerController()
@@ -105,6 +119,8 @@ class SettingsVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         present(alert, animated: true, completion: nil)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
         uploadImageToStorage(originalImage) { (url, error) in
@@ -114,9 +130,13 @@ class SettingsVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         dismiss(animated: true, completion: nil)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func uploadImageToStorage(_ image: UIImage, completion: @escaping (_ imageUrl: URL?, _ error: Error?) -> Void) {
         let uniqueName = NSUUID().uuidString
@@ -132,6 +152,8 @@ class SettingsVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func updateCurrentUserInfo(_ url: URL) {
         Database.database().reference().child("users").child(CurrentUser.uid).updateChildValues(["profileImage":url.absoluteString]) { (error, databaseRef) in
             guard error == nil else { return }
@@ -141,6 +163,8 @@ class SettingsVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func removeOldStorageImage() {
         Storage.storage().reference(forURL: CurrentUser.profileImage).delete { (error) in
             guard error == nil else { return }
@@ -148,9 +172,13 @@ class SettingsVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
 }
 
 extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let headerView = UIView()
@@ -158,17 +186,25 @@ extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
         return headerView
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 1 { return 30 } else { return 0.1 }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 2
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 { return 1 } else { return 3 }
+        if section == 0 { return 1 } else { return 2 }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0 {
@@ -190,6 +226,8 @@ extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         if indexPath.section == 0{
@@ -200,8 +238,6 @@ extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
             if item == "Appearance"{
                 let controller = AppearanceVC()
                 show(controller, sender: nil)
-            }else if item == "Saved Messages"{
-                print("TODO: Saved Messages")
             }else{
                 let controller = MapsSettingsVC()
                 show(controller, sender: self)
@@ -209,5 +245,6 @@ extension SettingsVC: UITableViewDelegate, UITableViewDataSource {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

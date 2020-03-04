@@ -7,10 +7,11 @@
 //
 
 import UIKit
-import Firebase
 import Lottie
 
 class ConversationsVC: UIViewController {
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     var convNetworking = ConversationsNetworking()
     var messages = [Messages]()
@@ -20,6 +21,8 @@ class ConversationsVC: UIViewController {
     var tabBarBadge: UITabBarItem!
     var blankLoadingView = AnimationView(animation: Animation.named("blankLoadingAnim"))
     var emptyListView: EmptyListView!
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +39,9 @@ class ConversationsVC: UIViewController {
         super.viewDidAppear(animated)
         tabBarController?.tabBar.isHidden = false
     }
-        
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupUI(){
         setupNewConversationButton()
         setupTableView()
@@ -44,6 +49,8 @@ class ConversationsVC: UIViewController {
         setupBlankView(blankLoadingView)
         Friends.convVC = self
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupTableView() {
         view.addSubview(tableView)
@@ -63,11 +70,15 @@ class ConversationsVC: UIViewController {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupNewConversationButton() {
         newConversationButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(newConversationTapped))
         newConversationButton.tintColor = .black
         navigationItem.rightBarButtonItem = newConversationButton
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     @objc func newConversationTapped() {
         let controller = NewConversationVC()
@@ -75,10 +86,15 @@ class ConversationsVC: UIViewController {
         present(UINavigationController(rootViewController: controller), animated: true, completion: nil)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MARK: LOAD CONVERSATIONS METHOD
+    
     func loadConversations() {
         convNetworking.convVC = self
         convNetworking.observeFriendsList()
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func loadMessagesHandler(_ newMessages: [Messages]?) {
         blankLoadingView.isHidden = true
@@ -87,6 +103,9 @@ class ConversationsVC: UIViewController {
         }
         observeMessageActions()
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MARK: HANDLE RELOAD
     
     func handleReload(_ newMessages: [Messages]) {
         messages = newMessages
@@ -100,12 +119,17 @@ class ConversationsVC: UIViewController {
         tableView.reloadData()
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MARK: MESSAGE ACTIONS.
+    
     func observeMessageActions() {
         convNetworking.observeDeletedMessages()
         convNetworking.observeNewMessages { (newMessages) in
             self.handleReload(newMessages)
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func nextControllerHandler(usr: FriendInfo) {
         let controller = ChatVC()
@@ -114,5 +138,7 @@ class ConversationsVC: UIViewController {
         convNetworking.removeConvObservers()
         show(controller, sender: nil)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

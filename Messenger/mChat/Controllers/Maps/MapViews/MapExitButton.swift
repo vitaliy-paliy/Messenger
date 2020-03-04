@@ -10,18 +10,24 @@ import UIKit
 
 class MapExitButton: UIButton {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var mapsVC: MapsVC!
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     init(mapsVC: MapsVC) {
         super.init(frame: .zero)
         self.mapsVC = mapsVC
         setupExitButton()
     }
-    
+        
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupExitButton(){
         mapsVC.view.addSubview(self)
         translatesAutoresizingMaskIntoConstraints = false
@@ -39,5 +45,7 @@ class MapExitButton: UIButton {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

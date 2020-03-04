@@ -11,6 +11,8 @@ import Lottie
 
 class MessageContainer: UIView, UITextViewDelegate{
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var bottomAnchr = NSLayoutConstraint()
     var heightAnchr = NSLayoutConstraint()
     let clipImageButton = UIButton(type: .system)
@@ -24,6 +26,8 @@ class MessageContainer: UIView, UITextViewDelegate{
     var const: CGFloat!
     var chatVC: ChatVC!
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     init(height: CGFloat, const: CGFloat, chatVC: ChatVC) {
         super.init(frame: .zero)
         self.chatVC = chatVC
@@ -36,6 +40,8 @@ class MessageContainer: UIView, UITextViewDelegate{
         fatalError("init(coder:) has not been implemented")
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupMessageContainer(){
         setupBackground()
         setupImageClipButton()
@@ -46,6 +52,8 @@ class MessageContainer: UIView, UITextViewDelegate{
         setupRecordingLabel()
         setupActionCircle()
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupBackground(){
         chatVC.view.addSubview(self)
@@ -62,6 +70,8 @@ class MessageContainer: UIView, UITextViewDelegate{
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupImageClipButton(){
         clipImageButton.setImage(UIImage(systemName: "paperclip"), for: .normal)
         addSubview(clipImageButton)
@@ -77,6 +87,8 @@ class MessageContainer: UIView, UITextViewDelegate{
         clipImageButton.addTarget(chatVC, action: #selector(chatVC.clipImageButtonPressed), for: .touchUpInside)
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupSendButton(){
         addSubview(sendButton)
@@ -97,6 +109,8 @@ class MessageContainer: UIView, UITextViewDelegate{
         sendButton.addTarget(chatVC, action: #selector(chatVC.sendButtonPressed), for: .touchUpInside)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupMicrophone(){
         addSubview(micButton)
         micButton.translatesAutoresizingMaskIntoConstraints = false
@@ -111,6 +125,8 @@ class MessageContainer: UIView, UITextViewDelegate{
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupMessageTF(){
         addSubview(messageTV)
@@ -142,6 +158,8 @@ class MessageContainer: UIView, UITextViewDelegate{
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func recordingAudioAnimation(){
         recordingAudioView.isHidden = true
         addSubview(recordingAudioView)
@@ -159,6 +177,8 @@ class MessageContainer: UIView, UITextViewDelegate{
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupRecordingLabel(){
         addSubview(recordingLabel)
         recordingLabel.isHidden = true
@@ -172,6 +192,7 @@ class MessageContainer: UIView, UITextViewDelegate{
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupActionCircle(){
         addSubview(actionCircle)
@@ -189,14 +210,19 @@ class MessageContainer: UIView, UITextViewDelegate{
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }
 
 extension MessageContainer {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func textViewDidEndEditing(_ textView: UITextView) {
         chatVC.chatNetworking.disableIsTyping()
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func textViewDidChange(_ textView: UITextView) {
         chatVC.chatNetworking.isTypingHandler(tV: textView)
@@ -214,4 +240,7 @@ extension MessageContainer {
             chatVC.messageContainerHeightHandler(heightAnchr, estSize)
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
 }

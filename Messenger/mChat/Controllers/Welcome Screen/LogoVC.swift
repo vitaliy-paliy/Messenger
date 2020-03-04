@@ -11,9 +11,13 @@ import Lottie
 
 class LogoVC: UIViewController {
         
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var animationView = AnimationView()
     var logoImage = UIImageView()
     var logoLabel = UILabel()
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +28,8 @@ class LogoVC: UIViewController {
         setupLogoLabel()
         setupAnimationView()
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupLogo(){
         view.addSubview(logoImage)
@@ -41,6 +47,8 @@ class LogoVC: UIViewController {
         
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupLogoLabel() {
         view.addSubview(logoLabel)
         logoLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -53,6 +61,8 @@ class LogoVC: UIViewController {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupAnimationView() {
         view.addSubview(animationView)
@@ -69,5 +79,7 @@ class LogoVC: UIViewController {
         NSLayoutConstraint.activate(constraints)
     }
  
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
 }
 

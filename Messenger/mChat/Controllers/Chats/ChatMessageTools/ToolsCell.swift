@@ -10,8 +10,12 @@ import UIKit
 
 class ToolsCell: UITableViewCell {
 
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var toolName = UILabel()
     var toolImg = UIImageView()
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -22,6 +26,8 @@ class ToolsCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupToolName(){
         addSubview(toolName)
@@ -34,6 +40,8 @@ class ToolsCell: UITableViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setuptoolImg(){
         addSubview(toolImg)
         toolImg.translatesAutoresizingMaskIntoConstraints = false
@@ -43,5 +51,7 @@ class ToolsCell: UITableViewCell {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

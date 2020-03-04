@@ -10,8 +10,12 @@ import UIKit
 
 class SettingsCell: UITableViewCell {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var settingsImage = UIImageView()
     var settingsLabel = UILabel()
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -23,6 +27,8 @@ class SettingsCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
  
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupSettingsImage(){
         addSubview(settingsImage)
         settingsImage.translatesAutoresizingMaskIntoConstraints = false
@@ -35,6 +41,8 @@ class SettingsCell: UITableViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupSettingsLabel(){
         addSubview(settingsLabel)
         settingsLabel.textColor = .darkGray
@@ -46,5 +54,7 @@ class SettingsCell: UITableViewCell {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

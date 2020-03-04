@@ -10,7 +10,11 @@ import UIKit
 
 class AuthBackButton: UIButton {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var controller: UIViewController!
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     init(_ controller: UIViewController) {
         super.init(frame: .zero)
@@ -21,6 +25,8 @@ class AuthBackButton: UIButton {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupBackButton() {
         controller.view.addSubview(self)
@@ -36,5 +42,7 @@ class AuthBackButton: UIButton {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

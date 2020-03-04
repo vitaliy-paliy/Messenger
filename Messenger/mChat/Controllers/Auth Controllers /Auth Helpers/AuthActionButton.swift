@@ -10,7 +10,11 @@ import UIKit
 
 class AuthActionButton: UIButton {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var controller: UIViewController!
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     init(_ title: String, _ controller: UIViewController) {
         super.init(frame: .zero)
@@ -21,6 +25,8 @@ class AuthActionButton: UIButton {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupContinueButton(_ title: String) {
         frame = CGRect(x: 0, y: 0, width: 200, height: 40)
@@ -37,4 +43,6 @@ class AuthActionButton: UIButton {
         layer.insertSublayer(gradient, at: 0)
     }
         
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
 }

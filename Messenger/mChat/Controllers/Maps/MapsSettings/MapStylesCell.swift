@@ -9,16 +9,9 @@
 import UIKit
 import CoreData
 
-struct MapStyles {
-    var name: String
-    var selected: String?
-    init(name: String, _ selected: String?) {
-        self.name = name
-        self.selected = selected
-    }
-}
-
 class MapStylesCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     var collectionView: UICollectionView!
     
@@ -37,11 +30,19 @@ class MapStylesCell: UITableViewCell, UICollectionViewDelegate, UICollectionView
     
     var mapsVC: MapsVC?
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupData()
         setupCollectionView()
     }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupData(){
         for style in mapStyleImages {
@@ -50,9 +51,7 @@ class MapStylesCell: UITableViewCell, UICollectionViewDelegate, UICollectionView
         }
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupCollectionView(){
         let layout = UICollectionViewFlowLayout()
@@ -78,9 +77,13 @@ class MapStylesCell: UITableViewCell, UICollectionViewDelegate, UICollectionView
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return mapStyles.count
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "StylesCollectionViewCell", for: indexPath) as! StylesCollectionViewCell
@@ -96,6 +99,8 @@ class MapStylesCell: UITableViewCell, UICollectionViewDelegate, UICollectionView
         return cell
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         for s in 0..<mapStyles.count {
             mapStyles[s].selected = nil
@@ -106,7 +111,8 @@ class MapStylesCell: UITableViewCell, UICollectionViewDelegate, UICollectionView
         mapsVC?.updateMapStyle()
         collectionView.reloadData()
     }
-        
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func updateColorsHandler(_ mapUrl: String) {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
@@ -119,5 +125,7 @@ class MapStylesCell: UITableViewCell, UICollectionViewDelegate, UICollectionView
             print(error.localizedDescription)
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

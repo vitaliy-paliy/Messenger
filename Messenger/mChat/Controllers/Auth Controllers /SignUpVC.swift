@@ -10,6 +10,9 @@ import UIKit
 
 class SignUpVC: UIViewController, UITextFieldDelegate {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // SIGN UP VC.
+    
     var signInVC: SignInVC!
     var backButton: AuthBackButton!
     var continueButton: AuthActionButton!
@@ -17,6 +20,8 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
     
     var authNetworking: AuthNetworking!
     var authKeyboardHandler = AuthKeyboardHandler()
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +34,8 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
         NotificationCenter.default.removeObserver(self)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupUI() {
         view.backgroundColor = .white
         setupGradientView()
@@ -37,13 +44,19 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
         setupBackButton()
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupGradientView() {
         let _ = GradientLogoView(self, true)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupRegisterView() {
         signUpView = SignUpView(self)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupContinueButton() {
         continueButton = AuthActionButton("CONTINUE", self)
@@ -59,17 +72,24 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
         NSLayoutConstraint.activate(constraints)
     }
     
-   func setupBackButton() {
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
+    func setupBackButton() {
         backButton = AuthBackButton(self)
         backButton.alpha = 0
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     @objc func backButtonPressed() {
         dismiss(animated: false) {
             self.signInVC.returnToSignInVC()
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MARK: TEXTFIELD VALIDATION
     
     func validateTF() -> String?{
         if signUpView.nameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" || signUpView.emailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" || signUpView.passwordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
@@ -99,6 +119,9 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
         return nil
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MARK: SIGN UP METHOD.
+    
     @objc func continueButtonPressed() {
         signUpView.errorLabel.text = ""
         let validation = validateTF()
@@ -117,6 +140,9 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MARK: NEXT CONTROLLER METHOD
+    
     func goToNextController(){
         let name = signUpView.nameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         let email = signUpView.emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -128,5 +154,7 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
         controller.password = password
         self.show(controller, sender: nil)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

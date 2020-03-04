@@ -12,6 +12,9 @@ import Lottie
 
 extension UIViewController {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // BLANK VIEW FOR CONTROLLERS WITH NO DATA.
+    
     func setupBlankView(_ blankLoadingView: AnimationView) {
         view.addSubview(blankLoadingView)
         blankLoadingView.translatesAutoresizingMaskIntoConstraints = false
@@ -28,6 +31,9 @@ extension UIViewController {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // GRADIENT BACKGROUND
+    
     func setupGradientLayer() -> CAGradientLayer {
         let gradient = CAGradientLayer()
         let topColor = UIColor(red: 100/255, green: 90/255, blue: 255/255, alpha: 1).cgColor
@@ -37,15 +43,23 @@ extension UIViewController {
         return gradient
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // SHOWS ALERT VIEW WHEN THERE'S AN ERROR
+    
     func showAlert(title: String?, message: String?){
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
 }
 
 extension UITextView {
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // METHOD FOR CALCULATING LINES IN A UITEXTVIEW
     
     func calculateLines() -> Int {
         let numberOfGlyphs = layoutManager.numberOfGlyphs
@@ -62,5 +76,8 @@ extension UITextView {
         }
         return numberOfLines
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
 }
 

@@ -8,11 +8,17 @@
 
 import UIKit
 
+// ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+
 protocol ForwardToFriend {
     func forwardToSelectedFriend(friend: FriendInfo, for name: String)
 }
 
+// ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+
 extension ChatVC: ForwardToFriend {
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func forwardToSelectedFriend(friend: FriendInfo, for name: String) {
         responseButtonPressed(userResponse.messageToForward!, forwardedName: name)
@@ -21,5 +27,7 @@ extension ChatVC: ForwardToFriend {
         collectionView.reloadData()
         setupChat()
     }
+
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

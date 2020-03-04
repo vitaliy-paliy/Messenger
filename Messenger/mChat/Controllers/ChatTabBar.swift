@@ -11,10 +11,14 @@ import Firebase
 
 class ChatTabBar: UITabBarController{
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var itemBackgroundView = UIView()
     var contactsImage = UIImage(systemName: "person.fill")
     var chatsImage = UIImage(systemName: "message.fill")
     var settingsImage = UIImage(systemName: "gear")
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,7 +26,6 @@ class ChatTabBar: UITabBarController{
         tabBar.barTintColor = UIColor(displayP3Red: 247/255, green: 247/255, blue: 247/255, alpha: 1)
         tabBar.tintColor = .black
     }
-
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -70,6 +73,8 @@ class ChatTabBar: UITabBarController{
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func frameForTabAtIndex(index: Int) -> CGRect {
         var frames = tabBar.subviews.compactMap { (view:UIView) -> CGRect? in
             if let view = view as? UIControl {
@@ -89,6 +94,8 @@ class ChatTabBar: UITabBarController{
         return frames.last ?? CGRect.zero
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupVC(){
         let chats = UINavigationController(rootViewController: ConversationsVC())
         let contacts = UINavigationController(rootViewController: ContactsVC())
@@ -103,5 +110,7 @@ class ChatTabBar: UITabBarController{
         }
         viewControllers = controllers
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

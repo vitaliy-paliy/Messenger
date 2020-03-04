@@ -10,14 +10,22 @@ import UIKit
 
 class AuthKeyboardHandler {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var view: UIView!
     var keyboardIsShown = false
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MARK: NOTIF CENTER
     
     func notificationCenterHandler() {
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(handleKeyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         hideKeyboardOnTap()
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MARK: WILL SHOW METHOD
     
     @objc func handleKeyboardWillShow(notification: NSNotification){
         let kFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
@@ -32,6 +40,9 @@ class AuthKeyboardHandler {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MARK: WILL HIDE METHOD
+    
     @objc func handleKeyboardWillHide(notification: NSNotification){
         let kFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
         let kDuration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double
@@ -43,15 +54,22 @@ class AuthKeyboardHandler {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MARK: HIDE KEYBOARD ON TAP
+    
     func hideKeyboardOnTap(){
         let tap = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     @objc func hideKeyboard(){
         view.endEditing(true)
         keyboardIsShown = false
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

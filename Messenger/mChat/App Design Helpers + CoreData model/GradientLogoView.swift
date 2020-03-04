@@ -10,6 +10,9 @@ import UIKit
 
 class GradientLogoView: UIView{
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // AUTH GRADIENT LOGO
+    
     var controller: UIViewController!
     
     init(_ controller: UIViewController, _ showLogo: Bool) {
@@ -20,10 +23,12 @@ class GradientLogoView: UIView{
             setupLogo()
         }
     }
-    
+        
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupGradientView() {
         controller.view.addSubview(self)
@@ -43,6 +48,8 @@ class GradientLogoView: UIView{
         layer.insertSublayer(gradient, at: 0)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupGradientLayer() -> CAGradientLayer {
         let gradient = CAGradientLayer()
         let topColor = UIColor(red: 100/255, green: 90/255, blue: 255/255, alpha: 1).cgColor
@@ -51,6 +58,8 @@ class GradientLogoView: UIView{
         gradient.locations = [0, 1]
         return gradient
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupLogo() {
         let logoView = UIView()
@@ -77,5 +86,7 @@ class GradientLogoView: UIView{
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

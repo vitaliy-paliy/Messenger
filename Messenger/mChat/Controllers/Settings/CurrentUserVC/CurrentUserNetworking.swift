@@ -11,9 +11,13 @@ import Firebase
 
 class CurrentUserNetworking {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var changePasswordVC: ChangePasswordVC!
     var changeEmailVC: ChangeEmailVC!
     var networkingLoadingIndicator = NetworkingLoadingIndicator()
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func changePassword(_ oldCredentials: AuthCredential) {
         networkingLoadingIndicator.startLoadingAnimation()
@@ -27,6 +31,8 @@ class CurrentUserNetworking {
         })
     }
  
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func changePasswordHandler(){
         guard let newPassword = self.changePasswordVC.newPasswordTF.text?.trimmingCharacters(in: .whitespacesAndNewlines) else { return }
         Auth.auth().currentUser?.updatePassword(to: newPassword, completion: { (error) in
@@ -41,6 +47,8 @@ class CurrentUserNetworking {
             self.networkingLoadingIndicator.endLoadingAnimation()
         })
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func changeEmail(_ newEmail: String) {
         networkingLoadingIndicator.startLoadingAnimation()
@@ -57,6 +65,8 @@ class CurrentUserNetworking {
         })
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func changeEmailHandler(_ newEmail: String) {
         Database.database().reference().child("users").child(CurrentUser.uid).updateChildValues(["email":newEmail]) { (error, databaseRef) in
             self.networkingLoadingIndicator.endLoadingAnimation()
@@ -68,5 +78,7 @@ class CurrentUserNetworking {
             CurrentUser.email = newEmail
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

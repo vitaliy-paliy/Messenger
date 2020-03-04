@@ -10,6 +10,8 @@ import UIKit
 
 class WelcomeCell: UICollectionViewCell {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var welcomeVC: WelcomeVC!
     var topicImage = UIImageView()
     var topicLabel = UILabel()
@@ -32,6 +34,8 @@ class WelcomeCell: UICollectionViewCell {
         }
     }
         
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupTopicImage()
@@ -44,6 +48,8 @@ class WelcomeCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupTopicImage() {
         addSubview(topicImage)
         topicImage.translatesAutoresizingMaskIntoConstraints = false
@@ -59,6 +65,8 @@ class WelcomeCell: UICollectionViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupTopicLabel() {
         addSubview(topicLabel)
         topicLabel.translatesAutoresizingMaskIntoConstraints  = false
@@ -70,6 +78,8 @@ class WelcomeCell: UICollectionViewCell {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupDescriptionLabel() {
         addSubview(descriptionLabel)
@@ -87,4 +97,6 @@ class WelcomeCell: UICollectionViewCell {
         NSLayoutConstraint.activate(constraints)
     }
 
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
 }

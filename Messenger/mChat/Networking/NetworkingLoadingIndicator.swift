@@ -11,16 +11,22 @@ import Lottie
 
 class NetworkingLoadingIndicator {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // SETS UP A LOADING VIEW WHILE NETWORKING PROCESS
+    
     let window = UIApplication.shared.windows[0]
     var blurView = UIVisualEffectView()
     var animationView = AnimationView()
     var loadingView = UIView()
     var loadingLabel = UILabel()
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func endLoadingAnimation(){
         animationView.removeFromSuperview()
         blurView.removeFromSuperview()
     }
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func startLoadingAnimation() {
         window.addSubview(blurView)
@@ -30,6 +36,8 @@ class NetworkingLoadingIndicator {
         setupAnimationView()
         setupLoadingLabel()
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     private func setupLoadingView() {
         blurView.contentView.addSubview(loadingView)
@@ -46,6 +54,8 @@ class NetworkingLoadingIndicator {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     private func setupAnimationView() {
         loadingView.addSubview(animationView)
         animationView.translatesAutoresizingMaskIntoConstraints = false
@@ -61,6 +71,8 @@ class NetworkingLoadingIndicator {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     private func setupLoadingLabel() {
         loadingView.addSubview(loadingLabel)
         loadingLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -73,5 +85,7 @@ class NetworkingLoadingIndicator {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

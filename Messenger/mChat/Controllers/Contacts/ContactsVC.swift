@@ -11,6 +11,9 @@ import Lottie
 
 class ContactsVC: UIViewController {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // CONTACTS VC - USER'S FRIENDS LIST IS LOCATED HERE
+    
     var contactsNetworking = ContactsNetworking()
     var tableView = UITableView()
     var blurView = UIVisualEffectView()
@@ -20,6 +23,7 @@ class ContactsVC: UIViewController {
     var blankLoadingView = AnimationView(animation: Animation.named("blankLoadingAnim"))
     var emptyListView: EmptyListView!
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,11 +35,14 @@ class ContactsVC: UIViewController {
             tabBarBadge = tabItems[0]
         }
     }
-        
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         tabBarController?.tabBar.isHidden = false
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MARK: SETUP UI METHOD
     
     func setupUI(){
         navigationItem.title = "Contacts"
@@ -46,6 +53,8 @@ class ContactsVC: UIViewController {
         setupaddButton()
         setupFriendRequest()
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupTableView(){
         view.addSubview(tableView)
@@ -64,7 +73,10 @@ class ContactsVC: UIViewController {
         ]
         NSLayoutConstraint.activate(constraints)
     }
-        
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MARK: HANDLE RELOAD METHOD
+    
     func handleReload(_ friends: [FriendInfo]){
         Friends.list = friends
         Friends.list.sort { (friend1, friend2) -> Bool in
@@ -74,11 +86,15 @@ class ContactsVC: UIViewController {
         Friends.convVC?.tableView.reloadData()
         self.tableView.reloadData()
     }
-        
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func handleEmptyList() {
         emptyListView.isHidden = (Friends.list.count == 0) ? false : true
         emptyListView.emptyButton.isHidden = (Friends.list.count == 0) ? false : true
-   }
+    }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupaddButton() {
         var addButton = UIBarButtonItem()
@@ -90,16 +106,24 @@ class ContactsVC: UIViewController {
         navigationItem.rightBarButtonItem = addButton
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupFriendRequest() {
         requestButtonView = RequestButtonView(self)
         let requestButton = UIBarButtonItem(customView: requestButtonView)
         navigationItem.leftBarButtonItem = requestButton
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MARK: FRIEND REQUEST HANDLER
+    
     @objc func friendRequestPressed() {
         let friendRequestVC = FriendRequestVC()
         show(friendRequestVC, sender: nil)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MARK: ADD BUTTON HANDLER
     
     @objc func addButtonPressed(){
         let controller = UsersListVC()
@@ -107,11 +131,15 @@ class ContactsVC: UIViewController {
         show(controller, sender: nil)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupFriendInfoMenuView(_ cell: ContactsCell, cellFrame: CGRect, friend: FriendInfo){
         cell.isHidden = true
         tableView.isUserInteractionEnabled = false
         infoMenuView = InfoMenuView(cell: cell, cellFrame: cellFrame, friend: friend, contactsVC: self)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupContactsBadge(_ numOfRequests: Int) {
         tabBarBadge.badgeValue = nil
@@ -126,6 +154,8 @@ class ContactsVC: UIViewController {
         tabBarBadge.badgeValue = "\(numOfRequests)"
         requestButtonView.requestNumLabel.text = "\(numOfRequests)"
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }
 

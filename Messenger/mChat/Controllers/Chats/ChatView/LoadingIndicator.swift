@@ -10,9 +10,13 @@ import UIKit
 
 class MessageLoadingIndicator: UIActivityIndicatorView{
 
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var const: CGFloat!
     var chatVC: ChatVC!
     var order: Bool!
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     init(frame: CGRect, const: CGFloat, chatVC: ChatVC) {
         super.init(frame: frame)
@@ -24,6 +28,8 @@ class MessageLoadingIndicator: UIActivityIndicatorView{
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupIndicator(){
         
@@ -43,6 +49,8 @@ class MessageLoadingIndicator: UIActivityIndicatorView{
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }
 

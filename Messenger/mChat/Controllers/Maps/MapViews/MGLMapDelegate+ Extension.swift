@@ -11,6 +11,8 @@ import Mapbox
 
 extension MapsVC: MGLMapViewDelegate {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
         if annotation is MGLUserLocation && mapView.userLocation != nil {
             return CurrentUserAnnotationView()
@@ -21,6 +23,8 @@ extension MapsVC: MGLMapViewDelegate {
         }
         
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func mapView(_ mapView: MGLMapView, didSelect annotation: MGLAnnotation) {
         mapView.setCenter(annotation.coordinate, zoomLevel: 13, animated: true)
@@ -45,9 +49,13 @@ extension MapsVC: MGLMapViewDelegate {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func mapView(_ mapView: MGLMapView, didDeselect annotation: MGLAnnotation) {
         self.userInfoTab?.removeFromSuperview()
         self.userInfoTab = nil
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
 }

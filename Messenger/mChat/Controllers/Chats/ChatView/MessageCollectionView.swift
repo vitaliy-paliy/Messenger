@@ -10,7 +10,11 @@ import UIKit
 
 class MessageCollectionView: UICollectionView, UIGestureRecognizerDelegate{
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var chatVC: ChatVC!
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     init(collectionViewLayout layout: UICollectionViewLayout, chatVC: ChatVC) {
         super.init(frame: .zero, collectionViewLayout: layout)
@@ -23,6 +27,8 @@ class MessageCollectionView: UICollectionView, UIGestureRecognizerDelegate{
         fatalError("init(coder:) has not been implemented")
     }
 
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupCollectionView(){
         chatVC.view.addSubview(self)
         translatesAutoresizingMaskIntoConstraints = false
@@ -40,6 +46,8 @@ class MessageCollectionView: UICollectionView, UIGestureRecognizerDelegate{
         NSLayoutConstraint.activate(constraints)
     }
  
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setuplongPress(){
         let gesture = UILongPressGestureRecognizer(target: chatVC, action: #selector(chatVC.handleLongPressGesture(longPress:)))
         gesture.delegate = self
@@ -47,5 +55,7 @@ class MessageCollectionView: UICollectionView, UIGestureRecognizerDelegate{
         gesture.minimumPressDuration = 0.5
         addGestureRecognizer(gesture)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }
