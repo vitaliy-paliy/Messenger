@@ -15,24 +15,20 @@ import Lottie
 class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationControllerDelegate, AVAudioRecorderDelegate {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
-    // CHAT VC
+    // ChatVC. This controller is responsible for sending and receiving messages. It supports text, audio, video and image messages.
     
     var friend: FriendInfo!
     var messages = [Messages]()
     let chatNetworking = ChatNetworking()
     let chatAudio = ChatAudio()
     var userResponse = UserResponse()
-    
-    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
-    
+        
     var containerHeight: CGFloat!
     var collectionView: MessageCollectionView!
     var messageContainer: MessageContainer!
     var refreshIndicator: MessageLoadingIndicator!
     var blankLoadingView = AnimationView(animation: Animation.named("chatLoadingAnim"))
-    
-    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
-    
+        
     let calendar = Calendar(identifier: .gregorian)
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //

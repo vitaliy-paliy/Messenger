@@ -10,9 +10,13 @@ import UIKit
 
 class UsersListCell: UITableViewCell {
 
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var profileImage = UIImageView()
     var userName = UILabel()
     var userEmail = UILabel()
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //s
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -28,6 +32,8 @@ class UsersListCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupImage(){
         profileImage.contentMode = .scaleAspectFill
         profileImage.layer.cornerRadius = 40
@@ -42,6 +48,8 @@ class UsersListCell: UITableViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupEmailLabel(){
         userEmail.numberOfLines = 0
         userEmail.adjustsFontSizeToFitWidth = true
@@ -54,6 +62,8 @@ class UsersListCell: UITableViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupNameLabel(){
         userName.numberOfLines = 0
         userName.adjustsFontSizeToFitWidth = true
@@ -64,5 +74,7 @@ class UsersListCell: UITableViewCell {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+ 
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

@@ -12,6 +12,7 @@ import Lottie
 class ConversationsVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // ConversationVC is responsible for showing recent messages from user's friends and their actions. (If user and his/her friend haven't had a conversation, then friend's cell in tableView won't be visible. )
     
     var convNetworking = ConversationsNetworking()
     var messages = [Messages]()
@@ -137,6 +138,37 @@ class ConversationsVC: UIViewController {
         controller.friend = usr
         convNetworking.removeConvObservers()
         show(controller, sender: nil)
+    }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
+    func observeIsUserTypingHandler(_ recent: Messages, _ cell: ConversationsCell){
+        convNetworking.observeIsUserTyping(recent.determineUser()) { (isTyping, friendId) in
+            if isTyping && cell.message?.determineUser() == friendId {
+                cell.recentMessage.isHidden = true
+                cell.timeLabel.isHidden = true
+                cell.isTypingView.isHidden = false
+                cell.checkmark.isHidden = true
+            }else{
+                self.setupNoTypingCell(cell)
+                if cell.message?.sender == CurrentUser.uid{
+                    cell.checkmark.isHidden = false
+                }
+            }
+        }
+    }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
+    func observeIsUserSeenMessage(_ recent: Messages, _ cell: ConversationsCell) {
+        guard let id = cell.message?.determineUser() else { return }
+        convNetworking.observeUserSeenMessage(id) { (num) in
+            if num == 0 {
+                cell.checkmark.image = UIImage(named: "doubleCheckmark_icon")
+            }else{
+                cell.checkmark.image = UIImage(named: "checkmark_icon")
+            }
+        }
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //

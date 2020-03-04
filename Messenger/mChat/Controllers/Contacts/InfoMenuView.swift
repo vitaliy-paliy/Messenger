@@ -11,6 +11,7 @@ import UIKit
 class InfoMenuView: UIView {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // InfoMenuView. When a user clicks on a cell in ContactsVC, this view will animate to the middle of a screen.
     
     var cell: ContactsCell!
     var cellFrame: CGRect!

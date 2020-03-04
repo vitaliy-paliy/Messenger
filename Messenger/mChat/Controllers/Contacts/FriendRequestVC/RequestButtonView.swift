@@ -10,9 +10,13 @@ import UIKit
 
 class RequestButtonView: UIButton {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var controller: ContactsVC!
     let circleView = UIView()
     let requestNumLabel = UILabel()
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //s
     
     init(_ controller: ContactsVC) {
         super.init(frame: .zero)
@@ -26,11 +30,15 @@ class RequestButtonView: UIButton {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     private func setupButton() {
         setImage(UIImage(systemName: "person.2.fill"), for: .normal)
         tintColor = .black
         addTarget(controller, action: #selector(controller.friendRequestPressed), for: .touchUpInside)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     private func setupCircleView() {
         addSubview(circleView)
@@ -48,6 +56,8 @@ class RequestButtonView: UIButton {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     private func setupRequestNumberLabel() {
         circleView.addSubview(requestNumLabel)
         requestNumLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -60,6 +70,7 @@ class RequestButtonView: UIButton {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }
 

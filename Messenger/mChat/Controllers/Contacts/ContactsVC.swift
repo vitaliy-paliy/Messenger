@@ -12,7 +12,7 @@ import Lottie
 class ContactsVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
-    // CONTACTS VC - USER'S FRIENDS LIST IS LOCATED HERE
+    // CONTACTS VC - USER'S FRIENDS LIST IS LOCATED HERE.
     
     var contactsNetworking = ContactsNetworking()
     var tableView = UITableView()
@@ -90,8 +90,8 @@ class ContactsVC: UIViewController {
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func handleEmptyList() {
-        emptyListView.isHidden = (Friends.list.count == 0) ? false : true
-        emptyListView.emptyButton.isHidden = (Friends.list.count == 0) ? false : true
+        emptyListView.isHidden = !(Friends.list.count == 0)
+        emptyListView.emptyButton.isHidden = !(Friends.list.count == 0)
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //

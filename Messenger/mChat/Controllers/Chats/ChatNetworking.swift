@@ -21,6 +21,7 @@ class ChatNetworking {
     var messageStatus = "Sent"
     var scrollToIndex = [Messages]()
     var timer = Timer()
+    var isUserTyping = false
     var chatVC: ChatVC!
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
@@ -166,6 +167,7 @@ class ChatNetworking {
             guard let data = snap.value as? [String: Any] else { return }
             guard let status = data["isTyping"] as? Bool else { return }
             guard let id = data["fromFriend"] as? String else { return }
+            self.isUserTyping = status
             let friendActivity = FriendActivity(isTyping: status, friendId: id)
             return completion(friendActivity)
         }
@@ -234,6 +236,10 @@ class ChatNetworking {
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     private func updateNavBar(_ tempName: String) {
+        if tempName == friend.name && isUserTyping {
+            chatVC.navigationItem.setupTypingNavTitle(navTitle: friend.name)
+            return
+        }
         let loginDate = NSDate(timeIntervalSince1970: friend.lastLogin.doubleValue)
         if friend.isOnline {
             chatVC.navigationItem.setNavTitles(navTitle: tempName, navSubtitle: "Online")

@@ -12,6 +12,7 @@ import CoreData
 class AppearanceVC: UIViewController{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // Here user can change the appearance of a chat.
     
     var tableView = UITableView()
     var chatBubblesAppearence = ChatBubblesAppearanceCell()

@@ -22,10 +22,6 @@ class ContactsCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         backgroundColor = .clear
-        addSubview(profileImage)
-        addSubview(friendName)
-        addSubview(friendEmail)
-        addSubview(isOnlineView)
         setupImage()
         setupNameLabel()
         setupEmailLabel()
@@ -35,10 +31,11 @@ class ContactsCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupImage(){
+    private func setupImage(){
+        addSubview(profileImage)
         profileImage.contentMode = .scaleAspectFill
         profileImage.layer.cornerRadius = 30
         profileImage.layer.masksToBounds = true
@@ -54,7 +51,8 @@ class ContactsCell: UITableViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupIsOnlineImage(){
+    private func setupIsOnlineImage(){
+        addSubview(isOnlineView)
         isOnlineView.layer.cornerRadius = 8
         isOnlineView.layer.borderColor = UIColor.white.cgColor
         isOnlineView.layer.borderWidth = 2.5
@@ -72,7 +70,8 @@ class ContactsCell: UITableViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupEmailLabel(){
+    private func setupEmailLabel(){
+        addSubview(friendEmail)
         friendEmail.numberOfLines = 0
         friendEmail.adjustsFontSizeToFitWidth = true
         friendEmail.textColor = .gray
@@ -87,7 +86,8 @@ class ContactsCell: UITableViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupNameLabel(){
+    private func setupNameLabel(){
+        addSubview(friendName)
         friendName.textColor = .black
         friendName.numberOfLines = 0
         friendName.translatesAutoresizingMaskIntoConstraints = false

@@ -11,13 +11,19 @@ import Firebase
 
 class AddFriendNetworking {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var friend: FriendInfo!
     var controller: AddFriendVC!
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func addAsFriend() {
         let ref = Database.database().reference().child("friendsList").child("friendRequests").child(friend.id).child(CurrentUser.uid).child(CurrentUser.uid)
         ref.setValue(CurrentUser.uid)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func removeFriend() {
         let userRef = Database.database().reference().child("friendsList").child(CurrentUser.uid).child(friend.id).child(self.friend.id)
@@ -26,15 +32,21 @@ class AddFriendNetworking {
         friendRef.removeValue()
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func checkFriend(){
         checkForFriendRequest {
             self.checkFriendship()
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func removeFriendRequest() {
         Database.database().reference().child("friendsList").child("friendRequests").child(friend.id).child(CurrentUser.uid).child(CurrentUser.uid).removeValue()
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func checkFriendship() {
         Database.database().reference().child("friendsList").child(CurrentUser.uid).child(friend.id).observe(.value) { (snapshot) in
@@ -53,6 +65,8 @@ class AddFriendNetworking {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func checkForFriendRequest(completion: @escaping () -> Void) {
         Database.database().reference().child("friendsList").child("friendRequests").child(friend.id).child(CurrentUser.uid).observeSingleEvent(of: .value) { (snap) in
             guard let _ = snap.value as? [String: Any] else { return completion() }
@@ -62,5 +76,7 @@ class AddFriendNetworking {
             self.controller.addButton.backgroundColor = .gray
         }
     }
+
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

@@ -11,10 +11,14 @@ import Lottie
 
 class UsersListVC: UIViewController {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var users = [FriendInfo]()
     var userListNetworking = UserListNetworking()
     var tableView = UITableView()
     var blankLoadingView = AnimationView(animation: Animation.named("blankLoadingAnim"))
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +39,8 @@ class UsersListVC: UIViewController {
         tabBarController?.tabBar.isHidden = false
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func getUsersList() {
         userListNetworking.fetchUsers { usersList in
             let sortedUserList = Array(usersList.values).sorted { (friend1, friend2) -> Bool in
@@ -45,6 +51,8 @@ class UsersListVC: UIViewController {
             self.tableView.reloadData()
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupTableView(){
         view.addSubview(tableView)
@@ -64,13 +72,19 @@ class UsersListVC: UIViewController {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
 }
 
 extension UsersListVC: UITableViewDelegate, UITableViewDataSource {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return users.count
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "UsersListCell") as! UsersListCell
@@ -81,6 +95,8 @@ extension UsersListVC: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let selectedUser = users[indexPath.row]
         tableView.deselectRow(at: indexPath, animated: true)
@@ -90,4 +106,6 @@ extension UsersListVC: UITableViewDelegate, UITableViewDataSource {
         show(controller, sender: nil)
     }
  
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
 }

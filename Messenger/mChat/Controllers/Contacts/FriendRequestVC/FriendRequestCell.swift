@@ -10,12 +10,16 @@ import UIKit
 
 class FriendRequestCell: UITableViewCell {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var controller: FriendRequestVC!
     var nameLabel = UILabel()
     var emailLabel = UILabel()
     var profileImage = UIImageView()
     let acceptButton = UIButton(type: .system)
     let declineButton = UIButton(type: .system)
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -29,6 +33,8 @@ class FriendRequestCell: UITableViewCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupAcceptButton() {
         addSubview(acceptButton)
@@ -51,6 +57,8 @@ class FriendRequestCell: UITableViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupDeclineButton() {
         addSubview(declineButton)
         declineButton.translatesAutoresizingMaskIntoConstraints = false
@@ -67,14 +75,19 @@ class FriendRequestCell: UITableViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     @objc func addButtonPressed() {
         controller.addButtonPressed(cell: self)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     @objc func declineButtonPressed() {
-        print("Decline")
         controller.declineButtonPressed(cell: self)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupGradientLayer() -> CAGradientLayer {
         let gradient = CAGradientLayer()
@@ -87,6 +100,8 @@ class FriendRequestCell: UITableViewCell {
         return gradient
     }
         
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupProfileImage() {
         addSubview(profileImage)
         profileImage.translatesAutoresizingMaskIntoConstraints = false
@@ -102,6 +117,8 @@ class FriendRequestCell: UITableViewCell {
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupNameLabel() {
         addSubview(nameLabel)
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -112,6 +129,8 @@ class FriendRequestCell: UITableViewCell {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupEmailLabel() {
         addSubview(emailLabel)
@@ -124,5 +143,7 @@ class FriendRequestCell: UITableViewCell {
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

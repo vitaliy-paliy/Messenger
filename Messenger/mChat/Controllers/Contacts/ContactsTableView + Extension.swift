@@ -25,11 +25,7 @@ extension ContactsVC: UITableViewDataSource, UITableViewDelegate {
         cell.profileImage.loadImage(url: friend.profileImage)
         cell.friendName.text = friend.name
         cell.friendEmail.text = friend.email
-        if friend.isOnline {
-            cell.isOnlineView.isHidden = false
-        }else {
-            cell.isOnlineView.isHidden = true
-        }
+        cell.isOnlineView.isHidden = !friend.isOnline
         return cell
     }
     

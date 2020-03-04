@@ -12,7 +12,6 @@ class ChatCell: UICollectionViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    var msg: Messages?
     var message = UILabel()
     var messageBackground = UIView()
     var mediaMessage = UIImageView()
@@ -33,6 +32,31 @@ class ChatCell: UICollectionViewCell {
     var audioPlayer: AVAudioPlayer!
     var timer: Timer!
     
+    var msg: Messages? {
+        didSet{
+            if let message = msg?.message {
+                backgroundWidthAnchor.constant = chatVC.calculateFrameInText(message: message).width + 32
+            }
+            setupMessagePosition(msg)
+            setupImageMessage(msg)
+            playButton.isHidden = msg?.videoUrl == nil
+            setupAudioMessage(msg)
+            
+            if msg?.repMID != nil {
+                setupRepMessageView(msg!.repSender)
+            }else{
+                removeReplyOutlets()
+            }
+            
+            if msg?.sender == CurrentUser.uid && msg?.id == chatVC.messages.last?.id {
+                activityLabel.isHidden = false
+                activityLabel.text = chatVC.chatNetworking.messageStatus
+            }else{
+                activityLabel.isHidden = true
+            }
+        }
+    }
+        
     var isIncoming: Bool! {
         didSet{
             messageBackground.backgroundColor = isIncoming ?  ThemeColors.selectedIncomingColor  : ThemeColors.selectedOutcomingColor
@@ -78,6 +102,60 @@ class ChatCell: UICollectionViewCell {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
+    private func setupMessagePosition(_ msg: Messages?) {
+        if msg?.recipient == CurrentUser.uid{
+            isIncoming = true
+            outcomingMessage.isActive = false
+            incomingMessage.isActive = true
+        }else{
+            isIncoming = false
+            incomingMessage.isActive = false
+            outcomingMessage.isActive = true
+        }
+    }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
+    private func setupImageMessage(_ msg: Messages?) {
+        if msg?.mediaUrl != nil{
+            mediaMessage.loadImage(url: msg!.mediaUrl)
+            mediaMessage.isHidden = false
+            backgroundWidthAnchor.constant = 200
+            messageBackground.backgroundColor = .clear
+        }else{
+            mediaMessage.isHidden = true
+        }
+    }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
+    private func setupAudioMessage(_ msg: Messages?) {
+        if msg?.audioUrl != nil {
+            guard let url = URL(string: msg!.audioUrl!) else { return }
+            backgroundWidthAnchor.constant = 120
+            setupAudioPlayButton()
+            chatVC.chatNetworking.downloadMessageAudio(with: url) { (data, eror) in
+                guard let data = data else { return }
+                do{
+                    self.audioPlayer = try AVAudioPlayer(data: data)
+                    self.audioPlayButton.isEnabled = true
+                    let (m,s) = self.timeFrom(seconds: Int(self.audioPlayer.duration - self.audioPlayer.currentTime))
+                    let minutes = m < 10 ? "0\(m)" : "\(m)"
+                    let seconds = s < 10 ? "0\(s)" : "\(s)"
+                    self.setupAudioDurationLabel()
+                    self.durationLabel.text = "\(minutes):\(seconds)"
+                }catch{
+                    print(error.localizedDescription)
+                }
+            }
+        }else{
+            durationLabel.removeFromSuperview()
+            audioPlayButton.removeFromSuperview()
+        }
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //

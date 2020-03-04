@@ -11,11 +11,15 @@ import Lottie
 
 class FriendRequestVC: UIViewController {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     let tableView = UITableView()
     var friendRequests = [FriendInfo]()
     var friendRequestNetworking = FriendRequestNetworking()
     var blankLoadingView = AnimationView(animation: Animation.named("blankLoadingAnim"))
     var emptyLabel = UILabel()
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,6 +42,8 @@ class FriendRequestVC: UIViewController {
         tabBarController?.tabBar.isHidden = false
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupEmptyView() {
         view.addSubview(emptyLabel)
         emptyLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -53,6 +59,8 @@ class FriendRequestVC: UIViewController {
         
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func fetchRequests() {
         friendRequestNetworking.controller = self
         friendRequestNetworking.setupFriendRequests {
@@ -61,6 +69,8 @@ class FriendRequestVC: UIViewController {
             }
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupTableView() {
         view.addSubview(tableView)
@@ -79,6 +89,8 @@ class FriendRequestVC: UIViewController {
         NSLayoutConstraint.activate(constraints)
     }
      
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func addButtonPressed(cell: FriendRequestCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         let friend = friendRequests[indexPath.row]
@@ -88,6 +100,8 @@ class FriendRequestVC: UIViewController {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func declineButtonPressed(cell: FriendRequestCell) {
         guard let indexPath = tableView.indexPath(for: cell) else { return }
         let userToDelete = friendRequests[indexPath.row]
@@ -96,14 +110,20 @@ class FriendRequestVC: UIViewController {
             self.tableView.reloadData()
         }
     }
+ 
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }
 
 extension FriendRequestVC: UITableViewDataSource, UITableViewDelegate {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return friendRequests.count
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FriendRequestCell") as! FriendRequestCell
@@ -115,4 +135,6 @@ extension FriendRequestVC: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
 
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
 }

@@ -11,10 +11,14 @@ import Firebase
 
 class AddFriendVC: UIViewController{
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var user: FriendInfo!
     var addButton: UIButton!
     var addFriendNetworking = AddFriendNetworking()
     var loadingIndicator: UIActivityIndicatorView!
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,11 +38,15 @@ class AddFriendVC: UIViewController{
         navigationController?.navigationBar.isHidden = false
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupNetworking() {
         addFriendNetworking.controller = self
         addFriendNetworking.friend = user
         addFriendNetworking.checkFriend()
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupUI(){
         navigationController?.navigationBar.tintColor = .black
@@ -48,15 +56,21 @@ class AddFriendVC: UIViewController{
         setupUserInfoView()
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupGradientView() {
         let _ = GradientLogoView(self, true)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupUserInfoView(){
         let infoView = UserInfoView(self)
         addButton = infoView.addButton
         loadingIndicator = infoView.loadingIndicator
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func setupExitButton() {
         let exitButton = UIButton(type: .system)
@@ -74,10 +88,13 @@ class AddFriendVC: UIViewController{
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //s
+    
     @objc func exitButtonPressed() {
         navigationController?.popViewController(animated: true)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     @objc func addButtonPressed() {
         if addButton.titleLabel?.text == "Add Friend" {
@@ -92,6 +109,8 @@ class AddFriendVC: UIViewController{
         }
         addFriendNetworking.addAsFriend()
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }
 

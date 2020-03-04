@@ -47,72 +47,7 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         let message = messages[indexPath.row]
         cell.chatVC = self
         cell.message.text = message.message
-        cell.msg = message
-        if let message = message.message {
-            cell.backgroundWidthAnchor.constant = calculateFrameInText(message: message).width + 32
-        }
-                
-        if message.recipient == CurrentUser.uid{
-            cell.isIncoming = true
-            cell.outcomingMessage.isActive = false
-            cell.incomingMessage.isActive = true
-        }else{
-            cell.isIncoming = false
-            cell.incomingMessage.isActive = false
-            cell.outcomingMessage.isActive = true
-        }
-        
-        if message.mediaUrl != nil{
-            cell.mediaMessage.loadImage(url: message.mediaUrl)
-            cell.mediaMessage.isHidden = false
-            cell.backgroundWidthAnchor.constant = 200
-            cell.messageBackground.backgroundColor = .clear
-        }else{
-            cell.mediaMessage.isHidden = true
-        }
-        
-        if message.videoUrl != nil {
-            cell.playButton.isHidden = false
-        }else{
-            cell.playButton.isHidden = true
-        }
-        
-        if message.audioUrl != nil {
-            guard let url = URL(string: message.audioUrl!) else { return cell }
-            cell.backgroundWidthAnchor.constant = 120
-            cell.setupAudioPlayButton()
-            chatNetworking.downloadMessageAudio(with: url) { (data, eror) in
-                guard let data = data else { return }
-                do{
-                    cell.audioPlayer = try AVAudioPlayer(data: data)
-                    cell.audioPlayButton.isEnabled = true
-                    let (m,s) = cell.timeFrom(seconds: Int(cell.audioPlayer.duration - cell.audioPlayer.currentTime))
-                    let minutes = m < 10 ? "0\(m)" : "\(m)"
-                    let seconds = s < 10 ? "0\(s)" : "\(s)"
-                    cell.setupAudioDurationLabel()
-                    cell.durationLabel.text = "\(minutes):\(seconds)"
-                }catch{
-                    print(error.localizedDescription)
-                }
-            }
-        }else{
-            cell.durationLabel.removeFromSuperview()
-            cell.audioPlayButton.removeFromSuperview()
-        }
-        
-        if message.repMID != nil {
-            cell.setupRepMessageView(message.repSender)
-        }else{
-            cell.removeReplyOutlets()
-        }
-        
-        if message.sender == CurrentUser.uid && message.id == messages.last?.id {
-            cell.activityLabel.isHidden = false
-            cell.activityLabel.text = chatNetworking.messageStatus
-        }else{
-            cell.activityLabel.isHidden = true
-        }
-        
+        cell.msg = message        
         return cell
     }
     

@@ -12,6 +12,7 @@ import Lottie
 class MessageContainer: UIView, UITextViewDelegate{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MessageContainer - input view that is located at the bottom of ChatVC.
     
     var bottomAnchr = NSLayoutConstraint()
     var heightAnchr = NSLayoutConstraint()

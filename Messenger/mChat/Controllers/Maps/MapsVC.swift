@@ -12,6 +12,7 @@ import Mapbox
 class MapsVC: UIViewController, UIGestureRecognizerDelegate{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MapsVC is responsible for showing location of users' friends. (If their incognito mode is set to off.)
     
     var mapNetworking = MapsNetworking()
     var isFriendSelected = false

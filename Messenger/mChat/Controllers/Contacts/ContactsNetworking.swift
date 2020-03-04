@@ -14,13 +14,15 @@ class ContactsNetworking {
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     var contactsVC: ContactsVC!
+    
     var friendKeys = [String]()
+    
     var groupedFriends = [String: FriendInfo]()
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     // Observes user's friends list
     
-    func observeFriendList(){
+    func observeFriendList() {
         contactsVC.blankLoadingView.isHidden = false
         observeFriendRequests()
         Database.database().reference().child("friendsList").child(CurrentUser.uid).observeSingleEvent(of: .value) { (snap) in
@@ -37,15 +39,16 @@ class ContactsNetworking {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func observeFriendActions(){
+    func observeFriendActions() {
         contactsVC.blankLoadingView.isHidden = true
         observeNewFriend()
         observeRemovedFriends()
+        
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func observeNewFriend(){
+    func observeNewFriend() {
         Database.database().reference().child("friendsList").child(CurrentUser.uid).observe(.childAdded) { (snap) in
             let friend = snap.key
             self.updateFriendInfo(friend)
@@ -62,7 +65,7 @@ class ContactsNetworking {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func observeRemovedFriends(){
+    func observeRemovedFriends() {
         Database.database().reference().child("friendsList").child(CurrentUser.uid).observe(.childRemoved) { (snap) in
             let friendToRemove = snap.key
             var index = 0
@@ -80,7 +83,7 @@ class ContactsNetworking {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func removeFriendFromArray(_ friendToRemove: String){
+    func removeFriendFromArray(_ friendToRemove: String) {
         var index = 0
         for friend in friendKeys {
             if friendToRemove == friend {
@@ -93,9 +96,8 @@ class ContactsNetworking {
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     // MARK: GET FRIEND INFO METHOD
     
-    func getFriendInfo(){
+    func getFriendInfo() {
         for key in friendKeys {
-            print(key)
             Database.database().reference().child("users").child(key).observeSingleEvent(of: .value) { (snap) in
                 guard let values = snap.value as? [String: Any] else { return }
                 self.setupFriendInfo(for: key, values)
@@ -109,7 +111,7 @@ class ContactsNetworking {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func updateFriendInfo(_ key: String){
+    func updateFriendInfo(_ key: String) {
         Database.database().reference().child("users").child(key).observe(.value) { (snap) in
             guard let values = snap.value as? [String: Any] else { return }
             self.setupFriendInfo(for: key, values)

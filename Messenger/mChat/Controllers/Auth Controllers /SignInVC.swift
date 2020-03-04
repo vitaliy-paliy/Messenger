@@ -11,7 +11,7 @@ import UIKit
 class SignInVC: UIViewController, UITextFieldDelegate {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
-    // SIGN IN VC.
+    // SignInVC. This controller is responsible for authenticating users that are already in the database.
     
     var authNetworking: AuthNetworking!
     var authKeyboardHandler = AuthKeyboardHandler()

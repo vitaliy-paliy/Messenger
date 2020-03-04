@@ -14,7 +14,7 @@ class SharedMediaVC: UIViewController, UICollectionViewDelegate, UICollectionVie
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     var friend: FriendInfo!
-    var sharedMedia = [String]()
+    var sharedMedia = [Messages]()
     var collectionView: UICollectionView!
     var emptyLabel = UILabel()
     
@@ -32,11 +32,13 @@ class SharedMediaVC: UIViewController, UICollectionViewDelegate, UICollectionVie
     
     func getSharedMedia(){
         Database.database().reference().child("messages").child(CurrentUser.uid).child(friend.id).observe(.childAdded) { (snap) in
-            self.emptyLabel.isHidden = false
             guard let values = snap.value as? [String: Any] else { return }
-            guard let mediaUrl = values["mediaUrl"] as? String else { return }
-            self.sharedMedia.insert(mediaUrl, at: 0)
-            if self.sharedMedia.count != 0 { self.emptyLabel.isHidden = true }
+            let sharedMedia = Messages()
+            sharedMedia.mediaUrl = values["mediaUrl"] as? String
+            sharedMedia.videoUrl = values["videoUrl"] as? String
+            guard sharedMedia.mediaUrl != nil else { return }
+            self.sharedMedia.insert(sharedMedia, at: 0)
+            if self.sharedMedia.count == 0 { self.emptyLabel.isHidden = false }
             self.collectionView.reloadData()
         }
     }
@@ -92,7 +94,10 @@ class SharedMediaVC: UIViewController, UICollectionViewDelegate, UICollectionVie
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "sharedMediaCell", for: indexPath) as! SharedMediaCell
-        cell.imageView.loadImage(url: sharedMedia[indexPath.row])
+        let message = sharedMedia[indexPath.row]
+        cell.message = message
+        cell.imageView.loadImage(url: message.mediaUrl)
+        cell.playButton.isHidden = message.videoUrl == nil
         cell.sharedMediaVC = self
         return cell
     }

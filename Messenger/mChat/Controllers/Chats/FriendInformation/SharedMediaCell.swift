@@ -14,12 +14,15 @@ class SharedMediaCell: UICollectionViewCell {
     
     var sharedMediaVC = SharedMediaVC()
     var imageView = UIImageView()
+    var playButton = UIButton(type: .system)
+    var message: Messages!
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupImageView()
+        setupPlayButton()
     }
     
     required init?(coder: NSCoder) {
@@ -28,7 +31,7 @@ class SharedMediaCell: UICollectionViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupImageView(){
+    private func setupImageView(){
         addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.isUserInteractionEnabled = true
@@ -45,11 +48,28 @@ class SharedMediaCell: UICollectionViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    @objc func imageTappedHandler(tap: UITapGestureRecognizer){
+    @objc private func imageTappedHandler(tap: UITapGestureRecognizer){
+        guard message.videoUrl == nil else { return }
         let imageView = tap.view as? UIImageView
         sharedMediaVC.zoomImageHandler(image: imageView!)
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
+    private func setupPlayButton() {
+        addSubview(playButton)
+        playButton.translatesAutoresizingMaskIntoConstraints = false
+        playButton.setBackgroundImage(UIImage(systemName: "play.fill"), for: .normal)
+        playButton.tintColor = .white
+        let constraints = [
+            playButton.centerYAnchor.constraint(equalTo: centerYAnchor),
+            playButton.centerXAnchor.constraint(equalTo: centerXAnchor),
+            playButton.widthAnchor.constraint(equalToConstant: 35),
+            playButton.heightAnchor.constraint(equalToConstant: 35),
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    //
     
 }

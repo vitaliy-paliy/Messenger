@@ -168,7 +168,6 @@ class SettingsVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     func removeOldStorageImage() {
         Storage.storage().reference(forURL: CurrentUser.profileImage).delete { (error) in
             guard error == nil else { return }
-            print("Deleted")
         }
     }
     

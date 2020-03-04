@@ -11,6 +11,7 @@ import Foundation
 extension Calendar {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // timeIntervalSince1970 num to a string.
     
     func calculateTimePassed(date: NSDate) -> String{
         let now = Date()

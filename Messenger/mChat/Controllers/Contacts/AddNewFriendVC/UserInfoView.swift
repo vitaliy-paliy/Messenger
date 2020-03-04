@@ -10,6 +10,8 @@ import UIKit
 
 class UserInfoView: UIView{
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var controller: AddFriendVC!
     let imageView = UIImageView()
     let nameLabel = UILabel()
@@ -17,6 +19,7 @@ class UserInfoView: UIView{
     let addButton = UIButton(type: .system)
     let loadingIndicator = UIActivityIndicatorView(style: .medium)
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     init(_ controller: AddFriendVC) {
         super.init(frame: .zero)
@@ -32,6 +35,7 @@ class UserInfoView: UIView{
         fatalError("init(coder:) has not been implemented")
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     private func setupUserProfileImage() {
         controller.view.addSubview(imageView)
@@ -49,6 +53,8 @@ class UserInfoView: UIView{
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     private func setupNameLabel() {
         controller.view.addSubview(nameLabel)
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -60,6 +66,8 @@ class UserInfoView: UIView{
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     private func setupEmailLabel() {
         controller.view.addSubview(emailLabel)
@@ -73,6 +81,8 @@ class UserInfoView: UIView{
         ]
         NSLayoutConstraint.activate(constraints)
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     private func setupAddButton() {
         controller.view.addSubview(addButton)
@@ -93,6 +103,8 @@ class UserInfoView: UIView{
         NSLayoutConstraint.activate(constraints)
     }
 
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     private func setupLoadingIndicator() {
         controller.view.addSubview(loadingIndicator)
         loadingIndicator.translatesAutoresizingMaskIntoConstraints = false
@@ -108,5 +120,6 @@ class UserInfoView: UIView{
         NSLayoutConstraint.activate(constraints)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

@@ -11,9 +11,13 @@ import Firebase
 
 class FriendRequestNetworking {
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var controller: FriendRequestVC!
     var friendKeys = [String]()
     var groupedUsers = [String:FriendInfo]()
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func loadRequests(completion: @escaping() -> Void) {
         Database.database().reference().child("friendsList").child("friendRequests").child(CurrentUser.uid).observeSingleEvent(of: .value) { (snap) in
@@ -24,6 +28,8 @@ class FriendRequestNetworking {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupFriendRequests(_ completion: @escaping () -> Void) {
         loadRequests {
             if self.friendKeys.count == 0 { return completion() }
@@ -31,6 +37,8 @@ class FriendRequestNetworking {
         }
         
     }
+
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func fetchUsers() {
         for key in friendKeys {
@@ -46,6 +54,8 @@ class FriendRequestNetworking {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func setupFriendInfo(for key: String, _ values: [String: Any]){
         var friend = FriendInfo()
         friend.id = key
@@ -58,6 +68,8 @@ class FriendRequestNetworking {
         groupedUsers[key] = friend
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func addAsFriend(_ friend: FriendInfo, completion: @escaping () -> Void) {
         let userRef = Database.database().reference().child("friendsList").child(CurrentUser.uid).child(friend.id).child(friend.id)
         let friendRef = Database.database().reference().child("friendsList").child(friend.id).child(CurrentUser.uid).child(CurrentUser.uid)
@@ -68,11 +80,15 @@ class FriendRequestNetworking {
         }
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     func declineUser(_ userToDelete: FriendInfo, completion: @escaping() -> Void) {
         self.removeRequestFromDB(userToDelete) {
             return completion()
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func removeRequestFromDB(_ user: FriendInfo, completion: @escaping () -> Void) {
         self.groupedUsers.removeValue(forKey: user.id)
@@ -80,5 +96,7 @@ class FriendRequestNetworking {
             return completion()
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }

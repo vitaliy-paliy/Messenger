@@ -12,7 +12,7 @@ import Lottie
 class WelcomeVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
-    // INFO ABOUT mChat
+    // WelcomeVC: INFO ABOUT mChat. This is the first view that user is going to see once he/she launches the app. (If it is her/his first time using this app.)
     
     let welcomePages = [
         WelcomePage(imageName: "Logo-Light", topicText: "mChat", descriptionText: "The messaging app."),
@@ -113,6 +113,7 @@ class WelcomeVC: UIViewController {
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MARK: SKIP BUTTON PRESSED METHOD
     
     @objc func skipButtonPressed() {
         let indexPath = IndexPath(item: welcomePages.count - 1, section: 0)

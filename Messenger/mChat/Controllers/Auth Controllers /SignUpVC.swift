@@ -11,7 +11,7 @@ import UIKit
 class SignUpVC: UIViewController, UITextFieldDelegate {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
-    // SIGN UP VC.
+    // SignUpVC. The first controller that users see in a registration process.
     
     var signInVC: SignInVC!
     var backButton: AuthBackButton!

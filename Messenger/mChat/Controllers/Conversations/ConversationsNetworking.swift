@@ -48,7 +48,6 @@ class ConversationsNetworking {
     
     func observeRemovedFriends(){
         Database.database().reference().child("friendsList").child(CurrentUser.uid).observe(.childRemoved) { (snap) in
-            print("Removed handler fired: ConvVC")
             let friendToRemove = snap.key
             var index = 0
             for message in self.convVC.messages {
@@ -75,7 +74,6 @@ class ConversationsNetworking {
             if status {
                 return
             }else{
-                print("Add handler fired: ConvVC")
                 self.friendKeys.append(friendToAdd)
                 self.convVC.observeMessageActions()
             }
@@ -178,7 +176,7 @@ class ConversationsNetworking {
             return completion(Int(snap.childrenCount))
         }
     }
-
+    
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func observeIsUserTyping(_ friendId: String, completion: @escaping (_ isTyping: Bool, _ friendId: String) -> Void){

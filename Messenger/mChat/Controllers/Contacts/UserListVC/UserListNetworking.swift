@@ -10,8 +10,12 @@ import UIKit
 import Firebase
 
 class UserListNetworking {
-        
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
     var userList = [String: FriendInfo]()
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func fetchUsers(completion: @escaping (_ userList: [String:FriendInfo]) -> Void){
         Database.database().reference().child("users").observeSingleEvent(of: .value) { (snap) in
@@ -30,6 +34,8 @@ class UserListNetworking {
             return completion(self.userList)
         }
     }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }
 

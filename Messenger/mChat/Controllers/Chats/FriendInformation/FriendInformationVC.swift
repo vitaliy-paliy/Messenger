@@ -11,6 +11,7 @@ import UIKit
 class FriendInformationVC: UIViewController, UITableViewDelegate, UITableViewDataSource{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // FriendInformationVC is shown when a user taps on the profile image located in the upper right corner in ChatVC.
     
     let calendar = Calendar(identifier: .gregorian)
     var friend: FriendInfo!

@@ -11,7 +11,7 @@ import UIKit
 class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
-    // SelectProfileImageVC
+    // SelectProfileImageVC. A final step in a registration process. (If a user chooses not to provide his/her picture, then a default image will be provided.)
     // User credentials
     
     var name: String!
@@ -119,6 +119,7 @@ class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, U
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // MARK: CONTINUE BUTTON PRESSED METHOD
     
     @objc func continueButtonPressed(){
         authNetworking = AuthNetworking(self)

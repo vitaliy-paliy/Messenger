@@ -14,7 +14,6 @@ class ConversationsCell: UITableViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    var message: Messages!
     var profileImage = UIImageView()
     var friendName = UILabel()
     var recentMessage = UILabel()
@@ -25,7 +24,22 @@ class ConversationsCell: UITableViewCell {
     var unreadMessageView = UIView()
     var unreadLabel = UILabel()
     var checkmark = UIImageView()
+    var convVC: ConversationsVC!
     
+    var message: Messages? {
+        didSet{
+            guard let message = message else { return }
+            convVC.setupNoTypingCell(self)
+            handleFriendInfo(message)
+            convVC.observeIsUserTypingHandler(message, self)
+            checkmark.image = UIImage(named: "checkmark_icon")
+            handleSentMessages(message)
+            let date = NSDate(timeIntervalSince1970: message.time.doubleValue)
+            timeLabel.text = convVC.calendar.calculateTimePassed(date: date).uppercased()
+            handleMessageType(message)
+        }
+    }
+        
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -48,7 +62,43 @@ class ConversationsCell: UITableViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupIsOnlineImage(){
+    private func handleFriendInfo(_ message: Messages) {
+        for friend in Friends.list {
+            if message.determineUser() == friend.id {
+                friendName.text = friend.name
+                profileImage.loadImage(url: friend.profileImage)
+                isOnlineView.isHidden = !friend.isOnline
+            }
+        }
+    }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
+    private func handleSentMessages(_ message: Messages) {
+        if message.sender == CurrentUser.uid {
+            Database.database().reference().child("messages").child("unread-Messages").child(message.determineUser()).child(CurrentUser.uid).removeAllObservers()
+            convVC.observeIsUserSeenMessage(message, self)
+            checkmark.isHidden = false
+        }else{
+            checkmark.isHidden = true
+        }
+    }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
+    private func handleMessageType(_ message: Messages) {
+        if message.mediaUrl != nil || message.videoUrl != nil {
+            recentMessage.text = "[Media Message]"
+        }else if message.audioUrl != nil {
+            recentMessage.text = "[Audio Message]"
+        }else{
+            recentMessage.text = message.message
+        }
+    }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
+    private func setupIsOnlineImage(){
         addSubview(isOnlineView)
         isOnlineView.isHidden = true
         isOnlineView.layer.cornerRadius = 8
@@ -68,7 +118,7 @@ class ConversationsCell: UITableViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupImage(){
+    private func setupImage(){
         addSubview(profileImage)
         profileImage.contentMode = .scaleAspectFill
         profileImage.layer.cornerRadius = 30
@@ -85,7 +135,7 @@ class ConversationsCell: UITableViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupRecentMessage(){
+    private func setupRecentMessage(){
         addSubview(recentMessage)
         recentMessage.textColor = .lightGray
         recentMessage.font = UIFont(name: "Helvetica Neue", size: 16)
@@ -100,9 +150,9 @@ class ConversationsCell: UITableViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupTimeLabel(){
+    private func setupTimeLabel(){
         addSubview(timeLabel)
-        timeLabel.font = UIFont(name: "Helvetica Neue", size: 14)
+        timeLabel.font = UIFont.boldSystemFont(ofSize: 11)
         timeLabel.textAlignment = .left
         timeLabel.numberOfLines = 0
         timeLabel.textColor = .lightGray
@@ -116,7 +166,7 @@ class ConversationsCell: UITableViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupNameLabel(){
+    private func setupNameLabel(){
         addSubview(friendName)
         friendName.textColor = .black
         friendName.font = UIFont(name: "Helvetica Neue", size: 18)
@@ -131,12 +181,12 @@ class ConversationsCell: UITableViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupUserTypingView(){
+    private func setupUserTypingView(){
         isTypingView.isHidden = true
         let typingText = UILabel()
-        typingText.font = UIFont(name: "Helvetica Neue", size: 16)
+        typingText.font = UIFont.boldSystemFont(ofSize: 12)
         typingText.textColor = .gray
-        typingText.text = "typing"
+        typingText.text = "TYPING"
         isTypingView.backgroundColor = .clear
         isTypingView.layer.cornerRadius = 12.5
         isTypingView.layer.masksToBounds = true
@@ -153,7 +203,7 @@ class ConversationsCell: UITableViewCell {
             isTypingView.centerYAnchor.constraint(equalTo: centerYAnchor, constant: 2),
             typingText.widthAnchor.constraint(equalToConstant: 50),
             typingText.heightAnchor.constraint(equalToConstant: 25),
-            typingText.centerYAnchor.constraint(equalTo: isTypingView.centerYAnchor, constant: 3),
+            typingText.centerYAnchor.constraint(equalTo: isTypingView.centerYAnchor, constant: 5),
             typingText.trailingAnchor.constraint(equalTo: isTypingView.trailingAnchor),
             typingAnimation.leadingAnchor.constraint(equalTo: isTypingView.leadingAnchor, constant: 0),
             typingAnimation.bottomAnchor.constraint(equalTo: isTypingView.bottomAnchor),
@@ -170,7 +220,7 @@ class ConversationsCell: UITableViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupUnreadMessagesView(){
+    private func setupUnreadMessagesView(){
         addSubview(unreadMessageView)
         unreadMessageView.isHidden = true
         unreadMessageView.translatesAutoresizingMaskIntoConstraints = false
@@ -194,7 +244,7 @@ class ConversationsCell: UITableViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupCheckmark() {
+    private func setupCheckmark() {
         addSubview(checkmark)
         checkmark.isHidden = true
         checkmark.translatesAutoresizingMaskIntoConstraints = false

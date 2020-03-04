@@ -12,6 +12,7 @@ import Lottie
 class LogoVC: UIViewController {
         
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // LogoVC appears when user opens the app. It serves as a networking view.
     
     var animationView = AnimationView()
     var logoImage = UIImageView()

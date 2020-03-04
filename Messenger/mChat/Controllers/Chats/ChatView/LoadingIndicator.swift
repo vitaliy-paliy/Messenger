@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MessageLoadingIndicator: UIActivityIndicatorView{
+class MessageLoadingIndicator: UIActivityIndicatorView {
 
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     

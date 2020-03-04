@@ -11,6 +11,7 @@ import UIKit
 class ToolsMenu: UIScrollView {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    // When a user presses on a message for a while, this ToolsMenu will appear.
     
     var chatVC: ChatVC!
     var message: Messages!
