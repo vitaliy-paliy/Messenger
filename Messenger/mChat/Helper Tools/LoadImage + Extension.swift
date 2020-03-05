@@ -10,7 +10,7 @@ import UIKit
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
 
-let imgCache = NSCache<NSString, UIImage>()
+private let imgCache = NSCache<NSString, UIImage>()
 
 // UIIMAGEVIEW EXTENSION THAT LOADS IMAGES FROM FIREBASE STORAGE AND CACHES THEM.
 

@@ -30,7 +30,7 @@ class GradientLogoView: UIView{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupGradientView() {
+    private func setupGradientView() {
         controller.view.addSubview(self)
         translatesAutoresizingMaskIntoConstraints = false
         clipsToBounds = true
@@ -50,7 +50,7 @@ class GradientLogoView: UIView{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupGradientLayer() -> CAGradientLayer {
+    private func setupGradientLayer() -> CAGradientLayer {
         let gradient = CAGradientLayer()
         let topColor = UIColor(red: 100/255, green: 90/255, blue: 255/255, alpha: 1).cgColor
         let bottomColor = UIColor(red: 140/255, green: 135/255, blue: 255/255, alpha: 1).cgColor
@@ -61,7 +61,7 @@ class GradientLogoView: UIView{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupLogo() {
+    private func setupLogo() {
         let logoView = UIView()
         controller.view.addSubview(logoView)
         logoView.translatesAutoresizingMaskIntoConstraints = false

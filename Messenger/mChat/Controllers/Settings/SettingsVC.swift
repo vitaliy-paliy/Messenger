@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Firebase
 
 class SettingsVC: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -19,12 +18,15 @@ class SettingsVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     var settingsItems = ["Appearance", "Maps"]
     var settingsImages = ["paint_icon","map_icon"]
     
+    var settingsNetworking: SettingsNetworking!
+    
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.title = "Settings"
         view.backgroundColor = .white
+        settingsNetworking = SettingsNetworking(self)
         setupTableView()
         setupLeftNavButton()
     }
@@ -37,7 +39,7 @@ class SettingsVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupLeftNavButton(){
+    private func setupLeftNavButton(){
         logoutButton.setTitle("Sign out", for: .normal)
         logoutButton.titleLabel?.font = UIFont(name: "Helvetica Neue", size: 18)
         logoutButton.setTitleColor(.systemRed, for: .normal)
@@ -47,7 +49,7 @@ class SettingsVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupTableView(){
+    private func setupTableView(){
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self
@@ -67,7 +69,7 @@ class SettingsVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    @objc func setupLogoutView() {
+    @objc private func setupLogoutView() {
         let alert = UIAlertController(title: "Sign Out", message: "Are you sure you want to sign out?", preferredStyle: .alert)
         let exitAction = UIAlertAction(title: "Exit", style: .destructive) { (true) in
             self.logoutButtonPressed()
@@ -79,22 +81,8 @@ class SettingsVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    @objc func logoutButtonPressed(){
-        do{
-            UserActivity.observe(isOnline: false)
-            try Auth.auth().signOut()
-            let controller = SignInVC()
-            ChatKit.mapTimer.invalidate()
-            Friends.list = []
-            Database.database().reference().child("friendsList").child(CurrentUser.uid).removeAllObservers()
-            Database.database().reference().child("users").removeAllObservers()
-            Database.database().reference().child("userActions").removeAllObservers()
-            view.window?.rootViewController = controller
-            view.window?.makeKeyAndVisible()
-        }catch{
-            showAlert(title: "Error", message: error.localizedDescription)
-        }
-        
+    @objc private func logoutButtonPressed(){
+        settingsNetworking.logout()
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
@@ -123,9 +111,9 @@ class SettingsVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         guard let originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage else { return }
-        uploadImageToStorage(originalImage) { (url, error) in
+        settingsNetworking.uploadImageToStorage(originalImage) { (url, error) in
             guard error == nil , let url = url else { return }
-            self.updateCurrentUserInfo(url)
+            self.settingsNetworking.updateCurrentUserInfo(url)
         }
         dismiss(animated: true, completion: nil)
     }
@@ -137,42 +125,7 @@ class SettingsVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
-    
-    func uploadImageToStorage(_ image: UIImage, completion: @escaping (_ imageUrl: URL?, _ error: Error?) -> Void) {
-        let uniqueName = NSUUID().uuidString
-        let storageRef = Storage.storage().reference().child("ProfileImages").child("\(uniqueName).jpg")
-        if let uploadData = image.jpegData(compressionQuality: 0.1) {
-            storageRef.putData(uploadData, metadata: nil) { (metaData, error) in
-                if let error = error { return completion(nil, error) }
-                storageRef.downloadURL { (url, error) in
-                    if let error = error { return completion(nil, error) }
-                    if let url = url { return completion(url, nil) }
-                }
-            }
-        }
-    }
-    
-    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
-    
-    func updateCurrentUserInfo(_ url: URL) {
-        Database.database().reference().child("users").child(CurrentUser.uid).updateChildValues(["profileImage":url.absoluteString]) { (error, databaseRef) in
-            guard error == nil else { return }
-            self.removeOldStorageImage()
-            CurrentUser.profileImage = url.absoluteString
-            self.tableView.reloadData()
-        }
-    }
-    
-    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
-    
-    func removeOldStorageImage() {
-        Storage.storage().reference(forURL: CurrentUser.profileImage).delete { (error) in
-            guard error == nil else { return }
-        }
-    }
-    
-    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
-    
+        
 }
 
 extension SettingsVC: UITableViewDelegate, UITableViewDataSource {

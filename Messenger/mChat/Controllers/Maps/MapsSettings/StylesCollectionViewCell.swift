@@ -33,7 +33,7 @@ class StylesCollectionViewCell: UICollectionViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupImageView(){
+    private func setupImageView(){
         addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
@@ -50,7 +50,7 @@ class StylesCollectionViewCell: UICollectionViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupNameLabel() {
+    private func setupNameLabel() {
         addSubview(nameLabel)
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.textAlignment = .center

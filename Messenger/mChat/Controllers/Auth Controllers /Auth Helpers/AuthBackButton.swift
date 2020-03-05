@@ -28,7 +28,7 @@ class AuthBackButton: UIButton {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupBackButton() {
+    private func setupBackButton() {
         controller.view.addSubview(self)
         setBackgroundImage(UIImage(systemName: "arrow.left.circle.fill"), for: .normal)
         translatesAutoresizingMaskIntoConstraints = false

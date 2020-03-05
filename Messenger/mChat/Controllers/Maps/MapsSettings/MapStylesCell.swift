@@ -44,7 +44,7 @@ class MapStylesCell: UITableViewCell, UICollectionViewDelegate, UICollectionView
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupData(){
+    private func setupData(){
         for style in mapStyleImages {
             let mapStyle = MapStyles(name: style,nil)
             mapStyles.append(mapStyle)
@@ -53,7 +53,7 @@ class MapStylesCell: UITableViewCell, UICollectionViewDelegate, UICollectionView
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupCollectionView(){
+    private func setupCollectionView(){
         let layout = UICollectionViewFlowLayout()
         layout.minimumLineSpacing = 8
         let size = bounds.width/2
@@ -114,7 +114,7 @@ class MapStylesCell: UITableViewCell, UICollectionViewDelegate, UICollectionView
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func updateColorsHandler(_ mapUrl: String) {
+    private func updateColorsHandler(_ mapUrl: String) {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         let entity = NSEntityDescription.entity(forEntityName: "AppColors", in: context)
         let newEntity = NSManagedObject(entity: entity!, insertInto: context)

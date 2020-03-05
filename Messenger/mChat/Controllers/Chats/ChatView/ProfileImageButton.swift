@@ -23,7 +23,7 @@ class ProfileImageButton: UIButton {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupProfileImage(_ url: String, _ chatVC: ChatVC){
+    private func setupProfileImage(_ url: String, _ chatVC: ChatVC){
         let friendImageIcon = UIImageView()
         friendImageIcon.loadImage(url: url)
         addSubview(friendImageIcon)

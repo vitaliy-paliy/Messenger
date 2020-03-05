@@ -44,7 +44,7 @@ class ContactsVC: UIViewController {
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     // MARK: SETUP UI METHOD
     
-    func setupUI(){
+    private func setupUI(){
         navigationItem.title = "Contacts"
         view.backgroundColor = .white
         setupTableView()
@@ -56,7 +56,7 @@ class ContactsVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupTableView(){
+    private func setupTableView(){
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
@@ -96,7 +96,7 @@ class ContactsVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupaddButton() {
+    private func setupaddButton() {
         var addButton = UIBarButtonItem()
         let buttonView = UIButton()
         buttonView.setImage(UIImage(systemName: "plus"), for: .normal)
@@ -108,7 +108,7 @@ class ContactsVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupFriendRequest() {
+    private func setupFriendRequest() {
         requestButtonView = RequestButtonView(self)
         let requestButton = UIBarButtonItem(customView: requestButtonView)
         navigationItem.leftBarButtonItem = requestButton

@@ -41,7 +41,7 @@ class UsersListVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func getUsersList() {
+    private func getUsersList() {
         userListNetworking.fetchUsers { usersList in
             let sortedUserList = Array(usersList.values).sorted { (friend1, friend2) -> Bool in
                 return friend1.name < friend2.name
@@ -54,7 +54,7 @@ class UsersListVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupTableView(){
+    private func setupTableView(){
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self

@@ -54,12 +54,16 @@ class AddFriendNetworking {
             self.controller.loadingIndicator.stopAnimating()
             guard let values = snapshot.value as? [String: Any] else {
                 self.controller.addButton.setTitle("Add Friend", for: .normal)
-                self.controller.addButton.backgroundColor = .green
+                self.controller.addButton.layer.insertSublayer(self.controller.greenGradientLayer, at: 0)
+                self.controller.redGradientLayer.removeFromSuperlayer()
+                self.controller.grayGradientLayer.removeFromSuperlayer()
                 return
             }
             let f = values
             if f[self.friend.id] as? Bool != nil && f[self.friend.id] as? Bool == true {
-                self.controller.addButton.backgroundColor = .red
+                self.controller.greenGradientLayer.removeFromSuperlayer()
+                self.controller.grayGradientLayer.removeFromSuperlayer()
+                self.controller.addButton.layer.insertSublayer(self.controller.redGradientLayer, at: 0)
                 self.controller.addButton.setTitle("Remove Friend", for: .normal)
             }
         }
@@ -73,7 +77,9 @@ class AddFriendNetworking {
             self.controller.addButton.setTitle("Requested", for: .normal)
             self.controller.addButton.isHidden = false
             self.controller.loadingIndicator.stopAnimating()
-            self.controller.addButton.backgroundColor = .gray
+            self.controller.redGradientLayer.removeFromSuperlayer()
+            self.controller.greenGradientLayer.removeFromSuperlayer()
+            self.controller.addButton.layer.insertSublayer(self.controller.grayGradientLayer, at: 0)
         }
     }
 

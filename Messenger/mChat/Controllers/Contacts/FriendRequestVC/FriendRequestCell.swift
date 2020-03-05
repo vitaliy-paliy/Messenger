@@ -36,7 +36,7 @@ class FriendRequestCell: UITableViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupAcceptButton() {
+    private func setupAcceptButton() {
         addSubview(acceptButton)
         acceptButton.translatesAutoresizingMaskIntoConstraints = false
         acceptButton.setTitle("ACCEPT", for: .normal)
@@ -59,7 +59,7 @@ class FriendRequestCell: UITableViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupDeclineButton() {
+    private func setupDeclineButton() {
         addSubview(declineButton)
         declineButton.translatesAutoresizingMaskIntoConstraints = false
         declineButton.setTitle("DECLINE", for: .normal)
@@ -77,13 +77,13 @@ class FriendRequestCell: UITableViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    @objc func addButtonPressed() {
+    @objc private func addButtonPressed() {
         controller.addButtonPressed(cell: self)
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    @objc func declineButtonPressed() {
+    @objc private func declineButtonPressed() {
         controller.declineButtonPressed(cell: self)
     }
     

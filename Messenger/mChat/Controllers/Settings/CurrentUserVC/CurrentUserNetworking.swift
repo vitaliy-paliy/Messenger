@@ -33,7 +33,7 @@ class CurrentUserNetworking {
  
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func changePasswordHandler(){
+    private func changePasswordHandler(){
         guard let newPassword = self.changePasswordVC.newPasswordTF.text?.trimmingCharacters(in: .whitespacesAndNewlines) else { return }
         Auth.auth().currentUser?.updatePassword(to: newPassword, completion: { (error) in
             if let error = error {
@@ -67,7 +67,7 @@ class CurrentUserNetworking {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func changeEmailHandler(_ newEmail: String) {
+    private func changeEmailHandler(_ newEmail: String) {
         Database.database().reference().child("users").child(CurrentUser.uid).updateChildValues(["email":newEmail]) { (error, databaseRef) in
             self.networkingLoadingIndicator.endLoadingAnimation()
             if let error = error {

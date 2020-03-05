@@ -41,7 +41,7 @@ class NewConversationVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupForwardView(){
+    private func setupForwardView(){
         navigationItem.title = forwardName != nil ? "Forward" : "New Conversation"
         let leftButton = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(cancelButtonPressed))
         navigationItem.leftBarButtonItem = leftButton
@@ -49,7 +49,7 @@ class NewConversationVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    @objc func cancelButtonPressed(){
+    @objc private func cancelButtonPressed(){
         forwardDelegate?.userResponse.messageToForward = nil
         forwardDelegate?.userResponse.messageSender = nil
         dismiss(animated: true, completion: nil)
@@ -57,7 +57,7 @@ class NewConversationVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupTableView() {
+    private func setupTableView() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.rowHeight = 80

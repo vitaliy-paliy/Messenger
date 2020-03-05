@@ -20,9 +20,6 @@ class UsersListCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        addSubview(profileImage)
-        addSubview(userName)
-        addSubview(userEmail)
         setupImage()
         setupNameLabel()
         setupEmailLabel()
@@ -34,7 +31,8 @@ class UsersListCell: UITableViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupImage(){
+    private func setupImage(){
+        addSubview(profileImage)
         profileImage.contentMode = .scaleAspectFill
         profileImage.layer.cornerRadius = 40
         profileImage.layer.masksToBounds = true
@@ -50,7 +48,8 @@ class UsersListCell: UITableViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupEmailLabel(){
+    private func setupEmailLabel(){
+        addSubview(userEmail)
         userEmail.numberOfLines = 0
         userEmail.adjustsFontSizeToFitWidth = true
         userEmail.textColor = .lightGray
@@ -64,7 +63,8 @@ class UsersListCell: UITableViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupNameLabel(){
+    private func setupNameLabel(){
+        addSubview(userName)
         userName.numberOfLines = 0
         userName.adjustsFontSizeToFitWidth = true
         userName.translatesAutoresizingMaskIntoConstraints = false

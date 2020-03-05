@@ -31,8 +31,7 @@ class MessageLoadingIndicator: UIActivityIndicatorView {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupIndicator(){
-        
+    private func setupIndicator(){
         hidesWhenStopped = true
         var topConst: CGFloat = 90
         if const == 8 {

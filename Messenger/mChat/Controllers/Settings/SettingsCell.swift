@@ -29,7 +29,7 @@ class SettingsCell: UITableViewCell {
  
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupSettingsImage(){
+    private func setupSettingsImage(){
         addSubview(settingsImage)
         settingsImage.translatesAutoresizingMaskIntoConstraints = false
         let constraints = [
@@ -43,7 +43,7 @@ class SettingsCell: UITableViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupSettingsLabel(){
+    private func setupSettingsLabel(){
         addSubview(settingsLabel)
         settingsLabel.textColor = .darkGray
         settingsLabel.translatesAutoresizingMaskIntoConstraints = false

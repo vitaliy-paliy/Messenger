@@ -39,7 +39,7 @@ class UserInfoTab: UIView{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupUserInfo(_ annotation: MGLAnnotation){
+    private func setupUserInfo(_ annotation: MGLAnnotation){
         if let pin = annotation as? AnnotationPin {
             self.pin = pin
             profileImage.loadImage(url: pin.friend.profileImage)
@@ -59,7 +59,7 @@ class UserInfoTab: UIView{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupInfoView() {
+    private func setupInfoView() {
         backgroundColor = .white
         layer.cornerRadius = 16
         layer.shadowRadius = 10
@@ -71,7 +71,7 @@ class UserInfoTab: UIView{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupProfileImage(){
+    private func setupProfileImage(){
         addSubview(profileImage)
         profileImage.translatesAutoresizingMaskIntoConstraints = false
         profileImage.layer.cornerRadius = 20
@@ -87,7 +87,7 @@ class UserInfoTab: UIView{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupNameLabel(){
+    private func setupNameLabel(){
         addSubview(nameLabel)
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
         nameLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 16)
@@ -100,7 +100,7 @@ class UserInfoTab: UIView{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupLastSeenLabel() {
+    private func setupLastSeenLabel() {
         addSubview(lastSeenLabel)
         lastSeenLabel.translatesAutoresizingMaskIntoConstraints = false
         lastSeenLabel.font = UIFont(name: "Helvetica Neue", size: 14)
@@ -114,7 +114,7 @@ class UserInfoTab: UIView{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupActionButton(){
+    private func setupActionButton(){
         addSubview(actionButton)
         actionButton.tintColor = .black
         actionButton.translatesAutoresizingMaskIntoConstraints = false

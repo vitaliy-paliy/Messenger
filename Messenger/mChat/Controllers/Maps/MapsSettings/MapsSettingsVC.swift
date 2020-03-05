@@ -27,28 +27,11 @@ class MapsSettingsVC: UIViewController {
         navigationController?.navigationBar.tintColor = .black
         view.backgroundColor = .white
     }
-    
-    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
-    
-    func setupBackButton(){
-        let button = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(backButtonPressed))
-        navigationItem.leftBarButtonItem = button
-    }
-    
-    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
-    
-    @objc func backButtonPressed(){
-        dismiss(animated: true, completion: nil)
-    }
-    
-    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
-    
+        
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         tabBarController?.tabBar.isHidden = true
     }
-    
-    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -57,7 +40,20 @@ class MapsSettingsVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupTableView(){
+    private func setupBackButton(){
+        let button = UIBarButtonItem(title: "Cancel", style: .plain, target: self, action: #selector(backButtonPressed))
+        navigationItem.leftBarButtonItem = button
+    }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
+    @objc private func backButtonPressed(){
+        dismiss(animated: true, completion: nil)
+    }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
+    private func setupTableView(){
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self
@@ -79,16 +75,12 @@ class MapsSettingsVC: UIViewController {
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func changeSwitchValue(_ button: UISwitch){
-        if button.isOn{
-            refreshIncognitoMode(to: false)
-        }else{
-            refreshIncognitoMode(to: true)
-        }
+        refreshIncognitoMode(to: !button.isOn)
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func refreshIncognitoMode(to status: Bool){
+    private func refreshIncognitoMode(to status: Bool){
         let ref = Database.database().reference().child("users").child(CurrentUser.uid)
         let values = ["isMapLocationEnabled": status]
         ref.updateChildValues(values) { (error, reference) in

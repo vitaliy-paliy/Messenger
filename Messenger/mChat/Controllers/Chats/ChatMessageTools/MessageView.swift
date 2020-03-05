@@ -42,7 +42,7 @@ class MessageView: UIView{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func showMessageMenu(){
+    private func showMessageMenu(){
         layer.cornerRadius = 12
         layer.masksToBounds = true
         backgroundColor = cell.messageBackground.backgroundColor
@@ -60,7 +60,7 @@ class MessageView: UIView{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupResponseView(){
+    private func setupResponseView(){
         setupRepLine()
         setupRepName(name: message.repSender)
         if message.repMessage != nil {
@@ -74,7 +74,7 @@ class MessageView: UIView{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupMsgText() -> UILabel {
+    private func setupMsgText() -> UILabel {
         messageView.text = message.message
         messageView.numberOfLines = 0
         messageView.backgroundColor = .clear
@@ -98,7 +98,7 @@ class MessageView: UIView{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupMsgMedia() -> UIImageView{
+    private func setupMsgMedia() -> UIImageView{
         mediaMessage.loadImage(url: message.mediaUrl)
         addSubview(mediaMessage)
         mediaMessage.translatesAutoresizingMaskIntoConstraints = false
@@ -117,7 +117,7 @@ class MessageView: UIView{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupRepLine(){
+    private func setupRepLine(){
         responseLine.backgroundColor = ThemeColors.selectedOutcomingColor
         addSubview(responseLine)
         responseLine.translatesAutoresizingMaskIntoConstraints = false
@@ -133,7 +133,7 @@ class MessageView: UIView{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupRepName(name: String){
+    private func setupRepName(name: String){
         responseNameLabel.text = name
         responseNameLabel.textColor = cell.responseNameLabel.textColor
         responseNameLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 16)
@@ -141,7 +141,7 @@ class MessageView: UIView{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupRepTextMessage(text: String){
+    private func setupRepTextMessage(text: String){
         responseTextMessage.text = text
         responseTextMessage.textColor = cell.responseTextMessage.textColor
         responseTextMessage.font = UIFont(name: "Helvetica Neue", size: 15)
@@ -162,7 +162,7 @@ class MessageView: UIView{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupRepMediaMessage(_ url: String){
+    private func setupRepMediaMessage(_ url: String){
         let replyMediaLabel = UILabel()
         replyMediaLabel.text = "Media"
         replyMediaLabel.textColor = cell.isIncoming ? .lightGray : .lightText
@@ -189,7 +189,7 @@ class MessageView: UIView{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupResponseAudioMessage() {
+    private func setupResponseAudioMessage() {
         addSubview(responseAudioLabel)
         responseAudioLabel.text = "Audio Message"
         responseAudioLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -209,7 +209,7 @@ class MessageView: UIView{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupAudioPlayButton(){
+    private func setupAudioPlayButton(){
         addSubview(audioPlayButton)
         audioPlayButton.isUserInteractionEnabled = false
         audioPlayButton.translatesAutoresizingMaskIntoConstraints = false
@@ -227,7 +227,7 @@ class MessageView: UIView{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupAudioDurationLabel(){
+    private func setupAudioDurationLabel(){
         addSubview(durationLabel)
         durationLabel.text = cell.durationLabel.text
         durationLabel.textColor = cell.durationLabel.textColor

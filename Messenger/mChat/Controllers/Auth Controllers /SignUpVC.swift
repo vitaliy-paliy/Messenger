@@ -36,7 +36,7 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupUI() {
+    private func setupUI() {
         view.backgroundColor = .white
         setupGradientView()
         setupRegisterView()
@@ -46,19 +46,19 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupGradientView() {
+    private func setupGradientView() {
         let _ = GradientLogoView(self, true)
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupRegisterView() {
+    private func setupRegisterView() {
         signUpView = SignUpView(self)
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupContinueButton() {
+    private func setupContinueButton() {
         continueButton = AuthActionButton("CONTINUE", self)
         view.addSubview(continueButton)
         continueButton.addTarget(self, action: #selector(continueButtonPressed), for: .touchUpInside)
@@ -74,7 +74,7 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupBackButton() {
+    private func setupBackButton() {
         backButton = AuthBackButton(self)
         backButton.alpha = 0
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
@@ -82,7 +82,7 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    @objc func backButtonPressed() {
+    @objc private func backButtonPressed() {
         dismiss(animated: false) {
             self.signInVC.returnToSignInVC()
         }
@@ -91,7 +91,7 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     // MARK: TEXTFIELD VALIDATION
     
-    func validateTF() -> String?{
+    private func validateTF() -> String?{
         if signUpView.nameTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" || signUpView.emailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" || signUpView.passwordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
             return "Make sure you fill in all fields."
         }
@@ -122,7 +122,7 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     // MARK: SIGN UP METHOD.
     
-    @objc func continueButtonPressed() {
+    @objc private func continueButtonPressed() {
         signUpView.errorLabel.text = ""
         let validation = validateTF()
         if validation != nil {
@@ -143,7 +143,7 @@ class SignUpVC: UIViewController, UITextFieldDelegate {
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     // MARK: NEXT CONTROLLER METHOD
     
-    func goToNextController(){
+    private func goToNextController(){
         let name = signUpView.nameTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         let email = signUpView.emailTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)
         let password = signUpView.passwordTextField.text!.trimmingCharacters(in: .whitespacesAndNewlines)

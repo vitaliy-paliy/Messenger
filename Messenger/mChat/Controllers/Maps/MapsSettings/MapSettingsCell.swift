@@ -42,7 +42,7 @@ class MapSettingsCell: UITableViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    @objc func switchClicked(){
+    @objc private func switchClicked(){
         mapsSettingsVC.changeSwitchValue(switchButton)
     }
     

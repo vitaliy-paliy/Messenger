@@ -26,6 +26,7 @@ class NetworkingLoadingIndicator {
         animationView.removeFromSuperview()
         blurView.removeFromSuperview()
     }
+    
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func startLoadingAnimation() {

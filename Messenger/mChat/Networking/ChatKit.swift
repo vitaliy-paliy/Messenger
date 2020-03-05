@@ -18,16 +18,16 @@ class ChatKit {
     static var map = MGLMapView()
         
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
-    
     // UPDATES USER LOCATION
+    
     static func startUpdatingUserLocation(){
         ChatKit.mapTimer = Timer(timeInterval: 20, target: self, selector: #selector(ChatKit.updateCurrentLocation), userInfo: nil, repeats: true)
         RunLoop.current.add(ChatKit.mapTimer, forMode: RunLoop.Mode.common)
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
-    
     // METHOD THAT CHECKS IF USER
+    
     @objc static func updateCurrentLocation(){
         guard CurrentUser.isMapLocationEnabled else { return }
         guard let currentLocation = ChatKit.map.userLocation?.coordinate else { return }
@@ -38,6 +38,7 @@ class ChatKit {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     // SETS UP USER MESSAGE DATA.
+    
     static func setupUserMessage(for values: [String:Any]) -> Messages{
         let message = Messages()
         message.sender = values["sender"] as? String

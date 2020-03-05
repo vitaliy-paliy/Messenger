@@ -17,6 +17,9 @@ class AddFriendVC: UIViewController{
     var addButton: UIButton!
     var addFriendNetworking = AddFriendNetworking()
     var loadingIndicator: UIActivityIndicatorView!
+    var greenGradientLayer: CALayer!
+    var redGradientLayer: CALayer!
+    var grayGradientLayer: CALayer!
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
@@ -40,7 +43,7 @@ class AddFriendVC: UIViewController{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupNetworking() {
+    private func setupNetworking() {
         addFriendNetworking.controller = self
         addFriendNetworking.friend = user
         addFriendNetworking.checkFriend()
@@ -48,9 +51,10 @@ class AddFriendVC: UIViewController{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupUI(){
+    private func setupUI(){
         navigationController?.navigationBar.tintColor = .black
         view.backgroundColor = .white
+        handleButtonGradient()
         setupGradientView()
         setupExitButton()
         setupUserInfoView()
@@ -58,13 +62,52 @@ class AddFriendVC: UIViewController{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupGradientView() {
+    private func handleButtonGradient() {
+        for g in ["red","green","gray"] {
+            let gradient = setupButtonGradientLayer(g)
+            if g == "red"{
+                redGradientLayer = gradient
+            }else if g == "green"{
+                greenGradientLayer = gradient
+            }else{
+                grayGradientLayer = gradient
+            }
+        }
+    }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
+    private func setupButtonGradientLayer(_ color: String) -> CALayer {
+        let gradient = CAGradientLayer()
+        var firstColor: CGColor!
+        var secondColor: CGColor!
+        if color == "green" {
+            firstColor = UIColor(red: 100/255, green: 200/255, blue: 110/255, alpha: 1).cgColor
+            secondColor = UIColor(red: 150/255, green: 210/255, blue: 130/255, alpha: 1).cgColor
+        }else if color == "red"{
+            firstColor = UIColor(red: 235/255, green: 155/255, blue: 125/255, alpha: 1).cgColor
+            secondColor = UIColor(red: 230/255, green: 80/255, blue: 70/255, alpha: 1).cgColor
+        }else{
+            firstColor = UIColor(red: 155/255, green: 155/255, blue: 155/255, alpha: 1).cgColor
+            secondColor = UIColor(red: 210/255, green: 210/255, blue: 210/255, alpha: 1).cgColor
+        }
+        gradient.colors = [firstColor!, secondColor!]
+        gradient.startPoint = CGPoint(x: 1, y: 1)
+        gradient.endPoint = CGPoint(x: 0, y: 1)
+        gradient.locations = [0, 1]
+        gradient.frame = CGRect(x: 0, y: 0, width: 200, height: 35)
+        return gradient
+    }
+
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
+    private func setupGradientView() {
         let _ = GradientLogoView(self, true)
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupUserInfoView(){
+    private func setupUserInfoView(){
         let infoView = UserInfoView(self)
         addButton = infoView.addButton
         loadingIndicator = infoView.loadingIndicator
@@ -72,7 +115,7 @@ class AddFriendVC: UIViewController{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupExitButton() {
+    private func setupExitButton() {
         let exitButton = UIButton(type: .system)
         view.addSubview(exitButton)
         exitButton.translatesAutoresizingMaskIntoConstraints = false
@@ -90,7 +133,7 @@ class AddFriendVC: UIViewController{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //s
     
-    @objc func exitButtonPressed() {
+    @objc private func exitButtonPressed() {
         navigationController?.popViewController(animated: true)
     }
     
@@ -99,11 +142,15 @@ class AddFriendVC: UIViewController{
     @objc func addButtonPressed() {
         if addButton.titleLabel?.text == "Add Friend" {
             addButton.setTitle("Requested", for: .normal)
-            addButton.backgroundColor = .gray
+            addButton.layer.insertSublayer(grayGradientLayer, at: 0)
+            redGradientLayer.removeFromSuperlayer()
+            greenGradientLayer.removeFromSuperlayer()
         }else{
             addFriendNetworking.removeFriendRequest()
             addFriendNetworking.removeFriend()
-            addButton.backgroundColor = .green
+            addButton.layer.insertSublayer(greenGradientLayer, at: 0)
+            redGradientLayer.removeFromSuperlayer()
+            grayGradientLayer.removeFromSuperlayer()
             addButton.setTitle("Add Friend", for: .normal)
             return
         }

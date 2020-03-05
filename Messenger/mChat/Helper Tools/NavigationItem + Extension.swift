@@ -54,7 +54,7 @@ extension UINavigationItem {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupTitleLabel(_ text: String) -> UILabel{
+    private func setupTitleLabel(_ text: String) -> UILabel{
         let title = UILabel()
         title.text = text
         title.font = UIFont(name: "HelveticaNeue-Medium", size: 18)

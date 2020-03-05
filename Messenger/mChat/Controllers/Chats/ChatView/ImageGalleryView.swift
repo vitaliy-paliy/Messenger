@@ -39,7 +39,7 @@ class SelectedImageView: UIScrollView, UIScrollViewDelegate{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupScrollView() {
+    private func setupScrollView() {
         if let chatVC = chatVC {
             frame = chatVC.view.frame
         }else{
@@ -59,7 +59,7 @@ class SelectedImageView: UIScrollView, UIScrollViewDelegate{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupGestures(){
+    private func setupGestures(){
         let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe))
         swipeUp.direction = .up
         let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe))
@@ -73,7 +73,7 @@ class SelectedImageView: UIScrollView, UIScrollViewDelegate{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupSelectedImage() {
+    private func setupSelectedImage() {
         addSubview(imageView)
         imageView.frame = cellFrame
         imageView.image = cellImage.image
@@ -88,7 +88,7 @@ class SelectedImageView: UIScrollView, UIScrollViewDelegate{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    @objc func handleSwipe() {
+    @objc private func handleSwipe() {
         removeFromSuperview()
         if let chatVC = chatVC {
             chatVC.view.addSubview(imageView)
@@ -107,7 +107,7 @@ class SelectedImageView: UIScrollView, UIScrollViewDelegate{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    @objc func handleDoubleTap(recognizer: UITapGestureRecognizer) {
+    @objc private func handleDoubleTap(recognizer: UITapGestureRecognizer) {
         if zoomScale == 1 {
             zoom(to: zoomRectForScale(scale: maximumZoomScale, center: recognizer.location(in: recognizer.view)), animated: true)
         } else {
@@ -117,7 +117,7 @@ class SelectedImageView: UIScrollView, UIScrollViewDelegate{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func zoomRectForScale(scale: CGFloat, center: CGPoint) -> CGRect {
+    private func zoomRectForScale(scale: CGFloat, center: CGPoint) -> CGRect {
         var zoomRect = CGRect.zero
         zoomRect.size.height = imageView.frame.size.height / scale
         zoomRect.size.width  = imageView.frame.size.width  / scale

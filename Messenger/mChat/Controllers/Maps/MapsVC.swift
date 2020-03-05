@@ -51,7 +51,7 @@ class MapsVC: UIViewController, UIGestureRecognizerDelegate{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func checkStatus(){
+    private func checkStatus(){
         switch CLLocationManager.authorizationStatus() {
         case .authorizedWhenInUse:
             setupMapView()
@@ -70,14 +70,14 @@ class MapsVC: UIViewController, UIGestureRecognizerDelegate{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupControllButtons() {
+    private func setupControllButtons() {
         exitButton = MapExitButton(mapsVC: self)
         settingsButton = MapSettingsButton(mapsVC: self)
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupMapView(){
+    private func setupMapView(){
         view.addSubview(mapView)
         mapView.frame = view.bounds
         mapView.automaticallyAdjustsContentInset = true
@@ -99,7 +99,7 @@ class MapsVC: UIViewController, UIGestureRecognizerDelegate{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func userMapHandler(){
+    private func userMapHandler(){
         if !ChatKit.mapTimer.isValid {
             ChatKit.map.showsUserLocation = true
             ChatKit.startUpdatingUserLocation()
@@ -131,7 +131,7 @@ class MapsVC: UIViewController, UIGestureRecognizerDelegate{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func presentingVC() -> UIViewController {
+    private func presentingVC() -> UIViewController {
         var topController: UIViewController = UIApplication.shared.windows[0].rootViewController!
         while (topController.presentedViewController != nil) {
             topController = topController.presentedViewController!
@@ -141,7 +141,7 @@ class MapsVC: UIViewController, UIGestureRecognizerDelegate{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func deniedAlertController(){
+    private func deniedAlertController(){
         let alertController = UIAlertController(title: "Error", message: "To be able to see the map you need to change your location settings. To do this, go to Settings/Privacy/Location Services/mChat/ and allow location access. ", preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .default, handler: { (alertAction) in
             self.navigationController?.popToRootViewController(animated: true)

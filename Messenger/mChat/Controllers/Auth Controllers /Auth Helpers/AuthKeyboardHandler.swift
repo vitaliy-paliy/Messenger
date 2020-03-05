@@ -57,7 +57,7 @@ class AuthKeyboardHandler {
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     // MARK: HIDE KEYBOARD ON TAP
     
-    func hideKeyboardOnTap(){
+    private func hideKeyboardOnTap(){
         let tap = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
@@ -65,7 +65,7 @@ class AuthKeyboardHandler {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    @objc func hideKeyboard(){
+    @objc private func hideKeyboard(){
         view.endEditing(true)
         keyboardIsShown = false
     }

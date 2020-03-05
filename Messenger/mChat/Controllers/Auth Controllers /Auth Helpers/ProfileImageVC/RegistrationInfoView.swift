@@ -32,7 +32,7 @@ class RegistrationInfoView: UIView {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupProfileView() {
+    private func setupProfileView() {
         controller.view.addSubview(profileImage)
         profileImage.translatesAutoresizingMaskIntoConstraints = false
         profileImage.layer.cornerRadius = 75
@@ -49,7 +49,7 @@ class RegistrationInfoView: UIView {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupInfoLabels() {
+    private func setupInfoLabels() {
         let nameLabel = UILabel()
         controller.view.addSubview(nameLabel)
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -73,7 +73,7 @@ class RegistrationInfoView: UIView {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupChangeImageButton(_ emailLabel: UILabel) {
+    private func setupChangeImageButton(_ emailLabel: UILabel) {
         controller.view.addSubview(changeImageButton)
         changeImageButton.frame = CGRect(x: 0, y: 0, width: 200, height: 35)
         changeImageButton.translatesAutoresizingMaskIntoConstraints = false

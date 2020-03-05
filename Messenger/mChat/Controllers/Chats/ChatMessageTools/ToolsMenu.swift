@@ -50,7 +50,7 @@ class ToolsMenu: UIScrollView {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func prepareMenuFrame(){
+    private func prepareMenuFrame(){
         xValue = messageFrame.origin.x
         if !selectedCell.isIncoming, messageFrame.width < 190 {
             xValue = messageFrame.minX - 150
@@ -68,7 +68,7 @@ class ToolsMenu: UIScrollView {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupScrollView(){
+    private func setupScrollView(){
         keyWindow.addSubview(self)
         frame = chatVC.view.frame
         var sHeight: CGFloat
@@ -79,14 +79,14 @@ class ToolsMenu: UIScrollView {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupMessageView(){
+    private func setupMessageView(){
         messageView = MessageView(frame: messageFrame, cell: selectedCell, message: message, friendName: chatVC.friend.name)
         addSubview(messageView)
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupBlurView(){
+    private func setupBlurView(){
         blurView.effect = UIBlurEffect(style: .dark)
         let size = contentSize
         blurView.frame = CGRect(x: 0, y: -400, width: size.width, height: size.height + 1000)
@@ -97,7 +97,7 @@ class ToolsMenu: UIScrollView {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupToolsView(){
+    private func setupToolsView(){
         if message.mediaUrl != nil || message.audioUrl != nil {
             toolsView.frame = CGRect(x: xValue, y: scrollYValue, width: 200, height: 150)
         }else{
@@ -112,7 +112,7 @@ class ToolsMenu: UIScrollView {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func toolMessageAppearance(){
+    private func toolMessageAppearance(){
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             if self.toolsView.frame.maxY > self.keyWindow.frame.maxY && self.noScroll{
                 self.toolsView.frame.origin.y = self.keyWindow.frame.maxY - 220
@@ -126,7 +126,7 @@ class ToolsMenu: UIScrollView {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    @objc func blurViewTapped(){
+    @objc private func blurViewTapped(){
          handleViewDismiss()
     }
 
@@ -170,7 +170,7 @@ class ToolsMenu: UIScrollView {
 
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func animateToolsView(fV: CGFloat, tV: CGFloat) -> CABasicAnimation {
+    private func animateToolsView(fV: CGFloat, tV: CGFloat) -> CABasicAnimation {
         let animation = CABasicAnimation(keyPath: "opacity")
         animation.fromValue = fV
         animation.toValue = tV

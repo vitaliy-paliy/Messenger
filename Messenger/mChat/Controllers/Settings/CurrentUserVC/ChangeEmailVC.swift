@@ -41,7 +41,7 @@ class ChangeEmailVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupUI() {
+    private func setupUI() {
         view.backgroundColor = .white
         navigationItem.title = "Change Email"
         setupInfoLabel()
@@ -52,7 +52,7 @@ class ChangeEmailVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupChangeInfoAnim() {
+    private func setupChangeInfoAnim() {
         view.addSubview(infoAnimView)
         infoAnimView.translatesAutoresizingMaskIntoConstraints = false
         infoAnimView.animation = Animation.named("changeInfo_anim")
@@ -70,7 +70,7 @@ class ChangeEmailVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupInfoLabel() {
+    private func setupInfoLabel() {
         view.addSubview(infoLabel)
         infoLabel.translatesAutoresizingMaskIntoConstraints = false
         infoLabel.text = "Here you can change your email.\nNOTE: \nA valid email must be in this format youremail@email.com."
@@ -89,7 +89,7 @@ class ChangeEmailVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupNewEmailTF() {
+    private func setupNewEmailTF() {
         view.addSubview(newEmailTF)
         newEmailTF.translatesAutoresizingMaskIntoConstraints = false
         setupTF(newEmailTF)
@@ -106,7 +106,7 @@ class ChangeEmailVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupConfirmTF() {
+    private func setupConfirmTF() {
         view.addSubview(confirmNewEmailTF)
         confirmNewEmailTF.translatesAutoresizingMaskIntoConstraints = false
         setupTF(confirmNewEmailTF)
@@ -122,7 +122,7 @@ class ChangeEmailVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupTF(_ textfield: UITextField) {
+    private func setupTF(_ textfield: UITextField) {
         textfield.borderStyle = .none
         textfield.backgroundColor = UIColor(white: 0.95, alpha: 1)
         textfield.layer.cornerRadius = 16
@@ -135,7 +135,7 @@ class ChangeEmailVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupChangeButton() {
+    private func setupChangeButton() {
         view.addSubview(changeButton)
         changeButton.translatesAutoresizingMaskIntoConstraints = false
         let gradient = setupGradientLayer()
@@ -159,7 +159,7 @@ class ChangeEmailVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func hideKeyboardOnTap() {
+    private func hideKeyboardOnTap() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
@@ -167,13 +167,13 @@ class ChangeEmailVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    @objc func hideKeyboard(){
+    @objc private func hideKeyboard(){
         view.endEditing(true)
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func checkTF() -> String?{
+    private func checkTF() -> String?{
         if newEmailTF.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" || confirmNewEmailTF.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
             return "Make sure you fill in all fields."
         }
@@ -190,7 +190,7 @@ class ChangeEmailVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    @objc func changeEmailButtonPressed() {
+    @objc private func changeEmailButtonPressed() {
         if let errorMessage = checkTF() {
             showAlert(title: "Error", message: errorMessage)
             return

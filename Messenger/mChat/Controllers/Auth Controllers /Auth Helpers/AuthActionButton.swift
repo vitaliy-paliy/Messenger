@@ -28,7 +28,7 @@ class AuthActionButton: UIButton {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupContinueButton(_ title: String) {
+    private func setupContinueButton(_ title: String) {
         frame = CGRect(x: 0, y: 0, width: 200, height: 40)
         translatesAutoresizingMaskIntoConstraints = false
         setTitle(title, for: .normal)

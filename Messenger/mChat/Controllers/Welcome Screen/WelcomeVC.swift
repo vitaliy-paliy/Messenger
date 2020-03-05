@@ -39,7 +39,7 @@ class WelcomeVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupCollectionView() {
+    private func setupCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -62,7 +62,7 @@ class WelcomeVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupSkipButton() {
+    private func setupSkipButton() {
         view.addSubview(skipButton)
         skipButton.translatesAutoresizingMaskIntoConstraints = false
         skipButton.setTitle("SKIP", for: .normal)
@@ -78,7 +78,7 @@ class WelcomeVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupPageControl() {
+    private func setupPageControl() {
         view.addSubview(pageControl)
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         pageControl.currentPage = 0
@@ -96,7 +96,7 @@ class WelcomeVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupAnimView() {
+    private func setupAnimView() {
         view.addSubview(slideAnimView)
         slideAnimView.translatesAutoresizingMaskIntoConstraints = false
         slideAnimView.animation = Animation.named("slideInstructions")
@@ -115,7 +115,7 @@ class WelcomeVC: UIViewController {
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     // MARK: SKIP BUTTON PRESSED METHOD
     
-    @objc func skipButtonPressed() {
+    @objc private func skipButtonPressed() {
         let indexPath = IndexPath(item: welcomePages.count - 1, section: 0)
         collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
         pageControl.currentPage = welcomePages.count - 1
@@ -142,7 +142,7 @@ class WelcomeVC: UIViewController {
  
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
  
-    @objc func animateLogo(){
+    @objc private func animateLogo(){
         let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 200, height: 200))
         imageView.center = CGPoint(x: view.center.x, y: view.center.y)
         imageView.image = UIImage(named: "Logo-Light")
@@ -162,7 +162,7 @@ class WelcomeVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    @objc func animateLogoLabel(){
+    @objc private func animateLogoLabel(){
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 100))
         label.center = CGPoint(x: view.center.x, y: view.center.y + 150)
         label.font = UIFont(name: "Alata", size: 48)

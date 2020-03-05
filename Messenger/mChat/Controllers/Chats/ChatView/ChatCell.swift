@@ -265,7 +265,7 @@ class ChatCell: UICollectionViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    @objc func playButtonPressed(){
+    @objc private func playButtonPressed(){
         if let url = URL(string: msg!.videoUrl) {
             videoPlayer = AVPlayer(url: url)
             playerLayer = AVPlayerLayer(player: videoPlayer)
@@ -283,7 +283,7 @@ class ChatCell: UICollectionViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    @objc func pausePlayer() {
+    @objc private func pausePlayer() {
         guard msg?.videoUrl != nil else { return }
         if videoPlayer?.rate != 0 {
             videoPlayer?.pause()
@@ -294,7 +294,7 @@ class ChatCell: UICollectionViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    @objc func playerDidFinishPlaying() {
+    @objc private func playerDidFinishPlaying() {
         activityIndicatorView.stopAnimating()
         playButton.isHidden = false
         playerLayer?.removeFromSuperlayer()
@@ -310,7 +310,7 @@ class ChatCell: UICollectionViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupRepMessageView(_ friendName: String){
+    private func setupRepMessageView(_ friendName: String){
         self.handleRepMessageSetup(friendName)
     }
     
@@ -427,7 +427,7 @@ class ChatCell: UICollectionViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func removeReplyOutlets(){
+    private func removeReplyOutlets(){
         replyMsgTopAnchor.isActive = false
         responseLine.removeFromSuperview()
         responseNameLabel.removeFromSuperview()
@@ -440,7 +440,7 @@ class ChatCell: UICollectionViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupAudioPlayButton(){
+    private func setupAudioPlayButton(){
         audioPlayButton.isEnabled = false
         messageBackground.addSubview(audioPlayButton)
         audioPlayButton.addTarget(self, action: #selector(playAudioButtonPressed), for: .touchUpInside)
@@ -457,7 +457,7 @@ class ChatCell: UICollectionViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupAudioDurationLabel(){
+    private func setupAudioDurationLabel(){
         messageBackground.addSubview(durationLabel)
         durationLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 14)
         durationLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -470,7 +470,7 @@ class ChatCell: UICollectionViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    @objc func playAudioButtonPressed(){
+    @objc private func playAudioButtonPressed(){
         chatVC.handleUserPressedAudioButton(for: self)
     }
     
@@ -490,7 +490,7 @@ class ChatCell: UICollectionViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func timeFrom(seconds : Int) -> (Int, Int) {
+    private func timeFrom(seconds : Int) -> (Int, Int) {
         return ((seconds % 3600) / 60, (seconds % 3600) % 60)
     }
     

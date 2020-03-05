@@ -30,7 +30,7 @@ class SharedMediaVC: UIViewController, UICollectionViewDelegate, UICollectionVie
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func getSharedMedia(){
+    private func getSharedMedia(){
         Database.database().reference().child("messages").child(CurrentUser.uid).child(friend.id).observe(.childAdded) { (snap) in
             guard let values = snap.value as? [String: Any] else { return }
             let sharedMedia = Messages()
@@ -45,7 +45,7 @@ class SharedMediaVC: UIViewController, UICollectionViewDelegate, UICollectionVie
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupEmptyView() {
+    private func setupEmptyView() {
         view.addSubview(emptyLabel)
         emptyLabel.translatesAutoresizingMaskIntoConstraints = false
         emptyLabel.textColor = .gray
@@ -61,7 +61,7 @@ class SharedMediaVC: UIViewController, UICollectionViewDelegate, UICollectionVie
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupCollectionView(){
+    private func setupCollectionView(){
         let layout = UICollectionViewFlowLayout()
         layout.minimumInteritemSpacing = 1
         layout.minimumLineSpacing = 4

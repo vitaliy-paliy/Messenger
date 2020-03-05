@@ -19,7 +19,7 @@ class FriendRequestNetworking {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func loadRequests(completion: @escaping() -> Void) {
+    private func loadRequests(completion: @escaping() -> Void) {
         Database.database().reference().child("friendsList").child("friendRequests").child(CurrentUser.uid).observeSingleEvent(of: .value) { (snap) in
             self.controller.blankLoadingView.isHidden = true
             guard let values = snap.value as? [String:Any] else { return completion() }
@@ -40,7 +40,7 @@ class FriendRequestNetworking {
 
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func fetchUsers() {
+    private func fetchUsers() {
         for key in friendKeys {
             Database.database().reference().child("users").child(key).observeSingleEvent(of: .value) { (snap) in
                 guard let values = snap.value as? [String: Any] else { return }
@@ -56,7 +56,7 @@ class FriendRequestNetworking {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupFriendInfo(for key: String, _ values: [String: Any]){
+    private func setupFriendInfo(for key: String, _ values: [String: Any]){
         var friend = FriendInfo()
         friend.id = key
         friend.email = values["email"] as? String
@@ -90,9 +90,10 @@ class FriendRequestNetworking {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func removeRequestFromDB(_ user: FriendInfo, completion: @escaping () -> Void) {
+    private func removeRequestFromDB(_ user: FriendInfo, completion: @escaping () -> Void) {
         self.groupedUsers.removeValue(forKey: user.id)
         Database.database().reference().child("friendsList").child("friendRequests").child(CurrentUser.uid).child(user.id).child(user.id).removeValue { (error, ref) in
+            Database.database().reference().child("friendsList").child("friendRequests").child(user.id).child(CurrentUser.uid).child(CurrentUser.uid).removeValue()
             return completion()
         }
     }

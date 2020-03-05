@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>NSCameraUsageDescription</key>
-	<string>In order for this app to work, you need to allow access to your camera.</string>
+	<string>mChat will only upload photos and videos you choose.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Alata-Regular.ttf</string>
@@ -11,9 +11,9 @@
 	<key>MGLMapboxAccessToken</key>
 	<string>pk.eyJ1IjoidnBhbGl5IiwiYSI6ImNrNTdiY3A3YzBjNGQza21yMTBhMW13eDcifQ.52_aQWMRYSvJYVIUVxIgAQ</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>It allows you to see your friends on the map</string>
+	<string>Used to share your location with your friends</string>
 	<key>NSMicrophoneUsageDescription</key>
-	<string>It allows you to send audio messages</string>
+	<string>Used to send audio messages.</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>

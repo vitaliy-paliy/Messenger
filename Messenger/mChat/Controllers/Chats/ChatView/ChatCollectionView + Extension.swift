@@ -43,7 +43,6 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ChatCell", for: indexPath) as! ChatCell
-        
         let message = messages[indexPath.row]
         cell.chatVC = self
         cell.message.text = message.message

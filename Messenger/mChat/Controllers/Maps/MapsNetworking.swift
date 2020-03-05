@@ -33,7 +33,7 @@ class MapsNetworking {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func handleFriendLocation(_ friend: FriendInfo, _ coordinate: CLLocationCoordinate2D) {
+    private func handleFriendLocation(_ friend: FriendInfo, _ coordinate: CLLocationCoordinate2D) {
         let friendPin = AnnotationPin(coordinate, friend)
         var annotationToDelete: AnnotationPin!
         let status = self.mapsVC.mapView.annotations?.contains(where: { (annotation) -> Bool in

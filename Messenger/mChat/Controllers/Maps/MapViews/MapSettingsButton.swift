@@ -28,21 +28,17 @@ class MapSettingsButton: UIButton {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupSettingsButton(){
+    private func setupSettingsButton(){
         mapsVC.view.addSubview(self)
         translatesAutoresizingMaskIntoConstraints = false
-        tintColor = .white
+        tintColor = ThemeColors.mainColor
         setBackgroundImage(UIImage(systemName: "gear"), for: .normal)
-        tintColor = .white
-        layer.shadowColor = UIColor.white.cgColor
-        layer.shadowRadius = 10
-        layer.shadowOpacity = 0.3
         addTarget(mapsVC, action: #selector(mapsVC.openMapsSettings), for: .touchUpInside)
         let constraints = [
-            trailingAnchor.constraint(equalTo: mapsVC.view.trailingAnchor, constant: -8),
+            trailingAnchor.constraint(equalTo: mapsVC.view.trailingAnchor, constant: -16),
             topAnchor.constraint(equalTo: mapsVC.view.safeAreaLayoutGuide.topAnchor, constant: 4),
-            widthAnchor.constraint(equalToConstant: 32),
-            heightAnchor.constraint(equalToConstant: 32),
+            widthAnchor.constraint(equalToConstant: 30),
+            heightAnchor.constraint(equalToConstant: 30),
         ]
         NSLayoutConstraint.activate(constraints)
     }

@@ -43,7 +43,7 @@ class MessageContainer: UIView, UITextViewDelegate{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupMessageContainer(){
+    private func setupMessageContainer(){
         setupBackground()
         setupImageClipButton()
         setupSendButton()
@@ -56,7 +56,7 @@ class MessageContainer: UIView, UITextViewDelegate{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupBackground(){
+    private func setupBackground(){
         chatVC.view.addSubview(self)
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = .white
@@ -73,7 +73,7 @@ class MessageContainer: UIView, UITextViewDelegate{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupImageClipButton(){
+    private func setupImageClipButton(){
         clipImageButton.setImage(UIImage(systemName: "paperclip"), for: .normal)
         addSubview(clipImageButton)
         clipImageButton.tintColor = .black
@@ -91,7 +91,7 @@ class MessageContainer: UIView, UITextViewDelegate{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupSendButton(){
+    private func setupSendButton(){
         addSubview(sendButton)
         sendButton.translatesAutoresizingMaskIntoConstraints = false
         sendButton.alpha = 0
@@ -112,7 +112,7 @@ class MessageContainer: UIView, UITextViewDelegate{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupMicrophone(){
+    private func setupMicrophone(){
         addSubview(micButton)
         micButton.translatesAutoresizingMaskIntoConstraints = false
         micButton.setImage(UIImage(systemName: "mic"), for: .normal)
@@ -129,7 +129,7 @@ class MessageContainer: UIView, UITextViewDelegate{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupMessageTF(){
+    private func setupMessageTF(){
         addSubview(messageTV)
         messageTV.layer.cornerRadius = 12
         messageTV.font = UIFont(name: "Helvetica Neue", size: 16)
@@ -161,7 +161,7 @@ class MessageContainer: UIView, UITextViewDelegate{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func recordingAudioAnimation(){
+    private func recordingAudioAnimation(){
         recordingAudioView.isHidden = true
         addSubview(recordingAudioView)
         recordingAudioView.animation = Animation.named("audioWave")
@@ -180,7 +180,7 @@ class MessageContainer: UIView, UITextViewDelegate{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupRecordingLabel(){
+    private func setupRecordingLabel(){
         addSubview(recordingLabel)
         recordingLabel.isHidden = true
         recordingLabel.text = "00:00"
@@ -195,7 +195,7 @@ class MessageContainer: UIView, UITextViewDelegate{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupActionCircle(){
+    private func setupActionCircle(){
         addSubview(actionCircle)
         actionCircle.isHidden = true
         actionCircle.translatesAutoresizingMaskIntoConstraints = false
@@ -228,11 +228,7 @@ extension MessageContainer {
     func textViewDidChange(_ textView: UITextView) {
         chatVC.chatNetworking.isTypingHandler(tV: textView)
         chatVC.animateActionButton()
-        if !messageTV.text.isEmpty {
-            messageTV.subviews[2].isHidden = true
-        }else{
-            messageTV.subviews[2].isHidden = false
-        }
+        messageTV.subviews[2].isHidden = !messageTV.text.isEmpty
         let size = CGSize(width: textView.frame.width, height: 150)
         let estSize = textView.sizeThatFits(size)
         messageTV.constraints.forEach { (constraint) in

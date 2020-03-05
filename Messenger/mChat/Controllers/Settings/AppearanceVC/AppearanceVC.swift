@@ -40,7 +40,7 @@ class AppearanceVC: UIViewController{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupTableView() {
+    private func setupTableView() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self
@@ -62,7 +62,7 @@ class AppearanceVC: UIViewController{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func resetColors() {
+    private func resetColors() {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "AppColors")
         let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)

@@ -126,7 +126,7 @@ class ChatNetworking {
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     // MARK: SEND MEDIA MESSAGE METHOD
     
-    func sendMediaMessage(url: String, _ image: UIImage, _ id: String){
+    private func sendMediaMessage(url: String, _ image: UIImage, _ id: String){
         messageStatus = "Sent"
         let senderRef = Database.database().reference().child("messages").child(CurrentUser.uid).child(friend.id).childByAutoId()
         let friendRef = Database.database().reference().child("messages").child(friend.id).child(CurrentUser.uid).child(senderRef.key!)
@@ -220,7 +220,7 @@ class ChatNetworking {
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
-
+    
     private func countTimeRemaining(_ uploadTask: StorageUploadTask) {
         uploadTask.observe(.progress) { (snap) in
             guard let progress = snap.progress else { return }
@@ -291,7 +291,7 @@ class ChatNetworking {
         }
         task.resume()
     }
- 
+    
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func uploadVideoFile(_ url: URL){
@@ -367,7 +367,7 @@ class ChatNetworking {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func readMessagesHandler(){
+    private func readMessagesHandler(){
         let unreadRef = Database.database().reference().child("messages").child("unread-Messages").child(CurrentUser.uid).child(friend.id)
         unreadRef.observe(.childAdded) { (snap) in
             unreadRef.removeValue()
@@ -379,7 +379,7 @@ class ChatNetworking {
     func removeObserves(){
         Database.database().reference().child("messages").child("unread-Messages").child(CurrentUser.uid).child(friend.id).removeAllObservers()
     }
-     
+    
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func observeUserMessageSeen() {

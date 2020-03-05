@@ -36,19 +36,19 @@ class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, U
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupGradientView() {
+    private func setupGradientView() {
         let _ = GradientLogoView(self, true)
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupRegistrationInfoView(){
+    private func setupRegistrationInfoView(){
         let _ = RegistrationInfoView(frame: view.frame, self, profileImage: profileImage)
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupContinueButton() {
+    private func setupContinueButton() {
         view.addSubview(continueButton)
         continueButton.translatesAutoresizingMaskIntoConstraints = false
         continueButton.setTitle("CONTINUE", for: .normal)
@@ -64,14 +64,14 @@ class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, U
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupBackButton() {
+    private func setupBackButton() {
         let backButton = AuthBackButton(self)
         backButton.addTarget(self, action: #selector(backButtonPressed), for: .touchUpInside)
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    @objc func backButtonPressed() {
+    @objc private func backButtonPressed() {
         dismiss(animated: true, completion: nil)
     }
     
@@ -121,7 +121,7 @@ class SelectProfileImageVC: UIViewController, UIImagePickerControllerDelegate, U
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     // MARK: CONTINUE BUTTON PRESSED METHOD
     
-    @objc func continueButtonPressed(){
+    @objc private func continueButtonPressed(){
         authNetworking = AuthNetworking(self)
         authNetworking.registerUser(name, email, password, profileImage.image) { (error) in
             self.authNetworking.networkingLoadingIndicator.endLoadingAnimation()

@@ -31,7 +31,7 @@ class FriendInformationCell: UITableViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupProfileImage(){
+    private func setupProfileImage(){
         addSubview(profileImage)
         profileImage.translatesAutoresizingMaskIntoConstraints = false
         profileImage.layer.cornerRadius = 35
@@ -47,7 +47,7 @@ class FriendInformationCell: UITableViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupName(){
+    private func setupName(){
         handleLabelSetup(for: nameLabel, -20)
         nameLabel.font = UIFont(name: "Helvetica Neue", size: 18)
         nameLabel.textColor = .black
@@ -55,7 +55,7 @@ class FriendInformationCell: UITableViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupIsOnlineLabel(){
+    private func setupIsOnlineLabel(){
         handleLabelSetup(for: onlineLabel, 0)
         onlineLabel.font = UIFont(name: "Helvetica Neue", size: 16)
         onlineLabel.textColor = .lightGray
@@ -63,7 +63,7 @@ class FriendInformationCell: UITableViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func handleLabelSetup(for label: UILabel, _ const: CGFloat){
+    private func handleLabelSetup(for label: UILabel, _ const: CGFloat){
         addSubview(label)
         label.translatesAutoresizingMaskIntoConstraints = false
         let constraints = [

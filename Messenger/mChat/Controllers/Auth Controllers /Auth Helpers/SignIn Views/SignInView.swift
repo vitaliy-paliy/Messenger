@@ -32,7 +32,7 @@ class SignInView: UIView {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupLoginView() {
+    private func setupLoginView() {
         controller.view.addSubview(self)
         backgroundColor = .white
         translatesAutoresizingMaskIntoConstraints = false
@@ -56,7 +56,7 @@ class SignInView: UIView {
 
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupLoginLabel() {
+    private func setupLoginLabel() {
         let loginLabel = UILabel()
         addSubview(loginLabel)
         loginLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -73,7 +73,7 @@ class SignInView: UIView {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupEmailTextField() {
+    private func setupEmailTextField() {
         addSubview(emailTextField)
         emailTextField.translatesAutoresizingMaskIntoConstraints = false
         emailTextField.placeholder = "EMAIL"
@@ -95,7 +95,7 @@ class SignInView: UIView {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupPasswordTextField() {
+    private func setupPasswordTextField() {
         addSubview(passwordTextField)
         passwordTextField.translatesAutoresizingMaskIntoConstraints = false
         passwordTextField.placeholder = "PASSWORD"
@@ -117,7 +117,7 @@ class SignInView: UIView {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupErrorLabel() {
+    private func setupErrorLabel() {
         addSubview(errorLabel)
         errorLabel.translatesAutoresizingMaskIntoConstraints = false
         errorLabel.textColor = .red

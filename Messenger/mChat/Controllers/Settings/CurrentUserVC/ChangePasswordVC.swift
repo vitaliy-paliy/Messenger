@@ -44,7 +44,7 @@ class ChangePasswordVC: UIViewController{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupUI() {
+    private func setupUI() {
         view.backgroundColor = .white
         navigationItem.title = "Change Password"
         setupInfoLabel()
@@ -55,7 +55,7 @@ class ChangePasswordVC: UIViewController{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupChangeInfoAnim() {
+    private func setupChangeInfoAnim() {
         view.addSubview(infoAnimView)
         infoAnimView.translatesAutoresizingMaskIntoConstraints = false
         infoAnimView.animation = Animation.named("changeInfo_anim")
@@ -73,7 +73,7 @@ class ChangePasswordVC: UIViewController{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupInfoLabel() {
+    private func setupInfoLabel() {
         view.addSubview(infoLabel)
         infoLabel.translatesAutoresizingMaskIntoConstraints = false
         infoLabel.text = "Here you can change your password.\nNOTE: \nA valid password must contain at least 6 characters."
@@ -92,7 +92,7 @@ class ChangePasswordVC: UIViewController{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupOldPasswordTF() {
+    private func setupOldPasswordTF() {
         view.addSubview(oldPasswordTF)
         oldPasswordTF.translatesAutoresizingMaskIntoConstraints = false
         setupTF(oldPasswordTF)
@@ -109,7 +109,7 @@ class ChangePasswordVC: UIViewController{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupNewPasswordTF() {
+    private func setupNewPasswordTF() {
         view.addSubview(newPasswordTF)
         newPasswordTF.translatesAutoresizingMaskIntoConstraints = false
         setupTF(newPasswordTF)
@@ -126,7 +126,7 @@ class ChangePasswordVC: UIViewController{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupConfirmTF() {
+    private func setupConfirmTF() {
         view.addSubview(confirmNewPasswordTF)
         confirmNewPasswordTF.translatesAutoresizingMaskIntoConstraints = false
         setupTF(confirmNewPasswordTF)
@@ -142,7 +142,7 @@ class ChangePasswordVC: UIViewController{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupTF(_ textfield: UITextField) {
+    private func setupTF(_ textfield: UITextField) {
         textfield.borderStyle = .none
         textfield.backgroundColor = UIColor(white: 0.95, alpha: 1)
         textfield.layer.cornerRadius = 16
@@ -156,7 +156,7 @@ class ChangePasswordVC: UIViewController{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupChangeButton() {
+    private func setupChangeButton() {
         view.addSubview(changeButton)
         changeButton.translatesAutoresizingMaskIntoConstraints = false
         let gradient = setupGradientLayer()
@@ -180,7 +180,7 @@ class ChangePasswordVC: UIViewController{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func checkTF() -> String? {
+    private func checkTF() -> String? {
         if oldPasswordTF.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" || newPasswordTF.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" || confirmNewPasswordTF.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" {
             return "Make sure you fill in all fields."
         }
@@ -198,7 +198,7 @@ class ChangePasswordVC: UIViewController{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    @objc func changePasswordButtonPressed() {
+    @objc private func changePasswordButtonPressed() {
         if let errorMessage = checkTF(){
             showAlert(title: "Error", message: errorMessage)
             return
@@ -210,7 +210,7 @@ class ChangePasswordVC: UIViewController{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func hideKeyboardOnTap() {
+    private func hideKeyboardOnTap() {
         let tap = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
         tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
@@ -218,7 +218,7 @@ class ChangePasswordVC: UIViewController{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    @objc func hideKeyboard(){
+    @objc private func hideKeyboard(){
         view.endEditing(true)
     }
     

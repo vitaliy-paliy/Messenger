@@ -31,7 +31,7 @@ class FriendInformationVC: UIViewController, UITableViewDelegate, UITableViewDat
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupTableView(){
+    private func setupTableView(){
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self

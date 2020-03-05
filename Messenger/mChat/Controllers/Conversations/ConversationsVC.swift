@@ -43,7 +43,7 @@ class ConversationsVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupUI(){
+    private func setupUI(){
         setupNewConversationButton()
         setupTableView()
         emptyListView = EmptyListView(nil, self, false)
@@ -53,7 +53,7 @@ class ConversationsVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupTableView() {
+    private func setupTableView() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.rowHeight = 80
@@ -73,7 +73,7 @@ class ConversationsVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupNewConversationButton() {
+    private func setupNewConversationButton() {
         newConversationButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(newConversationTapped))
         newConversationButton.tintColor = .black
         navigationItem.rightBarButtonItem = newConversationButton
@@ -90,7 +90,7 @@ class ConversationsVC: UIViewController {
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     // MARK: LOAD CONVERSATIONS METHOD
     
-    func loadConversations() {
+    private func loadConversations() {
         convNetworking.convVC = self
         convNetworking.observeFriendsList()
     }
@@ -108,7 +108,7 @@ class ConversationsVC: UIViewController {
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     // MARK: HANDLE RELOAD
     
-    func handleReload(_ newMessages: [Messages]) {
+    private func handleReload(_ newMessages: [Messages]) {
         messages = newMessages
         if messages.count != 0 {
             emptyListView.isHidden = true

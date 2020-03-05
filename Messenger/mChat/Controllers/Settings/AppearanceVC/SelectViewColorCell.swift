@@ -29,7 +29,7 @@ class SelectViewColorCell: UITableViewCell, UICollectionViewDelegate, UICollecti
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupCollectionView() {
+    private func setupCollectionView() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 8

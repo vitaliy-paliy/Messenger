@@ -40,7 +40,7 @@ class AuthNetworking {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func nextController(){
+    private func nextController(){
         guard let uid = Auth.auth().currentUser?.uid else { return }
         setupUserInfo(uid) {
             let controller = ChatTabBar()
@@ -110,7 +110,6 @@ class AuthNetworking {
         let usersRef = Database.database().reference().child("users").child(uid)
         usersRef.updateChildValues(values) { (error, dataRef) in
             if let error = error { return completion(error) }
-            print("User was successfuly saved into Firebase DB")
             self.nextController()
         }
     }

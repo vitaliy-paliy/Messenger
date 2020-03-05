@@ -29,7 +29,7 @@ class FriendInformationToolsCell: UITableViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupToolImage(){
+    private func setupToolImage(){
         addSubview(toolImage)
         toolImage.translatesAutoresizingMaskIntoConstraints = false
         let constraints = [
@@ -43,7 +43,7 @@ class FriendInformationToolsCell: UITableViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupToolName(){
+    private func setupToolName(){
         addSubview(toolName)
         toolName.translatesAutoresizingMaskIntoConstraints = false
         toolName.font = UIFont(name: "Helvetica Neue", size: 15)

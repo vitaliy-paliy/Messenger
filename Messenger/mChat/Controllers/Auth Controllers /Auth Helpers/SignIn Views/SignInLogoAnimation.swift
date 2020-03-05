@@ -32,7 +32,7 @@ class SignInLogoAnimation: UIImageView {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupLogoView() {
+    private func setupLogoView() {
         controller.view.addSubview(logoView)
         logoView.backgroundColor = .white
         logoView.translatesAutoresizingMaskIntoConstraints = false
@@ -50,7 +50,7 @@ class SignInLogoAnimation: UIImageView {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupLogo(){
+    private func setupLogo(){
         frame = CGRect(x: 0, y: 0, width: 200, height: 200)
         controller.view.addSubview(self)
         center = CGPoint(x: controller.view.center.x, y: controller.view.center.y)
@@ -62,7 +62,7 @@ class SignInLogoAnimation: UIImageView {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupLogoTransitionView(){
+    private func setupLogoTransitionView(){
         logoTransitionView.frame = controller.view.frame
         let gradient = controller.setupGradientLayer()
         gradient.frame = controller.view.frame
@@ -72,7 +72,7 @@ class SignInLogoAnimation: UIImageView {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupLogoLabel() {
+    private func setupLogoLabel() {
         logoLabel.center = CGPoint(x: controller.view.center.x, y: controller.view.center.y + 150)
         logoLabel.font = UIFont(name: "Alata", size: 48)
         logoLabel.text = "mChat"
@@ -83,7 +83,7 @@ class SignInLogoAnimation: UIImageView {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func animateTransition() {
+    private func animateTransition() {
         setupLogoTransitionView()
         setupLogo()
         setupLogoLabel()
@@ -93,7 +93,7 @@ class SignInLogoAnimation: UIImageView {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    @objc func animateLogo(){
+    @objc private func animateLogo(){
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
             self.layer.cornerRadius = 45
             self.frame.size = CGSize(width: 90, height: 90)

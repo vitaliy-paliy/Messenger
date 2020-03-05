@@ -32,7 +32,7 @@ class LogoVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupLogo(){
+    private func setupLogo(){
         view.addSubview(logoImage)
         logoImage.translatesAutoresizingMaskIntoConstraints = false
         logoImage.image = UIImage(named: "Logo-Light")
@@ -50,7 +50,7 @@ class LogoVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupLogoLabel() {
+    private func setupLogoLabel() {
         view.addSubview(logoLabel)
         logoLabel.translatesAutoresizingMaskIntoConstraints = false
         logoLabel.text = "mChat"
@@ -65,7 +65,7 @@ class LogoVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupAnimationView() {
+    private func setupAnimationView() {
         view.addSubview(animationView)
         animationView.translatesAutoresizingMaskIntoConstraints = false
         animationView.animation = Animation.named("settingUpAnimation")

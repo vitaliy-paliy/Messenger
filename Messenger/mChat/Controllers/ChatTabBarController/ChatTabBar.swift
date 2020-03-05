@@ -75,7 +75,7 @@ class ChatTabBar: UITabBarController{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func frameForTabAtIndex(index: Int) -> CGRect {
+    private func frameForTabAtIndex(index: Int) -> CGRect {
         var frames = tabBar.subviews.compactMap { (view:UIView) -> CGRect? in
             if let view = view as? UIControl {
                 for item in view.subviews {
@@ -96,7 +96,7 @@ class ChatTabBar: UITabBarController{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupVC(){
+    private func setupVC(){
         let chats = UINavigationController(rootViewController: ConversationsVC())
         let contacts = UINavigationController(rootViewController: ContactsVC())
         let settings = UINavigationController(rootViewController: SettingsVC())

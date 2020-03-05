@@ -44,7 +44,7 @@ class FriendRequestVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupEmptyView() {
+    private func setupEmptyView() {
         view.addSubview(emptyLabel)
         emptyLabel.translatesAutoresizingMaskIntoConstraints = false
         emptyLabel.textColor = .gray
@@ -61,7 +61,7 @@ class FriendRequestVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func fetchRequests() {
+    private func fetchRequests() {
         friendRequestNetworking.controller = self
         friendRequestNetworking.setupFriendRequests {
             if self.friendRequestNetworking.friendKeys.count == 0 {
@@ -72,7 +72,7 @@ class FriendRequestVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupTableView() {
+    private func setupTableView() {
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.delegate = self

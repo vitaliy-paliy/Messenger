@@ -50,7 +50,7 @@ class WelcomeCell: UICollectionViewCell {
 
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupTopicImage() {
+    private func setupTopicImage() {
         addSubview(topicImage)
         topicImage.translatesAutoresizingMaskIntoConstraints = false
         topicImage.contentMode = .scaleAspectFill
@@ -67,7 +67,7 @@ class WelcomeCell: UICollectionViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupTopicLabel() {
+    private func setupTopicLabel() {
         addSubview(topicLabel)
         topicLabel.translatesAutoresizingMaskIntoConstraints  = false
         topicLabel.font = UIFont(name: "Alata", size: 28)
@@ -81,7 +81,7 @@ class WelcomeCell: UICollectionViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupDescriptionLabel() {
+    private func setupDescriptionLabel() {
         addSubview(descriptionLabel)
         descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
         descriptionLabel.textColor = .gray

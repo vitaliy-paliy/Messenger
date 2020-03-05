@@ -30,7 +30,7 @@ class ChatColorPickerCell: UITableViewCell, ColorPickerViewDelegate {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupColorPicker() {
+    private func setupColorPicker() {
         addSubview(colorPicker)
         colorPicker.translatesAutoresizingMaskIntoConstraints = false
         colorPicker.colors.append(.white)
@@ -53,7 +53,7 @@ class ChatColorPickerCell: UITableViewCell, ColorPickerViewDelegate {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func updateAppColors(_ color: UIColor) {
+    private func updateAppColors(_ color: UIColor) {
         guard controller.selectedView != nil else { return }
         if controller.selectedView == "Chat Incoming Color" {
             ThemeColors.selectedIncomingColor = color
@@ -81,7 +81,7 @@ class ChatColorPickerCell: UITableViewCell, ColorPickerViewDelegate {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func updateColorsHandler(_ selectedColor: UIColor, _ key: String) {
+    private func updateColorsHandler(_ selectedColor: UIColor, _ key: String) {
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         let entity = NSEntityDescription.entity(forEntityName: "AppColors", in: context)
         let newEntity = NSManagedObject(entity: entity!, insertInto: context)

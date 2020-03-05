@@ -29,7 +29,7 @@ class MessageCollectionView: UICollectionView, UIGestureRecognizerDelegate{
 
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupCollectionView(){
+    private func setupCollectionView(){
         chatVC.view.addSubview(self)
         translatesAutoresizingMaskIntoConstraints = false
         delegate = chatVC
@@ -48,7 +48,7 @@ class MessageCollectionView: UICollectionView, UIGestureRecognizerDelegate{
  
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setuplongPress(){
+    private func setuplongPress(){
         let gesture = UILongPressGestureRecognizer(target: chatVC, action: #selector(chatVC.handleLongPressGesture(longPress:)))
         gesture.delegate = self
         gesture.delaysTouchesBegan = true

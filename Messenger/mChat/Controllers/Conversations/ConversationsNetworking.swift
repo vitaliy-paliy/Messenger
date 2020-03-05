@@ -21,7 +21,7 @@ class ConversationsNetworking {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func observeFriendsList() {
+   func observeFriendsList() {
         convVC.blankLoadingView.isHidden = false
         Database.database().reference().child("friendsList").child(CurrentUser.uid).observeSingleEvent(of: .value) { (snap) in
             for child in snap.children{
@@ -39,14 +39,14 @@ class ConversationsNetworking {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func observeFriendActions(){
+    private func observeFriendActions(){
         observeRemovedFriends()
         observeNewFriends()
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func observeRemovedFriends(){
+    private func observeRemovedFriends(){
         Database.database().reference().child("friendsList").child(CurrentUser.uid).observe(.childRemoved) { (snap) in
             let friendToRemove = snap.key
             var index = 0
@@ -65,7 +65,7 @@ class ConversationsNetworking {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func observeNewFriends(){
+    private func observeNewFriends(){
         Database.database().reference().child("friendsList").child(CurrentUser.uid).observe(.childAdded) { (snap) in
             let friendToAdd = snap.key
             let status = self.friendKeys.contains { (key) -> Bool in
@@ -82,7 +82,7 @@ class ConversationsNetworking {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func removeFriendFromArray(_ friendToRemove: String){
+    private func removeFriendFromArray(_ friendToRemove: String){
         var index = 0
         for friend in friendKeys {
             if friendToRemove == friend {
@@ -94,7 +94,7 @@ class ConversationsNetworking {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func messagesReference(){
+    private func messagesReference(){
         for key in friendKeys {
             Database.database().reference().child("messages").child(CurrentUser.uid).child(key).queryLimited(toLast: 1).observeSingleEvent(of: .value) { (snap) in
                 guard snap.childrenCount > 0 else {
@@ -151,7 +151,7 @@ class ConversationsNetworking {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func loadFriends(_ recent: Messages,completion: @escaping (_ friend: FriendInfo) -> Void){
+    private func loadFriends(_ recent: Messages,completion: @escaping (_ friend: FriendInfo) -> Void){
         let user = recent.determineUser()
         let ref = Database.database().reference().child("users").child(user)
         ref.observe(.value) { (snap) in
@@ -215,7 +215,7 @@ class ConversationsNetworking {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func addValueToBadge() {
+    private func addValueToBadge() {
         for m in self.unreadMessages.values {
             totalUnread += m
         }
@@ -226,7 +226,7 @@ class ConversationsNetworking {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func removeValueFromBadge(_ key: String) {
+    private func removeValueFromBadge(_ key: String) {
         self.totalUnread -= self.unreadMessages[key] ?? 0
         if totalUnread == 0 {
             self.convVC.tabBarBadge.badgeValue = nil

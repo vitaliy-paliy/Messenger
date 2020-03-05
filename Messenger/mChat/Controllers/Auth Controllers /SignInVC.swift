@@ -40,7 +40,7 @@ class SignInVC: UIViewController, UITextFieldDelegate {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupUI(){
+    private func setupUI(){
         view.backgroundColor = .white
         let _ = GradientLogoView(self, false)
         loginView = SignInView(self)
@@ -52,7 +52,7 @@ class SignInVC: UIViewController, UITextFieldDelegate {
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     // MARK: TEXTFIELD VALIDATION
     
-    func validateTF() -> String?{
+    private func validateTF() -> String?{
         if loginView.emailTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == "" || loginView.passwordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) == ""{
             return "Make sure you fill in all fields"
         }
@@ -66,7 +66,7 @@ class SignInVC: UIViewController, UITextFieldDelegate {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupLoginButton() {
+    private func setupLoginButton() {
         loginButton = AuthActionButton("SIGN IN", self)
         view.addSubview(loginButton)
         loginButton.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
@@ -81,7 +81,7 @@ class SignInVC: UIViewController, UITextFieldDelegate {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupSignUpButton() {
+    private func setupSignUpButton() {
         let signUpButton = UIButton(type: .system)
         view.addSubview(signUpButton)
         signUpButton.translatesAutoresizingMaskIntoConstraints = false
@@ -104,7 +104,7 @@ class SignInVC: UIViewController, UITextFieldDelegate {
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     // MARK: ANIMATION TO SIGN UP VIEW
     
-    @objc func signUpButtonPressed() {
+    @objc private func signUpButtonPressed() {
         UIView.animate(withDuration: 0.2, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
             for subview in self.loginView.subviews {
                 subview.alpha = 0
@@ -121,7 +121,7 @@ class SignInVC: UIViewController, UITextFieldDelegate {
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     // MARK: LOGIN METHOD
     
-    @objc func loginButtonPressed() {
+    @objc private func loginButtonPressed() {
         loginView.errorLabel.text = ""
         let validation = validateTF()
         if validation != nil {

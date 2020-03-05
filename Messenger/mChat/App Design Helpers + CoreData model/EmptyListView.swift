@@ -98,7 +98,11 @@ class EmptyListView: UIView{
         emptyButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 14)
         emptyButton.layer.cornerRadius = 16
         emptyButton.layer.masksToBounds = true
-        emptyButton.layer.insertSublayer(setupGradientLayer(), at: 0)
+        let gradient = controller.setupGradientLayer()
+        gradient.frame = CGRect(x: 0, y: 0, width: 200, height: 35)
+        gradient.startPoint = CGPoint(x: 0, y: 1)
+        gradient.endPoint = CGPoint(x: 1, y: 1)
+        emptyButton.layer.insertSublayer(gradient, at: 0)
         let constraints = [
             emptyButton.centerXAnchor.constraint(equalTo: controller.view.centerXAnchor),
             emptyButton.topAnchor.constraint(equalTo: emptyLabel.bottomAnchor, constant: 8),
@@ -106,20 +110,6 @@ class EmptyListView: UIView{
             emptyButton.heightAnchor.constraint(equalToConstant: 35),
         ]
         NSLayoutConstraint.activate(constraints)
-    }
-    
-    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
-    
-    private func setupGradientLayer() -> CAGradientLayer {
-        let gradient = CAGradientLayer()
-        let topColor = UIColor(red: 100/255, green: 90/255, blue: 255/255, alpha: 1).cgColor
-        let bottomColor = UIColor(red: 140/255, green: 135/255, blue: 255/255, alpha: 1).cgColor
-        gradient.colors = [topColor, bottomColor]
-        gradient.locations = [0, 1]
-        gradient.frame = CGRect(x: 0, y: 0, width: 200, height: 35)
-        gradient.startPoint = CGPoint(x: 0, y: 1)
-        gradient.endPoint = CGPoint(x: 1, y: 1)
-        return gradient
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //

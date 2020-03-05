@@ -27,7 +27,7 @@ class ChatViewColorPickerCell: UICollectionViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func setupViewLabel() {
+    private func setupViewLabel() {
         addSubview(viewLabel)
         viewLabel.translatesAutoresizingMaskIntoConstraints = false
         viewLabel.font = UIFont.boldSystemFont(ofSize: 13)
