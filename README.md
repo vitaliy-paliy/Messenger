@@ -1,5 +1,11 @@
-<img src="Messenger/Images/logo_stripe.png" width="900">
+<img src="Messenger/Images/logo_stripe.png" width="900" height="140">
 
+## INFO
+*```mChat``` is a real-time messaging app written in Swift.*
+
+<img src="Messenger/Images/chats.png" width="250" height = "500"> <img src="Messenger/Images/chat1.png" width="250" height = "500"> <img src="Messenger/Images/contacts.png" width="250" height = "500">
+<img src="Messenger/Images/add_friend.png" width="250" height = "500"> <img src="Messenger/Images/map.png" width="250" height = "500"> <img src="Messenger/Images/message_tools.png" width="250" height = "500"> 
+## License
 ```
 Copyright 2020 VITALIY PALIY
 
