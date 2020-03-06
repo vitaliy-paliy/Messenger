@@ -7,9 +7,10 @@
 ### Demo
 
 
-<img src="art/welcomeView.gif" width="422" height="914" > <img src="art/contactsAnim.gif" width="422" height="914">
+<img src="art/welcomeView.gif" height="600" align="left"> <img src="art/contactsAnim.gif" height="600" align="right">
+<img src="art/tabBarAnim.gif" height="600" align="center">
 
-<img src="art/chats.png" width="422" height = "914"> <img src="art/chat1.png" width="422" height = "914">
+<img src="art/chats.png" height="600" align="left"> <img src="art/chat1.png" height="600" align="right"> <img src="art/map.png" height="600" align="center">
 
 ### Functionality
 - Real-time chat
@@ -32,8 +33,7 @@
 
 ### How to install?
 
-<img src="art/tabBarAnim.gif" width="422" height="914"> <img src="art/chat_anim.gif" width="422" height="914">
-<img src="art/add_friend.png" width="422" height = "914"> <img src="art/map.png" width="422" height = "914"> <img src="art/message_tools.png" width="422" height = "914"> <img src="art/contacts.png" width="422" height = "914">
+<img src="art/add_friend.png" height = "600" align="right"> <img src="art/message_tools.png" height = "600" align="left"> <img src="art/contacts.png" height = "600" align="center">
 
 ## License
 ```
