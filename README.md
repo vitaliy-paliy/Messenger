@@ -1,5 +1,5 @@
-# mChat
-IOS - Messenger
+<img src="Messenger/Images/logo_stripe.png" width="900">
+
 ```
 Copyright 2020 VITALIY PALIY
 
