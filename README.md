@@ -6,14 +6,16 @@
 
 ### Demo
 
+<img src="art/welcomeView.gif" width="422" height="914"> <img src="art/contactsAnim.gif" width="422" height="914">
 <img src="art/chats.png" width="422" height = "914"> <img src="art/chat1.png" width="422" height = "914"> <img src="art/contacts.png" width="422" height = "914">
-<img src="art/add_friend.png" width="422" height = "914"> <img src="art/map.png" width="422" height = "914"> <img src="art/message_tools.png" width="422" height = "914"> 
 
 ### Functionality
 
 
 ### How to install?
 
+<img src="art/tabBarAnim.gif" width="422" height="914"> <img src="art/chat_anim.gif" width="422" height="914">
+<img src="art/add_friend.png" width="422" height = "914"> <img src="art/map.png" width="422" height = "914"> <img src="art/message_tools.png" width="422" height = "914"> 
 
 ## License
 ```
