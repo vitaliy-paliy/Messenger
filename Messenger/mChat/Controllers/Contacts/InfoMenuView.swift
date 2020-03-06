@@ -40,7 +40,7 @@ class InfoMenuView: UIView {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    private func setupInfoMenuView() {
+    func setupInfoMenuView() {
         setupInfoBlur()
         let window = UIApplication.shared.windows[0]
         window.addSubview(self)
@@ -59,7 +59,7 @@ class InfoMenuView: UIView {
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     // MARK: START ANIM METHOD
     
-    private func startingAnimationInfoMenu(){
+    func startingAnimationInfoMenu(){
         blurView.layer.add(blurEffectAnim(), forKey: "ExpandBlurView")
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseIn, animations: {
             self.frame = CGRect(x: 40, y: self.contactsVC.view.center.y / 2, width: self.cellFrame.width - 80, height: self.cellFrame.height + 200)
@@ -216,7 +216,7 @@ class InfoMenuView: UIView {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    @objc private func writeMessage() {
+    @objc func writeMessage() {
         let controller = ChatVC()
         controller.modalPresentationStyle = .fullScreen
         controller.friend = friend
@@ -226,7 +226,7 @@ class InfoMenuView: UIView {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    @objc private func openMap() {
+    @objc func openMap() {
         let mapVC = MapsVC()
         mapVC.zoomToSelectedFriend(friend: friend)
         mapVC.modalPresentationStyle = .fullScreen
@@ -236,7 +236,7 @@ class InfoMenuView: UIView {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    @objc private func removeFriend() {
+    @objc func removeFriend() {
         let controller = AddFriendVC()
         controller.modalPresentationStyle = .fullScreen
         controller.user = friend
@@ -246,14 +246,14 @@ class InfoMenuView: UIView {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    @objc private func closeInfoMenuView() {
+    @objc func closeInfoMenuView() {
         closingAnimation()
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     // MARK: CLOSE ANIM METHOD
     
-    private func closingAnimation() {
+    func closingAnimation() {
         blurView.removeFromSuperview()
         stackView.isHidden = true
         infoName.layer.removeAllAnimations()
@@ -272,7 +272,7 @@ class InfoMenuView: UIView {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    private func exitInfoMenuHandler(){
+    func exitInfoMenuHandler(){
         blurView.removeFromSuperview()
         removeFromSuperview()
         cell.isHidden = false
