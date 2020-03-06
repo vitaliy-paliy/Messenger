@@ -6,11 +6,29 @@
 
 ### Demo
 
-<img src="art/welcomeView.gif" width="422" height="914"> <img src="art/contactsAnim.gif" width="422" height="914">
+
+<img src="art/welcomeView.gif" width="422" height="914" > <img src="art/contactsAnim.gif" width="422" height="914">
+
 <img src="art/chats.png" width="422" height = "914"> <img src="art/chat1.png" width="422" height = "914">
 
 ### Functionality
-
+- Real-time chat
+- User online indicator
+- Sending text messages
+- Unlimited length of text messages
+- Sending image messages
+- Sending video messages
+- Sending audio messages
+- Typing indicator
+- Messages status indicator
+- Delete messages
+- Reply to / Forward messages
+- Custom chat design
+- Friend network
+- Locate friends on a map (if they have disabled an anonymous mode)
+- Custom map design
+- Change email / password
+- Change profile image
 
 ### How to install?
 
