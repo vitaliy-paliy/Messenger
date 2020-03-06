@@ -10,6 +10,7 @@ target 'mChat' do
 pod 'Firebase/Auth'
 pod 'Firebase/Database'
 pod 'Firebase/Storage'
+pod 'GTMSessionFetcher'
 pod 'lottie-ios'
 pod 'SkyFloatingLabelTextField'
 pod 'IGColorPicker'

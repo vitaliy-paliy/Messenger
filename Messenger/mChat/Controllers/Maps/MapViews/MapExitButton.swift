@@ -37,8 +37,8 @@ class MapExitButton: UIButton {
         let constraints = [
             leadingAnchor.constraint(equalTo: mapsVC.view.leadingAnchor, constant: 16),
             topAnchor.constraint(equalTo: mapsVC.view.safeAreaLayoutGuide.topAnchor, constant: 4),
-            widthAnchor.constraint(equalToConstant: 25),
-            heightAnchor.constraint(equalToConstant: 25),
+            widthAnchor.constraint(equalToConstant: 30),
+            heightAnchor.constraint(equalToConstant: 30),
         ]
         NSLayoutConstraint.activate(constraints)
     }

@@ -20,7 +20,7 @@ class MapsNetworking {
     
     func observeFriendLocation(){
         for friend in Friends.list {
-            guard friend.isMapLocationEnabled else { return }
+            guard friend.isMapLocationEnabled else { continue }
             Database.database().reference().child("user-Location").child(friend.id).observe(.value) { (snap) in
                 guard let values = snap.value as? [String: Any] else { return }
                 guard let latitude = values["latitude"] as? Double else { return }
@@ -33,7 +33,7 @@ class MapsNetworking {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    private func handleFriendLocation(_ friend: FriendInfo, _ coordinate: CLLocationCoordinate2D) {
+    func handleFriendLocation(_ friend: FriendInfo, _ coordinate: CLLocationCoordinate2D) {
         let friendPin = AnnotationPin(coordinate, friend)
         var annotationToDelete: AnnotationPin!
         let status = self.mapsVC.mapView.annotations?.contains(where: { (annotation) -> Bool in
