@@ -38,7 +38,7 @@
 - Change profile image
 
 ### How to install?
-1. Install CocoaPods -> [URL](https://guides.cocoapods.org/using/getting-started.html)
+1. Install [CocoaPods](https://guides.cocoapods.org/using/getting-started.html)
 2. Open Terminal and run ```pod install``` directly in ```mChat/Messenger``` folder.
 3. In order for Firebase to work, create a new project for your application. -> [URL](https://console.firebase.google.com/u/0/)
 4. Download ```GoogleService-Info.plist``` from your newly created Firebase project and replace it with the old one. [screenshot](https://imgur.com/D4aBcEx)
@@ -60,11 +60,11 @@
 <img src="art/add_friend.png" height = "600" align="right"> <img src="art/message_tools.png" height = "600" align="left"> <img src="art/contacts.png" height = "600" align="center">
 
 ### Credits
-- Firebase -> [website](https://firebase.google.com/)
-- Mapbox -> [website](https://www.mapbox.com/)
-- Lottie -> [git](https://github.com/airbnb/lottie-ios)
-- SkyFloatingLabelTextField -> [git](https://github.com/Skyscanner/SkyFloatingLabelTextField)
-- IGColorPicker -> [git](https://github.com/iGenius-Srl/IGColorPicker)
+- [Firebase](https://firebase.google.com/)
+- [Mapbox](https://www.mapbox.com/)
+- [Lottie](https://github.com/airbnb/lottie-ios)
+- [SkyFloatingLabelTextField](https://github.com/Skyscanner/SkyFloatingLabelTextField)
+- [IGColorPicker](https://github.com/iGenius-Srl/IGColorPicker)
 
 ## License
 ```
