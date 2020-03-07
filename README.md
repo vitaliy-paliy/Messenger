@@ -55,10 +55,16 @@
 ```
 8. Enable your Firebase [Storage](https://firebase.google.com/docs/storage)
 9. For using Mapbox, create a new token -> [here](https://account.mapbox.com/)
-10. Create new key named ```MGLMapboxAccessToken``` in your ```Info.plist``` and insert access token as a value. [More Info](https://docs.mapbox.com/help/how-mapbox-works/access-tokens/#how-access-tokens-work)
+10. Create a new key named ```MGLMapboxAccessToken``` in your ```Info.plist``` and insert access token as a value. [More Info](https://docs.mapbox.com/help/how-mapbox-works/access-tokens/#how-access-tokens-work)
 
 <img src="art/add_friend.png" height = "600" align="right"> <img src="art/message_tools.png" height = "600" align="left"> <img src="art/contacts.png" height = "600" align="center">
 
+### Credits
+- Firebase -> [website](https://firebase.google.com/)
+- Mapbox -> [website](https://www.mapbox.com/)
+- Lottie -> [git](https://github.com/airbnb/lottie-ios)
+- SkyFloatingLabelTextField -> [git](https://github.com/Skyscanner/SkyFloatingLabelTextField)
+- IGColorPicker -> [git](https://github.com/iGenius-Srl/IGColorPicker)
 
 ## License
 ```
