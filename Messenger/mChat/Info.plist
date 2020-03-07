@@ -8,8 +8,6 @@
 	<array>
 		<string>Alata-Regular.ttf</string>
 	</array>
-	<key>MGLMapboxAccessToken</key>
-	<string>pk.eyJ1IjoidnBhbGl5IiwiYSI6ImNrNTdiY3A3YzBjNGQza21yMTBhMW13eDcifQ.52_aQWMRYSvJYVIUVxIgAQ</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Used to share your location with your friends</string>
 	<key>NSMicrophoneUsageDescription</key>
