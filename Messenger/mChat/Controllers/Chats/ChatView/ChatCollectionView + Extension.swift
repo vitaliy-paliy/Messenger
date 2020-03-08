@@ -24,7 +24,7 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         }else if message.audioUrl != nil {
             height = 40
         }
-        return CGSize(width: view.frame.width, height: height)
+        return CGSize(width: collectionView.frame.width, height: height)
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
@@ -46,7 +46,7 @@ extension ChatVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollec
         let message = messages[indexPath.row]
         cell.chatVC = self
         cell.message.text = message.message
-        cell.msg = message        
+        cell.msg = message
         return cell
     }
     

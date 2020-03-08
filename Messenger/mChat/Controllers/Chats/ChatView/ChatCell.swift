@@ -22,6 +22,7 @@ class ChatCell: UICollectionViewCell {
     var outcomingMessage: NSLayoutConstraint!
     var incomingMessage: NSLayoutConstraint!
     var activityLabel = UILabel()
+    var timeLabel = UILabel()
     var playButton = UIButton(type: .system)
     var playerLayer: AVPlayerLayer?
     var videoPlayer: AVPlayer?
@@ -54,9 +55,14 @@ class ChatCell: UICollectionViewCell {
             }else{
                 activityLabel.isHidden = true
             }
+            
+            if let time = msg?.time {
+                let messageDate = NSDate(timeIntervalSince1970: time.doubleValue)
+                timeLabel.text = "⏱ " + chatVC.calendar.calculateTimePassed(date: messageDate).uppercased()
+            }
         }
     }
-        
+    
     var isIncoming: Bool! {
         didSet{
             messageBackground.backgroundColor = isIncoming ?  ThemeColors.selectedIncomingColor  : ThemeColors.selectedOutcomingColor
@@ -84,6 +90,7 @@ class ChatCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.frame = frame
         addSubview(messageBackground)
         setupBackgroundView()
         setupMessage()
@@ -91,6 +98,7 @@ class ChatCell: UICollectionViewCell {
         setupActivityLabel()
         setupPlayButton()
         setupActivityIndicator()
+        setupTimeLabel()
     }
     
     override func prepareForReuse() {
@@ -170,7 +178,7 @@ class ChatCell: UICollectionViewCell {
             backgroundWidthAnchor!,
             messageBackground.bottomAnchor.constraint(equalTo: bottomAnchor)
         ]
-        outcomingMessage = messageBackground.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8)
+        outcomingMessage = messageBackground.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -128)
         incomingMessage = messageBackground.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8)
         outcomingMessage.isActive = true
         NSLayoutConstraint.activate(constraints)
@@ -226,6 +234,22 @@ class ChatCell: UICollectionViewCell {
         let constraints = [
             activityLabel.trailingAnchor.constraint(equalTo: messageBackground.trailingAnchor, constant: -4),
             activityLabel.topAnchor.constraint(equalTo: messageBackground.bottomAnchor, constant: 2),
+        ]
+        NSLayoutConstraint.activate(constraints)
+    }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
+    private func setupTimeLabel() {
+        addSubview(timeLabel)
+        timeLabel.translatesAutoresizingMaskIntoConstraints = false
+        timeLabel.font = UIFont.boldSystemFont(ofSize: 10)
+        timeLabel.textColor = .gray
+//        timeLabel.textAlignment = .right
+        timeLabel.numberOfLines = 0
+        let constraints = [
+            timeLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
+            timeLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ]
         NSLayoutConstraint.activate(constraints)
     }
