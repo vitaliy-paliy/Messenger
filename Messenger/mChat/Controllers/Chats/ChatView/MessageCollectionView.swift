@@ -27,7 +27,7 @@ class MessageCollectionView: UICollectionView, UIGestureRecognizerDelegate{
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     private func setupCollectionView(){
@@ -50,9 +50,9 @@ class MessageCollectionView: UICollectionView, UIGestureRecognizerDelegate{
         let panLeftGesture = UIPanGestureRecognizer(target: self, action: #selector(handleLeftGesture(gesture:)))
         addGestureRecognizer(panLeftGesture)
     }
- 
+    
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
-        
+    
     @objc private func handleLeftGesture(gesture: UIPanGestureRecognizer) {
         let gestureView = gesture.view!
         let translation = gesture.translation(in: chatVC.view)
@@ -81,6 +81,19 @@ class MessageCollectionView: UICollectionView, UIGestureRecognizerDelegate{
         addGestureRecognizer(gesture)
     }
     
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
+    override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
 }
