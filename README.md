@@ -60,9 +60,9 @@
 <img src="art/add_friend.png" height = "600" align="right"> <img src="art/message_tools.png" height = "600" align="left"> <img src="art/contacts.png" height = "600" align="center">
 
 ### New Updates:
-Update 1.1:
-- Updated Chat view.(By scrolling to the left of a view, users can now see time a message was sent.)
-<img src="art/chat_timeLabel.gif" height = "600" align="center">
+Update 1.2:
+- Bug fixes
+- Code refactoring
 
 ### Credits
 - [Firebase](https://firebase.google.com/)
