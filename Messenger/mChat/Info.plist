@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>MGLMapboxAccessToken</key>
-	<string>pk.eyJ1IjoidnBhbGl5IiwiYSI6ImNrNTdiZjI2OTAxbGwzam82bnkzNDQ5dXgifQ.jWbyysn62oHqzb2yXdINBg</string>
 	<key>NSCameraUsageDescription</key>
 	<string>mChat will only upload photos and videos you choose.</string>
 	<key>UIAppFonts</key>
@@ -33,9 +31,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>This allows you to pick an image from photo library</string>
+	<string>It allows you to pick an image from photo library</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This allows you to use images from your photo library</string>
+	<string>It allows you to send images from your photo library</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
