@@ -13,7 +13,7 @@ class SelectViewColorCell: UITableViewCell, UICollectionViewDelegate, UICollecti
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     var collectionView: UICollectionView!
-    var colorViews = ["Chat Incoming Color", "Chat Outcoming Color", "Chat Background Color", "Text Incoming Color", "Text Outcoming Color"]
+    let colorViews = ["Chat Incoming Color", "Chat Outcoming Color", "Chat Background Color", "Text Incoming Color", "Text Outcoming Color"]
     var controller: AppearanceVC!
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //

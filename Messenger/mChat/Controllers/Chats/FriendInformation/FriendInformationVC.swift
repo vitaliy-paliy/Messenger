@@ -15,10 +15,10 @@ class FriendInformationVC: UIViewController, UITableViewDelegate, UITableViewDat
     
     let calendar = Calendar(identifier: .gregorian)
     var friend: FriendInfo!
-    var tableView = UITableView()
+    let tableView = UITableView()
     
-    var tools = ["Send Message", "Shared Media", "Open Maps"]
-    var toolsImages = ["message_icon", "image_icon","map_icon"]
+    let tools = ["Send Message", "Shared Media", "Open Maps"]
+    let toolsImages = ["message_icon", "image_icon","map_icon"]
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     

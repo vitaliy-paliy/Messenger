@@ -17,12 +17,12 @@ class MessageContainer: UIView, UITextViewDelegate{
     var bottomAnchr = NSLayoutConstraint()
     var heightAnchr = NSLayoutConstraint()
     let clipImageButton = UIButton(type: .system)
-    var sendButton = UIButton(type: .system)
-    var micButton = UIButton(type: .system)
-    var messageTV = UITextView()
-    var recordingAudioView = AnimationView()
-    var recordingLabel = UILabel()
-    var actionCircle = UIView()
+    let sendButton = UIButton(type: .system)
+    let micButton = UIButton(type: .system)
+    let messageTV = UITextView()
+    let recordingAudioView = AnimationView()
+    let recordingLabel = UILabel()
+    let actionCircle = UIView()
     var height: CGFloat!
     var const: CGFloat!
     var chatVC: ChatVC!

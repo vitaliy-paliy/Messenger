@@ -12,10 +12,10 @@ class ContactsCell: UITableViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    var profileImage = UIImageView()
-    var friendName = UILabel()
-    var friendEmail = UILabel()
-    var isOnlineView = UIView()
+    let profileImage = UIImageView()
+    let friendName = UILabel()
+    let friendEmail = UILabel()
+    let isOnlineView = UIView()
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     

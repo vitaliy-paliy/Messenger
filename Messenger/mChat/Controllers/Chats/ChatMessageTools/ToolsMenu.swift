@@ -19,9 +19,9 @@ class ToolsMenu: UIScrollView {
     var keyWindow: UIWindow!
     var messageFrame: CGRect!
     var cellFrame: CGRect!
-    var blurView = UIVisualEffectView()
+    let blurView = UIVisualEffectView()
     var messageView: MessageView!
-    var toolsView = UIView()
+    let toolsView = UIView()
     var xValue: CGFloat!
     var scrollYValue: CGFloat!
     var noScroll: Bool!

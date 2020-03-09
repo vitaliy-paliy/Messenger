@@ -12,9 +12,9 @@ class UsersListCell: UITableViewCell {
 
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    var profileImage = UIImageView()
-    var userName = UILabel()
-    var userEmail = UILabel()
+    let profileImage = UIImageView()
+    let userName = UILabel()
+    let userEmail = UILabel()
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //s
     

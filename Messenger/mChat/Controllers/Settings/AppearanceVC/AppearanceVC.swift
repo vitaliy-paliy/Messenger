@@ -14,7 +14,7 @@ class AppearanceVC: UIViewController{
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     // Here user can change the appearance of a chat.
     
-    var tableView = UITableView()
+    let tableView = UITableView()
     var chatBubblesAppearence = ChatBubblesAppearanceCell()
     var selectedView: String!
     

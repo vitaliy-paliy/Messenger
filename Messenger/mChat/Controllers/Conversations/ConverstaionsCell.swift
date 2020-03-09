@@ -14,16 +14,16 @@ class ConversationsCell: UITableViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    var profileImage = UIImageView()
-    var friendName = UILabel()
-    var recentMessage = UILabel()
-    var timeLabel = UILabel()
-    var isOnlineView = UIView()
-    var isTypingView = UIView()
+    let profileImage = UIImageView()
+    let friendName = UILabel()
+    let recentMessage = UILabel()
+    let timeLabel = UILabel()
+    let isOnlineView = UIView()
+    let isTypingView = UIView()
     let typingAnimation = AnimationView()
-    var unreadMessageView = UIView()
-    var unreadLabel = UILabel()
-    var checkmark = UIImageView()
+    let unreadMessageView = UIView()
+    let unreadLabel = UILabel()
+    let checkmark = UIImageView()
     var convVC: ConversationsVC!
     
     var message: Messages? {

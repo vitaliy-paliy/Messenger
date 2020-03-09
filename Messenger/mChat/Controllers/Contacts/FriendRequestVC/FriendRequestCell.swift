@@ -13,9 +13,9 @@ class FriendRequestCell: UITableViewCell {
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     var controller: FriendRequestVC!
-    var nameLabel = UILabel()
-    var emailLabel = UILabel()
-    var profileImage = UIImageView()
+    let nameLabel = UILabel()
+    let emailLabel = UILabel()
+    let profileImage = UIImageView()
     let acceptButton = UIButton(type: .system)
     let declineButton = UIButton(type: .system)
     

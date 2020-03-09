@@ -14,9 +14,9 @@ class ChatTabBar: UITabBarController{
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     var itemBackgroundView = UIView()
-    var contactsImage = UIImage(systemName: "person.fill")
-    var chatsImage = UIImage(systemName: "message.fill")
-    var settingsImage = UIImage(systemName: "gear")
+    let contactsImage = UIImage(systemName: "person.fill")
+    let chatsImage = UIImage(systemName: "message.fill")
+    let settingsImage = UIImage(systemName: "gear")
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     

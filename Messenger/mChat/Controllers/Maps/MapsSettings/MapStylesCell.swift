@@ -17,9 +17,9 @@ class MapStylesCell: UITableViewCell, UICollectionViewDelegate, UICollectionView
     
     var mapStyles = [MapStyles]()
     
-    var mapStyleImages = ["Streets Style","Light Style","Dark Style","Satellite Style","Satellite Light Style","Satellite Dark Style"]
+    let mapStyleImages = ["Streets Style","Light Style","Dark Style","Satellite Style","Satellite Light Style","Satellite Dark Style"]
     
-    var mapUrls = [
+    let mapUrls = [
         "Streets Style":"mapbox://styles/mapbox/streets-v11",
         "Light Style":"mapbox://styles/mapbox/light-v10",
         "Dark Style":"mapbox://styles/mapbox/dark-v10",

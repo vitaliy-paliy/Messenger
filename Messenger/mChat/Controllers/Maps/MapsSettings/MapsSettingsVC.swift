@@ -13,7 +13,7 @@ class MapsSettingsVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    var tableView = UITableView()
+    let tableView = UITableView()
     var isMapOpened = false
     var mapsVC: MapsVC?
     

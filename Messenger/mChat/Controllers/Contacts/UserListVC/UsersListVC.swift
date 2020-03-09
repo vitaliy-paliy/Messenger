@@ -14,9 +14,9 @@ class UsersListVC: UIViewController {
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     var users = [FriendInfo]()
-    var userListNetworking = UserListNetworking()
-    var tableView = UITableView()
-    var blankLoadingView = AnimationView(animation: Animation.named("blankLoadingAnim"))
+    let userListNetworking = UserListNetworking()
+    let tableView = UITableView()
+    let blankLoadingView = AnimationView(animation: Animation.named("blankLoadingAnim"))
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     

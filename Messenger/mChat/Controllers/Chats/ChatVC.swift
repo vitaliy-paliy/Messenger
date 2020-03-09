@@ -27,7 +27,7 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     var collectionView: MessageCollectionView!
     var messageContainer: MessageContainer!
     var refreshIndicator: MessageLoadingIndicator!
-    var blankLoadingView = AnimationView(animation: Animation.named("chatLoadingAnim"))
+    let blankLoadingView = AnimationView(animation: Animation.named("chatLoadingAnim"))
         
     let calendar = Calendar(identifier: .gregorian)
     
@@ -235,7 +235,6 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
                 return
             }
             self.chatNetworking.scrollToIndex = newMessages
-            self.chatNetworking.timer.invalidate()
             self.refreshIndicator.startAnimating()
             if order {
                 self.refreshIndicator.order = order
@@ -429,7 +428,7 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     
     private func observeFriendTyping(){
         chatNetworking.observeIsUserTyping() { (friendActivity) in
-            if friendActivity.friendId == self.friend.id && friendActivity.isTyping {
+            if friendActivity.friendId == self.friend.id && friendActivity.isTyping ?? false {
                 self.navigationItem.setupTypingNavTitle(navTitle: self.friend.name)
             }else{
                 self.setupChatNavBar()

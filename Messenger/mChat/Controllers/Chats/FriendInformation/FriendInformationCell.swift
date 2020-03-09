@@ -12,9 +12,9 @@ class FriendInformationCell: UITableViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    var nameLabel = UILabel()
-    var onlineLabel = UILabel()
-    var profileImage = UIImageView()
+    let nameLabel = UILabel()
+    let onlineLabel = UILabel()
+    let profileImage = UIImageView()
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     

@@ -12,9 +12,9 @@ class ProfileCell: UITableViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    var profileImage = UIImageView()
-    var nameLabel = UILabel()
-    var emailLabel = UILabel()
+    let profileImage = UIImageView()
+    let nameLabel = UILabel()
+    let emailLabel = UILabel()
     let darkBackground = UIView()
     var settingsVC: SettingsVC!
     

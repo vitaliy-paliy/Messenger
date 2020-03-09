@@ -20,7 +20,6 @@ class ChatNetworking {
     var lastMessageReached = false
     var messageStatus = "Sent"
     var scrollToIndex = [Messages]()
-    var timer = Timer()
     var isUserTyping = false
     var chatVC: ChatVC!
     

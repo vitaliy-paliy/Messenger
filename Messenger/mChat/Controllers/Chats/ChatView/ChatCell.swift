@@ -12,24 +12,24 @@ class ChatCell: UICollectionViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    var message = UILabel()
-    var messageBackground = UIView()
-    var mediaMessage = UIImageView()
+    let message = UILabel()
+    let messageBackground = UIView()
+    let mediaMessage = UIImageView()
     var chatVC: ChatVC!
     var msgTopAnchor: NSLayoutConstraint!
     var replyMsgTopAnchor: NSLayoutConstraint!
     var backgroundWidthAnchor: NSLayoutConstraint!
     var outcomingMessage: NSLayoutConstraint!
     var incomingMessage: NSLayoutConstraint!
-    var activityLabel = UILabel()
-    var timeLabel = UILabel()
-    var playButton = UIButton(type: .system)
+    let activityLabel = UILabel()
+    let timeLabel = UILabel()
+    let playButton = UIButton(type: .system)
     var playerLayer: AVPlayerLayer?
     var videoPlayer: AVPlayer?
     var activityIndicatorView = UIActivityIndicatorView(style: .large)
     
-    var audioPlayButton = UIButton(type: .system)
-    var durationLabel = UILabel()
+    let audioPlayButton = UIButton(type: .system)
+    let durationLabel = UILabel()
     var audioPlayer: AVAudioPlayer!
     var timer: Timer!
     

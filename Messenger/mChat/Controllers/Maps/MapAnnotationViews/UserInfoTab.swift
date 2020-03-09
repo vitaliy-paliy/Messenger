@@ -13,12 +13,12 @@ class UserInfoTab: UIView{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    var mapsVC = MapsVC()
+    let mapsVC = MapsVC()
     var pin: AnnotationPin!
-    var profileImage = UIImageView()
-    var nameLabel = UILabel()
-    var lastSeenLabel = UILabel()
-    var actionButton = UIButton()
+    let profileImage = UIImageView()
+    let nameLabel = UILabel()
+    let lastSeenLabel = UILabel()
+    let actionButton = UIButton()
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     

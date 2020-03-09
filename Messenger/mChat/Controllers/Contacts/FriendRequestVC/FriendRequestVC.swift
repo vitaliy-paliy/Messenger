@@ -15,9 +15,9 @@ class FriendRequestVC: UIViewController {
     
     let tableView = UITableView()
     var friendRequests = [FriendInfo]()
-    var friendRequestNetworking = FriendRequestNetworking()
-    var blankLoadingView = AnimationView(animation: Animation.named("blankLoadingAnim"))
-    var emptyLabel = UILabel()
+    let friendRequestNetworking = FriendRequestNetworking()
+    let blankLoadingView = AnimationView(animation: Animation.named("blankLoadingAnim"))
+    let emptyLabel = UILabel()
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     

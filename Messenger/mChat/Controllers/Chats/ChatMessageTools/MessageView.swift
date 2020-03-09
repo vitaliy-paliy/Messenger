@@ -23,8 +23,8 @@ class MessageView: UIView{
     let responseTextMessage = UILabel()
     let responseMediaMessage = UIImageView()
     var responseAudioLabel = UILabel()
-    var audioPlayButton = UIButton(type: .system)
-    var durationLabel = UILabel()
+    let audioPlayButton = UIButton(type: .system)
+    let durationLabel = UILabel()
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     

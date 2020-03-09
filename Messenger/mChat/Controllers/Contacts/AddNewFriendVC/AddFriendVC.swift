@@ -15,7 +15,7 @@ class AddFriendVC: UIViewController{
     
     var user: FriendInfo!
     var addButton: UIButton!
-    var addFriendNetworking = AddFriendNetworking()
+    let addFriendNetworking = AddFriendNetworking()
     var loadingIndicator: UIActivityIndicatorView!
     var greenGradientLayer: CALayer!
     var redGradientLayer: CALayer!

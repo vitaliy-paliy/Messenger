@@ -13,8 +13,7 @@ class NewConversationVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    var tableView = UITableView()
-    var timer = Timer()
+    let tableView = UITableView()
     var forwardDelegate: ChatVC!
     var conversationDelegate: ConversationsVC!
     var forwardName: String?

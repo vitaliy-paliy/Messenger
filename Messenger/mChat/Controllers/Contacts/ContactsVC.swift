@@ -14,13 +14,13 @@ class ContactsVC: UIViewController {
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     // CONTACTS VC - USER'S FRIENDS LIST IS LOCATED HERE.
     
-    var contactsNetworking = ContactsNetworking()
-    var tableView = UITableView()
-    var blurView = UIVisualEffectView()
+    let contactsNetworking = ContactsNetworking()
+    let tableView = UITableView()
+    let blurView = UIVisualEffectView()
     var infoMenuView: InfoMenuView!
     var tabBarBadge: UITabBarItem!
     var requestButtonView: RequestButtonView!
-    var blankLoadingView = AnimationView(animation: Animation.named("blankLoadingAnim"))
+    let blankLoadingView = AnimationView(animation: Animation.named("blankLoadingAnim"))
     var emptyListView: EmptyListView!
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //

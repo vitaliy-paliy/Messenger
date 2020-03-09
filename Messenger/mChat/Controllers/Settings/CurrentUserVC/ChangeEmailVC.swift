@@ -13,12 +13,12 @@ class ChangeEmailVC: UIViewController {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    var infoAnimView = AnimationView()
-    var currentUserNetworking = CurrentUserNetworking()
-    var newEmailTF = UITextField()
-    var confirmNewEmailTF = UITextField()
-    var infoLabel = UILabel()
-    var changeButton = UIButton(type: .system)
+    let infoAnimView = AnimationView()
+    let currentUserNetworking = CurrentUserNetworking()
+    let newEmailTF = UITextField()
+    let confirmNewEmailTF = UITextField()
+    let infoLabel = UILabel()
+    let changeButton = UIButton(type: .system)
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     

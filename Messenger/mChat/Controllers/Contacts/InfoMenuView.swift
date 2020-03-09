@@ -17,11 +17,11 @@ class InfoMenuView: UIView {
     var cellFrame: CGRect!
     var friend: FriendInfo!
     var contactsVC: ContactsVC!
-    var infoImage = UIImageView()
-    var infoName = UILabel()
-    var infoEmail = UILabel()
-    var blurView = UIVisualEffectView()
-    var stackView = UIStackView()
+    let infoImage = UIImageView()
+    let infoName = UILabel()
+    let infoEmail = UILabel()
+    let blurView = UIVisualEffectView()
+    let stackView = UIStackView()
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     

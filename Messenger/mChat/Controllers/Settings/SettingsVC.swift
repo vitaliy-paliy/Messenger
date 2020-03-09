@@ -12,11 +12,11 @@ class SettingsVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    var logoutButton = UIButton(type: .system)
-    var tableView = UITableView()
+    let logoutButton = UIButton(type: .system)
+    let tableView = UITableView()
     
-    var settingsItems = ["Appearance", "Maps"]
-    var settingsImages = ["paint_icon","map_icon"]
+    let settingsItems = ["Appearance", "Maps"]
+    let settingsImages = ["paint_icon","map_icon"]
     
     var settingsNetworking: SettingsNetworking!
     

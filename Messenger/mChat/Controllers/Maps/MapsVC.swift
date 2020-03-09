@@ -14,13 +14,13 @@ class MapsVC: UIViewController, UIGestureRecognizerDelegate{
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     // MapsVC is responsible for showing location of users' friends. (If their incognito mode is set to off.)
     
-    var mapNetworking = MapsNetworking()
+    let mapNetworking = MapsNetworking()
     var isFriendSelected = false
     var selectedFriend = FriendInfo()
     var friendCoordinates = [String: CLLocationCoordinate2D]()
     
     var userInfoTab: UserInfoTab?
-    var mapView = MGLMapView()
+    let mapView = MGLMapView()
     var exitButton: MapExitButton!
     var settingsButton: MapSettingsButton!
     

@@ -17,11 +17,11 @@ class ChangePasswordVC: UIViewController{
     var infoAnimView = AnimationView()
     var infoLabel = UILabel()
     
-    var oldPasswordTF = UITextField()
-    var newPasswordTF = UITextField()
-    var confirmNewPasswordTF = UITextField()
-    var changeButton = UIButton(type: .system)
-    var currentUserNetworking = CurrentUserNetworking()
+    let oldPasswordTF = UITextField()
+    let newPasswordTF = UITextField()
+    let confirmNewPasswordTF = UITextField()
+    let changeButton = UIButton(type: .system)
+    let currentUserNetworking = CurrentUserNetworking()
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     

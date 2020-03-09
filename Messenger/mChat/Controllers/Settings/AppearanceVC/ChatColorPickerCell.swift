@@ -14,7 +14,7 @@ class ChatColorPickerCell: UITableViewCell, ColorPickerViewDelegate {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    var colorPicker = ColorPickerView()
+    let colorPicker = ColorPickerView()
     var controller: AppearanceVC!
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //

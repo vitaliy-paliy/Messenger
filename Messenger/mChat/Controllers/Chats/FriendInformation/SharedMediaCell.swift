@@ -13,8 +13,8 @@ class SharedMediaCell: UICollectionViewCell {
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     var sharedMediaVC = SharedMediaVC()
-    var imageView = UIImageView()
-    var playButton = UIButton(type: .system)
+    let imageView = UIImageView()
+    let playButton = UIButton(type: .system)
     var message: Messages!
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //

@@ -26,6 +26,7 @@ struct FriendInfo {
     var lastLogin: NSNumber!
     
     var isMapLocationEnabled: Bool!
+        
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
@@ -44,9 +45,9 @@ class Friends {
 
 struct FriendActivity{
     
-    var isTyping: Bool!
+    let isTyping: Bool?
     
-    var friendId: String!
+    let friendId: String?
     
     init(isTyping: Bool, friendId: String) {
         

@@ -14,13 +14,13 @@ class ConversationsVC: UIViewController {
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     // ConversationVC is responsible for showing recent messages from user's friends and their actions. (If user and his/her friend haven't had a conversation, then friend's cell in tableView won't be visible. )
     
-    var convNetworking = ConversationsNetworking()
+    let convNetworking = ConversationsNetworking()
     var messages = [Messages]()
-    var tableView = UITableView()
+    let tableView = UITableView()
     let calendar = Calendar(identifier: .gregorian)
     var newConversationButton = UIBarButtonItem()
     var tabBarBadge: UITabBarItem!
-    var blankLoadingView = AnimationView(animation: Animation.named("blankLoadingAnim"))
+    let blankLoadingView = AnimationView(animation: Animation.named("blankLoadingAnim"))
     var emptyListView: EmptyListView!
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //

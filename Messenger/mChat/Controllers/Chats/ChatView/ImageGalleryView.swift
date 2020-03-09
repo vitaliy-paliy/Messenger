@@ -17,7 +17,7 @@ class SelectedImageView: UIScrollView, UIScrollViewDelegate{
     var sharedMediaVC: SharedMediaVC?
     var cellImage: UIImageView!
     var cellFrame: CGRect!
-    var imageView = UIImageView()
+    let imageView = UIImageView()
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     

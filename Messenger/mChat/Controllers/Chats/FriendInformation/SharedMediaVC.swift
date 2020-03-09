@@ -16,7 +16,7 @@ class SharedMediaVC: UIViewController, UICollectionViewDelegate, UICollectionVie
     var friend: FriendInfo!
     var sharedMedia = [Messages]()
     var collectionView: UICollectionView!
-    var emptyLabel = UILabel()
+    let emptyLabel = UILabel()
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     

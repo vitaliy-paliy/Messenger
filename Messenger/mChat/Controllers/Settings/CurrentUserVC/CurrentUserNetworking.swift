@@ -15,7 +15,7 @@ class CurrentUserNetworking {
     
     var changePasswordVC: ChangePasswordVC!
     var changeEmailVC: ChangeEmailVC!
-    var networkingLoadingIndicator = NetworkingLoadingIndicator()
+    let networkingLoadingIndicator = NetworkingLoadingIndicator()
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     

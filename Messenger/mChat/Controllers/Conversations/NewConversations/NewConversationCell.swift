@@ -12,9 +12,9 @@ class NewConversationCell: UITableViewCell {
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    var profileImage = UIImageView()
-    var friendName = UILabel()
-    var friendEmail = UILabel()
+    let profileImage = UIImageView()
+    let friendName = UILabel()
+    let friendEmail = UILabel()
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
