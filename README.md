@@ -71,6 +71,8 @@ Update 1.2:
 - [SkyFloatingLabelTextField](https://github.com/Skyscanner/SkyFloatingLabelTextField)
 - [IGColorPicker](https://github.com/iGenius-Srl/IGColorPicker)
 
+<img src="https://imgur.com/FSq00Fh.png" height = "600" align="right"> <img src="https://imgur.com/dMZi5Fg.png" height = "600" align="center"> <img src="https://imgur.com/U8SfZIB.png" height = "600" align="left">
+
 ## License
 ```
 Copyright 2020 VITALIY PALIY
