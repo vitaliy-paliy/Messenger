@@ -10,7 +10,7 @@
 <img src="art/welcomeView.gif" height="600" align="left"> <img src="art/contactsAnim.gif" height="600" align="right">
 <img src="art/tabBarAnim.gif" height="600" align="center">
 
-<img src="art/chats.png" height="600" align="left"> <img src="art/chat1.png" height="600" align="right"> <img src="art/map.png" height="600" align="center">
+<img src="https://imgur.com/iD5YKDT.png" height="600" align="left"> <img src="https://imgur.com/wBU0ZrJ.png" height="600" align="right"> <img src="https://imgur.com/XFF7nG7.png" height="600" align="center">
 
 ### Requirements
 - Xcode version 11.2.1+
