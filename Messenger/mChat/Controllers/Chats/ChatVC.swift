@@ -28,7 +28,7 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     var messageContainer: MessageContainer!
     var refreshIndicator: MessageLoadingIndicator!
     let blankLoadingView = AnimationView(animation: Animation.named("chatLoadingAnim"))
-        
+    
     let calendar = Calendar(identifier: .gregorian)
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
@@ -307,8 +307,10 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     // MARK: ZOOM IMAGE METHOD
     
     func zoomImageHandler(image: UIImageView) {
-        view.endEditing(true)
-        let _ = SelectedImageView(image, self)
+        if !collectionView.isLongPress {
+            view.endEditing(true)
+            let _ = SelectedImageView(image, self)
+        }
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
@@ -449,6 +451,7 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     
     @objc func handleLongPressGesture(longPress: UILongPressGestureRecognizer){
         if longPress.state != UIGestureRecognizer.State.began { return }
+        collectionView.isLongPress = true
         let point = longPress.location(in: collectionView)
         guard let indexPath = collectionView.indexPathForItem(at: point) else { return }
         guard let cell = collectionView.cellForItem(at: indexPath) as? ChatCell else { return }
@@ -602,5 +605,5 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
-    
+        
 }

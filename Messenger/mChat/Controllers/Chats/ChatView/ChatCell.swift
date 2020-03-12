@@ -245,7 +245,6 @@ class ChatCell: UICollectionViewCell {
         timeLabel.translatesAutoresizingMaskIntoConstraints = false
         timeLabel.font = UIFont.boldSystemFont(ofSize: 10)
         timeLabel.textColor = .gray
-//        timeLabel.textAlignment = .right
         timeLabel.numberOfLines = 0
         let constraints = [
             timeLabel.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -380,6 +379,7 @@ class ChatCell: UICollectionViewCell {
     private func setupReplyName(name: String){
         responseNameLabel.text = name
         responseNameLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 16)
+        responseNameLabel.adjustsFontSizeToFitWidth = true
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
@@ -424,6 +424,7 @@ class ChatCell: UICollectionViewCell {
             replyMediaLabel.centerYAnchor.constraint(equalTo: responseMediaMessage.centerYAnchor, constant: 8),
             replyMediaLabel.leadingAnchor.constraint(equalTo: responseMediaMessage.trailingAnchor, constant: 4),
             responseNameLabel.leadingAnchor.constraint(equalTo: responseMediaMessage.trailingAnchor, constant: 4),
+            responseNameLabel.trailingAnchor.constraint(equalTo: messageBackground.trailingAnchor, constant: -8),
             responseNameLabel.centerYAnchor.constraint(equalTo: responseMediaMessage.centerYAnchor, constant: -8),
         ]
         NSLayoutConstraint.activate(constraints)

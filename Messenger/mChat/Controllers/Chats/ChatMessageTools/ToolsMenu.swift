@@ -159,6 +159,7 @@ class ToolsMenu: UIScrollView {
             self.selectedCell.isHidden = false
             self.messageView.removeFromSuperview()
             self.toolsView.removeFromSuperview()
+            self.chatVC.collectionView.isLongPress = false
             if isReply != nil{
                 self.chatVC.responseButtonPressed(self.message)
             }

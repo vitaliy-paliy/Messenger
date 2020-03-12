@@ -14,6 +14,7 @@ class MessageCollectionView: UICollectionView, UIGestureRecognizerDelegate{
     
     var chatVC: ChatVC!
     var collectionViewOrigin: CGPoint!
+    var isLongPress = false
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
@@ -87,9 +88,9 @@ class MessageCollectionView: UICollectionView, UIGestureRecognizerDelegate{
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
-    
+
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
-    
+
     override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }

@@ -126,7 +126,7 @@ extension ChatVC {
         let constraints = [
             userResponse.messageLabel.leadingAnchor.constraint(equalTo: userResponse.lineView.trailingAnchor, constant: 8),
             userResponse.messageLabel.trailingAnchor.constraint(equalTo: userResponse.exitButton.trailingAnchor, constant: -16),
-            userResponse.messageLabel.topAnchor.constraint(equalTo: userResponse.nameLabel.bottomAnchor, constant: 2),
+            userResponse.messageLabel.topAnchor.constraint(equalTo: userResponse.nameLabel.bottomAnchor),
             userResponse.messageLabel.bottomAnchor.constraint(equalTo: messageContainer.messageTV.topAnchor, constant: -16)
         ]
         NSLayoutConstraint.activate(constraints)

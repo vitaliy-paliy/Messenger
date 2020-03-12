@@ -137,6 +137,7 @@ class MessageView: UIView{
         responseNameLabel.text = name
         responseNameLabel.textColor = cell.responseNameLabel.textColor
         responseNameLabel.font = UIFont(name: "HelveticaNeue-Medium", size: 16)
+        responseNameLabel.adjustsFontSizeToFitWidth = true
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
@@ -183,6 +184,7 @@ class MessageView: UIView{
             replyMediaLabel.leadingAnchor.constraint(equalTo: responseMediaMessage.trailingAnchor, constant: 4),
             responseNameLabel.leadingAnchor.constraint(equalTo: responseMediaMessage.trailingAnchor, constant: 4),
             responseNameLabel.centerYAnchor.constraint(equalTo: responseMediaMessage.centerYAnchor, constant: -8),
+            responseNameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
         ]
         NSLayoutConstraint.activate(constraints)
     }
