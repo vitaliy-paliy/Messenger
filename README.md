@@ -7,8 +7,8 @@
 ### Demo
 
 
-<img src="art/welcomeView.gif" height="600" align="left"> <img src="art/contactsAnim.gif" height="600" align="right">
-<img src="art/tabBarAnim.gif" height="600" align="center">
+<img src="https://imgur.com/XJ93f3j.gif" height="600" align="left"> <img src="https://imgur.com/ldUy5fo.gif" height="600" align="right">
+<img src="https://imgur.com/zTKHK4Z.gif" height="600" align="center">
 
 <img src="https://imgur.com/iD5YKDT.png" height="600" align="left"> <img src="https://imgur.com/wBU0ZrJ.png" height="600" align="right"> <img src="https://imgur.com/XFF7nG7.png" height="600" align="center">
 
@@ -40,7 +40,7 @@
 ### How to install?
 1. Install [CocoaPods](https://guides.cocoapods.org/using/getting-started.html)
 2. Open Terminal and run ```pod install``` directly in ```mChat/Messenger``` folder.
-3. In order for Firebase to work, create a new project for your application. -> [URL](https://console.firebase.google.com/u/0/)
+3. In order for Firebase to work, create a [new project](https://console.firebase.google.com/u/0/) for your application.
 4. Download ```GoogleService-Info.plist``` from your newly created Firebase project and replace it with the old one. [screenshot](https://imgur.com/D4aBcEx)
 5. Enable [Email/Password authentication method](https://firebase.google.com/docs/auth/web/password-auth)
 6. Create [Realtime Database](https://firebase.google.com/docs/database/ios/start)
@@ -54,7 +54,7 @@
 }
 ```
 8. Enable your Firebase [Storage](https://firebase.google.com/docs/storage)
-9. For using Mapbox, create a new token -> [here](https://account.mapbox.com/)
+9. For using Mapbox, create a [new token](https://account.mapbox.com/)
 10. Create a new key named ```MGLMapboxAccessToken``` in your ```Info.plist``` and insert access token as a value. [More Info](https://docs.mapbox.com/help/how-mapbox-works/access-tokens/#how-access-tokens-work)
 
 <img src="https://imgur.com/9S8r0Jz.png" height = "600" align="right"> <img src="https://imgur.com/pU5aPGK.png" height = "600" align="left"> <img src="https://imgur.com/jymJDAJ.png" height = "600" align="center">
