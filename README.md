@@ -7,8 +7,8 @@
 ### Demo
 
 
-<img src="https://imgur.com/XJ93f3j.gif" height="600" align="left"> <img src="https://imgur.com/ldUy5fo.gif" height="600" align="right">
-<img src="https://imgur.com/zTKHK4Z.gif" height="600" align="center">
+<img src="art/welcomeView.gif" height="600" align="left"> <img src="art/contactsAnim.gif" height="600" align="right">
+<img src="art/tabBarAnim.gif" height="600" align="center">
 
 <img src="https://imgur.com/iD5YKDT.png" height="600" align="left"> <img src="https://imgur.com/wBU0ZrJ.png" height="600" align="right"> <img src="https://imgur.com/XFF7nG7.png" height="600" align="center">
 
