@@ -57,7 +57,7 @@
 9. For using Mapbox, create a new token -> [here](https://account.mapbox.com/)
 10. Create a new key named ```MGLMapboxAccessToken``` in your ```Info.plist``` and insert access token as a value. [More Info](https://docs.mapbox.com/help/how-mapbox-works/access-tokens/#how-access-tokens-work)
 
-<img src="art/https://imgur.com/qSyUFYa.png" height = "600" align="right"> <img src="https://imgur.com/pU5aPGK.png" height = "600" align="left"> <img src="https://imgur.com/jymJDAJ.png" height = "600" align="center">
+<img src="https://imgur.com/9S8r0Jz.png" height = "600" align="right"> <img src="https://imgur.com/pU5aPGK.png" height = "600" align="left"> <img src="https://imgur.com/jymJDAJ.png" height = "600" align="center">
 
 ### New Updates:
 Update 1.2:
