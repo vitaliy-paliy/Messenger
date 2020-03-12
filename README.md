@@ -10,7 +10,7 @@
 <img src="art/welcomeView.gif" height="600" align="left"> <img src="art/contactsAnim.gif" height="600" align="right">
 <img src="art/tabBarAnim.gif" height="600" align="center">
 
-<img src="https://imgur.com/iD5YKDT.png" height="600" align="left"> <img src="https://imgur.com/wBU0ZrJ.png" height="600" align="right"> <img src="https://imgur.com/XFF7nG7.png" height="600" align="center">
+<img src="art/chats.png" height="600" align="left"> <img src="art/chat1.png" height="600" align="right"> <img src="art/map.png" height="600" align="center">
 
 ### Requirements
 - Xcode version 11.2.1+
@@ -57,12 +57,12 @@
 9. For using Mapbox, create a [new token](https://account.mapbox.com/)
 10. Create a new key named ```MGLMapboxAccessToken``` in your ```Info.plist``` and insert access token as a value. [More Info](https://docs.mapbox.com/help/how-mapbox-works/access-tokens/#how-access-tokens-work)
 
-<img src="https://imgur.com/9S8r0Jz.png" height = "600" align="right"> <img src="https://imgur.com/pU5aPGK.png" height = "600" align="left"> <img src="https://imgur.com/jymJDAJ.png" height = "600" align="center">
+<img src="art/add_friend.png" height = "600" align="right"> <img src="art/contacts.png" height = "600" align="center"> <img src="art/friend_requests.png" height = "600" align="left">
 
 ### New Updates:
-Update 1.2:
-- Bug fixes
-- Code refactoring
+Update 1.2.1:
+- Reply UI bug fix.
+- Chat gestures Handling.
 
 ### Credits
 - [Firebase](https://firebase.google.com/)
