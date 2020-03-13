@@ -31,6 +31,7 @@
 - Delete messages
 - Reply to / Forward messages
 - Custom chat design
+- Chat pagination
 - Friend network
 - Locate friends on a map (if they have disabled an anonymous mode)
 - Custom map design
