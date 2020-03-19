@@ -66,6 +66,7 @@ Update 1.3:
 - Bug fixes
 
 <img src="https://imgur.com/OneT9KD.png" height = "600" align="center">
+
 ### Credits
 - [Firebase](https://firebase.google.com/)
 - [Mapbox](https://www.mapbox.com/)
