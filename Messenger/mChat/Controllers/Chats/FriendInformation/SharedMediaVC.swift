@@ -36,6 +36,8 @@ class SharedMediaVC: UIViewController, UICollectionViewDelegate, UICollectionVie
             let sharedMedia = Messages()
             sharedMedia.mediaUrl = values["mediaUrl"] as? String
             sharedMedia.videoUrl = values["videoUrl"] as? String
+            sharedMedia.sender = values["sender"] as? String
+            sharedMedia.time = values["time"] as? NSNumber
             guard sharedMedia.mediaUrl != nil else { return }
             self.sharedMedia.insert(sharedMedia, at: 0)
             if self.sharedMedia.count == 0 { self.emptyLabel.isHidden = false }
@@ -104,8 +106,8 @@ class SharedMediaVC: UIViewController, UICollectionViewDelegate, UICollectionVie
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    func zoomImageHandler(image: UIImageView){
-        let _ = SelectedImageView(image, nil, self)
+    func zoomImageHandler(_ image: UIImageView, _ message: Messages){
+        let _ = SelectedImageView(image, message, nil, self)
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //

@@ -326,9 +326,9 @@ class ChatCell: UICollectionViewCell {
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     @objc private func imageTappedHandler(tap: UITapGestureRecognizer){
-        guard msg?.videoUrl == nil else { return }
+        guard msg?.videoUrl == nil, msg != nil else { return }
         let imageView = tap.view as? UIImageView
-        chatVC.zoomImageHandler(image: imageView!)
+        chatVC.zoomImageHandler(image: imageView!, message: msg!)
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //

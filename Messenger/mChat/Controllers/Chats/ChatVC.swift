@@ -306,10 +306,10 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     // MARK: ZOOM IMAGE METHOD
     
-    func zoomImageHandler(image: UIImageView) {
+    func zoomImageHandler(image: UIImageView, message: Messages) {
         if !collectionView.isLongPress {
             view.endEditing(true)
-            let _ = SelectedImageView(image, self)
+            let _ = SelectedImageView(image, message, self)
         }
     }
     

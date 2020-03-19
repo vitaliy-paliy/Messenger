@@ -50,8 +50,8 @@ class SharedMediaCell: UICollectionViewCell {
     
     @objc private func imageTappedHandler(tap: UITapGestureRecognizer){
         guard message.videoUrl == nil else { return }
-        let imageView = tap.view as? UIImageView
-        sharedMediaVC.zoomImageHandler(image: imageView!)
+        guard let imageView = tap.view as? UIImageView else { return }
+        sharedMediaVC.zoomImageHandler(imageView, message)
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //

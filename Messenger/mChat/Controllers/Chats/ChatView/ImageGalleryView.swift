@@ -8,29 +8,31 @@
 
 import UIKit
 
-class SelectedImageView: UIScrollView, UIScrollViewDelegate{
+class SelectedImageView: UIView, UINavigationControllerDelegate{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    var keyWindow: UIWindow!
+    var keyWindow = UIApplication.shared.windows[0]
     var chatVC: ChatVC?
     var sharedMediaVC: SharedMediaVC?
     var cellImage: UIImageView!
     var cellFrame: CGRect!
+    var message: Messages?
     let imageView = UIImageView()
+    let exitButton = UIButton(type: .system)
+    let saveButton = UIButton(type: .system)
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    init(_ cellImage: UIImageView, _ chatVC: ChatVC? = nil, _ sharedMediaVC: SharedMediaVC? = nil) {
+    init(_ cellImage: UIImageView, _ message: Messages?, _ chatVC: ChatVC? = nil, _ sharedMediaVC: SharedMediaVC? = nil) {
         super.init(frame: .zero)
         self.cellImage = cellImage
         self.chatVC = chatVC
         self.sharedMediaVC = sharedMediaVC
         self.cellImage.isHidden = true
+        self.message = message
         cellFrame = cellImage.superview?.convert(cellImage.frame, to: nil)
-        keyWindow = UIApplication.shared.windows[0]
-        setupScrollView()
-        setupSelectedImage()
+        setupUI()
     }
     
     required init?(coder: NSCoder) {
@@ -39,7 +41,17 @@ class SelectedImageView: UIScrollView, UIScrollViewDelegate{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    private func setupScrollView() {
+    private func setupUI() {
+        setupView()
+        setupSelectedImage()
+        setupExitButton()
+        setupSaveButton()
+        setupUserInfo()
+    }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
+    private func setupView() {
         if let chatVC = chatVC {
             frame = chatVC.view.frame
         }else{
@@ -47,14 +59,39 @@ class SelectedImageView: UIScrollView, UIScrollViewDelegate{
         }
         keyWindow.addSubview(self)
         backgroundColor = .black
-        delegate = self
-        alwaysBounceVertical = false
-        alwaysBounceHorizontal = false
-        showsVerticalScrollIndicator = true
-        flashScrollIndicators()
-        minimumZoomScale = 1
-        maximumZoomScale = 3
         setupGestures()
+    }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
+    private func setupExitButton() {
+        addSubview(exitButton)
+        exitButton.translatesAutoresizingMaskIntoConstraints = false
+        exitButton.setImage(UIImage(systemName: "xmark"), for: .normal)
+        exitButton.tintColor = .white
+        exitButton.addTarget(self, action: #selector(handleSwipe), for: .touchUpInside)
+        NSLayoutConstraint.activate([
+            exitButton.leadingAnchor.constraint(equalTo: keyWindow.leadingAnchor, constant: 8),
+            exitButton.topAnchor.constraint(equalTo: keyWindow.safeAreaLayoutGuide.topAnchor, constant: 8),
+            exitButton.widthAnchor.constraint(equalToConstant: 40),
+            exitButton.heightAnchor.constraint(equalToConstant: 40)
+        ])
+    }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
+    private func setupSaveButton() {
+        addSubview(saveButton)
+        saveButton.translatesAutoresizingMaskIntoConstraints = false
+        saveButton.setImage(UIImage(systemName: "square.and.arrow.down"), for: .normal)
+        saveButton.tintColor = .white
+        saveButton.addTarget(self, action: #selector(saveImage), for: .touchUpInside)
+        NSLayoutConstraint.activate([
+            saveButton.trailingAnchor.constraint(equalTo: keyWindow.trailingAnchor, constant: -8),
+            saveButton.bottomAnchor.constraint(equalTo: keyWindow.safeAreaLayoutGuide.bottomAnchor, constant: -8),
+            saveButton.widthAnchor.constraint(equalToConstant: 40),
+            saveButton.heightAnchor.constraint(equalToConstant: 40)
+        ])
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
@@ -64,11 +101,8 @@ class SelectedImageView: UIScrollView, UIScrollViewDelegate{
         swipeUp.direction = .up
         let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipe))
         swipeDown.direction = .down
-        let doubleTapGesture = UITapGestureRecognizer(target: self, action: #selector(handleDoubleTap(recognizer:)))
-        doubleTapGesture.numberOfTapsRequired = 2
         addGestureRecognizer(swipeUp)
         addGestureRecognizer(swipeDown)
-        addGestureRecognizer(doubleTapGesture)
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
@@ -107,32 +141,56 @@ class SelectedImageView: UIScrollView, UIScrollViewDelegate{
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
-    @objc private func handleDoubleTap(recognizer: UITapGestureRecognizer) {
-        if zoomScale == 1 {
-            zoom(to: zoomRectForScale(scale: maximumZoomScale, center: recognizer.location(in: recognizer.view)), animated: true)
-        } else {
-            setZoomScale(1, animated: true)
+    private func setupUserInfo() {
+        guard let message = message else { return }
+        guard let friend = chatVC != nil ? chatVC!.friend : sharedMediaVC!.friend else { return }
+        let userName = UILabel()
+        addSubview(userName)
+        userName.translatesAutoresizingMaskIntoConstraints = false
+        userName.text = message.sender == CurrentUser.uid ? CurrentUser.name : friend.name
+        userName.textColor = .white
+        userName.font = UIFont.boldSystemFont(ofSize: 16)
+        NSLayoutConstraint.activate([
+            userName.leadingAnchor.constraint(equalTo: keyWindow.leadingAnchor, constant: 16),
+            userName.bottomAnchor.constraint(equalTo: keyWindow.safeAreaLayoutGuide.bottomAnchor, constant: -24),
+        ])
+        setupDate()
+    }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
+    private func setupDate() {
+        let dateLabel = UILabel()
+        addSubview(dateLabel)
+        dateLabel.translatesAutoresizingMaskIntoConstraints = false
+        dateLabel.text = Calendar(identifier: .gregorian).calculateTimePassed(date: NSDate(timeIntervalSince1970: message?.time.doubleValue ?? 0))
+        dateLabel.textColor = .lightGray
+        dateLabel.font = UIFont.boldSystemFont(ofSize: 12)
+        NSLayoutConstraint.activate([
+            dateLabel.leadingAnchor.constraint(equalTo: keyWindow.leadingAnchor, constant: 16),
+            dateLabel.bottomAnchor.constraint(equalTo: keyWindow.safeAreaLayoutGuide.bottomAnchor, constant: -8),
+        ])
+    }
+    
+    @objc private func saveImage() {
+        guard let image = imageView.image else { return }
+        UIImageWriteToSavedPhotosAlbum(image, self, #selector(imageHandler(_:didFinishSavingWithError:contextInfo:)), nil)
+    }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+    
+    @objc func imageHandler(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+        if let error = error {
+            print(error.localizedDescription)
+        }else{
+            if chatVC != nil {
+                chatVC?.showAlert(title: "Success", message: "This image was successfully saved to your photo library")
+            }else{
+                sharedMediaVC?.showAlert(title: "Success", message: "This image was successfully saved to your photo library")
+            }
         }
     }
-    
+        
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
-    
-    private func zoomRectForScale(scale: CGFloat, center: CGPoint) -> CGRect {
-        var zoomRect = CGRect.zero
-        zoomRect.size.height = imageView.frame.size.height / scale
-        zoomRect.size.width  = imageView.frame.size.width  / scale
-        let newCenter = imageView.convert(center, from: self)
-        zoomRect.origin.x = newCenter.x - (zoomRect.size.width / 2.0)
-        zoomRect.origin.y = newCenter.y - (zoomRect.size.height / 2.0)
-        return zoomRect
-    }
-    
-    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
-    
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return imageView
-    }
-    
-    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
-    
+
 }
