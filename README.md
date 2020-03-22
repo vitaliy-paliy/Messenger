@@ -60,10 +60,12 @@
 
 <img src="art/add_friend.png" height = "600" align="right"> <img src="art/contacts.png" height = "600" align="center"> <img src="art/friend_requests.png" height = "600" align="left">
 
-### New Updates:
-Update 1.2.1:
-- Reply UI bug fix.
-- Chat gestures Handling.
+## New Updates:
+Update 1.3:
+- Updated image viewer
+- Bug fixes
+
+<img src="https://imgur.com/OneT9KD.png" height = "600" align="center">
 
 ### Credits
 - [Firebase](https://firebase.google.com/)
@@ -72,7 +74,7 @@ Update 1.2.1:
 - [SkyFloatingLabelTextField](https://github.com/Skyscanner/SkyFloatingLabelTextField)
 - [IGColorPicker](https://github.com/iGenius-Srl/IGColorPicker)
 
-<img src="https://imgur.com/FSq00Fh.png" height = "600" align="right"> <img src="https://imgur.com/dMZi5Fg.png" height = "600" align="center"> <img src="https://imgur.com/U8SfZIB.png" height = "600" align="left">
+<img src="https://imgur.com/4ucO5bq.png" height = "600" align="right"> <img src="https://imgur.com/oy8oL76.png" height = "600" align="center"> <img src="https://imgur.com/e9vEqFv.png" height = "600" align="left">
 
 ## License
 ```
