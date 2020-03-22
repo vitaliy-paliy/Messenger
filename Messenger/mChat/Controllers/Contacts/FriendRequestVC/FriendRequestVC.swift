@@ -129,9 +129,9 @@ extension FriendRequestVC: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "FriendRequestCell") as! FriendRequestCell
         cell.controller = self
         let user = friendRequests[indexPath.row]
-        cell.nameLabel.text = user.name.uppercased()
-        cell.emailLabel.text = user.email.uppercased()
-        cell.profileImage.loadImage(url: user.profileImage)
+        cell.nameLabel.text = user.name?.uppercased()
+        cell.emailLabel.text = user.email?.uppercased()
+        cell.profileImage.loadImage(url: user.profileImage ?? "")
         return cell
     }
 

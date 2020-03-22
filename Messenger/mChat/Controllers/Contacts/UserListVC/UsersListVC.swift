@@ -44,7 +44,7 @@ class UsersListVC: UIViewController {
     private func getUsersList() {
         userListNetworking.fetchUsers { usersList in
             let sortedUserList = Array(usersList.values).sorted { (friend1, friend2) -> Bool in
-                return friend1.name < friend2.name
+                return friend1.name ?? "" < friend2.name ?? ""
             }
             self.users = sortedUserList
             self.blankLoadingView.isHidden = true
@@ -91,7 +91,7 @@ extension UsersListVC: UITableViewDelegate, UITableViewDataSource {
         let user = users[indexPath.row]
         cell.userName.text = user.name
         cell.userEmail.text = user.email
-        cell.profileImage.loadImage(url: user.profileImage)
+        cell.profileImage.loadImage(url: user.profileImage ?? "")
         return cell
     }
     

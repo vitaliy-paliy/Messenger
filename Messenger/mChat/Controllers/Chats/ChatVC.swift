@@ -97,19 +97,19 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
         chatNetworking.friend = friend
         setupChatNavBar()
         fetchMessages()
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: ProfileImageButton(chatVC: self, url: friend.profileImage))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: ProfileImageButton(chatVC: self, url: friend.profileImage ?? ""))
         observeFriendTyping()
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     private func setupChatNavBar(){
-        let loginDate = NSDate(timeIntervalSince1970: friend.lastLogin.doubleValue)
+        let loginDate = NSDate(timeIntervalSince1970: (friend.lastLogin ?? 0).doubleValue)
         navigationController?.navigationBar.tintColor = .black
-        if friend.isOnline {
-            navigationItem.setNavTitles(navTitle: friend.name, navSubtitle: "Online")
+        if friend.isOnline ?? false {
+            navigationItem.setNavTitles(navTitle: friend.name ?? "", navSubtitle: "Online")
         }else{
-            navigationItem.setNavTitles(navTitle: friend.name, navSubtitle: calendar.calculateLastLogin(loginDate))
+            navigationItem.setNavTitles(navTitle: friend.name ?? "", navSubtitle: calendar.calculateLastLogin(loginDate))
         }
     }
 
@@ -180,9 +180,9 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     
     private func setupTextMessage(){
         let trimmedMessage = messageContainer.messageTV.text.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard trimmedMessage.count > 0 else { return }
-        let senderRef = Database.database().reference().child("messages").child(CurrentUser.uid).child(friend.id).childByAutoId()
-        let friendRef = Database.database().reference().child("messages").child(friend.id).child(CurrentUser.uid).child(senderRef.key!)
+        guard trimmedMessage.count > 0 , let friendId = friend.id else { return }
+        let senderRef = Database.database().reference().child("messages").child(CurrentUser.uid).child(friendId).childByAutoId()
+        let friendRef = Database.database().reference().child("messages").child(friendId).child(CurrentUser.uid).child(senderRef.key!)
         guard let messageId = senderRef.key else { return }
         var values = ["message": trimmedMessage, "sender": CurrentUser.uid!, "recipient": friend.id!, "time": Date().timeIntervalSince1970, "messageId": messageId] as [String : Any]
         if userResponse.repliedMessage != nil || userResponse.messageToForward != nil{
@@ -252,7 +252,7 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     private func observeMessageActions(){
         self.blankLoadingView.isHidden = true
         chatNetworking.observeUserMessageSeen()
-        let ref = Database.database().reference().child("messages").child(CurrentUser.uid).child(friend.id)
+        let ref = Database.database().reference().child("messages").child(CurrentUser.uid).child(friend.id ?? "")
         ref.observe(.childRemoved) { (snap) in
             self.chatNetworking.deleteMessageHandler(self.messages, for: snap) { (index) in
                 self.messages.remove(at: index)
@@ -431,7 +431,7 @@ class ChatVC: UIViewController,UIImagePickerControllerDelegate, UINavigationCont
     private func observeFriendTyping(){
         chatNetworking.observeIsUserTyping() { (friendActivity) in
             if friendActivity.friendId == self.friend.id && friendActivity.isTyping ?? false {
-                self.navigationItem.setupTypingNavTitle(navTitle: self.friend.name)
+                self.navigationItem.setupTypingNavTitle(navTitle: self.friend.name ?? "")
             }else{
                 self.setupChatNavBar()
             }

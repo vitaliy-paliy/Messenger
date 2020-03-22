@@ -66,8 +66,8 @@ class ConversationsCell: UITableViewCell {
         for friend in Friends.list {
             if message.determineUser() == friend.id {
                 friendName.text = friend.name
-                profileImage.loadImage(url: friend.profileImage)
-                isOnlineView.isHidden = !friend.isOnline
+                profileImage.loadImage(url: friend.profileImage ?? "")
+                isOnlineView.isHidden = !(friend.isOnline ?? false)
             }
         }
     }

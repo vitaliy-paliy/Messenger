@@ -22,10 +22,10 @@ class AnnotationPin: MGLPointAnnotation {
         self.friend = friend
         self.coordinate = coordinate
         self.title = friend.name
-        if friend.isOnline {
+        if friend.isOnline ?? false {
             self.subtitle = "Online"
         }else{
-            let date = Date(timeIntervalSince1970: friend.lastLogin.doubleValue)
+            let date = Date(timeIntervalSince1970: (friend.lastLogin ?? 0).doubleValue)
             self.subtitle = calendar.calculateLastLogin(date as NSDate)
         }
     }

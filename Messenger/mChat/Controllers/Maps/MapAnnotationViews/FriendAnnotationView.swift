@@ -23,7 +23,7 @@ class FriendAnnotationView: MGLAnnotationView {
         frame = CGRect(x: 0, y: 0, width: size, height: size)
         imageLayer.frame = CGRect(x: 0, y: 0, width: size, height: size)
         let imageView = UIImageView()
-        imageView.loadImage(url: friend.profileImage)
+        imageView.loadImage(url: friend.profileImage ?? "")
         imageLayer.contents = imageView.image?.cgImage
         imageLayer.cornerRadius = imageLayer.frame.size.width/2
         imageLayer.masksToBounds = true

@@ -27,8 +27,8 @@ class UserListNetworking {
                 user.profileImage = values["profileImage"] as? String
                 user.name = values["name"] as? String
                 user.id = snapshot.key
-                if user.id != CurrentUser.uid {
-                    self.userList[user.id] = user
+                if user.id != CurrentUser.uid && user.userCheck() {
+                    self.userList[user.id!] = user
                 }
             }
             return completion(self.userList)

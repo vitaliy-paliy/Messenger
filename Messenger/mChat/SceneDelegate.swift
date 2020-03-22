@@ -27,9 +27,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if Auth.auth().currentUser != nil{
             let authNetworking = AuthNetworking(nil)
             let uid = Auth.auth().currentUser!.uid
-            authNetworking.setupUserInfo(uid) {
-                self.window?.rootViewController = ChatTabBar()
-                self.window?.makeKeyAndVisible()
+            authNetworking.setupUserInfo(uid) { (isActive) in
+                if isActive {
+                    self.window?.rootViewController = ChatTabBar()
+                    self.window?.makeKeyAndVisible()
+                }else{
+                    let controller = SignInVC()
+                    self.window?.rootViewController = controller
+                    self.window?.makeKeyAndVisible()
+                }
             }
         }else{
             window?.rootViewController = WelcomeVC()

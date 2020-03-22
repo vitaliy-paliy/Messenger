@@ -80,7 +80,7 @@ class ContactsVC: UIViewController {
     func handleReload(_ friends: [FriendInfo]){
         Friends.list = friends
         Friends.list.sort { (friend1, friend2) -> Bool in
-            return friend1.name < friend2.name
+            return friend1.name ?? "" < friend2.name ?? ""
         }
         handleEmptyList()
         Friends.convVC?.tableView.reloadData()

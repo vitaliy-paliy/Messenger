@@ -149,7 +149,7 @@ extension MapsSettingsVC: UITableViewDelegate, UITableViewDataSource {
             tableView.rowHeight = 35
             let cell = tableView.dequeueReusableCell(withIdentifier: "MapSettingsCell") as! MapSettingsCell
             cell.selectionStyle = .none
-            cell.switchButton.isOn = !CurrentUser.isMapLocationEnabled
+            cell.switchButton.isOn = !(CurrentUser.isMapLocationEnabled ?? false)
             cell.setupSwitch()
             cell.textLabel?.text = "Incognito mode"
             return cell

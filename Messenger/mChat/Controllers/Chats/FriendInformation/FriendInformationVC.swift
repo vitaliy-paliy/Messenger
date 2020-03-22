@@ -68,13 +68,13 @@ class FriendInformationVC: UIViewController, UITableViewDelegate, UITableViewDat
             let cell = tableView.dequeueReusableCell(withIdentifier: "friendInformationCell", for: indexPath) as! FriendInformationCell
             tableView.rowHeight = 100
             cell.selectionStyle = .none
-            if friend.isOnline {
+            if friend.isOnline ?? false {
                 cell.onlineLabel.text = "Online"
             }else{
-                let loginDate = NSDate(timeIntervalSince1970: friend.lastLogin.doubleValue)
+                let loginDate = NSDate(timeIntervalSince1970: (friend.lastLogin ?? 0).doubleValue)
                 cell.onlineLabel.text = calendar.calculateLastLogin(loginDate)
             }
-            cell.profileImage.loadImage(url: friend.profileImage)
+            cell.profileImage.loadImage(url: friend.profileImage ?? "")
             cell.nameLabel.text = friend.name
             return cell
         }else{

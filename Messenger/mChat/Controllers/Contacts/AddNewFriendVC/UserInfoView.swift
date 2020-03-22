@@ -40,7 +40,7 @@ class UserInfoView: UIView{
     private func setupUserProfileImage() {
         controller.view.addSubview(imageView)
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.loadImage(url: controller.user.profileImage)
+        imageView.loadImage(url: controller.user.profileImage ?? "")
         imageView.contentMode = .scaleAspectFill
         imageView.layer.cornerRadius = 60
         imageView.layer.masksToBounds = true
@@ -58,7 +58,7 @@ class UserInfoView: UIView{
     private func setupNameLabel() {
         controller.view.addSubview(nameLabel)
         nameLabel.translatesAutoresizingMaskIntoConstraints = false
-        nameLabel.text = controller.user.name.uppercased()
+        nameLabel.text = controller.user.name?.uppercased()
         nameLabel.font = UIFont.boldSystemFont(ofSize: 18)
         let constraints = [
             nameLabel.centerXAnchor.constraint(equalTo: controller.view.centerXAnchor),
@@ -72,7 +72,7 @@ class UserInfoView: UIView{
     private func setupEmailLabel() {
         controller.view.addSubview(emailLabel)
         emailLabel.translatesAutoresizingMaskIntoConstraints = false
-        emailLabel.text = controller.user.email.uppercased()
+        emailLabel.text = controller.user.email?.uppercased()
         emailLabel.font = UIFont.boldSystemFont(ofSize: 14)
         emailLabel.textColor = .lightGray
         let constraints = [

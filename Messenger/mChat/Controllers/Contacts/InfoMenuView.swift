@@ -83,7 +83,7 @@ class InfoMenuView: UIView {
     private func setupInfoImage() {
         addSubview(infoImage)
         infoImage.translatesAutoresizingMaskIntoConstraints = false
-        infoImage.loadImage(url: friend.profileImage)
+        infoImage.loadImage(url: friend.profileImage ?? "")
         infoImage.layer.cornerRadius = 30
         infoImage.layer.masksToBounds = true
         infoImage.contentMode = .scaleAspectFill

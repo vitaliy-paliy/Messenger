@@ -31,7 +31,8 @@ class SharedMediaVC: UIViewController, UICollectionViewDelegate, UICollectionVie
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     private func getSharedMedia(){
-        Database.database().reference().child("messages").child(CurrentUser.uid).child(friend.id).observe(.childAdded) { (snap) in
+        guard let id = friend.id else { return }
+        Database.database().reference().child("messages").child(CurrentUser.uid).child(id).observe(.childAdded) { (snap) in
             guard let values = snap.value as? [String: Any] else { return }
             let sharedMedia = Messages()
             sharedMedia.mediaUrl = values["mediaUrl"] as? String

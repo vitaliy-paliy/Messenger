@@ -42,18 +42,20 @@ class AuthNetworking {
     
     private func nextController(){
         guard let uid = Auth.auth().currentUser?.uid else { return }
-        setupUserInfo(uid) {
-            let controller = ChatTabBar()
-            controller.modalPresentationStyle = .fullScreen
-            self.mainController.present(controller, animated: false, completion: nil)
-            self.networkingLoadingIndicator.endLoadingAnimation()
+        setupUserInfo(uid) { (isActive) in
+            if isActive{
+                let controller = ChatTabBar()
+                controller.modalPresentationStyle = .fullScreen
+                self.mainController.present(controller, animated: false, completion: nil)
+                self.networkingLoadingIndicator.endLoadingAnimation()
+            }
         }
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     // MARK: SETUP USER INFO METHOD
     
-    func setupUserInfo(_ uid: String, completion: @escaping () -> Void) {
+    func setupUserInfo(_ uid: String, completion: @escaping (_ isActive: Bool) -> Void) {
         Database.database().reference().child("users").child(uid).observeSingleEvent(of: .value) { (snapshot) in
             guard let snap = snapshot.value as? [String: AnyObject] else { return }
             CurrentUser.name = snap["name"] as? String
@@ -62,11 +64,19 @@ class AuthNetworking {
             CurrentUser.uid = uid
             CurrentUser.isMapLocationEnabled = snap["isMapLocationEnabled"] as? Bool
             UserActivity.observe(isOnline: true)
-            if CurrentUser.isMapLocationEnabled {
+            if CurrentUser.isMapLocationEnabled ?? false {
                 ChatKit.map.showsUserLocation = true
                 ChatKit.startUpdatingUserLocation()
             }
-            return completion()
+            if CurrentUser.uid == nil || CurrentUser.profileImage == nil || CurrentUser.name == nil{
+                do{
+                    try Auth.auth().signOut()
+                    return completion(false)
+                }catch{
+                    
+                }
+            }
+            return completion(true)
         }
     }
     

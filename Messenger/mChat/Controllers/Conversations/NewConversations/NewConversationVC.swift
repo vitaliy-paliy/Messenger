@@ -92,7 +92,7 @@ extension NewConversationVC: UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "NewConversationCell") as! NewConversationCell
         cell.selectionStyle = .none
         let friend = Friends.list[indexPath.row]
-        cell.profileImage.loadImage(url: friend.profileImage)
+        cell.profileImage.loadImage(url: friend.profileImage ?? "")
         cell.friendName.text = friend.name
         cell.friendEmail.text = friend.email
         return cell

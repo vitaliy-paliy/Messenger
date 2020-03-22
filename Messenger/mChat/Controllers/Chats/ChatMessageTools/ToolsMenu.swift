@@ -80,7 +80,7 @@ class ToolsMenu: UIScrollView {
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     private func setupMessageView(){
-        messageView = MessageView(frame: messageFrame, cell: selectedCell, message: message, friendName: chatVC.friend.name)
+        messageView = MessageView(frame: messageFrame, cell: selectedCell, message: message, friendName: chatVC.friend.name ?? "")
         addSubview(messageView)
     }
     

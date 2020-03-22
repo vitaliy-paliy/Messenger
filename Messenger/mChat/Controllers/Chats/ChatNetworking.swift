@@ -34,11 +34,11 @@ class ChatNetworking {
         if v.frame.height > 1000 { messageCount = 40 }
         let firstMessage = m.first
         if firstMessage == nil{
-            nodeRef = Database.database().reference().child("messages").child(CurrentUser.uid).child(friend.id).queryOrderedByKey().queryLimited(toLast: messageCount)
+            nodeRef = Database.database().reference().child("messages").child(CurrentUser.uid).child(friend.id ?? "").queryOrderedByKey().queryLimited(toLast: messageCount)
             messageOrder = true
         }else{
             let mId = firstMessage!.id
-            nodeRef = Database.database().reference().child("messages").child(CurrentUser.uid).child(friend.id).queryOrderedByKey().queryEnding(atValue: mId).queryLimited(toLast: messageCount)
+            nodeRef = Database.database().reference().child("messages").child(CurrentUser.uid).child(friend.id ?? "").queryOrderedByKey().queryEnding(atValue: mId).queryLimited(toLast: messageCount)
             messageOrder = false
         }
         nodeRef.observeSingleEvent(of: .value) { (snap) in
@@ -68,9 +68,9 @@ class ChatNetworking {
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func removeMessageHandler(messageToRemove: Messages, completion: @escaping () -> Void){
-        Database.database().reference().child("messages").child(CurrentUser.uid).child(friend.id).child(messageToRemove.id).removeValue { (error, ref) in
-            Database.database().reference().child("messages").child(self.friend.id).child(CurrentUser.uid).child(messageToRemove.id).removeValue()
-            Database.database().reference().child("messages").child("unread-Messages").child(self.friend.id).child(CurrentUser.uid).child(messageToRemove.id).removeValue()
+        Database.database().reference().child("messages").child(CurrentUser.uid).child(friend.id ?? "").child(messageToRemove.id).removeValue { (error, ref) in
+            Database.database().reference().child("messages").child(self.friend.id ?? "").child(CurrentUser.uid).child(messageToRemove.id).removeValue()
+            Database.database().reference().child("messages").child("unread-Messages").child(self.friend.id ?? "").child(CurrentUser.uid).child(messageToRemove.id).removeValue()
             if messageToRemove.audioUrl != nil {
                 Storage.storage().reference().child("message-Audio").child(messageToRemove.storageID).delete { (error) in
                     guard error == nil else { return }
@@ -127,16 +127,16 @@ class ChatNetworking {
     
     private func sendMediaMessage(url: String, _ image: UIImage, _ id: String){
         messageStatus = "Sent"
-        let senderRef = Database.database().reference().child("messages").child(CurrentUser.uid).child(friend.id).childByAutoId()
-        let friendRef = Database.database().reference().child("messages").child(friend.id).child(CurrentUser.uid).child(senderRef.key!)
+        let senderRef = Database.database().reference().child("messages").child(CurrentUser.uid).child(friend.id ?? "").childByAutoId()
+        let friendRef = Database.database().reference().child("messages").child(friend.id ?? "").child(CurrentUser.uid).child(senderRef.key!)
         guard let messageId = senderRef.key else { return }
         let values = ["sender": CurrentUser.uid!, "time": Date().timeIntervalSince1970, "recipient": friend.id!, "mediaUrl": url, "width": image.size.width, "height": image.size.height, "messageId": messageId, "storageID": id] as [String: Any]
         senderRef.updateChildValues(values)
         friendRef.updateChildValues(values)
-        let unreadRef = Database.database().reference().child("messages").child("unread-Messages").child(friend.id).child(CurrentUser.uid).child(senderRef.key!)
+        let unreadRef = Database.database().reference().child("messages").child("unread-Messages").child(friend.id ?? "").child(CurrentUser.uid).child(senderRef.key!)
         let unreadValues = [senderRef.key: 1]
         unreadRef.updateChildValues(unreadValues)
-        updateNavBar(friend.name)
+        updateNavBar(friend.name ?? "")
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
@@ -149,7 +149,7 @@ class ChatNetworking {
                 completion(error)
             }
             friendRef.updateChildValues(values)
-            let unreadRef = Database.database().reference().child("messages").child("unread-Messages").child(self.friend.id).child(CurrentUser.uid).child(senderRef.key!)
+            let unreadRef = Database.database().reference().child("messages").child("unread-Messages").child(self.friend.id ?? "").child(CurrentUser.uid).child(senderRef.key!)
             let unreadValues = [senderRef.key: 1]
             unreadRef.updateChildValues(unreadValues)
             completion(nil)
@@ -161,7 +161,7 @@ class ChatNetworking {
     
     func observeIsUserTyping(completion: @escaping (_ friendActivity: FriendActivity) -> Void){
         readMessagesHandler()
-        let db = Database.database().reference().child("userActions").child(friend.id).child(CurrentUser.uid)
+        let db = Database.database().reference().child("userActions").child(friend.id ?? "").child(CurrentUser.uid)
         db.observe(.value) { (snap) in
             guard let data = snap.value as? [String: Any] else { return }
             guard let status = data["isTyping"] as? Bool else { return }
@@ -236,11 +236,11 @@ class ChatNetworking {
     
     private func updateNavBar(_ tempName: String) {
         if tempName == friend.name && isUserTyping {
-            chatVC.navigationItem.setupTypingNavTitle(navTitle: friend.name)
+            chatVC.navigationItem.setupTypingNavTitle(navTitle: friend.name ?? "")
             return
         }
-        let loginDate = NSDate(timeIntervalSince1970: friend.lastLogin.doubleValue)
-        if friend.isOnline {
+        let loginDate = NSDate(timeIntervalSince1970: (friend.lastLogin ?? 0).doubleValue)
+        if friend.isOnline ?? false {
             chatVC.navigationItem.setNavTitles(navTitle: tempName, navSubtitle: "Online")
         }else{
             chatVC.navigationItem.setNavTitles(navTitle: tempName, navSubtitle: chatVC.calendar.calculateLastLogin(loginDate))
@@ -261,16 +261,16 @@ class ChatNetworking {
     
     private func sendAudioMessage(with url: String, and id: String) {
         messageStatus = "Sent"
-        let senderRef = Database.database().reference().child("messages").child(CurrentUser.uid).child(friend.id).childByAutoId()
-        let friendRef = Database.database().reference().child("messages").child(friend.id).child(CurrentUser.uid).child(senderRef.key!)
+        let senderRef = Database.database().reference().child("messages").child(CurrentUser.uid).child(friend.id ?? "").childByAutoId()
+        let friendRef = Database.database().reference().child("messages").child(friend.id ?? "").child(CurrentUser.uid).child(senderRef.key!)
         guard let messageId = senderRef.key else { return }
         let values = ["sender": CurrentUser.uid!, "time": Date().timeIntervalSince1970, "recipient": friend.id!, "audioUrl": url,"messageId": messageId, "storageID": id] as [String: Any]
         senderRef.updateChildValues(values)
         friendRef.updateChildValues(values)
-        let unreadRef = Database.database().reference().child("messages").child("unread-Messages").child(self.friend.id).child(CurrentUser.uid).child(senderRef.key!)
+        let unreadRef = Database.database().reference().child("messages").child("unread-Messages").child(self.friend.id ?? "").child(CurrentUser.uid).child(senderRef.key!)
         let unreadValues = [senderRef.key: 1]
         unreadRef.updateChildValues(unreadValues)
-        updateNavBar(friend.name)
+        updateNavBar(friend.name ?? "")
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
@@ -338,16 +338,16 @@ class ChatNetworking {
     
     private func handleSendVideoMessage(_ id: String, _ url: String, _ image: UIImage, _ imageUrl: String) {
         messageStatus = "Sent"
-        let senderRef = Database.database().reference().child("messages").child(CurrentUser.uid).child(friend.id).childByAutoId()
-        let friendRef = Database.database().reference().child("messages").child(friend.id).child(CurrentUser.uid).child(senderRef.key!)
+        let senderRef = Database.database().reference().child("messages").child(CurrentUser.uid).child(friend.id ?? "").childByAutoId()
+        let friendRef = Database.database().reference().child("messages").child(friend.id ?? "").child(CurrentUser.uid).child(senderRef.key!)
         guard let messageId = senderRef.key else { return }
         let values = ["sender": CurrentUser.uid!, "time": Date().timeIntervalSince1970, "recipient": friend.id!, "mediaUrl": imageUrl, "videoUrl": url,"messageId": messageId, "storageID": id, "width": image.size.width, "height": image.size.height] as [String: Any]
         senderRef.updateChildValues(values)
         friendRef.updateChildValues(values)
-        let unreadRef = Database.database().reference().child("messages").child("unread-Messages").child(self.friend.id).child(CurrentUser.uid).child(senderRef.key!)
+        let unreadRef = Database.database().reference().child("messages").child("unread-Messages").child(self.friend.id ?? "").child(CurrentUser.uid).child(senderRef.key!)
         let unreadValues = [senderRef.key: 1]
         unreadRef.updateChildValues(unreadValues)
-        updateNavBar(friend.name)
+        updateNavBar(friend.name ?? "")
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
@@ -367,7 +367,7 @@ class ChatNetworking {
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     private func readMessagesHandler(){
-        let unreadRef = Database.database().reference().child("messages").child("unread-Messages").child(CurrentUser.uid).child(friend.id)
+        let unreadRef = Database.database().reference().child("messages").child("unread-Messages").child(CurrentUser.uid).child(friend.id ?? "")
         unreadRef.observe(.childAdded) { (snap) in
             unreadRef.removeValue()
         }
@@ -376,13 +376,13 @@ class ChatNetworking {
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func removeObserves(){
-        Database.database().reference().child("messages").child("unread-Messages").child(CurrentUser.uid).child(friend.id).removeAllObservers()
+        Database.database().reference().child("messages").child("unread-Messages").child(CurrentUser.uid).child(friend.id ?? "").removeAllObservers()
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     func observeUserMessageSeen() {
-        Database.database().reference().child("messages").child("unread-Messages").child(friend.id).child(CurrentUser.uid).observe(.value) { (snap) in
+        Database.database().reference().child("messages").child("unread-Messages").child(friend.id ?? "").child(CurrentUser.uid).observe(.value) { (snap) in
             if Int(snap.childrenCount) > 0{
                 self.messageStatus = "Sent"
             }else{

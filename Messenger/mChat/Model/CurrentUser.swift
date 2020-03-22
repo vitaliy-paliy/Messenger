@@ -21,7 +21,7 @@ class CurrentUser {
     
     static var profileImage: String!
     
-    static var isMapLocationEnabled: Bool!
+    static var isMapLocationEnabled: Bool?
         
 }
 

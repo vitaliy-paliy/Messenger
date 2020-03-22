@@ -29,7 +29,7 @@ class ChatKit {
     // METHOD THAT CHECKS IF USER
     
     @objc static func updateCurrentLocation(){
-        guard CurrentUser.isMapLocationEnabled else { return }
+        guard CurrentUser.isMapLocationEnabled ?? false else { return }
         guard let currentLocation = ChatKit.map.userLocation?.coordinate else { return }
         let ref = Database.database().reference().child("user-Location").child(CurrentUser.uid)
         let values = ["longitude": currentLocation.longitude, "latitude": currentLocation.latitude]

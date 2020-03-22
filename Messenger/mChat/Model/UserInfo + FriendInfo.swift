@@ -13,20 +13,28 @@ import Foundation
 
 struct FriendInfo {
     
-    var id: String!
+    var id: String?
     
-    var name: String!
+    var name: String?
     
-    var profileImage: String!
+    var profileImage: String?
     
-    var email: String!
+    var email: String?
     
-    var isOnline: Bool!
+    var isOnline: Bool?
     
-    var lastLogin: NSNumber!
+    var lastLogin: NSNumber?
     
-    var isMapLocationEnabled: Bool!
-        
+    var isMapLocationEnabled: Bool?
+    
+    func userCheck() -> Bool{
+        if id == nil || name == nil || profileImage == nil, email == nil{
+            return false
+        }
+        return true
+    }
+    
+    
 }
 
 // ---------------------------------------------------------------------------------------------------------------------------------------------------- //

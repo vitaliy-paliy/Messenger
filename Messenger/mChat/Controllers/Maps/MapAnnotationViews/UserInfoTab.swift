@@ -42,7 +42,7 @@ class UserInfoTab: UIView{
     private func setupUserInfo(_ annotation: MGLAnnotation){
         if let pin = annotation as? AnnotationPin {
             self.pin = pin
-            profileImage.loadImage(url: pin.friend.profileImage)
+            profileImage.loadImage(url: pin.friend.profileImage ?? "")
             actionButton.setImage(UIImage(systemName: "bubble.right"), for: .normal)
             guard let title = annotation.title, let lastSeen = annotation.subtitle else { return }
             nameLabel.text = title
@@ -52,7 +52,7 @@ class UserInfoTab: UIView{
             actionButton.setImage(UIImage(systemName: "gear"), for: .normal)
             nameLabel.text = "Me"
             var status: String!
-            if CurrentUser.isMapLocationEnabled { status = "Anonymous mode is disabled"} else { status = "Anonymous mode is enabled" }
+            if CurrentUser.isMapLocationEnabled ?? false { status = "Anonymous mode is disabled"} else { status = "Anonymous mode is enabled" }
             lastSeenLabel.text = status
         }
     }

@@ -22,10 +22,10 @@ extension ContactsVC: UITableViewDataSource, UITableViewDelegate {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ContactsCell") as! ContactsCell
         cell.selectionStyle = .none
         let friend = Friends.list[indexPath.row]
-        cell.profileImage.loadImage(url: friend.profileImage)
+        cell.profileImage.loadImage(url: friend.profileImage ?? "")
         cell.friendName.text = friend.name
         cell.friendEmail.text = friend.email
-        cell.isOnlineView.isHidden = !friend.isOnline
+        cell.isOnlineView.isHidden = !(friend.isOnline ?? false)
         return cell
     }
     
