@@ -4,9 +4,6 @@
 **```mChat```** is a real-time messaging app written in Swift for iOS devices. Since mChat uses a fast and reliable [Firebase Database](https://firebase.google.com/docs/database), it receives data instantly, which makes a messaging process better among its users. Moreover, it uses a [Mapbox API](https://www.mapbox.com/) that provides different styles of the map, making it an unforgettable experience for users. The app design is inspired by Telegram Messenger.
 
 
-### Demo
-
-
 <img src="art/welcomeView.gif" height="600" align="left"> <img src="art/contactsAnim.gif" height="600" align="right">
 <img src="art/tabBarAnim.gif" height="600" align="center">
 
@@ -60,12 +57,9 @@
 
 <img src="art/add_friend.png" height = "600" align="right"> <img src="art/contacts.png" height = "600" align="center"> <img src="art/friend_requests.png" height = "600" align="left">
 
-## New Updates:
-Update 1.3:
-- Updated image viewer
+### New Updates:
+Update 1.4:
 - Bug fixes
-
-<img src="https://imgur.com/OneT9KD.png" height = "600" align="center">
 
 ### Credits
 - [Firebase](https://firebase.google.com/)
