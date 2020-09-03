@@ -49,9 +49,13 @@ class SharedMediaCell: UICollectionViewCell {
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     
     @objc private func imageTappedHandler(tap: UITapGestureRecognizer){
-        guard message.videoUrl == nil else { return }
-        guard let imageView = tap.view as? UIImageView else { return }
-        sharedMediaVC.zoomImageHandler(imageView, message)
+        //        guard message.videoUrl == nil else { return }
+        if message.videoUrl != nil {
+            playVideoController()
+        } else {
+            let imageView = tap.view as? UIImageView
+            sharedMediaVC.zoomImageHandler(image: imageView!)
+        }
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
@@ -61,6 +65,7 @@ class SharedMediaCell: UICollectionViewCell {
         playButton.translatesAutoresizingMaskIntoConstraints = false
         playButton.setBackgroundImage(UIImage(systemName: "play.fill"), for: .normal)
         playButton.tintColor = .white
+        playButton.addTarget(self, action: #selector(playVideoController), for: .touchUpInside)
         let constraints = [
             playButton.centerYAnchor.constraint(equalTo: centerYAnchor),
             playButton.centerXAnchor.constraint(equalTo: centerXAnchor),
@@ -68,6 +73,12 @@ class SharedMediaCell: UICollectionViewCell {
             playButton.heightAnchor.constraint(equalToConstant: 35),
         ]
         NSLayoutConstraint.activate(constraints)
+    }
+    
+    // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
+
+    @objc private func playVideoController() {
+        sharedMediaVC.playVideo(strVideoUrl: message.videoUrl)
     }
     
     //
