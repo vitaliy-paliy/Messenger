@@ -8,6 +8,8 @@
 
 import UIKit
 import Firebase
+import AVKit
+import AVFoundation
 
 class SharedMediaVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
