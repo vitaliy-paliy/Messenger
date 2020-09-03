@@ -112,5 +112,14 @@ class SharedMediaVC: UIViewController, UICollectionViewDelegate, UICollectionVie
     }
     
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
-    
+        
+    func playVideo(strVideoUrl: String){
+        let videoURL = URL(string: strVideoUrl)
+        let player = AVPlayer(url: videoURL!)
+        let playerViewController = AVPlayerViewController()
+        playerViewController.player = player
+        self.present(playerViewController, animated: true) {
+            playerViewController.player!.play()
+        }
+    }
 }
