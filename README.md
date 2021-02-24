@@ -58,9 +58,14 @@
 <img src="art/add_friend.png" height = "600" align="right"> <img src="art/contacts.png" height = "600" align="center"> <img src="art/friend_requests.png" height = "600" align="left">
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ## New Updates:
 Update 1.3:
 - Updated image view
+=======
+### New Updates:
+Update 1.4:
+>>>>>>> e5536df0a7f528133cca8faf4d0c6b5c1a75d4a9
 =======
 ### New Updates:
 Update 1.4:
