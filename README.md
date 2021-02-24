@@ -62,7 +62,7 @@
 
 ## New Updates:
 Update 1.3:
-- Updated image viewer
+- Updated image view
 - Bug fixes
 
 <img src="https://imgur.com/OneT9KD.png" height = "600" align="center">
