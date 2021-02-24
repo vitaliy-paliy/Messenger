@@ -1,5 +1,5 @@
 //
-//  ContactsVC.swift
+ //  ContactsVC.swift
 //  mChat
 //
 //  Created by Vitaliy Paliy on 11/17/19.
@@ -10,7 +10,7 @@ import UIKit
 import Lottie
 
 class ContactsVC: UIViewController {
-    
+
     // ---------------------------------------------------------------------------------------------------------------------------------------------------- //
     // CONTACTS VC - USER'S FRIENDS LIST IS LOCATED HERE.
     
