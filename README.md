@@ -7,13 +7,11 @@
 <p align="center">
   <img src="art/welcomeView.gif" height="600">
   <img src="art/contactsAnim.gif" height="600">
-  <img src="art/tabBarAnim.gif" height="600">
 &nbsp; &nbsp; &nbsp; &nbsp;
 </p>
 
 <p align="center">
   <img src="art/chats.png" height="600"> 
-  <img src="art/chat1.png" height="600">
   <img src="art/map.png" height="600">  
 &nbsp; &nbsp; &nbsp; &nbsp;
 </p>
@@ -67,7 +65,6 @@
 <p align="center">
   <img src="art/add_friend.png" height = "600"> 
   <img src="art/contacts.png" height = "600">  
-  <img src="art/friend_requests.png" height = "600">
 &nbsp; &nbsp; &nbsp; &nbsp;
 </p>
 
@@ -81,7 +78,6 @@
 <p align="center">
   <img src="https://imgur.com/4ucO5bq.png" height = "600"> 
   <img src="https://imgur.com/oy8oL76.png" height = "600">
-  <img src="https://imgur.com/e9vEqFv.png" height = "600">
 &nbsp; &nbsp; &nbsp; &nbsp;
 </p>
 
