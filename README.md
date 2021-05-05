@@ -4,10 +4,19 @@
 **```mChat```** is a real-time messaging app written in Swift for iOS devices. Since mChat uses a fast and reliable [Firebase Database](https://firebase.google.com/docs/database), it receives data instantly, which makes a messaging process better among its users. Moreover, it uses a [Mapbox API](https://www.mapbox.com/) that provides different styles of the map, making it an unforgettable experience for users. The app design is inspired by Telegram Messenger.
 
 
-<img src="art/welcomeView.gif" height="600" align="left"> <img src="art/contactsAnim.gif" height="600" align="right">
-<img src="art/tabBarAnim.gif" height="600" align="center">
+<p align="center">
+  <img src="art/welcomeView.gif" height="600">
+  <img src="art/contactsAnim.gif" height="600">
+  <img src="art/tabBarAnim.gif" height="600">
+&nbsp; &nbsp; &nbsp; &nbsp;
+</p>
 
-<img src="art/chats.png" height="600" align="left"> <img src="art/chat1.png" height="600" align="right"> <img src="art/map.png" height="600" align="center">
+<p align="center">
+  <img src="art/chats.png" height="600"> 
+  <img src="art/chat1.png" height="600">
+  <img src="art/map.png" height="600">  
+&nbsp; &nbsp; &nbsp; &nbsp;
+</p>
 
 ### Requirements
 - Xcode version 11.2.1+
@@ -55,7 +64,12 @@
 9. For using Mapbox, create a [new token](https://account.mapbox.com/)
 10. Create a new key named ```MGLMapboxAccessToken``` in your ```Info.plist``` and insert access token as a value. [More Info](https://docs.mapbox.com/help/how-mapbox-works/access-tokens/#how-access-tokens-work)
 
-<img src="art/add_friend.png" height = "600" align="right"> <img src="art/contacts.png" height = "600" align="center"> <img src="art/friend_requests.png" height = "600" align="left">
+<p align="center">
+  <img src="art/add_friend.png" height = "600"> 
+  <img src="art/contacts.png" height = "600">  
+  <img src="art/friend_requests.png" height = "600">
+&nbsp; &nbsp; &nbsp; &nbsp;
+</p>
 
 ### Credits
 - [Firebase](https://firebase.google.com/)
@@ -64,7 +78,12 @@
 - [SkyFloatingLabelTextField](https://github.com/Skyscanner/SkyFloatingLabelTextField)
 - [IGColorPicker](https://github.com/iGenius-Srl/IGColorPicker)
 
-<img src="https://imgur.com/4ucO5bq.png" height = "600" align="right"> <img src="https://imgur.com/oy8oL76.png" height = "600" align="center"> <img src="https://imgur.com/e9vEqFv.png" height = "600" align="left">
+<p align="center">
+  <img src="https://imgur.com/4ucO5bq.png" height = "600"> 
+  <img src="https://imgur.com/oy8oL76.png" height = "600">
+  <img src="https://imgur.com/e9vEqFv.png" height = "600">
+&nbsp; &nbsp; &nbsp; &nbsp;
+</p>
 
 ## License
 ```
