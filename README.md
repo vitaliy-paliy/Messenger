@@ -1,9 +1,5 @@
 <img src="https://imgur.com/BsGWh9S.png" align="center">
 
-### General
-**```mChat```** is a real-time messaging app written in Swift. 
-
-
 <p align="center">
   <img src="art/welcomeView.gif" height="600">
   <img src="art/contactsAnim.gif" height="600">
