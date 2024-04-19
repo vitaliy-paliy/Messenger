@@ -1,12 +1,6 @@
 <img src="https://imgur.com/BsGWh9S.png" align="center">
 
 <p align="center">
-  <img src="art/welcomeView.gif" height="600">
-  <img src="art/contactsAnim.gif" height="600">
-&nbsp; &nbsp; &nbsp; &nbsp;
-</p>
-
-<p align="center">
   <img src="art/chats.png" height="600"> 
   <img src="art/map.png" height="600">  
 &nbsp; &nbsp; &nbsp; &nbsp;
